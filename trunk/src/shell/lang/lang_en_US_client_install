@@ -1,0 +1,101 @@
+#!/bin/bash
+# Program:
+#   English Language file for client_install
+# Author:
+#   Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
+# Version:
+#    1.0
+# History:
+#   2010/06/14  Rock    First release (1.0)
+
+# [Variables Declaration] #
+## Lang for client_install ##
+par_echo_1="Your master IP:"
+par_echo_2="Is this data cooect? (yes/no): "
+par_echo_3="These parameters are correct."
+par_echo_4="Please edit these parameters in this file."
+
+## [Lang for client_install_fun.sh] ##
+### [for choose_lang()] ###
+choose_lang_1="Plz choose your language: (1)English (2)中文"
+choose_lang_2="(1/2):"
+
+### [for check_root()]###
+check_root_1="Please Change root to execute it!!!"
+check_root_2="Identify is root."
+
+### [for check_systemInfo()]###
+check_sys_1="check_systemInfo"
+check_sys_2="Your system information are: "
+
+### [for install_packages()]###
+install_pack_1="install_packages"
+install_pack_2="Check dependent packages"
+install_pack_if_1="It will install some packages (expect, ssh, and dialog)."
+install_pack_if_2="Please manually install expect, ssh, and dialog."
+
+### [for check_nez_installed()] ###
+check_nez_1="chcheck_nez_installed"
+check_nez_2="System already had NutchEz."
+check_nez_3="System does not has NutchEz."
+
+### [for check_sunJava()] ###
+check_sunJava_1="check_sunJava"
+check_sunJava_2="NutchEz need Sun Java JDK 1.6.x or above version"
+check_sunJava_if_1="Java is not Sun version, plz install sun Java 1.6.X"
+check_sunJava_if_2="Please input your choice: "
+check_sunJava_if_3="(1)System don't have Sun Java (2)Sun Java is in other path (3)Exit"
+check_sunJava_if_4="plz input (1/2/3): "
+check_sunJava_if_5="Please install Sun Java manually!"
+check_sunJava_if_6="Input Sun Java home path(ex. '/usr/lib/jvm/java-6-sun-1.6.0.12' or using default '/usr' ): "
+check_sunJava_if_7="It is not Sun Java! Plz install Sun Java manually !"
+check_sunJava_if_8="Java version is too old (it need 1.6.X above)"
+check_sunJava_if_9="System has Sun Java 1.6 above version."
+check_sunJava_if_10="Please install Sun JAVA 1.6.X or above version"
+
+### [for check_ssh()] ###
+check_ssh_1="check_ssh"
+check_ssh_2="System has ssh."
+check_ssh_3="Please install ssh."
+check_ssh_4="System has ssh Server (sshd)."
+check_ssh_5="Please install ssh Server (sshd)."
+
+### [for check_dialog()] ###
+check_dialog_1="check_dialog"
+check_dialog_2="System has dialog."
+check_dialog_3="Please install dialog."
+
+### scp_master_nutchuser_sshkey() ###
+scp_sshkey_d1="scp_master_nutchuser_sshkey"
+scp_sshkey_d2="mkdir -p /home/nutchuser/"
+scp_sshkey_d3="scp nutchuser@master:~/.ssh /home/nutchuser/"
+scp_sshkey_expect_1="Password is error"
+scp_sshkey_s1="scp correct."
+scp_sshkey_s2="scp error,\n(1)plese check nutchuser password in server\n(2)nutchuser's authorized_keys in server\n(3)server's network status"
+scp_sshkey_d4="chown -R nutchuser:nutchuser /home/nutchuser/.ssh"
+
+### [for creat_nutchuser_account()] ###
+create_nutchuser_d1="creat_nutchuser_account"
+create_nutchuser_1="Plz input nutchuser password of master node: "
+create_nutchuser_2="plz input nutchuser password, again: "
+create_nutchuser_3="Two Passwords match."
+create_nutchuser_4="Two passwords don't match, please re-input nutchuser's password."
+create_nutchuser_s1="System already has nutchuser, change nutchuser password."
+create_nutchuser_s2="Create nutchuser and change password."
+
+### [for scp_packages()] ###
+scp_packages_d1="scp_packages"
+scp_packages_d2="chown -R nutchuser:nutchuser /opt/nutchez"
+scp_packages_d3="scp -r nutchuser@\$1:/opt/nutchez/NutchezForClientOf_\$Master_IP_Address.tar.gz /home/nutchuser/nutchez/source"
+
+### [for install_nutch_package()] ###
+install_nutch_package_d1="install_nutch_package"
+
+### [for recall_hostname_ip()] ###
+recall_hostname_ip_d1="recall_hostname_ip"
+recall_hostname_ip_1="net_address is"
+recall_hostname_ip_2="net_MacAddr is"
+recall_hostname_ip_3="System have multiple network device, which network use for this machine: "
+recall_hostname_ip_4="Please choice(1/2/3...): "
+recall_hostname_ip_d2="ssh nutchuser@\$1 echo \$net_address \$(hostname) \$net_MacAddr \>\> ~/nutchez/system/nutch_nodes"
+

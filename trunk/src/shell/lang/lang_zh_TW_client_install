@@ -1,0 +1,101 @@
+#!/bin/bash
+# Program:
+#   Chinese Language file for client_install
+# Author:
+#   Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
+# Version:
+#    1.0
+# History:
+#   2010/06/15  Rock    First release (1.0)
+
+# [Variables Declaration] #
+## Lang for client_install ##
+par_echo_1="Master 的 IP位址: "
+par_echo_2="資料是否正確 (yes/no): "
+par_echo_3="資料是正錯的"
+par_echo_4="請修改為正確的參數"
+
+## [Lang for client_install_fun.sh] ##
+### [for choose_lang()] ###
+choose_lang_1="請選擇語言: (1)English (2)中文"
+choose_lang_2="(1/2):"
+
+### [for check_root()]###
+check_root_1="請切換成 root 身份執行!!!"
+check_root_2="身份是 root"
+
+### [for check_systemInfo()]###
+check_sys_1="check_systemInfo"
+check_sys_2="作業系統為: "
+
+### [for install_packages()]###
+install_pack_1="install_packages"
+install_pack_2="檢查套件相依性"
+install_pack_if_1="將會安裝 expect, ssh 和 dialog　套件"
+install_pack_if_2="請手動安裝 expect, ssh 和 dialog 套件"
+
+### [for check_nez_installed()] ###
+check_nez_1="chcheck_nez_installed"
+check_nez_2="系統先前已安裝NutchEz"
+check_nez_3="系統尚未安裝 NutchEz"
+
+### [for check_sunJava()] ###
+check_sunJava_1="check_sunJava"
+check_sunJava_2="NutchEz 需要 Sun Java JDK 1.6 以上的版本"
+check_sunJava_if_1="Java 並不是 Sun　版本, 請自行安裝 Sun 版本的 Java"
+check_sunJava_if_2="請輸入您的選擇: "
+check_sunJava_if_3="(1)系統沒有 Sun Java (2)Sun Java　在其他路徑 (3)結束"
+check_sunJava_if_4="請選擇 (1/2/3): "
+check_sunJava_if_5="請自行安裝 Sun Java 1.6 以上版本"
+check_sunJava_if_6="請輸入 Sum Java 的家路徑 (例如： '/usr/lib/jvm/java-6-sun-1.6.0.12'): "
+check_sunJava_if_7="Java 並不是 Sun　版本, 請自行安裝 Sun 版本的 Java"
+check_sunJava_if_8="Java 版本太舊 (請更新至 1.6　以上版本)"
+check_sunJava_if_9="系統有 Sun Java 1.6 以上版本"
+check_sunJava_if_10="請自行安裝 Sun Java 1.6 以上版本"
+
+### [for check_ssh()] ###
+check_ssh_1="check_ssh"
+check_ssh_2="系統已有 ssh."
+check_ssh_3="請安裝 ssh."
+check_ssh_4="系統已有 ssh Server (sshd)."
+check_ssh_5="請安裝 ssh Server (sshd)."
+
+### [for check_dialog()] ###
+check_dialog_1="check_dialog"
+check_dialog_2="系統已有 dialog."
+check_dialog_3="請安裝 dialog."
+
+### scp_master_nutchuser_sshkey() ###
+scp_sshkey_d1="scp_master_nutchuser_sshkey"
+scp_sshkey_d2="mkdir -p /home/nutchuser/"
+scp_sshkey_d3="scp nutchuser@master:~/.ssh /home/nutchuser/"
+scp_sshkey_expect_1="密碼錯誤"
+scp_sshkey_s1="scp 正確"
+scp_sshkey_s2="scp 失敗,\n(1)請確認 Master 的 nutchuser 的密碼\n(2)Master 上 nutchuser's 的 sshkey\n(3)Master 的網路狀態"
+scp_sshkey_d4="chown -R nutchuser:nutchuser /home/nutchuser/.ssh"
+
+### [for creat_nutchuser_account()] ###
+create_nutchuser_d1="creat_nutchuser_account"
+create_nutchuser_1="請輸入 Master 上 nuchuser 使用者的密碼: "
+create_nutchuser_2="請再輸入一次: "
+create_nutchuser_3="兩次密碼一致"
+create_nutchuser_4="兩次密碼不一致，請重新輸入"
+create_nutchuser_s1="系統已經有 nutchuser，直接更改 nuchuser 密碼"
+create_nutchuser_s2="建立 nuchuser 使用者並更改密碼"
+
+### [for scp_packages()] ###
+scp_packages_d1="scp_packages"
+scp_packages_d2="chown -R nutchuser:nutchuser /opt/nutchez"
+scp_packages_d3="scp -r nutchuser@\$1:/opt/nutchez/NutchezForClientOf_\$Master_IP_Address.tar.gz /home/nutchuser/nutchez/source"
+
+### [for install_nutch_package()] ###
+install_nutch_package_d1="install_nutch_package"
+
+### [for recall_hostname_ip()] ###
+recall_hostname_ip_d1="recall_hostname_ip"
+recall_hostname_ip_1="網路IP位址是"
+recall_hostname_ip_2="網卡MAC位址是"
+recall_hostname_ip_3="系統有多張網卡，請選擇那張網卡是適用於此環境: "
+recall_hostname_ip_4="請選擇 (1/2/3...): "
+recall_hostname_ip_d2="ssh nutchuser@\$1 echo \$net_address \$(hostname) \$net_MacAddr \>\> ~/nutchez/system/nutch_nodes"
+
