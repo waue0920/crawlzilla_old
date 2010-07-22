@@ -1,0 +1,17 @@
+edit website
+
+--This line, and those below, will be ignored--
+
+A    src/web/src/org/nchc/nutchez/CheckFristLogin.java
+M    src/web/WebContent/nutch_DB.jsp
+M    src/web/WebContent/sysinfo.jsp
+M    src/web/WebContent/statistics.jsp
+M    src/web/WebContent/changePW.jsp
+M    src/web/WebContent/changePW.html
+M    src/web/WebContent/index.jsp
+M    src/web/WebContent/crawl.jsp
+M    src/web/WebContent/login.jsp
+M    src/web/WebContent/crawlstatus.jsp
+M    src/web/WebContent/login.html
+A    src/web/WebContent/adminLogin.jsp
+M    src/web/WebContent/crawlerror.jsp

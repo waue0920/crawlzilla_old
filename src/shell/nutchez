@@ -1,0 +1,428 @@
+#!/bin/bash
+# Program:
+#   NutchEz management interface
+# Author: 
+#   Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
+# Version:
+#    1.0
+# History:
+#   2010/06/07  Rock    First release (1.0)
+
+# [Variables Declaration] #
+DIALOG="dialog"
+main_choice=
+lang=
+
+# [PATH Declaration] #
+NutchEZ_Install_PATH="/opt/nutchez"
+Tomcat_HOME="/opt/nutchez/tomcat"
+NutchEZ_HOME="/home/nutchuser/nutchez"
+Work_Path=$NutchEZ_HOME/system
+
+#Work_Path="./"
+#Work_Path_J=0
+##  Work Path setup ##
+#echo $0 | grep '/' || Work_Path_J=1
+#if [ "$Work_Path_J" == "0"  ]; then
+#	Work_Path=$(echo $0 | sed 's/nutchez//')
+#fi
+
+# [Env Declaration] #
+. $Work_Path/lang/lang_en_US_nutchez
+
+# [Functions Declaration] #
+## [Pre-check for language] ##
+function prepare_lang(){
+lang=$(locale | grep 'LANG=' | cut -d "=" -f2)
+
+# if lang=zh then source lang_zh_TW_nutchez
+echo $lang | grep 'zh' && source $Work_Path/lang/lang_zh_TW
+}
+
+
+## [Pre-Check for nutch_nodes file] ##
+function prepare_check(){ 
+# 若無 nutchez_nodes　則跳出
+if [ ! -e "${NutchEZ_HOME}/system/nutch_nodes" ]; then
+    $DIALOG --clear --backtitle "$dia_back" --title "$dia_pre_check_title_1" \
+    --msgbox "$dia_pre_check_msg_1 $NutchEZ_HOME/system/nutch_nodes !!!" 10 40
+    exit
+fi
+
+# 判斷 nutch_nodes　和 nutch_nodes.back
+# 第一次執行則要求 user　更新 /etc/hosts
+if [ ! -e "${NutchEZ_HOME}/system/nutch_nodes.bak" ]; then
+    $DIALOG --clear --backtitle "$dia_back" --title "$dia_pre_check_title_2" \
+    --yesno "$dia_pre_check_yesno_1\n$dia_pre_check_yesno_2" 10 55
+
+    echo -e "$pre_check_echo_1"
+    $Work_Path/duplicate_del "${NutchEZ_HOME}/system/nutch_nodes"
+    su root -c "$Work_Path/duplicate_del /etc/hosts && $Work_Path/add_hosts ${NutchEZ_HOME}/system/nutch_nodes /etc/hosts"
+    #　若密碼輸入失敗則跳出
+    if [ $? == "1" ]; then
+        echo "$pre_check_echo_2"
+        exit
+    fi 
+# 若 nutch_nodes 被更新過，則要求更新 /etc/hosts
+elif [ ${NutchEZ_HOME}/system/nutch_nodes -nt ${NutchEZ_HOME}/system/nutch_nodes.bak ]; then
+    $DIALOG --clear --backtitle "$dia_back" --title "$dia_pre_check_title_2" \
+    --yesno "$dia_pre_check_yesno_3\n$dia_pre_check_yesno_2" 10 55
+
+    echo -e "$pre_check_echo_1"
+    $Work_Path/duplicate_del "${NutchEZ_HOME}/system/nutch_nodes"
+    su root -c "$Work_Path/duplicate_del /etc/hosts && $Work_Path/add_hosts ${NutchEZ_HOME}/system/nutch_nodes /etc/hosts"
+    #　若密碼輸入失敗則跳出                   
+    if [ $? == "1" ]; then                    
+        echo "$pre_check_echo_2="
+        exit                                  
+    fi
+fi
+}
+
+## [Main Menu] ##
+function main_menu(){
+main_choice="/tmp/main_choice"
+
+$DIALOG --clear --backtitle "$dia_back" \
+    --title "$dia_main_title_1" \
+        --menu "$dia_choose" 15 60 7 \
+        "cluster_status" "$dia_main_menu_1_1" \
+        "cluster_setup" "$dia_main_menu_1_2" \
+        "server_setup" "$dia_main_menu_1_3" \
+        "tomcat_switch" "$dia_main_menu_1_4" \
+        "tomcat_port" "$dia_main_menu_1_5" \
+        "lang_switch" "$dia_main_menu_1_6" \
+        "exit" "$dia_exit" 2>$main_choice
+}
+
+## [Cluster Status (datanode & tasktracker)] ##
+function cluster_status(){
+IP_list=$(cat $NutchEZ_HOME/system/nutch_nodes | grep -v '^$' | grep -v '#'  | awk '{print $1}')
+clusterStatus="/tmp/clusterStatus"
+rm $clusterStatus 2> /dev/null
+#printf '%16s\t %11s\t %10s\t %25s\n' "[IP] [Hostanme] [Network] [Dtatnode & Tasktracker]" >>$clusterStatus
+echo -e "$cluster_status_echo_1" >>$clusterStatus
+echo -e "------------------------------------------------------------------------" >>$clusterStatus
+echo -e "\n$cluster_status_echo_2"
+for ip in $IP_list
+do
+    # Check Network status
+    ip_status="online"
+    ping -c1 -w1 $ip 2>&1 > /dev/null || ip_status="offline"
+    # Check Hadoop/Nutch service through ssh
+    Task_Data_status="shutdown"
+    if [ $ip_status == "online" ]; then
+    Task_Data=$(ssh -o StrictHostKeyChecking=no $ip "jps |grep TaskTracker ; jps | grep  DataNode")
+    fi
+
+    [ -z "$Task_Data" ] || Task_Data_status="running"
+    host_name=$(cat $NutchEZ_HOME/system/nutch_nodes | grep $ip | awk '{print $2}')
+    echo -e "$ip  $host_name \t\t $ip_status \t $Task_Data_status" >>$clusterStatus
+#    printf '%16s\t %11s\t %10s\t %25s\n' "$ip $host_name $ip_status $Task_Data_status" >>$clusterStatus
+done
+
+read -p "$cluster_status_read_1"
+$DIALOG --clear --backtitle "$dia_back" \
+     --title "$dia_cluster_status_title_1" --textbox $clusterStatus 20 90
+
+    # Back to main menu 
+    main_menu
+    menu_choose
+}
+
+
+## [Server Setup (namenode & jobtracker)] ##
+function server_setup(){
+serverSetup=/tmp/serverSetup
+pid_name=$(jps | grep NameNode)
+pid_job=$(jps | grep JobTracker)
+
+if [ -z "$pid_name" -a -z "$pid_job" ]; then                                                                                               
+    $DIALOG --clear --backtitle "$dia_back" --title "$dia_server_title_1" \
+    --msgbox "$dia_server_msg_1" 7 50
+elif [ -z "$pid_name" -a -n "$pid_job" ]; then
+    $DIALOG --clear --backtitle "$dia_back" --title "$dia_server_title_1" \
+    --msgbox "$dia_server_msg_2" 7 50
+elif [ -n "$pid_name" -a -z "$pid_job" ]; then
+    $DIALOG --clear --backtitle "$dia_back" --title "$dia_server_title_1" \
+    --msgbox "$dia_server_msg_3" 7 50
+else
+    $DIALOG --clear --backtitle "$dia_back" --title "$dia_server_title_1" \
+    --msgbox "$dia_server_msg_4" 7 50
+fi
+
+$DIALOG --clear --backtitle "$dia_back" --title "$dia_server_title_2" \
+    --menu "$dia_choose" 15 65 4 \
+    "start" "$dia_server_menu_1_1" \
+    "shutdown" "$dia_server_menu_1_2" \
+    "restart" "$dia_server_menu_1_3" \
+    "main" "$dia_backto_main" 2>$serverSetup
+
+if [ "$(cat $serverSetup)" == "start" ]; then
+    $NutchEZ_Install_PATH/nutch/bin/start-dfs.sh
+    $NutchEZ_Install_PATH/nutch/bin/start-mapred.sh
+    # Back to main menu                                                                                    
+    main_menu
+    menu_choose
+elif [ "$(cat $serverSetup)" == "shutdown" ]; then
+    $NutchEZ_Install_PATH/nutch/bin/stop-dfs.sh
+    $NutchEZ_Install_PATH/nutch/bin/stop-mapred.sh
+    # Back to main menu                                                                                    
+    main_menu
+    menu_choose
+elif [ "$(cat $serverSetup)" == "restart" ]; then
+    $NutchEZ_Install_PATH/nutch/bin/stop-dfs.sh
+    $NutchEZ_Install_PATH/nutch/bin/stop-mapred.sh
+    $NutchEZ_Install_PATH/nutch/bin/start-dfs.sh
+    $NutchEZ_Install_PATH/nutch/bin/start-mapred.sh
+    # Back to main menu                                                                                    
+    main_menu
+    menu_choose
+elif [ "$(cat $serverSetup)" == "main" ]; then
+    main_menu
+    menu_choose
+else
+    exit
+fi
+
+}
+
+
+## [Cluster Setup (datanode & tasktracker)] ##
+function cluster_setup(){
+# 從 nutch_nodes 讀出 ip　和 hostname
+#IP_list=$(cat $NutchEZ_HOME/system/nutch_nodes | grep -v '^$' | grep -v '#' | awk '{print $1}')
+#HOST_list=$(cat $NutchEZ_HOME/system/nutch_nodes | grep -v '^$' | grep -v '#' | awk '{print $2}')
+LIST_status="off"
+allpart="/tmp/allpart"
+runNodes="/tmp/runNodes"
+clusterSetup="/tmp/clusterSetup"
+
+$DIALOG --clear --backtitle "$dia_back" \
+    --title "$dia_cluster_setup_title_1" \
+    --menu "$dia_choose" 15 55 3 \
+    "All" "$dia_cluster_setup_menu_1_1" \
+    "Part" "$dia_cluster_setup_menu_1_2" \
+    "Main" "$dia_backto_main" 2>$allpart
+
+# 判斷是否選 all　和 part，若是 all　直接到服務選單，若是 part 則先到機器選單
+if [ "$(cat $allpart)" == "All" ]; then
+     cat $NutchEZ_HOME/system/nutch_nodes | grep -v '^$' | grep -v '#'  | awk '{print $1}' >$runNodes
+elif [ "$(cat $allpart)" == "Part" ]; then
+    $DIALOG --clear --backtitle "$dia_back" --title "$dia_cluster_setup_title_2" \
+    --checklist "$dia_cluster_setup_check_1" 15 55 7 $(cat $NutchEZ_HOME/system/nutch_nodes | \
+    grep -v '^$' | grep -v '#'  | awk '{print $1 "\t" $2 "\t" "$LIST_status" }') 2>$runNodes
+#    read -p "$runNodes and $(cat $runNodes)"
+elif [ "$(cat $allpart)" == "Main" ]; then
+    main_menu
+    menu_choose
+else
+    exit
+fi
+
+if [ -z "$(cat $runNodes)" ]; then
+    exit
+else
+   $(cat $runNodes) | sed -i 's/"//g' $runNodes 
+fi
+
+$DIALOG --clear --backtitle "$dia_back" --title "$dia_cluster_setup_title_3" \
+    --menu "$dia_choose" 15 65 4 \
+    "start" "$dia_cluster_setup_menu_2_1" \
+    "shutdown" "$dia_cluster_setup_menu_2_2" \
+    "restart" "$dia_cluster_setup_menu_2_3" \
+    "main" "$dia_backto_main" 2>$clusterSetup
+
+if [ "$(cat $clusterSetup)" == "start" ]; then
+    echo -e "\n$cluster_setup_echo_1"
+    for node in $(cat $runNodes) 
+    do
+        ssh -o StrictHostKeyChecking=no $node "$NutchEZ_Install_PATH/nutch/bin/hadoop-daemon.sh start datanode \
+        ; $NutchEZ_Install_PATH/nutch/bin/hadoop-daemon.sh start tasktracker" 2>/dev/null
+        [ $? == "0" ] || echo "$cluster_setup_echo_error $node !!!"
+    done
+    main_menu
+    menu_choose
+elif [ "$(cat $clusterSetup)" == "shutdown" ]; then
+    echo -e "\n$cluster_setup_echo_3"
+    for node in $(cat $runNodes)
+    do
+        ssh -o StrictHostKeyChecking=no $node "$NutchEZ_Install_PATH/nutch/bin/hadoop-daemon.sh stop datanode \
+        ; $NutchEZ_Install_PATH/nutch/bin/hadoop-daemon.sh stop tasktracker" 2>/dev/null
+        [ $? == "0" ] || echo "$cluster_setup_echo_error $node !!!"
+    done
+    main_menu
+    menu_choose
+elif [ "$(cat $clusterSetup)" == "restart"  ]; then
+    echo -e "\n$cluster_setup_echo_5"
+    for node in $(cat $runNodes)
+    do  
+        ssh -o StrictHostKeyChecking=no $node "$NutchEZ_Install_PATH/nutch/bin/hadoop-daemon.sh stop datanode \
+        ; $NutchEZ_Install_PATH/nutch/bin/hadoop-daemon.sh stop tasktracker \
+        ; $NutchEZ_Install_PATH/nutch/bin/hadoop-daemon.sh start datanode \
+        ; $NutchEZ_Install_PATH/nutch/bin/hadoop-daemon.sh start tasktracker" 2>/dev/null
+        [ $? == "0" ] || echo "$cluster_setup_echo_error $node !!!"
+    done
+    main_menu
+    menu_choose
+
+elif [ "$(cat $clusterSetup)" == "main"  ]; then
+    main_menu
+    menu_choose
+else    
+    exit
+fi
+   # Back to main menu                                                                                    
+#    main_menu       
+#    menu_choose
+}
+
+## [Tomcat Severice start/stop/restart] ##
+function tomcat_switch(){
+tom_pids=$(ps x | grep -v 'grep' | grep "tomcat" | awk '{print $1}')
+if [ -n "$tom_pids" ]; then
+    $DIALOG --clear --backtitle "$dia_back" --title "$dia_tomcat_switch_title_1" \
+        --msgbox "$dia_tomcat_switch_msg_1" 7 50
+else
+    $DIALOG --clear --backtitle "$dia_back" --title "$dia_tomcat_switch_title_1" \
+        --msgbox "$dia_tomcat_switch_msg_2" 7 50
+fi
+tomcatSwitch="/tmp/tomcatSwitch"
+$DIALOG --clear --backtitle "$dia_back" --title "$dia_tomcat_switch_title_2" \
+    --menu "$dia_choose" 15 55 4 \
+        "start" "$dia_tomcat_switch_menu_1_1" \
+        "shutdown" "$dia_tomcat_switch_menu_1_2" \
+        "restart" "$dia_tomcat_switch_menu_1_3" \
+        "main" "$dia_backto_main" 2>$tomcatSwitch
+
+if [ "$(cat $tomcatSwitch)" == "exit" ]; then
+    exit 0
+
+elif [ "$(cat $tomcatSwitch)" == "main" ]; then
+    main_menu
+    menu_choose
+fi
+
+# jude $Tomcat_HOME/bin/startup.sh 
+if [ ! -e $Tomcat_HOME/bin/startup.sh ]; then
+    echo -e "\n$tomcat_switch_echo_1 $Tomcat_HOME/bin/startup.sh"
+    exit
+fi
+
+if [ ! -e $Tomcat_HOME/bin/shutdown.sh ]; then
+    echo -e "\n$tomcat_switch_echo_1 $Tomcat_HOME/bin/shutdown.sh"
+    exit
+fi
+
+if [ "$(cat $tomcatSwitch)" == "start" ]; then
+    echo "$tomcat_switch_echo_3"
+    $Tomcat_HOME/bin/startup.sh
+elif [ "$(cat $tomcatSwitch)" == "shutdown" ]; then
+    echo "$tomcat_switch_echo_4"
+    $Tomcat_HOME/bin/shutdown.sh
+    for tom_pid in $tom_pids
+    do
+        kill -9 $tom_pid 2>/dev/null
+    done
+elif [ "$(cat $tomcatSwitch)" == "restart" ]; then
+    echo "$tomcat_switch_echo_5"
+    $Tomcat_HOME/bin/shutdown.sh
+    for tom_pid in $tom_pids
+    do
+        kill -9 $tom_pid 2>/dev/null
+    done
+    $Tomcat_HOME/bin/startup.sh
+else
+    exit 0
+fi
+
+    # Back to main menu                                                                                    
+    main_menu       
+    menu_choose
+}
+
+## [Tomcat Port Change] ##
+function tomcat_port(){
+
+if [ ! -e $Tomcat_HOME/conf/server.xml ]; then
+    $DIALOG --clear --backtitle "$dia_back" --title "$dia_tomcat_port_title_1" \
+        --msgbox "$dia_tomcat_port_msg_1 $Tomcat_HOME/conf/server.xml !!!" 10 50
+    exit
+fi
+tomcatPort="/tmp/tomcatPort"
+$DIALOG --clear --backtitle "$dia_back" --title "$dia_tomcat_port_title_2" \
+    --inputbox "$dia_tomcat_port_input_1" 10 55 2>$tomcatPort
+
+if [ -z "$(cat $tomcatPort)" ]; then
+         # Back to main menu                                                                                
+         main_menu
+         menu_choose
+else
+    modify_line_nu=$(cat -n $Tomcat_HOME/conf/server.xml | grep -v SSL | grep 'HTTP/1.1' | grep '<Connector' | awk '{print $1}')
+    sed -i "${modify_line_nu}c <Connector port=\"$(cat $tomcatPort)\" protocol=\"HTTP/1.1\"" $Tomcat_HOME/conf/server.xml
+
+    tom_pids=$(ps x | grep -v 'grep' | grep "tomcat" | awk '{print $1}')
+    $Tomcat_HOME/bin/shutdown.sh
+    for tom_pid in $tom_pids
+       do
+           kill -9 $tom_pid 2>/dev/null
+       done
+    $Tomcat_HOME/bin/startup.sh
+fi
+
+    # Back to main menu                                                                                    
+    main_menu       
+    menu_choose
+}
+
+
+## [Language Change] ##
+function lang_switch(){
+langSwitch="/tmp/langSwitch"
+$DIALOG --clear --backtitle "$dia_back" --title "$dia_lang_title_1" \
+    --menu "$dia_choose" 15 55 3 \
+    "en_US" "$dia_lang_menu_1_1" \
+    "zh_TW" "$dia_lang_menu_1_2" \
+    "main" "$dia_backto_main" 2>$langSwitch
+#
+if [ "$(cat $langSwitch)" == "Exit" ]; then
+    exit
+elif [ "$(cat $langSwitch)" == "en_US" ]; then
+    source $Work_Path/lang/lang_en_US_nutchez
+    main_menu
+    menu_choose
+elif [ "$(cat $langSwitch)" == "zh_TW" ]; then
+    source $Work_Path/lang/lang_zh_TW_nutchez
+    main_menu
+    menu_choose
+fi
+}
+
+## [Menu_choose] ##
+function menu_choose(){
+case $(cat $main_choice) in
+    "cluster_status")
+        cluster_status;;
+    "cluster_setup")
+        cluster_setup;;
+    "server_setup")    
+        server_setup;;
+    "tomcat_switch")
+        tomcat_switch;;
+    "tomcat_port")
+        tomcat_port;;
+    "lang_switch")
+        lang_switch;;
+esac
+}
+
+# [Main Code] #
+if [ $USER != "nutchuser" ]; then
+    echo -e "\n$user_error"
+    exit
+fi
+
+prepare_lang
+prepare_check
+main_menu
+menu_choose

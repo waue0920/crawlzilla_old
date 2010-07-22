@@ -1,0 +1,137 @@
+#!/bin/bash
+# Program:
+#   Chinese Language file for client_install
+# Author:
+#   Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
+# Version:
+#    1.0
+# History:
+#
+
+
+## Lang for master_install ##
+main_echo_1="歡迎使用NutchEZ, 此安裝程序會為您新建一個nutchuser帳號並協助您設定>密碼"
+main_echo_2="請確認上述的安裝資訊：1.正確 2.不正確"
+main_echo_3="安裝成功！"
+main_echo_4="請進入管理頁面：http://$MasterIP_Address:8080"
+
+## Lang for master_install_func.sh ##
+### [for choose_lang()] ### 
+choose_lang_1="請選擇語言: (1)English (2)中文" 
+choose_lang_2="(1/2):" 
+
+### [for check_root()]### 
+check_root_1="請切換成 root 身份執行!!!" 
+check_root_2="身份是 root" 
+ 
+### [for check_systemInfo()]### 
+check_sys_1="check_systemInfo" 
+check_sys_2="作業系統為: " 
+ 
+### [for install_packages()]### 
+install_pack_1="install_packages" 
+install_pack_2="檢查套件相依性" 
+install_pack_if_1="將會安裝 expect, ssh 和 dialog　套件" 
+install_pack_if_2="請手動安裝 expect, ssh 和 dialog 套件" 
+ 
+### [for check_nez_installed()] ### 
+check_nez_1="chcheck_nez_installed" 
+check_nez_2="系統先前已安裝NutchEz" 
+check_nez_3="系統尚未安裝 NutchEz" 
+ 
+### [for check_sunJava()] ### 
+check_sunJava_1="check_sunJava" 
+check_sunJava_2="NutchEz 需要 Sun Java JDK 1.6 以上的版本" 
+check_sunJava_if_1="Java 並不是 Sun　版本, 請自行安裝 Sun 版本的 Java" 
+check_sunJava_if_2="請輸入您的選擇: " 
+check_sunJava_if_3="(1)系統沒有 Sun Java (2)Sun Java已安裝並於其他路徑 (3)結束" 
+check_sunJava_if_4="請選擇 (1/2/3): " 
+check_sunJava_if_5="請自行安裝 Sun Java 1.6 以上版本" 
+check_sunJava_if_6="請輸入 Sum Java 的家路徑 (例如： '/usr/lib/jvm/java-6-sun-1.6.0.12'): " 
+check_sunJava_if_7="Java 並不是 Sun　版本, 請自行安裝 Sun 版本的 Java" 
+check_sunJava_if_8="Java 版本太舊 (請更新至 1.6　以上版本)" 
+check_sunJava_if_9="系統有 Sun Java 1.6 以上版本" 
+check_sunJava_if_10="請自行安裝 Sun Java 1.6 以上版本" 
+ 
+### [for check_ssh()] ### 
+check_ssh_1="check_ssh" 
+check_ssh_2="系統已有 ssh." 
+check_ssh_3="請安裝 ssh." 
+check_ssh_4="系統已有 ssh Server (sshd)." 
+check_ssh_5="請安裝 ssh Server (sshd)." 
+ 
+### [for check_dialog()] ### 
+check_dialog_1="check_dialog" 
+check_dialog_2="系統已有 dialog." 
+check_dialog_3="請安裝 dialog." 
+	 	 
+#
+set_nutchuser_passwd_echo_1="請輸入欲設定的nutchuser密碼："
+set_nutchuser_passwd_echo_2="請再輸入一次確認密碼："
+
+#
+select_eth_echo_1="系統偵測到目前擁有網卡如下："
+select_eth_echo_2="請選擇欲給nutchez使用的網卡(1/2/3)："
+select_eth_echo_3="您選擇的網卡為：$net_choice"
+select_eth_echo_4="Master網路IP位址為：$net_address"
+select_eth_echo_5="Master的MAC為：$net_MacAddr"
+
+#
+make_ssh_key_echo_1="正在產生SSH Key... "
+make_ssh_key_echo_2="SSH Key已產生"
+
+#
+set_haoop_site_echo_1="正在設定hadoop-site.xml... "
+set_haoop_site_echo_2="hadoop-site.xml設定完成"
+
+#
+set_nutch_site_echo_1="正在設定nutch-site.xml..."
+set_nutch_site_echo_2="http.agent.url 設定行號為：$Line_NO..."
+set_nutch_site_echo_3="編輯http.agent.url, 刪除行號 $Line_NO."
+set_nutch_site_echo_4="編輯http.agent.url完成"
+set_nutch_site_echo_5="http.agent.email 設定行號為：$Line_NO."
+set_nutch_site_echo_6="編輯http.agent.email, 刪除行號 $Line_NO."
+set_nutch_site_echo_7="編輯http.agent.email完成"
+set_nutch_site_echo_8="hadoop-site.xml設定完成"
+
+#
+format_HDFS_echo_1="格式化HDFS..."
+format_HDFS_echo_2="格式化HDFS完成"
+
+#
+start_up_NutchEZ_echo_1="啟動NutchEZ..."
+
+#
+set_hosts_echo_1="設定master上的hosts"
+
+#
+install_Nutch_echo_1="Master的IP位址為："
+install_Nutch_echo_2="Master的Hostname為："
+
+#
+client_PassMasterIPAddr_echo_1="在client安裝檔修改MasterIP的行號: $Line_NO"
+client_PassMasterIPAddr_echo_2="編輯MasterIP..."
+client_PassMasterIPAddr_echo_3="完成編輯MasterIP."
+
+#
+client_PassMaster_Hostname_echo_1="在client安裝檔修改Hostname, 行號為: $Line_NO"
+client_PassMaster_Hostname_echo_2="編輯Hostname..."
+client_PassMaster_Hostname_echo_3="完成編輯Hostname."
+
+#
+make_client_install_echo_1="於function make_client_install ..."
+
+#
+start_up_tomcat_echo_1="啟動tomcat..."
+start_up_tomcat_echo_2="等待 $i 秒..."
+start_up_tomcat_echo_3="tomcat 已經啟動！"
+
+#
+client_install_commands_echo_1="Client安裝可參考以下指令："
+client_install_commands_echo_2="cd ~"
+client_install_commands_echo_3="mkdir nutchez_client_install"
+client_install_commands_echo_4="cd nutchez_client_install"
+client_install_commands_echo_5="scp nutchuser@$MasterIP_Address:/home/nutchuser/nutchez/source/* ."
+client_install_commands_echo_6="sudo su"
+client_install_commands_echo_7="./client_install"
+

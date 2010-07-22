@@ -1,0 +1,47 @@
+#!/bin/bash
+# Program:
+#   Add nutch_nodes to /etc/hosts (for nutchez management interface).
+#   $1=/home/nutchuser/nutchez/system/nutch_nodes
+#   $2=/etc/hosts
+# Author: 
+#   Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
+# Version:
+#    1.0
+# History:
+#   2010/06/07  Rock    First release (1.0)
+
+IPs=$(cat $1 | awk '{print $1}')
+HOSTNAMEs=$(cat $1 | awk '{print $2}')
+
+# 刪除相同的 ip 在 /etc/hosts 和 nutch_nodes
+for ip_addr in $(echo $IPs)
+do
+    jude=0
+    cat $2 | grep ${ip_addr} || jude=1
+
+    if [ $jude == 0 ]; then
+        del_line=$(cat -n $2 | grep ${ip_addr} | awk '{print $1}')
+        sed -i "${del_line}d" $2
+    fi
+done
+
+# 刪除相同的 hostname 在 /etc/hosts 和 nutch_nodes
+for host_name in $(echo $HOSTNAMEs)
+do
+    jude=0
+    cat $2 | grep ${host_name} || jude=1
+
+    if [ $jude == 0 ]; then
+        del_line=$(cat -n $2 | grep ${host_name} | awk '{print $1}')
+        sed -i "${del_line}d" $2
+    fi
+done
+
+# Backup /etc/hosts
+cp -f "$2" "$2.bak"
+
+# attache nutch_nodes to hosts
+sed -i '/# NutchEz add/d' $2
+echo "# NutchEz add" >>$2
+cat $1 | grep -v '#' >>$2
+

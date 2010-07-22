@@ -1,0 +1,94 @@
+#!/bin/bash
+# Program:
+#   Chinese Language file for nutchez
+# Author:
+#   Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
+# Version:
+#    1.0
+# History:
+#   2010/06/14  Rock    First release (1.0)
+
+# [Variables Declaration] #
+## Lang for common ##
+user_error="您不是nutchuser，請切換成 \"nutchuser\" 使用者 !!!"
+
+## [Lang for dialog] ##
+dia_back='= [NutchEz 管理介面] ~by NCHC ='
+dia_choose="請選擇: "
+dia_exit="結束"
+
+## [Lang for prepare_check] ##
+dia_pre_check_title_1="[nutch_nodes 檔案]"
+dia_pre_check_msg_1="失敗：找不到"
+dia_pre_check_title_2="[/etc/host 檔案更新]"
+dia_pre_check_yesno_1="第一次執行 nutchez 管理介面"
+dia_pre_check_yesno_2="請更新 /etc/hosts !!!"
+pre_check_echo_1="請輸入 root 密碼來更新 /etc/hosts !!!"
+pre_check_echo_2="root 密碼錯誤，請先確認 root 密碼是否正確 !!!"
+dia_pre_check_yesno_3="nutch_nodes 檔案已被修改過"
+
+## [Lang for main_menu()] ##
+dia_main_title_1="[管理功能選項]"
+dia_main_menu_1_1="檢查 Cluster 狀態"
+dia_main_menu_1_2="設定 datanode & tasktracker"
+dia_main_menu_1_3="設定 namenode & jobtracker"
+dia_main_menu_1_4="啟動/停止/重新啟動 Tomcat"
+dia_main_menu_1_5="更改 Tomcat port"
+dia_main_menu_1_6="更換語言"
+
+## [Lang for cluster_status()] ##
+cluster_status_echo_1="[IP] \t\t [Hostname] \t [Network] \t [Dtatnode & Tasktracker]"
+cluster_status_echo_2="開始檢查 Cluster..."
+cluster_status_read_1="請輸入任何鍵繼續..."
+dia_cluster_status_title_1="[Cluster 狀態]"
+
+## [Lang for srver_setup()] ##
+dia_server_title_1="[Server 狀態]"
+dia_server_msg_1="Namenode & Jobtracker 並未運作"
+dia_server_msg_2="Jobtracker 正在運作, Namenode 並未運作"
+dia_server_msg_3="Namenode 正在運作, Jobtracker 並未運作"
+dia_server_msg_4="Namenode & Jobtracker 正在運作"
+dia_server_title_2="[Namenode & Jobtracker 設定]"
+dia_server_menu_1_1="啟動 Namenode & Jobtracker"
+dia_server_menu_1_2="停止 Namenode & Jobtracker"
+dia_server_menu_1_3="重新啟動 Namenode & Jobtracker"
+
+## [Labg for cluster_setup()] ##
+dia_cluster_setup_title_1="[全部或部份 nodes]"
+dia_cluster_setup_menu_1_1="全部 nodes"
+dia_cluster_setup_menu_1_2="部份 nodes"
+dia_cluster_setup_title_2="[Datanode & Tasktracker Nodes 選擇]"
+dia_cluster_setup_check_1="選擇 Datanode & Tasktracker: "
+dia_cluster_setup_title_3="[Datanode & Tasktracker 設定]"
+dia_cluster_setup_menu_2_1="啟動 Datanodes & Tasktrackers"
+dia_cluster_setup_menu_2_2="停止 Datanodes & Tasktrackers"
+dia_cluster_setup_menu_2_3="重新啟動 Datanodes & Tasktrackers"
+cluster_setup_echo_1="[啟動 datanode & tasktracker]"
+cluster_setup_echo_error="失敗：無法 ssh 到 "
+cluster_setup_echo_3="[停止 datanode & tasktracker]"
+cluster_setup_echo_5="[重新啟動 datanode & tasktracker]"
+
+## [Lang for tomcat_swith()] #
+dia_tomcat_switch_title_1="[Tomcat 狀態]"
+dia_tomcat_switch_msg_1="Tomcat 正在執行 !!!"
+dia_tomcat_switch_msg_2="Tomcat 並未執行 !!!"
+dia_tomcat_switch_title_2="[Tomcat 服務選項]"
+dia_tomcat_switch_menu_1_1="啟動 Tomcat"
+dia_tomcat_switch_menu_1_2="停止 Tomcat"
+dia_tomcat_switch_menu_1_3="重新啟動 Tomcat"
+tomcat_switch_echo_1="失敗：找不到"
+tomcat_switch_echo_3="[啟動 Tomcat]"
+tomcat_switch_echo_4="[停止 Tomcat]"
+tomcat_switch_echo_5="[重新啟動 Tomcat]"
+
+## [Lang for tomcat_port()] ##
+dia_tomcat_port_title_1="[更改 Tomcat servel.xml]"
+dia_tomcat_port_msg_1="失敗: 找不到"
+dia_tomcat_port_title_2="[Tomcat Port 更改]"
+dia_tomcat_port_input_1="請輸入要更改的 Tomcat port 號碼 (預設值為 8080): "
+
+## [Lang for lang_switch()] ##
+dia_lang_title_1="[轉換語言]"
+dia_lang_menu_1_1="英文"
+dia_lang_menu_1_2="中文"
+

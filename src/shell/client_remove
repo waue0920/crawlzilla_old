@@ -1,0 +1,113 @@
+#!/bin/bash
+# Program:
+#   remove shell script for client uninstall
+# Author:
+#   Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
+# Version:
+#    1.0
+# History:
+#    
+
+
+# 需要 master_install 設定的參數區
+# Master IP here
+Master_IP_Address=input.your.master.ip_address
+# Master Hostname here
+Master_Hostname=input_your_master_hostname
+
+##########  echo function  ##########
+function debug_info () {
+  if [ $? -eq 0 ]; then
+    echo -e "\033[1;35;40m info - $1 \033[0m"
+  fi
+}
+
+
+function show_info () {
+  if [ $? -eq 0 ]; then
+    echo -e "\033[1;32;40m $1 \033[0m"
+  fi
+}
+##########end echo function ##########
+
+function load_default_lang(){
+
+lang=$(locale | grep 'LANG=' | cut -d "=" -f2)
+
+# Default: source english
+. lang/lang_en_US
+# if locale is zh then source chinese
+
+echo $lang | grep 'zh' >> /dev/null && source lang/lang_zh_TW
+}
+
+
+
+# check root
+function check_root(){
+  debug_info "check_root"
+  if [ $USER != "root" ]; then
+    show_info "$CR_check_root_1" # "請切換成 root 身份執行移除程式!!!"
+    exit
+  fi
+  show_info "$CR_check_root_2" # "已確認為root身份, 將繼續執行此移除程式！"
+}
+
+# shutdown service
+function shutdown_service () {
+  show_info "$CR_shutdown_service_echo_1" # "關閉本機服務..."
+  su nutchuser -c "/opt/nutchez/nutch/bin/hadoop-daemon.sh stop datanode"
+  su nutchuser -c "/opt/nutchez/nutch/bin/hadoop-daemon.sh stop tasktracker"
+  show_info "$CR_shutdown_service_echo_2" # "本機服務已關閉"
+}
+
+# 移除檔案及資料夾
+function remove_folders () {
+  show_info "$CR_remove_folders_echo_1" # "正在刪除安裝時所建立的檔案及資料夾..."
+  rm -rf /opt/nutchez
+  rm -rf /var/nutchez
+  show_info "$CR_remove_folders_echo_2" # "安裝時所建立的檔案及資料夾已刪除"
+}
+
+
+# 還原/etc/hosts
+function edit_hosts () {
+  show_info "$CR_edit_hosts_echo_1" # "修改/etc/hosts..."
+#  Line_NO=`cat /etc/hosts | grep -n $Master_IP_Address | sed 's/:.*//g'`
+#  if [[ $Line_NO -ge 1 ]]; then
+#    sed -i ''$Line_NO'd' /etc/hosts
+#  fi
+  cat > /etc/hosts < /home/nutchuser/nutchez/system/hosts.bak
+  show_info "$CR_edit_hosts_echo_2" # "完成修改/etc/hosts"
+}
+
+
+# 移除使用者
+function user_delete () {
+  show_info "$CR_user_delete_echo_1" # "正在刪除nutchuser使用者..."
+  userdel -r nutchuser
+  show_info "$CR_user_delete_echo_2" # "使用者nutchuser已刪除"
+}
+
+# Main function
+function main () {
+  load_default_lang
+  check_root
+  show_info "$CR_main_echo_1" #"警告 - 此一程式為移除此用戶端的nutch node, 若您為誤執行此一程式, 請按Ctrl+c離開此程序！"
+  show_info "$CR_main_echo_2" #"本執行程序將會移除安裝nutchEZ時所新增的檔案及nutchuser使用者帳號"
+# 詢問是否繼續
+  read -p "$CR_main_echo_3" confirm # "請問是否確定移除此一節點：1.確定 2.取消"
+# 確認移除
+  if [ $confirm -eq 1 ]; then
+    shutdown_service
+    remove_folders
+    edit_hosts
+    user_delete
+    show_info "$CR_main_echo_4" # "移除程序已完成！"
+  elif [ $confirm -eq 2 ]; then
+    show_info "$CR_main_echo_5" # "您已取消移除程序！"
+    show_info "$CR_main_echo_6" # "若要移除請再重新執行！"
+  fi
+}
+
+main

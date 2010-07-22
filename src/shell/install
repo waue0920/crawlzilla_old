@@ -1,0 +1,99 @@
+#!/bin/bash
+#
+
+# 變數宣告
+
+Work_Path=`dirname "$0"`
+
+if [ -f $Work_Path/install_func.sh ];then
+  Work_Path=`cd "$Work_Path"; pwd`
+elif [ -f $Work_Path/bin/install_func.sh ];then
+  Work_Path=`cd "$Work_Path/bin"; pwd`;
+else
+  echo "Import install-function-library error !!! ";
+  exit 1;
+fi
+
+#Work_Path=./
+#Work_Path_J=0
+# Work Path setup
+#echo $0 | grep '/' || Work_Path_J=1
+#if [ "$Work_Path_J" == "0"  ]; then
+#    Work_Path=$(echo $0 | sed 's/install//')
+#fi
+
+# Source functions
+  source $Work_Path/install_func.sh;
+#  source $Work_Path/lang_link;
+### real code #####
+
+# 前置作業
+# *.sh及nutchez-0.2-0531.tar.gz均在同一目錄下
+
+function show_info () {
+  if [ $? -eq 0 ]; then
+    echo -e "\033[1;32;40m $1 \033[0m"
+  fi
+}
+
+main () {
+  load_default_lang
+  check_info
+  show_info "$MI_main_echo_1"
+# show_info "歡迎使用NutchEZ, 此安裝程序會為您新建一個nutchuser帳號並協助您設定密碼"
+  set_install_information
+  show_master_info
+  read -p "$MI_main_echo_2" confirm
+# read -p "Please confirm your install infomation: 1.Yes 2.No  " confirm
+  if [ $confirm -eq 1 ]; then
+    creat_nutchuser_account $Nutchuser_Passwd
+    make_ssh_key
+    # 解壓縮
+    # tar -zxvf nutchezV2-current.tar.gz -C /opt/
+    unzip_nV2_pack
+
+    # 建立系統所需資料夾 
+    su nutchuser -c "mkdir /home/nutchuser/nutchez"
+    su nutchuser -c "mkdir /home/nutchuser/nutchez/urls"
+    su nutchuser -c "touch /home/nutchuser/nutchez/urls/urls.txt"
+    su nutchuser -c "mkdir /home/nutchuser/nutchez/archieve"
+    su nutchuser -c "mkdir /home/nutchuser/nutchez/source"
+    su nutchuser -c "mkdir /home/nutchuser/nutchez/system"   
+
+    Install_Nutch
+
+   if [ ! -d "/var/nutchez" ]; then
+     mkdir /var/nutchez
+   fi
+
+    # 建立 nutch 與 tomcat 的 logs 資料夾
+    mkdir /var/nutchez/tomcat-logs
+    ln -sf /var/nutchez/tomcat-logs /opt/nutchez/tomcat/logs
+    mkdir /var/nutchez/logs
+    ln -sf /var/nutchez/logs /opt/nutchez/nutch/logs
+
+    chown -R nutchuser:nutchuser /opt/nutchez
+    chown -R nutchuser:nutchuser /var/nutchez
+    
+    # 系統路徑鍊結
+    ln -sf /home/nutchuser/nutchez/system/nutchez /usr/local/bin/nutchez
+    # 將網頁管理預設密碼寫入隱藏檔, 供網頁預設登入密碼使用
+    su nutchuser -c "echo "nutchuser" > /home/nutchuser/nutchez/system/.passwd"
+    chmod 600 /home/nutchuser/nutchez/system/.passwd
+    make_client_install
+    # 啟動系統
+    format_HDFS
+    start_up_NutchEZ
+    start_up_tomcat    
+    # 安裝流程結束，並進入網頁管理頁面設定爬網網址...等  
+    show_info "$MI_main_echo_3"
+#   show_info "Install Successfully!!"
+    show_info "$MI_main_echo_4$MasterIP_Address:8080"
+#   show_info "Visit http://$MasterIP_Address:8080"
+    client_install_commands
+  elif [ $confirm -eq 2 ]; then
+    main
+  fi
+}
+
+main

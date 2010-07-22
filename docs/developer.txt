@@ -1,0 +1,15 @@
+# The document is using for explaining the architecture of this svn directory 
+
+
+./docs
+	Some detailed documentation for install, setup and running.
+./src
+	Developer source code.
+./src/bin
+	Including executing files for running shell.
+./src/web
+	Web page.
+./src/brabrabra
+	Something maybe I have not considered yet.
+./package
+	The original package, ex: Nutch 1.0, Tomcat 6.0, ..etc.
