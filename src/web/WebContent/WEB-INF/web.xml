@@ -54,4 +54,14 @@
     <servlet-name>TomcatRestart</servlet-name>
     <url-pattern>/TomcatRestart.do</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>NutchDBStatusDelete</display-name>
+    <servlet-name>NutchDBStatusDelete</servlet-name>
+    <servlet-class>org.nchc.nutchez.NutchDBStatusDelete</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>NutchDBStatusDelete</servlet-name>
+    <url-pattern>/NutchDBStatusDelete.do</url-pattern>
+  </servlet-mapping>
 </web-app>
