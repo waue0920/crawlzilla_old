@@ -16,7 +16,7 @@ else
   exit 1;
 fi
 
-# Log to /var/log/nutchez/shell-logs
+# Log to /var/log/crawlzilla/shell-logs
 source "$Work_Path/log.sh" master_install;
 # Source functions
 source "$Work_Path/install_func.sh";
@@ -30,13 +30,13 @@ main () {
   show_info "$MI_main_echo_2"
   read confirm
   if [ $confirm -eq 1 ]; then
-    creat_nutchuser_account $Nutchuser_Passwd
+    creat_crawler_account $Crawler_Passwd
     make_ssh_key
     # 解壓縮
     unzip_nV2_pack
     # 建立系統所需資料夾
     mkdir_Home_Var
-    # change /etc/hosts to nutchuser 
+    # change /etc/hosts to crawler 
     change_hosts_owner
     #  
     install_Nutch
@@ -44,12 +44,12 @@ main () {
     link_Chown   
  
     # 將網頁管理預設密碼寫入隱藏檔, 供網頁預設登入密碼使用
-    su nutchuser -c "echo "nutchuser" > /home/nutchuser/nutchez/system/.passwd"
-    chmod 600 /home/nutchuser/nutchez/system/.passwd
+    su crawler -c "echo "crawler" > /home/crawler/crawlzilla/system/.passwd"
+    chmod 600 /home/crawler/crawlzilla/system/.passwd
     make_client_install
     # 啟動系統
     format_HDFS
-    start_up_NutchEZ
+    start_up_Crawlzilla
     start_up_tomcat    
     # 安裝流程結束，並進入網頁管理頁面設定爬網網址...等  
     show_info "$MI_main_echo_3"
@@ -68,6 +68,6 @@ load_default_lang
 check_info
 main
 generateReadme
-change_ownship nutchuser /home/nutchuser/nutchez
-show_info $nutchez_install_finish
+change_ownship crawler /home/crawler/nutchez
+show_info $crawlzilla_install_finish
 read

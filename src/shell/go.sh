@@ -1,20 +1,20 @@
 #!/bin/bash
 crawl_dep=$1
 crawlname_from_jsp=$2
-archieve_dir="/home/nutchuser/nutchez/archieve"
-tmp_dir="/home/nutchuser/nutchez/.tmp"
+archieve_dir="/home/crawler/crawlzilla/archieve"
+tmp_dir="/home/crawler/crawlzilla/.tmp"
 
 if [ "$1" == "" ]; then
- echo "1. 使用這個shell ，首先你需要有nutchuser這個使用者，並且hadoop 已經開始運作";
- echo "2. /home/nutchuser/nutchez/url/urls.txt 裡面有你要抓的網址";
+ echo "1. 使用這個shell ，首先你需要有crawler這個使用者，並且hadoop 已經開始運作";
+ echo "2. /home/crawler/crawlzilla/url/urls.txt 裡面有你要抓的網址";
  echo "3. 執行 ./go.sh [深度] [資料夾名稱] 即可，如：";
  echo "	./go.sh 3 crawlname"
  echo "4. 等nutch所有程序完成，則你的資料在 $archieve_dir/crawlname/ "
  exit
 fi
 
-source "/opt/nutchez/nutch/conf/hadoop-env.sh";
-source "/home/nutchuser/nutchez/system/log.sh" crawl_go;
+source "/opt/crawizilla/nutch/conf/hadoop-env.sh";
+source "/home/crawler/crawlzilla/system/log.sh" crawl_go;
 
 function checkMethod(){
   if [ $? -eq 0 ];then
@@ -49,24 +49,24 @@ fi
 # 開始紀錄程序狀態
 echo "begin" > "$tmp_dir/$crawlname_from_jsp"
 
-/opt/nutchez/nutch/bin/hadoop dfs -mkdir $crawlname_from_jsp
+/opt/crawlzilla/nutch/bin/hadoop dfs -mkdir $crawlname_from_jsp
 checkMethod "hadoop dfs -mkdir $crawlname_from_jsp"
-/opt/nutchez/nutch/bin/hadoop dfs -put /home/nutchuser/nutchez/urls $crawlname_from_jsp/urls
+/opt/crawlzilla/nutch/bin/hadoop dfs -put /home/crawler/crawlzilla/urls $crawlname_from_jsp/urls
 checkMethod "hadoop dfs -put urls"
 
 # 開始nutch 搜尋
 echo "crawling" > "$tmp_dir/$crawlname_from_jsp"
 
-/opt/nutchez/nutch/bin/nutch crawl $crawlname_from_jsp/urls -dir $crawlname_from_jsp -depth $crawl_dep -topN 5000 -threads 1000
+/opt/crawlzilla/nutch/bin/nutch crawl $crawlname_from_jsp/urls -dir $crawlname_from_jsp -depth $crawl_dep -topN 5000 -threads 1000
 checkMethod "nutch crawl"
 
-/opt/nutchez/nutch/bin/hadoop dfs -get $crawlname_from_jsp $archieve_dir/$crawlname_from_jsp
+/opt/crawlzilla/nutch/bin/hadoop dfs -get $crawlname_from_jsp $archieve_dir/$crawlname_from_jsp
 checkMethod "download search"
 
 # 製作 $crawlname_from_jsp 於 tomcat
-cp -rf /opt/nutchez/tomcat/webapps/default /opt/nutchez/tomcat/webapps/$crawlname_from_jsp
+cp -rf /opt/crawlzilla/tomcat/webapps/default /opt/crawlzilla/tomcat/webapps/$crawlname_from_jsp
 checkMethod "cp default to "
-sed -i '8s/search/'${crawlname_from_jsp}'/g' /opt/nutchez/tomcat/webapps/$crawlname_from_jsp/WEB-INF/classes/nutch-site.xml
+sed -i '8s/search/'${crawlname_from_jsp}'/g' /opt/crawlzilla/tomcat/webapps/$crawlname_from_jsp/WEB-INF/classes/nutch-site.xml
 checkMethod "sed"
 
 # 完成搜尋狀態
@@ -88,5 +88,3 @@ echo "finish" > "$tmp_dir/$crawlname_from_jsp"
     #/opt/nutchez/tomcat/bin/startup.sh
     #checkMethod "tomcat restart"
 #fi
-
-

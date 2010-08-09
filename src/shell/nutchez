@@ -6,7 +6,7 @@
 # Version:
 #    1.0
 
-[ $USER != "nutchuser" ] && echo "plaese enter nutchuser's password"  && exec su nutchuser -c "$0" "$@"
+[ $USER != "crawler" ] && echo "plaese enter crawler's password"  && exec su crawler -c "$0" "$@"
 
 # [Variables Declaration] #
 DIALOG="dialog"
@@ -14,10 +14,10 @@ main_choice=
 lang=
 
 # [PATH Declaration] #
-NutchEZ_Install_PATH="/opt/nutchez"
-Tomcat_HOME="/opt/nutchez/tomcat"
-NutchEZ_HOME="/home/nutchuser/nutchez"
-Work_Path=$NutchEZ_HOME/system
+Crawlzilla_Install_PATH="/opt/crawlzilla"
+Tomcat_HOME="/opt/crawlzilla/tomcat"
+Crawlzilla_HOME="/home/crawler/crawlzilla"
+Work_Path=$Crawlzilla_HOME/system
 
 #Work_Path="./"
 #Work_Path_J=0
@@ -43,53 +43,53 @@ echo $lang | grep 'zh' && source $Work_Path/lang/lang_zh_TW
 ## [Pre-Check for nutch_nodes file] ##
 function prepare_check(){ 
 # 若無 nutchez_nodes　則跳出
-if [ ! -e "${NutchEZ_HOME}/system/nutch_nodes" ]; then
+if [ ! -e "${Crawlzilla_HOME}/system/crawl_nodes" ]; then
     $DIALOG --clear --backtitle "$dia_back" --title "$dia_pre_check_title_1" \
-    --msgbox "$dia_pre_check_msg_1 $NutchEZ_HOME/system/nutch_nodes !!!" 10 40
+    --msgbox "$dia_pre_check_msg_1 $Crawlzilla_HOME/system/crawl_nodes !!!" 10 40
     exit
 fi
 
 # 判斷是否有存在檔案remove_list， 若有表示有node被移除
 # 整理nutch_nodes及hosts清單
 
-if [ -e "${NutchEZ_HOME}/system/remove_list" ]; then
-  for node in `cat ${NutchEZ_HOME}/system/remove_list`;
+if [ -e "${Crawlzilla_HOME}/system/remove_list" ]; then
+  for node in `cat ${Crawlzilla_HOME}/system/remove_list`;
   do
-    LineNO=`cat ${NutchEZ_HOME}/system/nutch_nodes | grep -n $node | sed 's/:.*//g'`
-    sed -i ''$LineNO'd' ${NutchEZ_HOME}/system/nutch_nodes
-    LineNO_hosts=`cat ${NutchEZ_HOME}/system/hosts | grep -n $node | sed 's/:.*//g'`
-    sed -i ''$LineNO_hosts'd' ${NutchEZ_HOME}/system/hosts
+    LineNO=`cat ${Crawlzilla_HOME}/system/crawl_nodes | grep -n $node | sed 's/:.*//g'`
+    sed -i ''$LineNO'd' ${Crawlzilla_HOME}/system/crawl_nodes
+    LineNO_hosts=`cat ${Crawlzilla_HOME}/system/hosts | grep -n $node | sed 's/:.*//g'`
+    sed -i ''$LineNO_hosts'd' ${Crawlzilla_HOME}/system/hosts
   done
-  rm ${NutchEZ_HOME}/system/remove_list
+  rm ${Crawlzilla_HOME}/system/remove_list
 fi
 
-# 判斷 nutch_nodes　和 nutch_nodes.back
+# 判斷 crawl_nodes　和 crawl_nodes.back
 # 第一次執行則要求 user　更新 /etc/hosts
 
-if [ ! -e "${NutchEZ_HOME}/system/nutch_nodes.bak" ]; then
+if [ ! -e "${Crawlzilla_HOME}/system/crawl_nodes.bak" ]; then
     $DIALOG --clear --backtitle "$dia_back" --title "$dia_pre_check_title_2" \
     --yesno "$dia_pre_check_yesno_1\n$dia_pre_check_yesno_2" 10 55
 
 #    echo -e "$pre_check_echo_1"
-    $Work_Path/duplicate_del "${NutchEZ_HOME}/system/nutch_nodes"
-    $Work_Path/duplicate_del $Work_Path/hosts && $Work_Path/add_hosts ${NutchEZ_HOME}/system/nutch_nodes $Work_Path/hosts
+    $Work_Path/duplicate_del "${Crawlzilla_HOME}/system/crawl_nodes"
+    $Work_Path/duplicate_del $Work_Path/hosts && $Work_Path/add_hosts ${NutchEZ_HOME}/system/crawl_nodes $Work_Path/hosts
 #    su root -c "$Work_Path/duplicate_del /etc/hosts && $Work_Path/add_hosts ${NutchEZ_HOME}/system/nutch_nodes /etc/hosts"
     #　若密碼輸入失敗則跳出
     if [ $? == "1" ]; then
         echo "$pre_check_echo_2"
         exit
     fi 
-    cp -f "${NutchEZ_HOME}/system/nutch_nodes" "${NutchEZ_HOME}/system/nutch_nodes.bak"
+    cp -f "${Crawlzilla_HOME}/system/crawl_nodes" "${Crawlzilla_HOME}/system/crawl_nodes.bak"
 
 # 若 nutch_nodes 被更新過，則要求更新 /etc/hosts
-elif [ ${NutchEZ_HOME}/system/nutch_nodes -nt ${NutchEZ_HOME}/system/nutch_nodes.bak ]; then
+elif [ ${Crawlzilla_HOME}/system/crawl_nodes -nt ${Crawlzilla_HOME}/system/crawl_nodes.bak ]; then
     $DIALOG --clear --backtitle "$dia_back" --title "$dia_pre_check_title_2" \
     --yesno "$dia_pre_check_yesno_3\n$dia_pre_check_yesno_2" 10 55
 
 #    echo -e "$pre_check_echo_1"
-    $Work_Path/duplicate_del "${NutchEZ_HOME}/system/nutch_nodes"
-    cp -f "${NutchEZ_HOME}/system/nutch_nodes" "${NutchEZ_HOME}/system/nutch_nodes.bak"
-    $Work_Path/duplicate_del $Work_Path/hosts && $Work_Path/add_hosts ${NutchEZ_HOME}/system/nutch_nodes $Work_Path/hosts
+    $Work_Path/duplicate_del "${NutchEZ_HOME}/system/crawl_nodes"
+    cp -f "${Crawlzilla_HOME}/system/crawl_nodes" "${Crawlzilla_HOME}/system/crawl_nodes.bak"
+    $Work_Path/duplicate_del $Work_Path/hosts && $Work_Path/add_hosts ${NutchEZ_HOME}/system/crawl_nodes $Work_Path/hosts
 #    su root -c "$Work_Path/duplicate_del /etc/hosts && $Work_Path/add_hosts ${NutchEZ_HOME}/system/nutch_nodes /etc/hosts"
     #　若密碼輸入失敗則跳出                   
     if [ $? == "1" ]; then                    
@@ -99,9 +99,9 @@ elif [ ${NutchEZ_HOME}/system/nutch_nodes -nt ${NutchEZ_HOME}/system/nutch_nodes
 fi
 
 # scp hosts to client hosts 
-for node in `cat ${NutchEZ_HOME}/system/nutch_nodes|awk '{print $1}'`;
+for node in `cat ${Crawlzilla_HOME}/system/crawl_nodes|awk '{print $1}'`;
 do
-  scp -o StrictHostKeyChecking=no /etc/hosts nutchuser@$node:${NutchEZ_HOME}/system/hosts
+  scp -o StrictHostKeyChecking=no /etc/hosts crawler@$node:${Crawlzilla_HOME}/system/hosts
 done
 }
 
@@ -124,7 +124,7 @@ $DIALOG --clear --backtitle "$dia_back" \
 
 ## [Cluster Status (datanode & tasktracker)] ##
 function cluster_status(){
-IP_list=$(cat $NutchEZ_HOME/system/nutch_nodes | grep -v '^$' | grep -v '#'  | awk '{print $1}')
+IP_list=$(cat $Crawlzilla_HOME/system/crawl_nodes | grep -v '^$' | grep -v '#'  | awk '{print $1}')
 clusterStatus="/tmp/clusterStatus"
 rm $clusterStatus 2> /dev/null
 #printf '%16s\t %11s\t %10s\t %25s\n' "[IP] [Hostanme] [Network] [Dtatnode & Tasktracker]" >>$clusterStatus
@@ -143,7 +143,7 @@ do
     fi
 
     [ -z "$Task_Data" ] || Task_Data_status="running"
-    host_name=$(cat $NutchEZ_HOME/system/nutch_nodes | grep $ip | awk '{print $2}')
+    host_name=$(cat $Crawlzilla_HOME/system/crawl_nodes | grep $ip | awk '{print $2}')
     echo -e "$ip  $host_name \t\t $ip_status \t $Task_Data_status" >>$clusterStatus
 #    printf '%16s\t %11s\t %10s\t %25s\n' "$ip $host_name $ip_status $Task_Data_status" >>$clusterStatus
 done
@@ -186,21 +186,21 @@ $DIALOG --clear --backtitle "$dia_back" --title "$dia_server_title_2" \
     "main" "$dia_backto_main" 2>$serverSetup
 
 if [ "$(cat $serverSetup)" == "start" ]; then
-    $NutchEZ_Install_PATH/nutch/bin/start-dfs.sh
-    $NutchEZ_Install_PATH/nutch/bin/start-mapred.sh
+    $Crawlzilla_Install_PATH/nutch/bin/start-dfs.sh
+    $Crawlzilla_Install_PATH/nutch/bin/start-mapred.sh
     # Back to main menu                                                                                    
     main_menu
     menu_choose
 elif [ "$(cat $serverSetup)" == "shutdown" ]; then
-    $NutchEZ_Install_PATH/nutch/bin/stop-dfs.sh
-    $NutchEZ_Install_PATH/nutch/bin/stop-mapred.sh
+    $Crawlzilla_Install_PATH/nutch/bin/stop-dfs.sh
+    $Crawlzilla_Install_PATH/nutch/bin/stop-mapred.sh
     # Back to main menu                                                                                    
     main_menu
     menu_choose
 elif [ "$(cat $serverSetup)" == "restart" ]; then
-    $NutchEZ_Install_PATH/nutch/bin/stop-dfs.sh
-    $NutchEZ_Install_PATH/nutch/bin/stop-mapred.sh
-    $NutchEZ_Install_PATH/nutch/bin/start-dfs.sh
+    $Crawlzilla_Install_PATH/nutch/bin/stop-dfs.sh
+    $Crawlzilla_Install_PATH/nutch/bin/stop-mapred.sh
+    $Crawlzilla_Install_PATH/nutch/bin/start-dfs.sh
     $NutchEZ_Install_PATH/nutch/bin/start-mapred.sh
     # Back to main menu                                                                                    
     main_menu
@@ -234,10 +234,10 @@ $DIALOG --clear --backtitle "$dia_back" \
 
 # 判斷是否選 all　和 part，若是 all　直接到服務選單，若是 part 則先到機器選單
 if [ "$(cat $allpart)" == "All" ]; then
-     cat $NutchEZ_HOME/system/nutch_nodes | grep -v '^$' | grep -v '#'  | awk '{print $1}' >$runNodes
+     cat $Crawlzilla_HOME/system/crawl_nodes | grep -v '^$' | grep -v '#'  | awk '{print $1}' >$runNodes
 elif [ "$(cat $allpart)" == "Part" ]; then
     $DIALOG --clear --backtitle "$dia_back" --title "$dia_cluster_setup_title_2" \
-    --checklist "$dia_cluster_setup_check_1" 15 55 7 $(cat $NutchEZ_HOME/system/nutch_nodes | \
+    --checklist "$dia_cluster_setup_check_1" 15 55 7 $(cat $Crawlzilla_HOME/system/crawl_nodes | \
     grep -v '^$' | grep -v '#'  | awk '{print $1 "\t" $2 "\t" "$LIST_status" }') 2>$runNodes
 #    read -p "$runNodes and $(cat $runNodes)"
 elif [ "$(cat $allpart)" == "Main" ]; then
@@ -264,8 +264,8 @@ if [ "$(cat $clusterSetup)" == "start" ]; then
     echo -e "\n$cluster_setup_echo_1"
     for node in $(cat $runNodes) 
     do
-        ssh -o StrictHostKeyChecking=no $node "$NutchEZ_Install_PATH/nutch/bin/hadoop-daemon.sh start datanode \
-        ; $NutchEZ_Install_PATH/nutch/bin/hadoop-daemon.sh start tasktracker" 2>/dev/null
+        ssh -o StrictHostKeyChecking=no $node "$Crawlzilla_Install_PATH/nutch/bin/hadoop-daemon.sh start datanode \
+        ; $Crawlzilla_Install_PATH/nutch/bin/hadoop-daemon.sh start tasktracker" 2>/dev/null
         [ $? == "0" ] || echo "$cluster_setup_echo_error $node !!!"
     done
     main_menu
@@ -274,8 +274,8 @@ elif [ "$(cat $clusterSetup)" == "shutdown" ]; then
     echo -e "\n$cluster_setup_echo_3"
     for node in $(cat $runNodes)
     do
-        ssh -o StrictHostKeyChecking=no $node "$NutchEZ_Install_PATH/nutch/bin/hadoop-daemon.sh stop datanode \
-        ; $NutchEZ_Install_PATH/nutch/bin/hadoop-daemon.sh stop tasktracker" 2>/dev/null
+        ssh -o StrictHostKeyChecking=no $node "$Crawlzilla_Install_PATH/nutch/bin/hadoop-daemon.sh stop datanode \
+        ; $Crawlzilla_Install_PATH/nutch/bin/hadoop-daemon.sh stop tasktracker" 2>/dev/null
         [ $? == "0" ] || echo "$cluster_setup_echo_error $node !!!"
     done
     main_menu
@@ -284,10 +284,10 @@ elif [ "$(cat $clusterSetup)" == "restart"  ]; then
     echo -e "\n$cluster_setup_echo_5"
     for node in $(cat $runNodes)
     do  
-        ssh -o StrictHostKeyChecking=no $node "$NutchEZ_Install_PATH/nutch/bin/hadoop-daemon.sh stop datanode \
-        ; $NutchEZ_Install_PATH/nutch/bin/hadoop-daemon.sh stop tasktracker \
-        ; $NutchEZ_Install_PATH/nutch/bin/hadoop-daemon.sh start datanode \
-        ; $NutchEZ_Install_PATH/nutch/bin/hadoop-daemon.sh start tasktracker" 2>/dev/null
+        ssh -o StrictHostKeyChecking=no $node "$Crawlzilla_Install_PATH/nutch/bin/hadoop-daemon.sh stop datanode \
+        ; $Crawlzilla_Install_PATH/nutch/bin/hadoop-daemon.sh stop tasktracker \
+        ; $Crawlzilla_Install_PATH/nutch/bin/hadoop-daemon.sh start datanode \
+        ; $Crawlzilla_Install_PATH/nutch/bin/hadoop-daemon.sh start tasktracker" 2>/dev/null
         [ $? == "0" ] || echo "$cluster_setup_echo_error $node !!!"
     done
     main_menu
@@ -426,7 +426,7 @@ fi
 }
 
 function client_install (){
-  cat /home/nutchuser/nutchez/source/README.txt
+  cat /home/crawler/crawlzilla/source/README.txt
   read -p "Press enter to countine..."
   main_menu
   menu_choose
@@ -454,7 +454,7 @@ esac
 }
 
 # [Main Code] #
-if [ $USER != "nutchuser" ]; then
+if [ $USER != "crawler" ]; then
     echo -e "\n$user_error"
     exit
 fi

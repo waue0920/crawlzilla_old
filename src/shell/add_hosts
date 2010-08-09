@@ -1,7 +1,7 @@
 #!/bin/bash
 # Program:
-#   Add nutch_nodes to /etc/hosts (for nutchez management interface).
-#   $1=/home/nutchuser/nutchez/system/nutch_nodes
+#   Add crawl_nodes to /etc/hosts (for crawlzilla management interface).
+#   $1=/home/crawler/crawlizlla/system/crawl_nodes
 #   $2=/etc/hosts
 # Author: 
 #   Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
@@ -12,8 +12,8 @@
 
 IPs=$(cat $1 | awk '{print $1}')
 HOSTNAMEs=$(cat $1 | awk '{print $2}')
-NutchEZ_HOME="/home/nutchuser/nutchez"
-# 刪除相同的 ip 在 /etc/hosts 和 nutch_nodes
+Crawlzilla_HOME="/home/crawler/crawlzilla"
+# 刪除相同的 ip 在 /etc/hosts 和 crawl_nodes
 for ip_addr in $(echo $IPs)
 do
     jude=0
@@ -25,7 +25,7 @@ do
     fi
 done
 
-# 刪除相同的 hostname 在 /etc/hosts 和 nutch_nodes
+# 刪除相同的 hostname 在 /etc/hosts 和 crawl_nodes
 for host_name in $(echo $HOSTNAMEs)
 do
     jude=0
@@ -40,15 +40,15 @@ done
 # Backup /etc/hosts
 #cp -f "$2" "$2.bak"
 
-# attache nutch_nodes to hosts
-sed -i '/# NutchEZ add/d' $2
-sed -i '/# NutchEZ End/d' $2
-#echo "# NutchEz add" >>$2
+# attache Crawl_nodes to hosts
+sed -i '/# Crawlzilla add/d' $2
+sed -i '/# Crawlzilla End/d' $2
+#echo "# Crawlzilla add" >>$2
 #cat $1 | grep -v '#' >>$2
-echo "# NutchEZ add" >${NutchEZ_HOME}/system/hosts.tmp
-cat $1 | grep -v '#' >>${NutchEZ_HOME}/system/hosts.tmp
-echo "# NutchEZ End" >>${NutchEZ_HOME}/system/hosts.tmp
-cat $2 >> ${NutchEZ_HOME}/system/hosts.tmp
-cp ${NutchEZ_HOME}/system/hosts.tmp /etc/hosts
-rm ${NutchEZ_HOME}/system/hosts.tmp
+echo "# Crawlzilla add" >${Crawlzilla_HOME}/system/hosts.tmp
+cat $1 | grep -v '#' >>${Crawlzilla_HOME}/system/hosts.tmp
+echo "# Crawlzilla End" >>${Crawlzilla_HOME}/system/hosts.tmp
+cat $2 >> ${Crawlzilla_HOME}/system/hosts.tmp
+cp ${Crawlzilla_HOME}/system/hosts.tmp /etc/hosts
+rm ${Crawlzilla_HOME}/system/hosts.tmp
 
