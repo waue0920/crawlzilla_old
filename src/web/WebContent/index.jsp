@@ -44,7 +44,7 @@
 	
 
     	<div class='featurebox_center'>
-    	<i18n:bundle baseName="org.nchc.nutchez.i18n.lang" locale="<%=local%>" id="bundle"/>
+    	<i18n:bundle baseName="org.nchc.crawlzilla.i18n.lang" locale="<%=local%>" id="bundle"/>
     	  <h3><i18n:message key="index_Intro"/></h3>
     	  <p>* <a href="crawl.jsp"><i18n:message key="index_Crawl_h"/></a> : <i18n:message key="index_Crawl"/></p>
     	  <p>* <a href="nutch_DB.jsp"><i18n:message key="index_DbManage_h"/></a> : <i18n:message key="index_DbManage"/></p>

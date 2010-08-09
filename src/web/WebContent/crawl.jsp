@@ -35,7 +35,7 @@
      	}
      	Locale local =new Locale(lang,"");
  %>
- <i18n:bundle baseName="org.nchc.nutchez.i18n.lang" locale="<%=local%>" id="bundle"/>    
+ <i18n:bundle baseName="org.nchc.crawlzilla.i18n.lang" locale="<%=local%>" id="bundle"/>    
     
     
 <div class='featurebox_center'>

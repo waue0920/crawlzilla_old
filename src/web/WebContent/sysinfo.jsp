@@ -52,22 +52,22 @@ var timer = window.setTimeout(_refresh,15*1000);
  	Locale local =new Locale(lang,"");
 
  %>
- <i18n:bundle baseName="org.nchc.nutchez.i18n.lang" locale="<%=local%>" id="bundle"/>
+ <i18n:bundle baseName="org.nchc.crawlzilla.i18n.lang" locale="<%=local%>" id="bundle"/>
  
     	<div class='featurebox_center'>
-		<jsp:useBean id="nutchDBNum" class="org.nchc.nutchez.NutchDBNumBean" scope="session" />
-		<jsp:useBean id="nutchDBStatus" class="org.nchc.nutchez.NutchDBStatusBean" scope="session" />
+		<jsp:useBean id="nutchDBNum" class="org.nchc.crawlzilla.NutchDBNumBean" scope="session" />
+		<jsp:useBean id="nutchDBStatus" class="org.nchc.crawlzilla.NutchDBStatusBean" scope="session" />
 		
 		<%
-		nutchDBNum.setFiles("/home/nutchuser/nutchez/archieve/");
-    	nutchDBNum.setNum("/home/nutchuser/nutchez/archieve/");    	
+		nutchDBNum.setFiles("/home/crawler/crawlzilla/archieve/");
+    	nutchDBNum.setNum("/home/crawler/crawlzilla/archieve/");    	
 		File files[] = nutchDBNum.getFiles();
 		int num=nutchDBNum.getNum();
 		
-    	nutchDBStatus.setFiles("/home/nutchuser/nutchez/.tmp/");
+    	nutchDBStatus.setFiles("/home/crawler/crawlzilla/.tmp/");
     	File statusName[] = nutchDBStatus.getFiles();
     	
-    	nutchDBNum.setNum("/home/nutchuser/nutchez/.tmp/"); 
+    	nutchDBNum.setNum("/home/crawler/crawlzilla/.tmp/"); 
     	int statusNum=nutchDBNum.getNum();
 		%>
 		

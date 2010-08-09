@@ -4,14 +4,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="description" content="NutchEz Management" />
-<meta name="keywords" content="nutch, nutchEz, cloud computing, Hadoop, search engine" />
+<meta name="description" content="Crawlzilla Management" />
+<meta name="keywords" content="nutch, crawlzilla, cloud computing, Hadoop, search engine" />
 <meta name="author" content="Waue(waue@nchc.org.tw), Shunfa(shunfa@nchc.org.tw) , Rock(rock@nchc.org.tw)" />
 <title>Change Password</title>
 </head>
 <body>
 
-<jsp:useBean id="changePasswdBean" class="org.nchc.nutchez.ChangePasswdBean" /> 
+<jsp:useBean id="changePasswdBean" class="org.nchc.crawlzilla.ChangePasswdBean" /> 
 <jsp:setProperty name="changePasswdBean" property="*" /> 
 <%
 String indexURL = "index.jsp"; 

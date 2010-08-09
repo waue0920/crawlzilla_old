@@ -28,7 +28,7 @@
     if(session.getAttribute("confirm") == "true") { %>
 <div class='featurebox_center'>
 
-Error: Can't find /home/nutchuser/nutchez/system/go.sh<br />
+Error: Can't find /home/crawler/crawlzilla/system/go.sh<br />
 	
 	    <% } 
     else {

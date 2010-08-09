@@ -57,10 +57,11 @@
             <classpath refid="project.classpath"/>   
         </javac>  
           
-        <copy todir="${build.dir}">  
+        <copy todir="${build.dir}/classes">  
             <fileset dir="${src.dir}">  
                 <include name="**/*.xml"/>  
                 <include name="**/*.jar"/>  
+                <include name="**/*.properties"/>  
             </fileset>  
         </copy>  
     </target>  
@@ -69,7 +70,7 @@
     <target name="pack" depends="compile">  
         <jar jarfile="${web-inf.dir}/lib/${ant.project.name}.jar">
             <fileset dir="${build.dir}/classes">  
-                <include name="**/*.class"/>  
+                <include name="**/*"/>  
             </fileset>  
         </jar>  
     </target>  

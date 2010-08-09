@@ -5,8 +5,8 @@
 <head>
 <!-- Meta Data -->
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="description" content="NutchEz Management" />
-<meta name="keywords" content="nutch, nutchEz, cloud computing, Hadoop, search engine" />
+<meta name="description" content="Crawlzilla Management" />
+<meta name="keywords" content="nutch, crawlzilla, cloud computing, Hadoop, search engine" />
 <meta name="author" content="Waue(waue@nchc.org.tw), Shunfa(shunfa@nchc.org.tw) , Rock(rock@nchc.org.tw)" />
 
 <link rel=stylesheet type="text/css" href="css/Crawl.css"> 
@@ -21,7 +21,7 @@
 
 <div id="header">
 
-<h1>NutchEZ&#32178;&#38913;&#31649;&#29702;&#20171;&#38754;</h1>
+<h1>Crawlzilla&#32178;&#38913;&#31649;&#29702;&#20171;&#38754;</h1>
 
 </div>
 
@@ -44,7 +44,7 @@
 </div>
 <div id="right_side">
   <h3>&#30456;&#38364;&#36039;&#28304;</h3>
-  <p>* NutchEZ&#23560;&#26696;&#32178;&#22336;</p>
+  <p>* Crawlzilla&#23560;&#26696;&#32178;&#22336;</p>
   <p>* &#32218;&#19978;&#25903;&#25588;</p>
 </div>
 

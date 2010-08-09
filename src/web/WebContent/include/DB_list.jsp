@@ -6,8 +6,8 @@
 <%@page import="java.text.DateFormat" %>
 <%@page import="java.text.SimpleDateFormat" %>
 
-<jsp:useBean id="nutchDBNum1" class="org.nchc.nutchez.NutchDBNumBean" scope="session" />
-<jsp:useBean id="dataInfo1" class="org.nchc.nutchez.DataInfoBean" scope="session" />
+<jsp:useBean id="nutchDBNum1" class="org.nchc.crawlzilla.NutchDBNumBean" scope="session" />
+<jsp:useBean id="dataInfo1" class="org.nchc.crawlzilla.DataInfoBean" scope="session" />
 
 <%
 	nutchDBNum1.setFiles("/home/nutchuser/nutchez/archieve/");
