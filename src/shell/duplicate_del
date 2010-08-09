@@ -44,5 +44,5 @@ do
     done                                                                                                                                                             
 done
 
-cp -f "$1" "${1}.bak"
+#cp -f "$1" "${1}.bak"
 #read -p "cp -f $1 ${1}.bak ; $?"

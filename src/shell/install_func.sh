@@ -16,19 +16,21 @@ net_MacAddr=`/sbin/ifconfig eth0 | grep 'HW' | sed 's/^.*HWaddr //g'`
 ######function section#######
 
 ##########  echo function  ##########
-function debug_info () {
-  if [ $? -eq 0 ]; then
-    echo -e "\033[1;35;40m info - $1 \033[0m"
-  fi
-}
+#function debug_info () {
+#  if [ $? -eq 0 ]; then
+#    echo -e "info - $1 " >> $LOG_SH_TARGET
+#  fi
+#}
+#
+#
+#function show_info () {
+#  if [ $? -eq 0 ]; then
+#    echo -e "\033[1;32;40m $1 \033[0m"
+#    echo "$1" >> $LOG_SH_TARGET
+#  fi
+#}
 
-
-function show_info () {
-  if [ $? -eq 0 ]; then
-    echo -e "\033[1;32;40m $1 \033[0m"
-  fi
-}
-##########end echo function ##########
+#########end echo function ##########
 
 function load_default_lang(){
 
@@ -42,6 +44,16 @@ echo $lang | grep 'zh' >> /dev/null && source $Work_Path/lang/lang_zh_TW
 }
 
 function check_root(){
+
+  bb=`sudo cat /etc/shadow |grep "root"`
+  bb=`echo $bb |awk 'BEGIN {FS=":"} {print $2}'`
+  if [ "$bb" == "*" ];then
+    show_info "!!! root's password have not been set !!!"
+    show_info "press \"Enter\" key to continue"
+    read ;
+  fi
+
+
   debug_info "check_root"
   if [ $USER != "root" ]; then
     show_info "$MI_check_root_1"
@@ -73,6 +85,34 @@ function install_packages(){
   fi
 }
 
+function mkdir_Home_Var(){
+    su nutchuser -c "mkdir /home/nutchuser/nutchez"
+    su nutchuser -c "mkdir /home/nutchuser/nutchez/urls"
+    su nutchuser -c "touch /home/nutchuser/nutchez/urls/urls.txt"
+    su nutchuser -c "mkdir /home/nutchuser/nutchez/archieve"
+    su nutchuser -c "mkdir /home/nutchuser/nutchez/source"
+    su nutchuser -c "mkdir /home/nutchuser/nutchez/system"
+    su nutchuser -c "mkdir /home/nutchuser/nutchez/.tmp"
+   if [ ! -d "/var/log/nutchez" ]; then
+     mkdir /var/log/nutchez
+   fi
+   if [ ! -d "/var/lib/nutchez" ]; then
+     mkdir /var/lib/nutchez
+   fi
+    mkdir /var/log/nutchez/tomcat-logs
+    mkdir /var/log/nutchez/hadoop-logs
+
+}
+
+function link_Chown(){
+ln -sf /var/log/nutchez/tomcat-logs /opt/nutchez/tomcat/logs
+ln -sf /var/log/nutchez/hadoop-logs /opt/nutchez/nutch/logs
+ln -sf /home/nutchuser/nutchez/system/nutchez /usr/local/bin/nutchez
+ln -sf /home/nutchuser/nutchez/system/master_remove /usr/local/bin/nutchez_remove
+chown -R nutchuser:nutchuser /opt/nutchez
+chown -R nutchuser:nutchuser /var/log/nutchez
+chown -R nutchuser:nutchuser /var/lib/nutchez
+}
 function unzip_nV2_pack(){
   local pac_name=nutchez-0.2pack-current.tar.gz
   if [ ! -d "$Install_Dir/package" ];then
@@ -82,13 +122,49 @@ function unzip_nV2_pack(){
     wget "http://nutchez.googlecode.com/files/$pac_name";
     if [ $? -eq 0 ];then
 	mv $pac_name $Install_Dir/package;
-	echo "movied";
+	debug_info "move $pac_name ==> $Install_Dir/package/";
     else
 	show_info "$pac_name not found, installation was not finished!";
 	exit 8;
     fi
   fi
-  tar -zxvf $Install_Dir/package/$pac_name -C /opt/
+  debug_info "unpack tomcat and nutch to /opt/nutchez"
+  tar -zxvf $Install_Dir/package/$pac_name -C /opt/ >> $LOG_SH_TARGET
+
+  # work_path = this bin dir , conf_path = bin/../conf
+  local Conf_Path=$Work_Path/../conf
+  # change nutch-conf to /opt/nutchez/nutch/conf
+  if [ -d "$Conf_Path" ];then
+     if [ -d "$Conf_Path/nutch_conf" ];then
+	debug_info " $Conf_Path/nutch_conf .. found !"
+	  if [ -d /opt/nutchez/nutch/conf ];then
+	    debug_info "del /opt/nutchez/nutch/conf "
+	    rm -rf /opt/nutchez/nutch/conf
+	  fi
+	  cp -rf $Conf_Path/nutch_conf /opt/nutchez/nutch/conf
+	  if [ $? -eq 0 ];then
+	    debug_info " Update the nutch:conf ok!"
+	  else
+	    debug_info "[error!] nutch:conf error ! please check"
+	  fi
+    fi
+
+	  # change tomcat-conf to /opt/nutchez/nutch/conf
+
+     if [ -d "$Conf_Path/tomcat_conf" ];then
+        debug_info " $Conf_Path/tomcat_conf .. found !"
+	  if [ -d /opt/nutchez/tomcat/conf ];then
+	    debug_info "del /opt/nutchez/tomcat/conf "
+	    rm -rf /opt/nutchez/tomcat/conf
+	  fi
+	  cp -rf $Conf_Path/tomcat_conf /opt/nutchez/tomcat/conf
+	  if [ $? -eq 0 ];then
+	    debug_info "Update the tomcat:conf ok!"
+	  else
+	    debug_info "[error!] tomcat:conf error ! please check"
+	  fi
+    fi
+  fi
 }
 
 function check_nez_installed(){
@@ -118,14 +194,16 @@ function check_sunJava(){
     show_info "$MI_check_sunJava_if_1"
     show_info "$MI_check_sunJava_if_2"
     show_info "$MI_check_sunJava_if_3"
-    read -p "$MI_check_sunJava_if_4" choice
+    show_info "$MI_check_sunJava_if_4" 
+    read choice
     case $choice  in
       "1")
         show_info "$MI_check_sunJava_if_5"
         exit
         ;;
       "2")
-        read -p "$MI_check_sunJava_if_6" javaPath
+        show_info "$MI_check_sunJava_if_6"
+	read javaPath
         ;;
         "*")
         exit
@@ -191,10 +269,11 @@ function check_dialog(){
 }
 
 check_info () {
+  check_nez_installed
   check_root
   check_systemInfo
   install_packages
-  check_nez_installed
+  # check_nez_installed
   check_sunJava
   check_ssh
   check_dialog
@@ -207,10 +286,12 @@ function set_install_information () {
 }
 
 function set_nutchuser_passwd () {
-  read -sp "$MI_set_nutchuser_passwd_echo_1" Nutchuser_Passwd
+  show_info "$MI_set_nutchuser_passwd_echo_1"
+  read -sp "password:" Nutchuser_Passwd
 # read -sp "Please enter nutchuser's password :  " Nutchuser_Passwd
   echo -e "\n"
-  read -sp "$MI_set_nutchuser_passwd_echo_2" Nutchuser_Passwd2
+  show_info "$MI_set_nutchuser_passwd_echo_2"
+  read -sp "password:" Nutchuser_Passwd2
 # read -sp "Please enter nutchuser's password again:  " Nutchuser_Passwd2
   echo -e "\n"
   if [ $Nutchuser_Passwd != $Nutchuser_Passwd2 ]; then
@@ -224,9 +305,11 @@ function creat_nutchuser_account(){
   while [ "$Nutchuser_Passwd" != "$Nutchuser_Passwd2" ]
   do
       echo -e "\n"
-      read -sp "$create_nutchuser_1" Nutchuser_Passwd
+      show_info "$create_nutchuser_1" 
+      read -s Nutchuser_Passwd
       echo 
-      read -sp "$create_nutchuser_2" Nutchuser_Passwd2
+      show_info "$create_nutchuser_2"
+      read -s Nutchuser_Passwd2
       echo 
         if [ "$Nutchuser_Passwd" == "$Nutchuser_Passwd2" ]; then
           show_info "$create_nutchuser_3"
@@ -256,6 +339,12 @@ function creat_nutchuser_account(){
       send \"$Nutchuser_Passwd\r\"
       expect eof"
   fi
+#  if [ -e /bin/bash ];then
+#    exec ssh-agent /bin/bash
+#  else 
+#    exec ssh-agent /usr/bin/bash
+#  fi
+#  su nutchuser -c 'ssh-add /home/nutchuser/.ssh/id_rsa'
 }
 
 function select_eth () {
@@ -278,7 +367,8 @@ function select_eth () {
         show_info "($i)  $net  $(ifconfig $net | grep "inet addr:" | sed 's/^.*inet addr://g' | cut -d " " -f1)"
         i=i+1
       done
-      read -p "$MI_select_eth_echo_2" net_choice
+      show_info "$MI_select_eth_echo_2"
+      read net_choice
 #     read -p "Please choice(1/2/3...): " net_choice
     if [ -z $net_choice ]; then
       net_choice=1
@@ -334,7 +424,7 @@ function set_haoop-site () {
   </property>
   <property>
     <name>hadoop.tmp.dir</name>
-    <value>/var/nutchez/nutch-nutchuser</value>
+    <value>/var/lib/nutchez/nutch-nutchuser</value>
   </property>
 </configuration>
 EOF
@@ -371,17 +461,40 @@ function set_nutch-site () {
 }
 
 function format_HDFS () {
-  debug_info "$MI_format_HDFS_echo_1"
+  show_info "$MI_format_HDFS_echo_1"
   su nutchuser -c "$Nutch_HOME/bin/hadoop namenode -format"
   debug_info "$MI_format_HDFS_echo_2"
 }
 
 function start_up_NutchEZ (){
-  debug_info "$MI_start_up_NutchEZ_echo_1"
-# debug_info "start up NutchEZ..."
-  su nutchuser -c "$Nutch_HOME/bin/start-all.sh"
+  show_info "$MI_start_up_NutchEZ_echo_1"
+  # start namenode
+  su nutchuser -c "$Nutch_HOME/bin/hadoop-daemon.sh --config $Nutch_HOME/conf start namenode"
+  if [ $? -eq 0 ];then
+    debug_info "namenode ok"
+    # if ok , start jobtracker
+    show_info "$MI_start_up_NutchEZ_echo_2"
+    su nutchuser -c "$Nutch_HOME/bin/hadoop-daemon.sh --config $Nutch_HOME/conf start jobtracker"
+    if [ $? -eq 0 ];then
+      debug_info "jobtracker ok"
+      su nutchuser -c "$Nutch_HOME/bin/hadoop-daemon.sh --config $Nutch_HOME/conf start datanode"
+      su nutchuser -c "$Nutch_HOME/bin/hadoop-daemon.sh --config $Nutch_HOME/conf start tasktracker"
+      debug_info "start datanode and tasktracker"
+    fi
+  else 
+    show_info "!!! Hadoop startup error !!!"
+    show_info "you can see /var/log/nutchez/shell-logs/ for more infomation!"
+  fi
 }
-
+function change_hosts_owner (){
+  if [ -f /etc/hosts ];then
+    cp -f /etc/hosts /home/nutchuser/nutchez/system/
+    ln -sf /home/nutchuser/nutchez/system/hosts /etc/hosts
+    chown nutchuser:nutchuser /home/nutchuser/nutchez/system/hosts
+  else
+    show_info "no /etc/hosts exists.. please check!!"
+  fi
+}
 
 function set_hosts () {
   debug_info "$MI_set_hosts_echo_1"
@@ -392,7 +505,9 @@ function set_hosts () {
   sed -i '1i '$MasterIP_Address' '$(hostname)'' /etc/hosts
 }
 
-function Install_Nutch () {
+function install_Nutch () {
+# copy nutchez.war to /opt/nutchez/tomcat/webapps
+  cp $Install_Dir/web/nutchez.war /opt/nutchez/tomcat/webapps/nutchez.war
   debug_info "$MI_install_Nutch_echo_1 $MasterIP_Address "
 # debug_info "MasterIP_Address=$MasterIP_Address"
   debug_info "$MI_install_Nutch_echo_2 $(hostname)"
@@ -441,9 +556,9 @@ function client_PassMasterIPAddr_for_Remove () {
 
 function client_PassMasterIPAddr_for_deploy () {
   cd $Work_Path
-  Line_NO=`cat client_deploy | grep -n "# Master IP here" | sed 's/:.*//g'`
-  sed -i ''$((Line_NO+1))'d' client_deploy
-  sed -i ''$Line_NO'a Master_IP_Address='$MasterIP_Address'' client_deploy
+  Line_NO=`cat client_deploy.sh | grep -n "# Master IP here" | sed 's/:.*//g'`
+  sed -i ''$((Line_NO+1))'d' client_deploy.sh
+  sed -i ''$Line_NO'a Master_IP_Address='$MasterIP_Address'' client_deploy.sh
 }
 
 function make_client_install () {
@@ -457,7 +572,7 @@ function make_client_install () {
   # 將Master_IP_Address給client
   # 打包安裝目錄(不含tomcat)
  
-  debug_info "$MI_make_client_install_echo_1"
+  show_info "$MI_make_client_install_echo_1"
 # debug_info "function make_client_install..."
 
   client_PassMasterIPAddr
@@ -465,18 +580,16 @@ function make_client_install () {
   client_PassMasterIPAddr_for_Remove
   client_PassMasterIPAddr_for_deploy
   cd /opt/nutchez/
-  su nutchuser -c "tar -cvzf NutchezForClientOf_$MasterIP_Address.tar.gz  nutch"
+  su nutchuser -c "tar -cvzf NutchezForClientOf_$MasterIP_Address.tar.gz  nutch" >> $LOG_SH_TARGET
   
   # 複製檔案至$User_HOME/source及system目錄下
   mv NutchezForClientOf_$MasterIP_Address.tar.gz /home/nutchuser/nutchez/source
-  cp $Work_Path/client_install $Work_Path/client_install_func.sh $Work_Path/client_remove $Work_Path/lang_link  $Work_Path/client_deploy  /home/nutchuser/nutchez/source
-  cp -r $Work_Path/lang /home/nutchuser/nutchez/source
+  cp $Work_Path/client_install $Work_Path/client_install_func.sh $Work_Path/client_remove $Work_Path/client_deploy.sh $Work_Path/log.sh /home/nutchuser/nutchez/source
+  cp -r $Work_Path/lang  /home/nutchuser/nutchez/source
   cp -r $Work_Path/lang /home/nutchuser/nutchez/system
-  cp $Work_Path/nutchez $Work_Path/lang_link $Work_Path/add_hosts $Work_Path/duplicate_del $Work_Path/tomcat_restart.sh  $Work_Path/master_remove $Work_Path/go.sh /home/nutchuser/nutchez/system
+  cp $Work_Path/nutchez $Work_Path/add_hosts $Work_Path/duplicate_del $Work_Path/tomcat_restart.sh  $Work_Path/master_remove $Work_Path/go.sh $Work_Path/log.sh $Work_Path/rm_DB.sh /home/nutchuser/nutchez/system 
   
   # 複製 nutchez/source 到使用者的安裝資料夾
-   
-
 
    if [ ! -d "$Install_Dir/Client_Install_DIR" ]; then
      mkdir $Install_Dir/Client_Install_DIR
@@ -489,18 +602,20 @@ function make_client_install () {
 }
 
 function start_up_tomcat () {
-  debug_info "$MI_start_up_tomcat_echo_1"
+  show_info "$MI_start_up_tomcat_echo_1"
 # debug_info "start up tomcat..."
 
-  i=10
+  i=5
   debug_info "$MI_start_up_tomcat_echo_2"
   until [ $i -lt 1 ]
     do
       sleep 1s
+      echo -ne ".";
       i=`expr $i - 1`
     done
+  echo ""
   su nutchuser -c "$Tomcat_HOME/bin/startup.sh"
-  debug_info "$MI_start_up_tomcat_echo_3"
+  show_info "$MI_start_up_tomcat_echo_3"
 # debug_info "tomcat has been started..."
 }
 
@@ -508,8 +623,26 @@ function start_up_tomcat () {
 # client簡易步驟
 function client_install_commands () {
   show_info "$MI_client_install_commands_echo_1"
+  show_info "$MI_client_install_commands_echo_20$MasterIP_Address$MI_client_install_commands_echo_25"
   show_info "$MI_client_install_commands_echo_2"
   show_info "$MI_client_install_commands_echo_3"
   show_info "$MI_client_install_commands_echo_4"
   show_info "$MI_client_install_commands_echo_5"
 }
+
+function generateReadme (){
+  cat > $Install_Dir/Client_Install_DIR/README.txt << EOF
+$MI_client_install_commands_echo_1
+$MI_client_install_commands_echo_20$MasterIP_Address$MI_client_install_commands_echo_25
+1. $MI_client_install_commands_echo_2
+2. $MI_client_install_commands_echo_3
+3. $MI_client_install_commands_echo_4
+EOF
+
+  cp $Install_Dir/Client_Install_DIR/README.txt /home/nutchuser/nutchez/source/
+
+}
+
+function change_ownship(){
+chown -R $1.$1 $2
+} 
