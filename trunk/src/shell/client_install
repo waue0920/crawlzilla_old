@@ -8,11 +8,16 @@
 
 # 正式版之後，記的將不必要 read 拿掉 (trace 用的 read)
 
+# 切換成root執行
+echo "$0" "$@"
+[ "`id -u`" != "0" ] && exec sudo su -c "$0" "$@"
+#read
+
 # 需要 master_install 設定的參數區
 # Master IP here
 Master_IP_Address=your.master.ip.here
 # Master Hostname here
-Master_Hostname=your.msater.hostname.here
+Master_Hostname=your_master_hostname_here
 # 此檔自己用的參數區
 Linux_Distribution="";
 Linux_Version="";
@@ -29,22 +34,14 @@ else
   exit 1;
 fi
 
-#Work_Path="./"
-#Work_Path_J=0
-# Work Path Setup
-#echo $0 | grep '/' || Work_Path_J=1
-#if [ "$Work_Path_J" == "0"  ]; then
-#    Work_Path=$(echo $0 | sed 's/client_install//')
-#fi
-
-source $Work_Path/client_install_func.sh;
+source "$Work_Path/client_install_func.sh";
+source "$Work_Path/log.sh" client_install;
 
 # 載入系統預設的語言
 load_default_lang
 # 檢查執行這個程式的是否為root權限
 
 check_root
-read -p "continue.."
 
 # Language Choice
 #choose_lang
@@ -64,54 +61,50 @@ fi
 
 # 檢查執行這個程式的是否為root權限
 #check_root
-#read -p "continue.."
 
 # 查出此主機的作業系統,以及版本
 check_systemInfo
-read -p "continue.."
 
 # 安裝需要的套件 (目前只支援 deb 套件的系統自動安裝，yum或其他套件系統的則必須手動安裝)
 # 需要套件名稱 ssh, expect, dialog 
 install_packages
-read -p "continue.."
 
 # 檢查之前是否有安裝NutchEz
 # 目前先檢查是否有/opt/nutchez 這個資料夾即可
 check_nez_installed
-read -p "continue.."
 
 # 檢查是否有安裝sun java ,並檢查是否為jdk 1.6 以上版本
 check_sunJava
-read -p "continue.."
 
 # 檢查是否有安裝openssh, openssh-server
 check_ssh
-read -p "continue.."
 
 # 檢查是否有安裝dialog
 check_dialog
-read -p "continue.."
 
 # 新增nutchuser 帳號時用 Nutchuser_Passwd 當密碼
 creat_nutchuser_account
-read -p "continue.."
 
 # scp nutchuser@master_ip:~ 把.ssh/目錄複製下來
 # 當使用者輸入nutchuser 密碼時，將此密碼紀錄到Nutchuser_Passwd
 # 此步驟若無法連到 master 則跳出
 scp_master_nutchuser_sshkey $Master_IP_Address
-read -p "continue.."
 
 # 用scp 複製 master 的設定與安裝資料
 # 目前僅需做到能無礙的複製遠端的/opt/nutchez/到local的/opt/
 scp_packages $Master_IP_Address
-read -p "continue.."
+
+# change /etc/hosts owner from root to nutchuser
+change_hosts_owner
 
 # 安裝及啟動
 install_nutch_package
-read -p "continue.."
+
+# 建立clientremove 連結
+ln -sf /home/nutchuser/nutchez/system/client_remove /usr/local/bin/nutchez_remove
 
 # 回覆 Hostname 和 IP 給 Master Server
 recall_hostname_ip $Master_IP_Address
 show_info "$CI_finish_echo_1"
-read -p "continue.."
+change_ownship nutchuser /home/nutchuser/nutchez
+read -p "press any key to continue..."

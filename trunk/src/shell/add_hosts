@@ -12,7 +12,7 @@
 
 IPs=$(cat $1 | awk '{print $1}')
 HOSTNAMEs=$(cat $1 | awk '{print $2}')
-
+NutchEZ_HOME="/home/nutchuser/nutchez"
 # 刪除相同的 ip 在 /etc/hosts 和 nutch_nodes
 for ip_addr in $(echo $IPs)
 do
@@ -38,10 +38,17 @@ do
 done
 
 # Backup /etc/hosts
-cp -f "$2" "$2.bak"
+#cp -f "$2" "$2.bak"
 
 # attache nutch_nodes to hosts
-sed -i '/# NutchEz add/d' $2
-echo "# NutchEz add" >>$2
-cat $1 | grep -v '#' >>$2
+sed -i '/# NutchEZ add/d' $2
+sed -i '/# NutchEZ End/d' $2
+#echo "# NutchEz add" >>$2
+#cat $1 | grep -v '#' >>$2
+echo "# NutchEZ add" >${NutchEZ_HOME}/system/hosts.tmp
+cat $1 | grep -v '#' >>${NutchEZ_HOME}/system/hosts.tmp
+echo "# NutchEZ End" >>${NutchEZ_HOME}/system/hosts.tmp
+cat $2 >> ${NutchEZ_HOME}/system/hosts.tmp
+cp ${NutchEZ_HOME}/system/hosts.tmp /etc/hosts
+rm ${NutchEZ_HOME}/system/hosts.tmp
 

@@ -5,8 +5,8 @@
 #   Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
 # Version:
 #    1.0
-# History:
-#   2010/06/07  Rock    First release (1.0)
+
+[ $USER != "nutchuser" ] && echo "plaese enter nutchuser's password"  && exec su nutchuser -c "$0" "$@"
 
 # [Variables Declaration] #
 DIALOG="dialog"
@@ -28,7 +28,7 @@ Work_Path=$NutchEZ_HOME/system
 #fi
 
 # [Env Declaration] #
-. $Work_Path/lang/lang_en_US_nutchez
+. $Work_Path/lang/lang_en_US
 
 # [Functions Declaration] #
 ## [Pre-check for language] ##
@@ -49,34 +49,60 @@ if [ ! -e "${NutchEZ_HOME}/system/nutch_nodes" ]; then
     exit
 fi
 
+# 判斷是否有存在檔案remove_list， 若有表示有node被移除
+# 整理nutch_nodes及hosts清單
+
+if [ -e "${NutchEZ_HOME}/system/remove_list" ]; then
+  for node in `cat ${NutchEZ_HOME}/system/remove_list`;
+  do
+    LineNO=`cat ${NutchEZ_HOME}/system/nutch_nodes | grep -n $node | sed 's/:.*//g'`
+    sed -i ''$LineNO'd' ${NutchEZ_HOME}/system/nutch_nodes
+    LineNO_hosts=`cat ${NutchEZ_HOME}/system/hosts | grep -n $node | sed 's/:.*//g'`
+    sed -i ''$LineNO_hosts'd' ${NutchEZ_HOME}/system/hosts
+  done
+  rm ${NutchEZ_HOME}/system/remove_list
+fi
+
 # 判斷 nutch_nodes　和 nutch_nodes.back
 # 第一次執行則要求 user　更新 /etc/hosts
+
 if [ ! -e "${NutchEZ_HOME}/system/nutch_nodes.bak" ]; then
     $DIALOG --clear --backtitle "$dia_back" --title "$dia_pre_check_title_2" \
     --yesno "$dia_pre_check_yesno_1\n$dia_pre_check_yesno_2" 10 55
 
-    echo -e "$pre_check_echo_1"
+#    echo -e "$pre_check_echo_1"
     $Work_Path/duplicate_del "${NutchEZ_HOME}/system/nutch_nodes"
-    su root -c "$Work_Path/duplicate_del /etc/hosts && $Work_Path/add_hosts ${NutchEZ_HOME}/system/nutch_nodes /etc/hosts"
+    $Work_Path/duplicate_del $Work_Path/hosts && $Work_Path/add_hosts ${NutchEZ_HOME}/system/nutch_nodes $Work_Path/hosts
+#    su root -c "$Work_Path/duplicate_del /etc/hosts && $Work_Path/add_hosts ${NutchEZ_HOME}/system/nutch_nodes /etc/hosts"
     #　若密碼輸入失敗則跳出
     if [ $? == "1" ]; then
         echo "$pre_check_echo_2"
         exit
     fi 
+    cp -f "${NutchEZ_HOME}/system/nutch_nodes" "${NutchEZ_HOME}/system/nutch_nodes.bak"
+
 # 若 nutch_nodes 被更新過，則要求更新 /etc/hosts
 elif [ ${NutchEZ_HOME}/system/nutch_nodes -nt ${NutchEZ_HOME}/system/nutch_nodes.bak ]; then
     $DIALOG --clear --backtitle "$dia_back" --title "$dia_pre_check_title_2" \
     --yesno "$dia_pre_check_yesno_3\n$dia_pre_check_yesno_2" 10 55
 
-    echo -e "$pre_check_echo_1"
+#    echo -e "$pre_check_echo_1"
     $Work_Path/duplicate_del "${NutchEZ_HOME}/system/nutch_nodes"
-    su root -c "$Work_Path/duplicate_del /etc/hosts && $Work_Path/add_hosts ${NutchEZ_HOME}/system/nutch_nodes /etc/hosts"
+    cp -f "${NutchEZ_HOME}/system/nutch_nodes" "${NutchEZ_HOME}/system/nutch_nodes.bak"
+    $Work_Path/duplicate_del $Work_Path/hosts && $Work_Path/add_hosts ${NutchEZ_HOME}/system/nutch_nodes $Work_Path/hosts
+#    su root -c "$Work_Path/duplicate_del /etc/hosts && $Work_Path/add_hosts ${NutchEZ_HOME}/system/nutch_nodes /etc/hosts"
     #　若密碼輸入失敗則跳出                   
     if [ $? == "1" ]; then                    
         echo "$pre_check_echo_2="
         exit                                  
     fi
 fi
+
+# scp hosts to client hosts 
+for node in `cat ${NutchEZ_HOME}/system/nutch_nodes|awk '{print $1}'`;
+do
+  scp -o StrictHostKeyChecking=no /etc/hosts nutchuser@$node:${NutchEZ_HOME}/system/hosts
+done
 }
 
 ## [Main Menu] ##
@@ -85,13 +111,14 @@ main_choice="/tmp/main_choice"
 
 $DIALOG --clear --backtitle "$dia_back" \
     --title "$dia_main_title_1" \
-        --menu "$dia_choose" 15 60 7 \
+        --menu "$dia_choose" 15 60 8 \
         "cluster_status" "$dia_main_menu_1_1" \
         "cluster_setup" "$dia_main_menu_1_2" \
         "server_setup" "$dia_main_menu_1_3" \
         "tomcat_switch" "$dia_main_menu_1_4" \
         "tomcat_port" "$dia_main_menu_1_5" \
         "lang_switch" "$dia_main_menu_1_6" \
+        "client_install" "$dia_main_menu_1_7" \
         "exit" "$dia_exit" 2>$main_choice
 }
 
@@ -388,15 +415,23 @@ $DIALOG --clear --backtitle "$dia_back" --title "$dia_lang_title_1" \
 if [ "$(cat $langSwitch)" == "Exit" ]; then
     exit
 elif [ "$(cat $langSwitch)" == "en_US" ]; then
-    source $Work_Path/lang/lang_en_US_nutchez
+    source $Work_Path/lang/lang_en_US
     main_menu
     menu_choose
 elif [ "$(cat $langSwitch)" == "zh_TW" ]; then
-    source $Work_Path/lang/lang_zh_TW_nutchez
+    source $Work_Path/lang/lang_zh_TW
     main_menu
     menu_choose
 fi
 }
+
+function client_install (){
+  cat /home/nutchuser/nutchez/source/README.txt
+  read -p "Press enter to countine..."
+  main_menu
+  menu_choose
+}
+
 
 ## [Menu_choose] ##
 function menu_choose(){
@@ -413,6 +448,8 @@ case $(cat $main_choice) in
         tomcat_port;;
     "lang_switch")
         lang_switch;;
+    "client_install")
+        client_install;;
 esac
 }
 

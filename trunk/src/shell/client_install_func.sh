@@ -6,18 +6,17 @@
 # History:
 #   2010/05/20  Rock    First release(0.1)
 
-# 正式版之後，記的將不必要的 echo 拿掉
-function debug_info () {
-#  if [ $? -eq 0 ]; then
-    echo -e "\033[1;35;40m info - $1 \033[0m"
-#  fi
-}
+#function debug_info () {
+##  if [ $? -eq 0 ]; then
+#    echo -e "\033[1;35;40m info - $1 \033[0m"
+##  fi
+#}
 
-function show_info () {
-#  if [ $? -eq 0 ]; then
-    echo -e "\033[1;32;40m $1 \033[0m"
-#  fi
-}
+#function show_info () {
+##  if [ $? -eq 0 ]; then
+#    echo -e "\033[1;32;40m $1 \033[0m"
+##  fi
+#}
 
 function load_default_lang(){
 
@@ -108,8 +107,8 @@ function check_nez_installed(){
 # 4種判斷可能性 (1)系統沒安裝 JAVA (2)系統有安裝JAVA，但非sun版本 
 # (3)系統有安裝但Sun Java 在非預設路徑下 (4)以正確安裝 Sun JAVA 預設路徑下
 function check_sunJava(){
-  debug_info "$check_sunJava_1"
-  debug_info "$check_sunJava_2"
+  show_info "$check_sunJava_1"
+  show_info "$check_sunJava_2"
 
   javaPath="/usr"
   yesno="no"
@@ -268,30 +267,34 @@ function creat_nutchuser_account(){
 }
 
 # 用scp 複製 master 的設定與安裝資料
-# 目前僅需做到能無礙的複製遠端的/opt/nutchez/到local的/opt/
 function scp_packages(){
   debug_info "$scp_packages_d1"
   mkdir /opt/nutchez
-  mkdir /var/nutchez
-  mkdir /var/nutchez/logs
+  mkdir /var/lib/nutchez
+  if [ ! -e "/var/log/nutchez/shell-logs" ]; then
+      mkdir -p "/var/log/nutchez/shell-logs";
+  fi
+  mkdir /var/log/nutchez/tomcat-logs
+  mkdir /var/log/nutchez/hadoop-logs
   mkdir /home/nutchuser/nutchez
   mkdir /home/nutchuser/nutchez/source
   mkdir /home/nutchuser/nutchez/system
-  chmod 777 /opt/nutchez
   debug_info "$scp_packages_d2"
   chown -R nutchuser:nutchuser /opt/nutchez
-  chown -R nutchuser:nutchuser /var/nutchez
+  chown -R nutchuser:nutchuser /var/log/nutchez
+  chown -R nutchuser:nutchuser /var/lib/nutchez
   chown -R nutchuser:nutchuser /home/nutchuser/nutchez
   chmod 755 /opt/nutchez
   debug_info "$scp_packages_d3"
-  if [ -e "NutchezForClientOf_$Master_IP_Address.tar.gz" ];then
+  if [ -e "$Work_Path/NutchezForClientOf_$Master_IP_Address.tar.gz" ];then
     mv NutchezForClientOf_$Master_IP_Address.tar.gz /home/nutchuser/nutchez/source
   fi
+ 
   if [ ! -e "/home/nutchuser/nutchez/source/NutchezForClientOf_$Master_IP_Address.tar.gz" ];then
     su nutchuser -c "scp -r -o StrictHostKeyChecking=no nutchuser@$1:/home/nutchuser/nutchez/source/NutchezForClientOf_$Master_IP_Address.tar.gz /home/nutchuser/nutchez/source"
   fi
-  cp -r lang /home/nutchuser/nutchez/system
-  cp client_remove lang_link /home/nutchuser/nutchez/system
+  cp -r $Work_Path/lang /home/nutchuser/nutchez/system
+  cp $Work_Path/log.sh $Work_Path/client_remove /home/nutchuser/nutchez/system
 }
 
 
@@ -303,6 +306,16 @@ function install_nutch_package(){
 
   #/opt/nutchez/nutch/bin/hadoop-daemon.sh start datanode
   #/opt/nutchez/nutch/bin/hadoop-daemon.sh start tasktracker
+}
+
+function change_hosts_owner (){
+  if [ -f /etc/hosts ];then
+    cp -f /etc/hosts /home/nutchuser/nutchez/system/
+    ln -sf /home/nutchuser/nutchez/system/hosts /etc/hosts
+    chown nutchuser:nutchuser /home/nutchuser/nutchez/system/hosts
+  else
+    show_info "no /etc/hosts exists.. please check!!"
+  fi
 }
 
 function recall_hostname_ip(){
@@ -351,4 +364,8 @@ function recall_hostname_ip(){
 #send \"echo $net_address $(hostname) >> /home/nutchuser/nutch_nodes\r\"
 #expect \"*\"
 #send \"exit\""
+}
+
+function change_ownship(){
+chown -R $1.$1 $2
 }
