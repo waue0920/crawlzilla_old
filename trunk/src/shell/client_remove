@@ -14,7 +14,7 @@
 Master_IP_Address=your.master.ip.here
 # Master Hostname here
 Master_Hostname=input_your_master_hostname
-nutch_PATH=/home/nutchuser/nutchez/system
+crawlzilla_PATH=/home/crawler/crawlzilla/system
 
 
 [ "`id -u`" != "0" ] && echo "plaese enter password of $USER:"  && exec sudo su -c "$0" "$@"
@@ -39,10 +39,10 @@ function load_default_lang(){
 lang=$(locale | grep 'LANG=' | cut -d "=" -f2)
 
 # Default: source english
-. $nutch_PATH/lang/lang_en_US
+. $crawlzilla_PATH/lang/lang_en_US
 # if locale is zh then source chinese
 
-echo $lang | grep 'zh' >> /dev/null && source $nutch_PATH/lang/lang_zh_TW
+echo $lang | grep 'zh' >> /dev/null && source $crawlzilla_PATH/lang/lang_zh_TW
 }
 
 
@@ -60,19 +60,19 @@ function check_root(){
 # shutdown service
 function shutdown_service () {
   show_info "$CR_shutdown_service_echo_1" # "關閉本機服務..."
-  su nutchuser -c "/opt/nutchez/nutch/bin/hadoop-daemon.sh stop datanode"
-  su nutchuser -c "/opt/nutchez/nutch/bin/hadoop-daemon.sh stop tasktracker"
+  su crawler -c "/opt/crawlzilla/nutch/bin/hadoop-daemon.sh stop datanode"
+  su crawler -c "/opt/crawlzilla/nutch/bin/hadoop-daemon.sh stop tasktracker"
   show_info "$CR_shutdown_service_echo_2" # "本機服務已關閉"
 }
 
 # 移除檔案及資料夾
 function remove_folders () {
   show_info "$CR_remove_folders_echo_1" # "正在刪除安裝時所建立的檔案及資料夾..."
-  rm /usr/local/bin/nutchez_remove
-  rm -rf /opt/nutchez
-  rm -rf /var/lib/nutchez
-  rm -rf /var/log/nutchez/
-  rm -rf /tmp/*nutchuser*.pid
+  rm /usr/local/bin/crawlzilla_remove
+  rm -rf /opt/crawlzilla
+  rm -rf /var/lib/crawlzilla
+  rm -rf /var/log/crawlzilla/
+  rm -rf /tmp/*crawler*.pid
   show_info "$CR_remove_folders_echo_2" # "安裝時所建立的檔案及資料夾已刪除"
 }
 
@@ -80,13 +80,13 @@ function remove_folders () {
 # 還原/etc/hosts
 function edit_hosts () {
   show_info "$CR_edit_hosts_echo_1" # "修改/etc/hosts..."
-  if [ -e /home/nutchuser/nutchez/system/hosts.bak ];then 
+  if [ -e /home/crawler/crawlzilla/system/hosts.bak ];then 
     rm /etc/hosts 
-    cp /home/nutchuser/nutchez/system/hosts.bak /etc/hosts
+    cp /home/crawler/crawlzilla/system/hosts.bak /etc/hosts
     show_info "$CR_edit_hosts_echo_2" # "完成修改/etc/hosts"
-  elif [ -e /home/nutchuser/nutchez/system/hosts ];then
+  elif [ -e /home/crawler/crawlzilla/system/hosts ];then
     rm /etc/hosts
-    cp /home/nutchuser/nutchez/system/hosts /etc/hosts
+    cp /home/crawler/crawlzilla/system/hosts /etc/hosts
     show_info "still using the /etc/hosts created by nutchez "
   elif [ -f /etc/hosts ];then
     show_info "/etc/hosts without recovered!!!"
@@ -97,13 +97,13 @@ function edit_hosts () {
 
 function edit_remove_list(){
 # 透過scp master上的檔案判斷是否有網路or master是否有開啟
-  scp -o StrictHostKeyChecking=no /etc/hosts nutchuser@$Master_IP_Address:/home/nutchuser/nutchez/system/go.sh /home/nutchuser/nutchez/system/ 
+  scp -o StrictHostKeyChecking=no /etc/hosts crawler@$Master_IP_Address:/home/crawler/crawlzilla/system/go.sh /home/crawler/crawlzilla/system/ 
   
-  if [ -e "/home/nutchuser/nutchez/system/go.sh" ] ;then
+  if [ -e "/home/crawler/crawlzilla/system/go.sh" ] ;then
     IP_Address=`/sbin/ifconfig eth0 | grep 'inet addr' |  sed 's/^.*addr://g' | sed 's/Bcast.*$//g' | sed 's/ .*// '`
-    su nutchuser -c "ssh -o StrictHostKeyChecking=no $Master_IP_Address echo $IP_Address \>\> ~/nutchez/system/remove_list"
+    su crawler -c "ssh -o StrictHostKeyChecking=no $Master_IP_Address echo $IP_Address \>\> ~/crawlzilla/system/remove_list"
     remove_flag=0
-  elif [ ! -e "/home/nutchuser/nutchez/system/go.sh" ] ;then
+  elif [ ! -e "/home/crawler/crawlzilla/system/go.sh" ] ;then
     remove_flag=1
   fi
 }
@@ -111,9 +111,9 @@ function edit_remove_list(){
 
 # 移除使用者
 function user_delete () {
-  show_info "$CR_user_delete_echo_1" # "正在刪除nutchuser使用者..."
-  userdel -rf nutchuser >/dev/null 2>&1
-  show_info "$CR_user_delete_echo_2" # "使用者nutchuser已刪除"
+  show_info "$CR_user_delete_echo_1" # "正在刪除crawler使用者..."
+  userdel -rf crawler >/dev/null 2>&1
+  show_info "$CR_user_delete_echo_2" # "使用者crawler已刪除"
 }
 
 # Main function
@@ -138,11 +138,11 @@ function main () {
   fi
   
   if [ $remove_flag -eq 1 ]; then
-    show_info "You need to edit /home/nutcher/nutchez/system/nutch_nodes and hosts at host $Master_IP_Address due to you lost connect."
+    show_info "You need to edit /home/crawler/crawlzilla/system/crawl_nodes and hosts at host $Master_IP_Address due to you lost connect."
   fi
 }
 
-if [ -e "/home/nutchuser/nutchez" ]; then
+if [ -e "/home/crawler/crawlzilla" ]; then
   main
 else
   show_info "Installation is not complete!"

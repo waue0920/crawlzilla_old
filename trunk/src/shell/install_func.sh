@@ -2,35 +2,18 @@
 
 # shell檔及壓縮檔在同一目錄中
 ####### 環境變數section###########
-User_HOME=/home/nutchuser/nutchez
-NutchEZ_HOME=/opt/nutchez
-Nutch_HOME=$NutchEZ_HOME/nutch
-Tomcat_HOME=$NutchEZ_HOME/tomcat
+User_HOME=/home/crawler/crawlzilla
+Crawlzilla_HOME=/opt/crawlzilla
+Nutch_HOME=$Crawlzilla_HOME/nutch
+Tomcat_HOME=$Crawlzilla_HOME/tomcat
 Index_DB=$User_HOME/search
-Admin_email=nutchuser@nutch
+Admin_email=crawler@nutch
 # Work_Path=(define on install)
 Install_Dir=`cd "$Work_Path/../"; pwd`
 MasterIP_Address=`/sbin/ifconfig eth0 | grep 'inet addr' |  sed 's/^.*addr://g' | sed 's/Bcast.*$//g' | sed 's/ .*// '` 
 net_MacAddr=`/sbin/ifconfig eth0 | grep 'HW' | sed 's/^.*HWaddr //g'`
 
 ######function section#######
-
-##########  echo function  ##########
-#function debug_info () {
-#  if [ $? -eq 0 ]; then
-#    echo -e "info - $1 " >> $LOG_SH_TARGET
-#  fi
-#}
-#
-#
-#function show_info () {
-#  if [ $? -eq 0 ]; then
-#    echo -e "\033[1;32;40m $1 \033[0m"
-#    echo "$1" >> $LOG_SH_TARGET
-#  fi
-#}
-
-#########end echo function ##########
 
 function load_default_lang(){
 
@@ -86,39 +69,40 @@ function install_packages(){
 }
 
 function mkdir_Home_Var(){
-    su nutchuser -c "mkdir /home/nutchuser/nutchez"
-    su nutchuser -c "mkdir /home/nutchuser/nutchez/urls"
-    su nutchuser -c "touch /home/nutchuser/nutchez/urls/urls.txt"
-    su nutchuser -c "mkdir /home/nutchuser/nutchez/archieve"
-    su nutchuser -c "mkdir /home/nutchuser/nutchez/source"
-    su nutchuser -c "mkdir /home/nutchuser/nutchez/system"
-    su nutchuser -c "mkdir /home/nutchuser/nutchez/.tmp"
-   if [ ! -d "/var/log/nutchez" ]; then
-     mkdir /var/log/nutchez
+    su crawler -c "mkdir /home/crawler/crawlzilla"
+    su crawler -c "mkdir /home/crawler/crawlzilla/urls"
+    su crawler -c "touch /home/crawler/crawlzilla/urls/urls.txt"
+    su crawler -c "mkdir /home/crawler/crawlzilla/archieve"
+    su crawler -c "mkdir /home/crawler/crawlzilla/source"
+    su crawler -c "mkdir /home/crawler/crawlzilla/system"
+    su crawler -c "mkdir /home/crawler/crawlzilla/.tmp"
+   if [ ! -d "/var/log/crawlzilla" ]; then
+     mkdir /var/log/crawlzilla
    fi
-   if [ ! -d "/var/lib/nutchez" ]; then
-     mkdir /var/lib/nutchez
+   if [ ! -d "/var/lib/crawlzilla" ]; then
+     mkdir /var/lib/crawlzilla
    fi
-    mkdir /var/log/nutchez/tomcat-logs
-    mkdir /var/log/nutchez/hadoop-logs
+    mkdir /var/log/crawlzilla/tomcat-logs
+    mkdir /var/log/crawlzilla/hadoop-logs
 
 }
 
 function link_Chown(){
-ln -sf /var/log/nutchez/tomcat-logs /opt/nutchez/tomcat/logs
-ln -sf /var/log/nutchez/hadoop-logs /opt/nutchez/nutch/logs
-ln -sf /home/nutchuser/nutchez/system/nutchez /usr/local/bin/nutchez
-ln -sf /home/nutchuser/nutchez/system/master_remove /usr/local/bin/nutchez_remove
-chown -R nutchuser:nutchuser /opt/nutchez
-chown -R nutchuser:nutchuser /var/log/nutchez
-chown -R nutchuser:nutchuser /var/lib/nutchez
+ln -sf /var/log/crawlzilla/tomcat-logs /opt/crawlzilla/tomcat/logs
+ln -sf /var/log/crawlzilla/hadoop-logs /opt/crawlzilla/nutch/logs
+ln -sf /home/crawler/crawlzilla/system/crawlzilla /usr/local/bin/crawlzilla
+ln -sf /home/crawler/crawlzilla/system/master_remove /usr/local/bin/crawlzilla_remove
+chown -R crawler:crawler /opt/crawlzilla
+chown -R crawler:crawler /var/log/crawlzilla
+chown -R crawler:crawler /var/lib/crawlzilla
 }
 function unzip_nV2_pack(){
-  local pac_name=nutchez-0.2pack-current.tar.gz
+  local pac_name=crawlzilla-0.2pack-current.tar.gz
   if [ ! -d "$Install_Dir/package" ];then
     mkdir $Install_Dir/package
   fi
   if [ ! -e "$Install_Dir/package/$pac_name" ];then
+    #@@@@@@@@@@@@@@@@@@@@@@@package檔案上傳後再修改@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     wget "http://nutchez.googlecode.com/files/$pac_name";
     if [ $? -eq 0 ];then
 	mv $pac_name $Install_Dir/package;
@@ -137,11 +121,11 @@ function unzip_nV2_pack(){
   if [ -d "$Conf_Path" ];then
      if [ -d "$Conf_Path/nutch_conf" ];then
 	debug_info " $Conf_Path/nutch_conf .. found !"
-	  if [ -d /opt/nutchez/nutch/conf ];then
-	    debug_info "del /opt/nutchez/nutch/conf "
-	    rm -rf /opt/nutchez/nutch/conf
+	  if [ -d /opt/crawlzilla/nutch/conf ];then
+	    debug_info "del /opt/crawlzilla/nutch/conf "
+	    rm -rf /opt/crawlzilla/nutch/conf
 	  fi
-	  cp -rf $Conf_Path/nutch_conf /opt/nutchez/nutch/conf
+	  cp -rf $Conf_Path/nutch_conf /opt/crawlzilla/nutch/conf
 	  if [ $? -eq 0 ];then
 	    debug_info " Update the nutch:conf ok!"
 	  else

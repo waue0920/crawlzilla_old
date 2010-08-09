@@ -26,7 +26,7 @@ function show_info () {
 }
 ##########end echo function ##########
 
-nutch_PATH=/home/nutchuser/nutchez/system
+crawlzilla_PATH=/home/crawler/crawlzilla/system
 
 
 function load_default_lang(){
@@ -34,10 +34,10 @@ function load_default_lang(){
 lang=$(locale | grep 'LANG=' | cut -d "=" -f2)
 
 # Default: source english
-. $nutch_PATH/lang/lang_en_US
+. $crawlzilla_PATH/lang/lang_en_US
 # if locale is zh then source chinese
 
-echo $lang | grep 'zh' >> /dev/null && source $nutch_PATH/lang/lang_zh_TW
+echo $lang | grep 'zh' >> /dev/null && source $crawlzilla_PATH/lang/lang_zh_TW
 
 }
 
@@ -57,22 +57,22 @@ function shutdown_service () {
   slaves_list=`cat $nutch_PATH'/nutch_nodes' | cut -d' ' -f1`
   
   show_info "$MR_shutdown_service_echo_2" # "關閉本機服務..."
-  su nutchuser -c "/opt/nutchez/nutch/bin/stop-all.sh"
+  su crawler -c "/opt/crawlzilla/nutch/bin/stop-all.sh"
   tom_pids=$(ps x | grep -v 'grep' | grep "tomcat" | awk '{print $1}')  
   if [ -n "$tom_pids" ]; then
-    su nutchuser -c "/opt/nutchez/tomcat/bin/shutdown.sh"
+    su crawler -c "/opt/crawlzilla/tomcat/bin/shutdown.sh"
   fi
   show_info "$MR_shutdown_service_echo_3" # "本機服務已關閉"
 }
 
 # 移除檔案及資料夾
 function remove_folders () {
-  rm /usr/local/bin/nutchez
-  rm /usr/local/bin/nutchez_remove
+  rm /usr/local/bin/crawlzilla
+  rm /usr/local/bin/crawlzilla_remove
   show_info "$MR_remove_folders_echo_1" # "正在刪除安裝時所建立的檔案及資料夾..."
-  rm -rf /opt/nutchez
-  rm -rf /var/log/nutchez
-  rm -rf /var/lib/nutchez
+  rm -rf /opt/crawlzilla
+  rm -rf /var/log/crawlzilla
+  rm -rf /var/lib/crawlzilla
   rm -rf /tmp/*.pid
   show_info "$MR_remove_folders_echo_2" # "安裝時所建立的檔案及資料夾已刪除"
 }
@@ -80,14 +80,14 @@ function remove_folders () {
 # 還原/etc/hosts
 function edit_hosts () {
   show_info "$CR_edit_hosts_echo_1" # "修改/etc/hosts..."
-  if [ -e /home/nutchuser/nutchez/system/hosts.bak ];then
+  if [ -e /home/crawler/crawlzilla/system/hosts.bak ];then
     rm /etc/hosts
-    cp /home/nutchuser/nutchez/system/hosts.bak /etc/hosts
+    cp /home/crawler/crawlzilla/system/hosts.bak /etc/hosts
     show_info "$CR_edit_hosts_echo_2" # "完成修改/etc/hosts"
-  elif [ -e /home/nutchuser/nutchez/system/hosts ];then
+  elif [ -e /home/crawler/crawlzilla/system/hosts ];then
     rm /etc/hosts
-    cp /home/nutchuser/nutchez/system/hosts /etc/hosts
-    show_info "still using the /etc/hosts created by nutchez "
+    cp /home/crawler/crawlzilla/system/hosts /etc/hosts
+    show_info "still using the /etc/hosts created by crawlzilla. "
   elif [ -f /etc/hosts ];then
     show_info "/etc/hosts without recovered!!!"
   else
@@ -98,7 +98,7 @@ function edit_hosts () {
 # 移除使用者
 function user_delete () {
   show_info "$MR_user_delete_echo_1" # "正在刪除nutchuser使用者..."
-  userdel -rf nutchuser >/dev/null 2>&1
+  userdel -rf crawler >/dev/null 2>&1
   show_info "$MR_user_delete_echo_2" # "使用者nutchuser已刪除"
 }
 
@@ -106,8 +106,8 @@ function user_delete () {
 function main () {
   load_default_lang
   check_root
-  show_info "$MR_main_echo_1" #"警告 - 此一程式為移除nutchEZ程式, 若您為誤執行此一程式, 請按Ctrl+c離開此程序！"
-  show_info "$MR_main_echo_2" #"本執行程序將會移除安裝nutchEZ時所新增的檔案及nutchuser使用者帳號"
+  show_info "$MR_main_echo_1" #"警告 - 此一程式為移除Crawlzilla程式, 若您為誤執行此一程式, 請按Ctrl+c離開此程序！"
+  show_info "$MR_main_echo_2" #"本執行程序將會移除安裝Crawlzilla時所新增的檔案及crawler使用者帳號"
 # 詢問是否繼續
   read -p "$MR_main_echo_3" confirm # "請問是否確定移除此一節點：1.確定 2.取消"
 # 確認移除
@@ -123,7 +123,7 @@ function main () {
   fi
 }
 
-if [ -e "/home/nutchuser/nutchez" ]; then
+if [ -e "/home/crawler/crawlzilla" ]; then
   main
 else
   show_info "Installation is not complete!"

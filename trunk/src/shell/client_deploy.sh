@@ -16,6 +16,6 @@ else
   echo "pleash instsll \"sshd\""
   exit
 fi
-mkdir nutchez_client_install
-scp -r -o StrictHostKeyChecking=no nutchuser@$Master_IP_Address:/home/nutchuser/nutchez/source/* nutchez_client_install/.
-exec nutchez_client_install/client_install
+mkdir crawlzilla_client_install
+scp -r -o StrictHostKeyChecking=no crawler@$Master_IP_Address:/home/crawler/crawlzilla/source/* crawlzilla_client_install/.
+exec crawlzilla_client_install/client_install
