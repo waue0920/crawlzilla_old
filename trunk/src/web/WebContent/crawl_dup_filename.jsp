@@ -30,7 +30,6 @@
 <li><a href="index.jsp">HOME</a></li>
 <li id="active"><a href="crawl.jsp" id="current">Crawl</a></li>
 <li id="active"><a href="nutch_DB.jsp" >&#36039;&#26009;&#24235;&#31649;&#29702;</a></li>
-<li><a href="Statistics.do">&#36039;&#26009;&#24235;&#32113;&#35336;</a></li>
 <li><a href="sysinfo.jsp">&#31995;&#32113;&#29376;&#24907;</a></li>
 <% if(session.getAttribute("confirm") == "true") { %>
 <li><a href="logout.jsp">&#30331;&#20986;&#31995;&#32113;</a></li>

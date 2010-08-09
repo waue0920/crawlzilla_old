@@ -1,57 +1,16 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 
-<!--
-Copyright: Darren Hester 2006, http://www.designsbydarren.com
-License: Released Under the "Creative Commons License", 
-http://creativecommons.org/licenses/by-nc/2.5/
--->
-
-<head>
-
-<!-- Meta Data -->
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="description" content="NutchEz Management" />
-<meta name="keywords" content="nutch, nutchEz, cloud computing, Hadoop, search engine" />
-<meta name="author" content="Waue(waue@nchc.org.tw), Shunfa(shunfa@nchc.org.tw) , Rock(rock@nchc.org.tw)" />
-
-<!-- Site Title -->
-<title>NutchEZ&#32178;&#38913;&#31649;&#29702;&#31995;&#32113;</title>
-
-<!-- Link to Style External Sheet -->
-<link href="css/style.css" type="text/css" rel="stylesheet" />
-<link rel=stylesheet type="text/css" href="css/Crawl.css" /> 
-
-<!-- javaScript -->
-
-<!-- JSP import -->
-<%@page import="java.io.File" %>
-<%@page import="java.util.Date" %>
-<%@page import="java.text.DateFormat" %>
-<%@page import="java.text.SimpleDateFormat" %>
-<%@ page contentType="text/html; charset=UTF-8"%>
-
-<script type="text/javascript" src="crawl.js"></script>
-</head>
-
-<body>
-
-<div id="page_wrapper">
-<div id="header_wrapper">
-<div id="header">
-
-<h1>NutchEZ&#32178;&#38913;&#31649;&#29702;&#20171;&#38754;</h1>
-
-
-</div>
-
+<%@ taglib uri="http://jakarta.apache.org/taglibs/i18n-1.0" prefix="i18n" %>
+<%@ include file="/include/header.jsp" %>
+<%@page import="java.util.*" %>
 <div id="navcontainer">
 <ul id="navlist">
 <li><a href="index.jsp">HOME</a></li>
 <li id="active"><a href="crawl.jsp">Crawl</a></li>
 <li id="active"><a href="nutch_DB.jsp" id="current">&#36039;&#26009;&#24235;&#31649;&#29702;</a></li>
-<li><a href="Statistics.do">&#36039;&#26009;&#24235;&#32113;&#35336;</a></li>
 <li><a href="sysinfo.jsp">&#31995;&#32113;&#29376;&#24907;</a></li>
+<li id="active"><a href="usersetup.jsp">&#x4F7F;&#x7528;&#x8005;&#x8A2D;&#x5B9A;</a></li>
 <% if(session.getAttribute("confirm") == "true") { %>
 <li><a href="logout.jsp">&#30331;&#20986;&#31995;&#32113;</a></li>
 <%} else { %>	
@@ -62,11 +21,7 @@ http://creativecommons.org/licenses/by-nc/2.5/
 </div>
 
 </div>
-<div id="right_side">
-  <h3>&#30456;&#38364;&#36039;&#28304;</h3>
-  <p>* NutchEZ&#23560;&#26696;&#32178;&#22336;</p>
-  <p>* &#32218;&#19978;&#25903;&#25588;</p>
-</div>
+<%@ include file="/include/right_side.jsp" %>
 
 <div id="content">
 
@@ -74,14 +29,22 @@ http://creativecommons.org/licenses/by-nc/2.5/
 <% 
     String loginFormURL = 
                "adminLogin.jsp";  
-    if(session.getAttribute("confirm") == "true") { %>
+    if(session.getAttribute("confirm") == "true") { 
+    
+ 	String lang = (String) session.getAttribute("lang"); 
+ 	if (lang == null) {
+ 		lang = pageContext.getResponse().getLocale().toString();
+ 		session.setAttribute("lang", lang);
+ 	}
+ 	Locale local =new Locale(lang,"");
+ %>
+ <i18n:bundle baseName="org.nchc.nutchez.i18n.lang" locale="<%=local%>" id="bundle"/>
 <div class='featurebox_center'>
 
 	
 	<!-- CODECODECODE -->
 
 <jsp:useBean id="nutchDBNum" class="org.nchc.nutchez.NutchDBNumBean" scope="session" />
-<jsp:useBean id="nutchDBSearchDefaultLinkBean" class="org.nchc.nutchez.NutchDBSearchDefaultLinkBean" scope="session" />
 <jsp:useBean id="dataInfo" class="org.nchc.nutchez.DataInfoBean" scope="session" />
 <%
 	nutchDBNum.setFiles("/home/nutchuser/nutchez/archieve/");
@@ -90,17 +53,14 @@ http://creativecommons.org/licenses/by-nc/2.5/
 	File files[] = nutchDBNum.getFiles();
 	int num=nutchDBNum.getNum();
 
-	nutchDBSearchDefaultLinkBean.setSearchLinkFile("/home/nutchuser/nutchez/search");
 %>
 
 <table>
   <tr>
-  	<th>資料庫名稱</th>
-  	<th>建立時間</th>
-  	<th>搜尋引擎</th>
-  	<th>切換搜尋引擎<br>資料庫</th>
-  	<th>刪除資料庫</th>
-  	<th>預覽<br>統計資料</th>
+  	<th><i18n:message key="nutchDB_Dbname"/></th>
+  	<th><i18n:message key="nutchDB_CreateTime"/></th>
+  	<th><i18n:message key="nutchDB_DelDb"/></th>
+  	<th><i18n:message key="nutchDB_Preview"/><br><i18n:message key="nutchDB_Statistics"/></th>
   </tr>
 <%
 String InPreview = request.getParameter("inpreview");
@@ -109,7 +69,8 @@ for (int i=0 ; i<num ;i++){
 		
 	out.print("<tr>");
 	out.print("<td>");
-	out.print(files[i].getName());
+	out.print("<a href=\""+files[i].getName()+"\">");
+	out.print(files[i].getName()+"</a>");
 	out.print("<input type=\"hidden\" name=\"fileName\" value=\""+files[i].getName()+" \" >");
 	out.print("</td>");
 	
@@ -117,17 +78,6 @@ for (int i=0 ; i<num ;i++){
 	Date lastModified = new Date(files[i].lastModified());
 	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 	out.print(dateFormat.format(lastModified));
-	out.print("</td>");
-	
-	out.print("<td>");
-	if (files[i].getName().equalsIgnoreCase(nutchDBSearchDefaultLinkBean.getSearchLinkFile())){
-		out.print("使用中");
-		out.print("<input type=\"hidden\" name=\"deafultLn\" value=\"yes\" >");
-	}
-	out.print("</td>");
-	
-	out.print("<td>");
-	out.print("<input type=\"submit\" name=\"Setup\" value=\"Setup\" />");
 	out.print("</td>");
 	
 	out.print("<td>");
@@ -141,55 +91,53 @@ for (int i=0 ; i<num ;i++){
 
 %>
 </table>
-<div class='featurebox_center'> 資料總覽 <b><br><br>
+<div class='featurebox_center'><i18n:message key="nutchDB_Overview"/> <b><br><br>
 <table width="100%" border="0">
 	<tr>
-		<td width="20%">起始URL</td>
+		<td width="20%"><i18n:message key="nutchDB_InitUrl"/></td>
 		<td width="80%">${dataInfo.initURL}</td>
 	</tr>
 	<tr>
-		<td>本機索引路徑</td>
+		<td><i18n:message key="nutchDB_LocalIndexPath"/></td>
 		<td>${dataInfo.indexPath}</td>
 	</tr>
 </table>
 <table width="100%" border="0">
 	<tr>
-		<td width="20%">總共文字數</td>
+		<td width="20%"><i18n:message key="nutchDB_TotalWordNum"/></td>
 		<td width="30%">${dataInfo.numTerm}</td>
-		<td width="20%">文件檔數量</td>
+		<td width="20%"><i18n:message key="nutchDB_TotalFile"/></td>
 		<td width="30%">${dataInfo.numDoc}</td>
 	</tr>
 	<tr>
-		<td>資料庫更新日期</td>
+		<td><i18n:message key="nutchDB_DbUpdateTime"/></td>
 		<td>${dataInfo.lastModified}</td>
-		<td>使用者名稱</td>
+		<td><i18n:message key="nutchDB_UserName"/></td>
 		<td>${dataInfo.userName}</td>
 	</tr>
 </table>
 
-被搜尋分析到的網址:<br>
+<i18n:message key="nutchDB_ParsedUrl"/>:<br>
 <table width="100%" border="2">
 <jsp:getProperty name="dataInfo" property="siteTopTerms" />
 </table>
 <br><br>
 
-分析的文件型態：<br>
+<i18n:message key="nutchDB_ParsedFileType"/>：<br>
 <table width="100%" border="2">
 <jsp:getProperty name="dataInfo" property="typeTopTerms" /></table>
 <br><br>
 
-出現次數前五十名的字符：<br>
+<i18n:message key="nutchDB_Top50Word"/>：<br>
 <table width="100%" border="2">
 <jsp:getProperty name="dataInfo" property="contentTopTerms" /></table>
 <br><br>
 
 </div>
 
-
-
     <% } 
     else {
-		response.setHeader("Refresh", "3; URL=" + loginFormURL); %>
+		response.setHeader("Refresh", "0; URL=" + loginFormURL); %>
         <div class='featurebox_center'>&#31995;&#32113;&#31649;&#29702;&#21729;&#23578;&#26410;&#30331;&#20837;&#65292;&#31995;&#32113;&#23559;&#26044;3&#31186;&#24460;&#36339;&#36681;&#33267;&#30331;&#20837;&#38913;&#38754;(<a href="adminLogin.jsp">&#33509;&#28961;&#36339;&#36681;&#35531;&#25353;&#27492;</a>)</div>        
     	<% } %>
 	
@@ -201,15 +149,4 @@ for (int i=0 ; i<num ;i++){
 <p>&nbsp;</p>
 </div>
 
-<div id="footer">
-copyright &copy; 2010 Free Software Lab@NCHC 
-<br />
-Template provided by: 
-<a href="http://www.designsbydarren.com" target="_blank">DesignsByDarren.com</a>
-</div>
-
-</div>
-
-</body>
-
-</html>
+<%@ include file="/include/foot.jsp" %>
