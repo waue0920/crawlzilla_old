@@ -20,17 +20,17 @@ function checkMethod(){
 
 
 SvnProject=/opt/svn_project
-GoogleCodeNutcheEz=$SvnProject/nutchez
-TmpDir=Nutchez_Install
-ShellTar=Nutchez-0.2-$DATE_VER-Shell.tar.gz
-FullTar=Nutchez-0.2-$DATE_VER-Full.tar.gz
+GoogleCodeCrawlzilla=$SvnProject/crawlzilla
+TmpDir=Crawlzilla_Install
+ShellTar=Crawlzilla-0.2-$DATE_VER-Shell.tar.gz
+FullTar=Crawlzilla-0.2-$DATE_VER-Full.tar.gz
 
 # 1 同步資料與編譯web資料
 
 cd $GoogleCodeNutcheEz ; svn update;
 checkMethod 1.1
-ant -f /opt/svn_project/nutchez/src/web/build.xml clean
-ant -f /opt/svn_project/nutchez/src/web/build.xml
+ant -f /opt/svn_project/crawlzilla/src/web/build.xml clean
+ant -f /opt/svn_project/crawlzilla/src/web/build.xml
 checkMethod 1.2
 
 # 2 開始目錄以及生成暫存目錄
@@ -43,26 +43,26 @@ if [ -d $TmpDir ];then
 fi
 mkdir $TmpDir
 
-# 2.5 打包 nutchez.war
+# 2.5 打包 crawlzilla.war
 mkdir $TmpDir/web/
 checkMethod 2.2
-cp $SvnProject/dist/nutchez.war $TmpDir/web/
-mv $SvnProject/dist/nutchez.war $SvnProject/dist/nutchez-$DATE_VER.war
+cp $SvnProject/dist/crawlzilla.war $TmpDir/web/
+mv $SvnProject/dist/crawlzilla.war $SvnProject/dist/crawlzilla-$DATE_VER.war
 checkMethod 2.3
 
 
 # 3 複製資料夾
 
-cp -rf $GoogleCodeNutcheEz/src/shell $TmpDir/bin
+cp -rf $GoogleCodeCrawlzilla/src/shell $TmpDir/bin
 checkMethod 3.1
-cp -rf $GoogleCodeNutcheEz/docs $TmpDir/
+cp -rf $GoogleCodeCrawlzilla/docs $TmpDir/
 checkMethod 3.2
-cp -rf $GoogleCodeNutcheEz/conf $TmpDir/
+cp -rf $GoogleCodeCrawlzilla/conf $TmpDir/
 checkMethod 3.3
 
 # 4 複製與鍊結檔案
 
-cp $GoogleCodeNutcheEz/LICENSE.txt $TmpDir/
+cp $GoogleCrawlzilla/LICENSE.txt $TmpDir/
 checkMethod 4.1
 cd $TmpDir
 ln -sf docs/README.en.txt README.txt
