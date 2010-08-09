@@ -18,7 +18,7 @@ String indexURL = "index.jsp";
 String loginFormURL = "adminLogin.jsp"; 
 String go = "<br><a href=adminLogin.jsp>若系統無跳轉請按此一連結</a>";
 if (changePasswdBean.editPasswd()){
-	response.setHeader("Refresh", "3; URL=" + loginFormURL);
+	response.setHeader("Refresh", "0.5; URL=" + loginFormURL);
 	out.println("密碼修改完成，請重新登入（3秒後回到登入頁面)");
 	out.println(go);
 }
