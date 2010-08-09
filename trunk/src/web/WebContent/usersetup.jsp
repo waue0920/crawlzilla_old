@@ -64,7 +64,7 @@
 		out.print("this session's lang" + lang +"<br>");
 %>
 
- <i18n:bundle baseName="org.nchc.nutchez.i18n.lang" locale="<%=locale%>" id="bundle" />
+ <i18n:bundle baseName="org.nchc.crawlzilla.i18n.lang" locale="<%=locale%>" id="bundle" />
 <form action="usersetup.jsp"><i18n:message
 	key="usersetup_EngineName" /><br>
 <textarea rows="1" cols="10" name=enginename></textarea><br>

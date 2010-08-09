@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/include/header.jsp" %>
 
-<jsp:useBean id="checkFristLogin" class="org.nchc.nutchez.CheckFristLogin" /> 
+<jsp:useBean id="checkFristLogin" class="org.nchc.crawlzilla.CheckFristLogin" /> 
 <jsp:setProperty name="checkFristLogin" property="*" /> 
 
 <div id="navcontainer">

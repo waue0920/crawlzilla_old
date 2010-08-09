@@ -5,15 +5,15 @@
 <head>
 <!-- Meta Data -->
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="description" content="NutchEz Management" />
-<meta name="keywords" content="nutch, nutchEz, cloud computing, Hadoop, search engine" />
+<meta name="description" content="Crawlzilla Management" />
+<meta name="keywords" content="nutch, crawlzilla, cloud computing, Hadoop, search engine" />
 <meta name="author" content="Waue(waue@nchc.org.tw), Shunfa(shunfa@nchc.org.tw) , Rock(rock@nchc.org.tw)" />
 
 <title>使用者登入</title>
 </head>
 <body>
 
-<jsp:useBean id="loginBean" class="org.nchc.nutchez.LoginBean" /> 
+<jsp:useBean id="loginBean" class="org.nchc.crawlzilla.LoginBean" /> 
 <jsp:setProperty name="loginBean" property="*" /> 
 
 

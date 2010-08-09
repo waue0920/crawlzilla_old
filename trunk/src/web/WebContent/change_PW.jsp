@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/include/header.jsp" %>
 
-<jsp:useBean id="checkFristLogin" class="org.nchc.nutchez.CheckFristLogin" /> 
+<jsp:useBean id="checkFristLogin" class="org.nchc.crawlzilla.CheckFristLogin" /> 
 <jsp:setProperty name="checkFristLogin" property="*" /> 
 <div id="navcontainer">
 <ul id="navlist">
@@ -23,9 +23,9 @@
 <%
 String oldPW="";
 if (checkFristLogin.fristLogin()){
-	oldPW="nutchuser";
+	oldPW="crawler";
 	out.println("首次登入，請先修改密碼！");
-	out.println("預設密碼為 \"nutchuser\"");
+	out.println("預設密碼為 \"crawler\"");
 }
 %>
   <form name="login" method="post" action="changePW.jsp">

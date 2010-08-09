@@ -38,17 +38,17 @@
  	}
  	Locale local =new Locale(lang,"");
  %>
- <i18n:bundle baseName="org.nchc.nutchez.i18n.lang" locale="<%=local%>" id="bundle"/>
+ <i18n:bundle baseName="org.nchc.crawlzilla.i18n.lang" locale="<%=local%>" id="bundle"/>
 <div class='featurebox_center'>
 
 	
 	<!-- CODECODECODE -->
 
-<jsp:useBean id="nutchDBNum" class="org.nchc.nutchez.NutchDBNumBean" scope="session" />
-<jsp:useBean id="dataInfo" class="org.nchc.nutchez.DataInfoBean" scope="session" />
+<jsp:useBean id="nutchDBNum" class="org.nchc.crawlzilla.NutchDBNumBean" scope="session" />
+<jsp:useBean id="dataInfo" class="org.nchc.crawlzilla.DataInfoBean" scope="session" />
 <%
-	nutchDBNum.setFiles("/home/nutchuser/nutchez/archieve/");
-    nutchDBNum.setNum("/home/nutchuser/nutchez/archieve/");
+	nutchDBNum.setFiles("/home/crawler/crawlzilla/archieve/");
+    nutchDBNum.setNum("/home/crawler/crawlzilla/archieve/");
 
 	File files[] = nutchDBNum.getFiles();
 	int num=nutchDBNum.getNum();
