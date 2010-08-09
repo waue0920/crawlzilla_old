@@ -32,9 +32,8 @@ public class NutchDBDelete extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		
 		String name = request.getParameter("fileName");
-		
+		String cmd;
 //		PrintWriter out = response.getWriter();
-//		out.println("name is" + name);
 		
 		Process process = Runtime.getRuntime().exec("rm -fr /home/nutchuser/nutchez/archieve/"+name);
 		try {
@@ -44,6 +43,18 @@ public class NutchDBDelete extends HttpServlet {
 			e.printStackTrace();
 		}
 		process.destroy();
+		
+
+		Process process2 = Runtime.getRuntime().exec("/home/nutchuser/nutchez/system/rm_DB.sh "+name);
+
+		try {
+			process2.waitFor();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		process2.destroy();
+
 		response.sendRedirect("nutch_DB.jsp");
 
 	}
