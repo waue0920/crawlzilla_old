@@ -29,7 +29,7 @@ function checkMethod(){
 checkMethod "import lib path"
 
 # 策略改變 不用檢查
-#if [ -e /home/nutchuser/nutchez/search ];then
+#if [ -e /home/crawler/crawlzilla/search ];then
     # 不是第一次搜尋，刪除hdfs上的資料夾
 #    echo "delete search (local,hdfs) and urls (hdfs) "
 #    echo "not first time"
@@ -73,18 +73,18 @@ checkMethod "sed"
 echo "finish" > "$tmp_dir/$crawlname_from_jsp"
 
 # 策略改變，不分別下載
-# /opt/nutchez/nutch/bin/hadoop dfs -get search $archieve_dir/$crawlname_from_jsp
+# /opt/crawlzilla/nutch/bin/hadoop dfs -get search $archieve_dir/$crawlname_from_jsp
 # checkMethod "download search"
-# /opt/nutchez/nutch/bin/hadoop dfs -get urls $archieve_dir/$crawlname_from_jsp/
+# /opt/crawlzilla/nutch/bin/hadoop dfs -get urls $archieve_dir/$crawlname_from_jsp/
 # checkMethod "download urls"
 
 # 策略改變 已經不用檢查是否第一次
 # 第一次要建立search link並且重新啟動tomcat
 #if [ $FirstTime -eq 1 ];then
     # first time link and restart
-    #ln -sf $archieve_dir/$crawlname_from_jsp /home/nutchuser/nutchez/search
+    #ln -sf $archieve_dir/$crawlname_from_jsp /home/crawler/crawlzilla/search
     # tomcat 重新啟動的指令
-    #/opt/nutchez/tomcat/bin/shutdown.sh
-    #/opt/nutchez/tomcat/bin/startup.sh
+    #/opt/crawlzilla/tomcat/bin/shutdown.sh
+    #/opt/crawlzilla/tomcat/bin/startup.sh
     #checkMethod "tomcat restart"
 #fi

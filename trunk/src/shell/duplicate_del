@@ -1,6 +1,6 @@
 #!/bin/bash
 # Program:
-#   Delete duplicating ip $ hostname in file (for nutchez management interface).
+#   Delete duplicating ip $ hostname in file (for crawlzilla management interface).
 # Author: 
 #   Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
 # Version:

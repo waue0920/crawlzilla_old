@@ -103,7 +103,7 @@ function unzip_nV2_pack(){
   fi
   if [ ! -e "$Install_Dir/package/$pac_name" ];then
     #@@@@@@@@@@@@@@@@@@@@@@@package檔案上傳後再修改@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    wget "http://nutchez.googlecode.com/files/$pac_name";
+    wget "http://crawlzilla.googlecode.com/files/$pac_name";
     if [ $? -eq 0 ];then
 	mv $pac_name $Install_Dir/package;
 	debug_info "move $pac_name ==> $Install_Dir/package/";
@@ -117,7 +117,7 @@ function unzip_nV2_pack(){
 
   # work_path = this bin dir , conf_path = bin/../conf
   local Conf_Path=$Work_Path/../conf
-  # change nutch-conf to /opt/nutchez/nutch/conf
+  # change nutch-conf to /opt/crawlzilla/nutch/conf
   if [ -d "$Conf_Path" ];then
      if [ -d "$Conf_Path/nutch_conf" ];then
 	debug_info " $Conf_Path/nutch_conf .. found !"
@@ -133,15 +133,15 @@ function unzip_nV2_pack(){
 	  fi
     fi
 
-	  # change tomcat-conf to /opt/nutchez/nutch/conf
+	  # change tomcat-conf to /opt/crawlzilla/nutch/conf
 
      if [ -d "$Conf_Path/tomcat_conf" ];then
         debug_info " $Conf_Path/tomcat_conf .. found !"
-	  if [ -d /opt/nutchez/tomcat/conf ];then
-	    debug_info "del /opt/nutchez/tomcat/conf "
-	    rm -rf /opt/nutchez/tomcat/conf
+	  if [ -d /opt/crawlzilla/tomcat/conf ];then
+	    debug_info "del /opt/crawlzilla/tomcat/conf "
+	    rm -rf /opt/crawlzilla/tomcat/conf
 	  fi
-	  cp -rf $Conf_Path/tomcat_conf /opt/nutchez/tomcat/conf
+	  cp -rf $Conf_Path/tomcat_conf /opt/crawlzilla/tomcat/conf
 	  if [ $? -eq 0 ];then
 	    debug_info "Update the tomcat:conf ok!"
 	  else
@@ -151,13 +151,13 @@ function unzip_nV2_pack(){
   fi
 }
 
-function check_nez_installed(){
-  debug_info "$MI_check_nez_1"
-  if [ -d "/opt/nutchez" ]; then
-    show_info "$MI_check_nez_2"
+function check_crawlzilla_installed(){
+  debug_info "$MI_check_crawlzilla_1"
+  if [ -d "/opt/crawlzilla" ]; then
+    show_info "$MI_check_crawlzilla_2"
     exit
   else
-    show_info "$MI_check_nez_3"
+    show_info "$MI_check_crawlzilla_3"
   fi
 }
 
@@ -253,59 +253,59 @@ function check_dialog(){
 }
 
 check_info () {
-  check_nez_installed
+  check_crawlzilla_installed
   check_root
   check_systemInfo
   install_packages
-  # check_nez_installed
+  # check_crawlzilla_installed
   check_sunJava
   check_ssh
   check_dialog
 }
 
 function set_install_information () { 
-  set_nutchuser_passwd
+  set_crawler_passwd
   select_eth
   MasterIP_Address=$net_address
 }
 
-function set_nutchuser_passwd () {
-  show_info "$MI_set_nutchuser_passwd_echo_1"
+function set_crawler_passwd () {
+  show_info "$MI_set_crawler_passwd_echo_1"
   read -sp "password:" Nutchuser_Passwd
-# read -sp "Please enter nutchuser's password :  " Nutchuser_Passwd
+# read -sp "Please enter crawler's password :  " Nutchuser_Passwd
   echo -e "\n"
-  show_info "$MI_set_nutchuser_passwd_echo_2"
+  show_info "$MI_set_crawler_passwd_echo_2"
   read -sp "password:" Nutchuser_Passwd2
-# read -sp "Please enter nutchuser's password again:  " Nutchuser_Passwd2
+# read -sp "Please enter crawler's password again:  " Nutchuser_Passwd2
   echo -e "\n"
   if [ $Nutchuser_Passwd != $Nutchuser_Passwd2 ]; then
-    set_nutchuser_passwd
+    set_crawler_passwd
   fi
 }
 
-# 新增nutchuser 帳號時用 Nutchuser_Passwd 當密碼
-function creat_nutchuser_account(){
-  debug_info "$create_nutchuser_d1"
+# 新增crawler 帳號時用 Nutchuser_Passwd 當密碼
+function creat_crawler_account(){
+  debug_info "$create_crawler_d1"
   while [ "$Nutchuser_Passwd" != "$Nutchuser_Passwd2" ]
   do
       echo -e "\n"
-      show_info "$create_nutchuser_1" 
+      show_info "$create_crawler_1" 
       read -s Nutchuser_Passwd
       echo 
-      show_info "$create_nutchuser_2"
+      show_info "$create_crawler_2"
       read -s Nutchuser_Passwd2
       echo 
         if [ "$Nutchuser_Passwd" == "$Nutchuser_Passwd2" ]; then
-          show_info "$create_nutchuser_3"
+          show_info "$create_crawler_3"
         else
-          show_info "$create_nutchuser_4"
+          show_info "$create_crawler_4"
         fi
   done                                                                                                                         
   unset Nutchuser_Passwd2
 
-  if [ $(cat /etc/passwd | grep nutchuser) ]; then
-    show_info "$create_nutchuser_s1"
-    expect -c "spawn passwd nutchuser
+  if [ $(cat /etc/passwd | grep crawler) ]; then
+    show_info "$create_crawler_s1"
+    expect -c "spawn passwd crawler
     set timeout 1
     expect \"*: \"
     send \"$Nutchuser_Passwd\r\"
@@ -313,9 +313,9 @@ function creat_nutchuser_account(){
     send \"$Nutchuser_Passwd\r\"
     expect eof"
     else
-      show_info "$create_nutchuser_s2"
-      useradd -m nutchuser -s /bin/bash
-      expect -c "spawn passwd nutchuser
+      show_info "$create_crawler_s2"
+      useradd -m crawler -s /bin/bash
+      expect -c "spawn passwd crawler
       set timeout 1
       expect \"*: \"
       send \"$Nutchuser_Passwd\r\"
@@ -328,7 +328,7 @@ function creat_nutchuser_account(){
 #  else 
 #    exec ssh-agent /usr/bin/bash
 #  fi
-#  su nutchuser -c 'ssh-add /home/nutchuser/.ssh/id_rsa'
+#  su crawler -c 'ssh-add /home/crawler/.ssh/id_rsa'
 }
 
 function select_eth () {
@@ -384,9 +384,9 @@ function show_master_info () {
 function make_ssh_key () {
   debug_info "$MI_make_ssh_key_echo_1"
 # debug_info "Make ssh key(begin...)"
-  su nutchuser -c 'ssh-keygen -t rsa -f ~/.ssh/id_rsa -P ""'
-  su nutchuser -c "cp ~/.ssh/id_rsa.pub ~/.ssh/authorized_keys"
-  su nutchuser -c "ssh-add /home/nutchuser/.ssh/id_rsa"
+  su crawler -c 'ssh-keygen -t rsa -f ~/.ssh/id_rsa -P ""'
+  su crawler -c "cp ~/.ssh/id_rsa.pub ~/.ssh/authorized_keys"
+  su crawler -c "ssh-add /home/crawler/.ssh/id_rsa"
   debug_info "$MI_make_ssh_key_echo_2"
 # debug_info "Make ssh key(done!)"
 }
@@ -408,7 +408,7 @@ function set_haoop-site () {
   </property>
   <property>
     <name>hadoop.tmp.dir</name>
-    <value>/var/lib/nutchez/nutch-nutchuser</value>
+    <value>/var/lib/crawlzilla/nutch-crawler</value>
   </property>
 </configuration>
 EOF
@@ -446,35 +446,35 @@ function set_nutch-site () {
 
 function format_HDFS () {
   show_info "$MI_format_HDFS_echo_1"
-  su nutchuser -c "$Nutch_HOME/bin/hadoop namenode -format"
+  su crawler -c "$Nutch_HOME/bin/hadoop namenode -format"
   debug_info "$MI_format_HDFS_echo_2"
 }
 
 function start_up_NutchEZ (){
   show_info "$MI_start_up_NutchEZ_echo_1"
   # start namenode
-  su nutchuser -c "$Nutch_HOME/bin/hadoop-daemon.sh --config $Nutch_HOME/conf start namenode"
+  su crawler -c "$Nutch_HOME/bin/hadoop-daemon.sh --config $Nutch_HOME/conf start namenode"
   if [ $? -eq 0 ];then
     debug_info "namenode ok"
     # if ok , start jobtracker
     show_info "$MI_start_up_NutchEZ_echo_2"
-    su nutchuser -c "$Nutch_HOME/bin/hadoop-daemon.sh --config $Nutch_HOME/conf start jobtracker"
+    su crawler -c "$Nutch_HOME/bin/hadoop-daemon.sh --config $Nutch_HOME/conf start jobtracker"
     if [ $? -eq 0 ];then
       debug_info "jobtracker ok"
-      su nutchuser -c "$Nutch_HOME/bin/hadoop-daemon.sh --config $Nutch_HOME/conf start datanode"
-      su nutchuser -c "$Nutch_HOME/bin/hadoop-daemon.sh --config $Nutch_HOME/conf start tasktracker"
+      su crawler -c "$Nutch_HOME/bin/hadoop-daemon.sh --config $Nutch_HOME/conf start datanode"
+      su crawler -c "$Nutch_HOME/bin/hadoop-daemon.sh --config $Nutch_HOME/conf start tasktracker"
       debug_info "start datanode and tasktracker"
     fi
   else 
     show_info "!!! Hadoop startup error !!!"
-    show_info "you can see /var/log/nutchez/shell-logs/ for more infomation!"
+    show_info "you can see /var/log/crawlzilla/shell-logs/ for more infomation!"
   fi
 }
 function change_hosts_owner (){
   if [ -f /etc/hosts ];then
-    cp -f /etc/hosts /home/nutchuser/nutchez/system/
-    ln -sf /home/nutchuser/nutchez/system/hosts /etc/hosts
-    chown nutchuser:nutchuser /home/nutchuser/nutchez/system/hosts
+    cp -f /etc/hosts /home/crawler/crawlzilla/system/
+    ln -sf /home/crawler/crawlzilla/system/hosts /etc/hosts
+    chown crawler:crawler /home/crawler/crawlzilla/system/hosts
   else
     show_info "no /etc/hosts exists.. please check!!"
   fi
@@ -482,7 +482,7 @@ function change_hosts_owner (){
 
 function set_hosts () {
   debug_info "$MI_set_hosts_echo_1"
-  cp /etc/hosts /home/nutchuser/nutchez/system/hosts.bak
+  cp /etc/hosts /home/crawler/crawlzilla/system/hosts.bak
   Line_NO=`cat /etc/hosts | grep -n $(hostname) | sed 's/:.*//g'`
   content=$(cat /etc/hosts | awk 'NR=='$Line_NO'{printf "# " ; print}' )
   sed -i ""$Line_NO"c $content" /etc/hosts
@@ -490,13 +490,13 @@ function set_hosts () {
 }
 
 function install_Nutch () {
-# copy nutchez.war to /opt/nutchez/tomcat/webapps
-  cp $Install_Dir/web/nutchez.war /opt/nutchez/tomcat/webapps/nutchez.war
+# copy crawlzilla.war to /opt/crawlzilla/tomcat/webapps
+  cp $Install_Dir/web/crawlzilla.war /opt/crawlzilla/tomcat/webapps/crawlzilla.war
   debug_info "$MI_install_Nutch_echo_1 $MasterIP_Address "
 # debug_info "MasterIP_Address=$MasterIP_Address"
   debug_info "$MI_install_Nutch_echo_2 $(hostname)"
 # debug_info "Master_Hostname=$(hostname)"
-  su nutchuser -c "ssh -o StrictHostKeyChecking=no localhost echo $net_address $(hostname) $net_MacAddr \>\> ~/nutchez/system/nutch_nodes"
+  su crawler -c "ssh -o StrictHostKeyChecking=no localhost echo $net_address $(hostname) $net_MacAddr \>\> ~/crawlzilla/system/nutch_nodes"
   set_hosts
   set_haoop-site
   set_nutch-site
@@ -549,7 +549,7 @@ function make_client_install () {
   # 建立資料夾(用來存放client的安奘檔)
 
    if [ ! -d "$User_HOME/source" ]; then
-     su nutchuser -c "mkdir $User_HOME/source"
+     su crawler -c "mkdir $User_HOME/source"
    fi
 
 
@@ -563,26 +563,26 @@ function make_client_install () {
   client_PassMaster_Hostname
   client_PassMasterIPAddr_for_Remove
   client_PassMasterIPAddr_for_deploy
-  cd /opt/nutchez/
-  su nutchuser -c "tar -cvzf NutchezForClientOf_$MasterIP_Address.tar.gz  nutch" >> $LOG_SH_TARGET
+  cd /opt/crawlzilla/
+  su crawler -c "tar -cvzf NutchezForClientOf_$MasterIP_Address.tar.gz  nutch" >> $LOG_SH_TARGET
   
   # 複製檔案至$User_HOME/source及system目錄下
-  mv NutchezForClientOf_$MasterIP_Address.tar.gz /home/nutchuser/nutchez/source
-  cp $Work_Path/client_install $Work_Path/client_install_func.sh $Work_Path/client_remove $Work_Path/client_deploy.sh $Work_Path/log.sh /home/nutchuser/nutchez/source
-  cp -r $Work_Path/lang  /home/nutchuser/nutchez/source
-  cp -r $Work_Path/lang /home/nutchuser/nutchez/system
-  cp $Work_Path/nutchez $Work_Path/add_hosts $Work_Path/duplicate_del $Work_Path/tomcat_restart.sh  $Work_Path/master_remove $Work_Path/go.sh $Work_Path/log.sh $Work_Path/rm_DB.sh /home/nutchuser/nutchez/system 
+  mv NutchezForClientOf_$MasterIP_Address.tar.gz /home/crawler/crawlzilla/source
+  cp $Work_Path/client_install $Work_Path/client_install_func.sh $Work_Path/client_remove $Work_Path/client_deploy.sh $Work_Path/log.sh /home/crawler/crawlzilla/source
+  cp -r $Work_Path/lang  /home/crawler/crawlzilla/source
+  cp -r $Work_Path/lang /home/crawler/crawlzilla/system
+  cp $Work_Path/crawlzilla $Work_Path/add_hosts $Work_Path/duplicate_del $Work_Path/tomcat_restart.sh  $Work_Path/master_remove $Work_Path/go.sh $Work_Path/log.sh $Work_Path/rm_DB.sh /home/crawler/crawlzilla/system 
   
-  # 複製 nutchez/source 到使用者的安裝資料夾
+  # 複製 crawlzilla/source 到使用者的安裝資料夾
 
    if [ ! -d "$Install_Dir/Client_Install_DIR" ]; then
      mkdir $Install_Dir/Client_Install_DIR
    fi
-   cp -rf /home/nutchuser/nutchez/source/* $Install_Dir/Client_Install_DIR/
+   cp -rf /home/crawler/crawlzilla/source/* $Install_Dir/Client_Install_DIR/
    
-#  cp $Work_Path/client_install $Work_Path/client_install /home/nutchuser/nutchez/source
-#  cp $Work_Path/client_install $Work_Path/client_remove /home/nutchuser/nutchez/source
-#  cp $Work_Path/client_install $Work_Path/lang* /home/nutchuser/nutchez/source
+#  cp $Work_Path/client_install $Work_Path/client_install /home/crawler/crawlzilla/source
+#  cp $Work_Path/client_install $Work_Path/client_remove /home/crawler/crawlzilla/source
+#  cp $Work_Path/client_install $Work_Path/lang* /home/crawler/crawlzilla/source
 }
 
 function start_up_tomcat () {
@@ -598,7 +598,7 @@ function start_up_tomcat () {
       i=`expr $i - 1`
     done
   echo ""
-  su nutchuser -c "$Tomcat_HOME/bin/startup.sh"
+  su crawler -c "$Tomcat_HOME/bin/startup.sh"
   show_info "$MI_start_up_tomcat_echo_3"
 # debug_info "tomcat has been started..."
 }
@@ -623,7 +623,7 @@ $MI_client_install_commands_echo_20$MasterIP_Address$MI_client_install_commands_
 3. $MI_client_install_commands_echo_4
 EOF
 
-  cp $Install_Dir/Client_Install_DIR/README.txt /home/nutchuser/nutchez/source/
+  cp $Install_Dir/Client_Install_DIR/README.txt /home/crawler/crawlzilla/source/
 
 }
 

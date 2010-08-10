@@ -92,13 +92,13 @@ function install_packages(){
 
 # 檢查之前是否有安裝Crawlzilla
 # 目前先檢查是否有/opt/crawlzilla 這個資料夾即可
-function check_nez_installed(){
-  debug_info "$check_nez_1"
+function check_crawlzilla_installed(){
+  debug_info "$check_crawlzilla_1"
   if [ -d "opt/crawlzilla" ]; then
-    show_info "$check_nez_2"
+    show_info "$check_crawlzilla_2"
     exit
   else
-    show_info "$check_nez_3"
+    show_info "$check_crawlzilla_3"
   fi
 }
 

@@ -71,7 +71,7 @@ install_packages
 
 # 檢查之前是否有安裝NutchEz
 # 目前先檢查是否有/opt/crawlzilla 這個資料夾即可
-check_nez_installed
+check_crawlzilla_installed
 
 # 檢查是否有安裝sun java ,並檢查是否為jdk 1.6 以上版本
 check_sunJava
@@ -91,10 +91,10 @@ creat_crawler_account
 scp_master_crawler_sshkey $Master_IP_Address
 
 # 用scp 複製 master 的設定與安裝資料
-# 目前僅需做到能無礙的複製遠端的/opt/nutchez/到local的/opt/
+# 目前僅需做到能無礙的複製遠端的/opt/crawlzilla/到local的/opt/
 scp_packages $Master_IP_Address
 
-# change /etc/hosts owner from root to nutchuser
+# change /etc/hosts owner from root to crawler
 change_hosts_owner
 
 # 安裝及啟動
