@@ -1,6 +1,6 @@
 #!/bin/bash
 # Program:
-#   NutchEz management interface
+#   Crawlzilla management interface
 # Author: 
 #   Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
 # Version:
@@ -40,7 +40,7 @@ echo $lang | grep 'zh' && source $Work_Path/lang/lang_zh_TW
 }
 
 
-## [Pre-Check for nutch_nodes file] ##
+## [Pre-Check for crawl_nodes file] ##
 function prepare_check(){ 
 # 若無 crawlzilla_nodes　則跳出
 if [ ! -e "${Crawlzilla_HOME}/system/crawl_nodes" ]; then
@@ -50,7 +50,7 @@ if [ ! -e "${Crawlzilla_HOME}/system/crawl_nodes" ]; then
 fi
 
 # 判斷是否有存在檔案remove_list， 若有表示有node被移除
-# 整理nutch_nodes及hosts清單
+# 整理crawl_nodes及hosts清單
 
 if [ -e "${Crawlzilla_HOME}/system/remove_list" ]; then
   for node in `cat ${Crawlzilla_HOME}/system/remove_list`;
@@ -73,7 +73,7 @@ if [ ! -e "${Crawlzilla_HOME}/system/crawl_nodes.bak" ]; then
 #    echo -e "$pre_check_echo_1"
     $Work_Path/duplicate_del "${Crawlzilla_HOME}/system/crawl_nodes"
     $Work_Path/duplicate_del $Work_Path/hosts && $Work_Path/add_hosts ${Crawlzilla_HOME}/system/crawl_nodes $Work_Path/hosts
-#    su root -c "$Work_Path/duplicate_del /etc/hosts && $Work_Path/add_hosts ${Crawlzilla_HOME}/system/nutch_nodes /etc/hosts"
+#    su root -c "$Work_Path/duplicate_del /etc/hosts && $Work_Path/add_hosts ${Crawlzilla_HOME}/system/crawl_nodes /etc/hosts"
     #　若密碼輸入失敗則跳出
     if [ $? == "1" ]; then
         echo "$pre_check_echo_2"
@@ -81,7 +81,7 @@ if [ ! -e "${Crawlzilla_HOME}/system/crawl_nodes.bak" ]; then
     fi 
     cp -f "${Crawlzilla_HOME}/system/crawl_nodes" "${Crawlzilla_HOME}/system/crawl_nodes.bak"
 
-# 若 nutch_nodes 被更新過，則要求更新 /etc/hosts
+# 若 crawl_nodes 被更新過，則要求更新 /etc/hosts
 elif [ ${Crawlzilla_HOME}/system/crawl_nodes -nt ${Crawlzilla_HOME}/system/crawl_nodes.bak ]; then
     $DIALOG --clear --backtitle "$dia_back" --title "$dia_pre_check_title_2" \
     --yesno "$dia_pre_check_yesno_3\n$dia_pre_check_yesno_2" 10 55
@@ -90,7 +90,7 @@ elif [ ${Crawlzilla_HOME}/system/crawl_nodes -nt ${Crawlzilla_HOME}/system/crawl
     $Work_Path/duplicate_del "${Crawlzilla_HOME}/system/crawl_nodes"
     cp -f "${Crawlzilla_HOME}/system/crawl_nodes" "${Crawlzilla_HOME}/system/crawl_nodes.bak"
     $Work_Path/duplicate_del $Work_Path/hosts && $Work_Path/add_hosts ${Crawlzilla_HOME}/system/crawl_nodes $Work_Path/hosts
-#    su root -c "$Work_Path/duplicate_del /etc/hosts && $Work_Path/add_hosts ${Crawlzilla_HOME}/system/nutch_nodes /etc/hosts"
+#    su root -c "$Work_Path/duplicate_del /etc/hosts && $Work_Path/add_hosts ${Crawlzilla_HOME}/system/crawl_nodes /etc/hosts"
     #　若密碼輸入失敗則跳出                   
     if [ $? == "1" ]; then                    
         echo "$pre_check_echo_2="
@@ -217,9 +217,9 @@ fi
 
 ## [Cluster Setup (datanode & tasktracker)] ##
 function cluster_setup(){
-# 從 nutch_nodes 讀出 ip　和 hostname
-#IP_list=$(cat $Crawlzilla_HOME/system/nutch_nodes | grep -v '^$' | grep -v '#' | awk '{print $1}')
-#HOST_list=$(cat $Crawlzilla_HOME/system/nutch_nodes | grep -v '^$' | grep -v '#' | awk '{print $2}')
+# 從 crawl_nodes 讀出 ip　和 hostname
+#IP_list=$(cat $Crawlzilla_HOME/system/crawl_nodes | grep -v '^$' | grep -v '#' | awk '{print $1}')
+#HOST_list=$(cat $Crawlzilla_HOME/system/crawl_nodes | grep -v '^$' | grep -v '#' | awk '{print $2}')
 LIST_status="off"
 allpart="/tmp/allpart"
 runNodes="/tmp/runNodes"
