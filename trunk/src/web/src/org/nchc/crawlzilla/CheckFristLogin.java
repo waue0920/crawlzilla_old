@@ -9,9 +9,9 @@ public class CheckFristLogin {
 	public boolean fristLogin() throws IOException{
 		FileReader NP = new FileReader("/home/crawler/crawlzilla/system/.passwd");
 		BufferedReader stdin = new BufferedReader(NP);
-		String nutchuserPasswd = new String(stdin.readLine());
-		if (nutchuserPasswd.equals("crawler")
-				&& nutchuserPasswd.equals("crawler")) {
+		String crawlerPasswd = new String(stdin.readLine());
+		if (crawlerPasswd.equals("crawler")
+				&& crawlerPasswd.equals("crawler")) {
 			ChangePasswdFlag = true;
 		}
 

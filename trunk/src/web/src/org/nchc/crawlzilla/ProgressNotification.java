@@ -4,7 +4,7 @@ package org.nchc.crawlzilla;
  * 程式碼引用自 luck & lucene
  * 
  * @web
- * <a href="http://code.google.com/p/nutchez/">http://code.google.com/p/nutchez </a>
+ * <a href="http://code.google.com/p/crawlzilla/">http://code.google.com/p/crawlzilla </a>
  * 
  * @author Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
  * 

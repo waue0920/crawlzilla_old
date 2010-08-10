@@ -6,7 +6,7 @@ package org.nchc.crawlzilla;
  * 讓DataInfoBean 內的成員有資料，然後把回應結果導向 statistics.jsp
  * 
  * @web
- * <a href="http://code.google.com/p/nutchez/">http://code.google.com/p/nutchez </a>
+ * <a href="http://code.google.com/p/crawlzilla/">http://code.google.com/p/crawlzilla </a>
  * 
  * @author Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
  * 

@@ -4,7 +4,7 @@ package org.nchc.crawlzilla;
  * 
  * 
  * @web
- * <a href="http://code.google.com/p/nutchez/">http://code.google.com/p/nutchez </a>
+ * <a href="http://code.google.com/p/crawlzilla/">http://code.google.com/p/crawlzilla </a>
  * 
  * @author Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
  * 
@@ -20,13 +20,13 @@ public class LoginBean {
 	public boolean getConfirm() throws IOException {
 		FileReader NP = new FileReader("/home/crawler/crawlzilla/system/.passwd");
 		BufferedReader stdin = new BufferedReader(NP);
-		String nutchuserPasswd = new String(stdin.readLine());
-		if (nutchuserPasswd.equals(passWord)
-				&& nutchuserPasswd.equals("nutchuser")) {
+		String crawlerPasswd = new String(stdin.readLine());
+		if (crawlerPasswd.equals(passWord)
+				&& crawlerPasswd.equals("crawler")) {
 			ChangePasswdFlag = true;
 		}
 
-		if (nutchuserPasswd.equals(passWord)) {
+		if (crawlerPasswd.equals(passWord)) {
 			NP.close();
 			return true;
 		} else {

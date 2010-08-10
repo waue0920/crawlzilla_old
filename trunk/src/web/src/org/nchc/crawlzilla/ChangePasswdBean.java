@@ -3,7 +3,7 @@ package org.nchc.crawlzilla;
  * ChangePasswdBean 用以設定密碼
  * 
  * @web
- * <a href="http://code.google.com/p/nutchez/">http://code.google.com/p/nutchez </a>
+ * <a href="http://code.google.com/p/crawlzilla/">http://code.google.com/p/crawlzilla </a>
  * 
  * @author Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
  * 
@@ -22,9 +22,9 @@ public class ChangePasswdBean {
 	public boolean editPasswd() throws IOException {
 		FileReader NP = new FileReader("/home/crawler/crawlzilla/system/.passwd");
 		BufferedReader stdin = new BufferedReader(NP);
-		String nutchuserPasswd = new String(stdin.readLine());
+		String crawlerPasswd = new String(stdin.readLine());
 		
-		if(nutchuserPasswd.equals(oldPasswd) && newPasswd.equals(checkNewPassword)){
+		if(crawlerPasswd.equals(oldPasswd) && newPasswd.equals(checkNewPassword)){
 			File editNP = new File("/home/crawler/crawlzilla/system/.passwd");
 			FileWriter fw = new FileWriter(editNP , false);
 			fw.write(newPasswd);
