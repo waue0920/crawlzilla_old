@@ -10,8 +10,8 @@
 <jsp:useBean id="dataInfo1" class="org.nchc.crawlzilla.DataInfoBean" scope="session" />
 
 <%
-	nutchDBNum1.setFiles("/home/nutchuser/nutchez/archieve/");
-    nutchDBNum1.setNum("/home/nutchuser/nutchez/archieve/");
+	nutchDBNum1.setFiles("/home/crawler/crawlzilla/archieve/");
+    nutchDBNum1.setNum("/home/crawler/crawlzilla/archieve/");
 
 	File files1[] = nutchDBNum1.getFiles();
 	int num1=nutchDBNum1.getNum();
