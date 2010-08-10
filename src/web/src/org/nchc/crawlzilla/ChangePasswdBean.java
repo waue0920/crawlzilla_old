@@ -20,12 +20,12 @@ public class ChangePasswdBean {
 	private String checkNewPassword;
 	
 	public boolean editPasswd() throws IOException {
-		FileReader NP = new FileReader("/home/nutchuser/nutchez/system/.passwd");
+		FileReader NP = new FileReader("/home/crawler/crawlzilla/system/.passwd");
 		BufferedReader stdin = new BufferedReader(NP);
 		String nutchuserPasswd = new String(stdin.readLine());
 		
 		if(nutchuserPasswd.equals(oldPasswd) && newPasswd.equals(checkNewPassword)){
-			File editNP = new File("/home/nutchuser/nutchez/system/.passwd");
+			File editNP = new File("/home/crawler/crawlzilla/system/.passwd");
 			FileWriter fw = new FileWriter(editNP , false);
 			fw.write(newPasswd);
 			fw.close();
