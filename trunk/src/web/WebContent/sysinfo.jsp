@@ -59,11 +59,6 @@ var timer = window.setTimeout(_refresh,15*1000);
 		<jsp:useBean id="nutchDBStatus" class="org.nchc.crawlzilla.NutchDBStatusBean" scope="session" />
 		
 		<%
-		nutchDBNum.setFiles("/home/crawler/crawlzilla/archieve/");
-    	nutchDBNum.setNum("/home/crawler/crawlzilla/archieve/");    	
-		File files[] = nutchDBNum.getFiles();
-		int num=nutchDBNum.getNum();
-		
     	nutchDBStatus.setFiles("/home/crawler/crawlzilla/.tmp/");
     	File statusName[] = nutchDBStatus.getFiles();
     	
@@ -80,23 +75,20 @@ var timer = window.setTimeout(_refresh,15*1000);
   		<th><i18n:message key="sysinfo_CrawlStatus"/></th>
 		</tr>
 		<%
-		for (int i=0 ; i<num ;i++){
+		for (int j=0 ; j<statusNum ; j++){
 		out.print("<tr>");
 		out.print("<td>");
-		out.print("<a href=\"../"+files[i].getName()+"\">");
-		out.print(files[i].getName()+"</a>");
-				out.print("</td>");
-		
+		out.print("<a href=\"../"+statusName[j].getName()+"\">");
+		out.print(statusName[j].getName()+"</a>");
+		out.print("</td>");
 		out.print("<td>");
 		
-		for (int j=0 ; j<statusNum ; j++)
-			if (statusName[j].getName().equalsIgnoreCase(files[i].getName())){
-				FileReader fr = new FileReader(statusName[j]);
-				BufferedReader br = new BufferedReader(fr); 
-				out.print(br.readLine());
-				br.close();
-				fr.close();
-			} 
+		FileReader fr = new FileReader(statusName[j]);
+		BufferedReader br = new BufferedReader(fr); 
+		out.print(br.readLine());
+		br.close();
+		fr.close();
+			 
 		out.print("</td>");
 		out.print("</tr>");
 		}
