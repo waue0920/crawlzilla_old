@@ -120,7 +120,7 @@ function user_delete () {
 function main () {
   load_default_lang
   check_root
-  show_info "$CR_main_echo_1" #"警告 - 此一程式為移除此用戶端的nutch node, 若您為誤執行此一程式, 請按Ctrl+c離開此程序！"
+  show_info "$CR_main_echo_1" #"警告 - 此一程式為移除此用戶端的crawl node, 若您為誤執行此一程式, 請按Ctrl+c離開此程序！"
   show_info "$CR_main_echo_2" #"本執行程序將會移除安裝crawlzilla時所新增的檔案及crawler使用者帳號"
 # 詢問是否繼續
   read -p "$CR_main_echo_3" confirm # "請問是否確定移除此一節點：1.確定 2.取消"
