@@ -68,7 +68,7 @@ function shutdown_service () {
 # 移除檔案及資料夾
 function remove_folders () {
   show_info "$CR_remove_folders_echo_1" # "正在刪除安裝時所建立的檔案及資料夾..."
-  rm /usr/local/bin/crawlzilla_remove
+  rm /usr/bin/crawlzilla_remove
   rm -rf /opt/crawlzilla
   rm -rf /var/lib/crawlzilla
   rm -rf /var/log/crawlzilla/

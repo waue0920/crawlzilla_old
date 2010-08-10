@@ -101,7 +101,7 @@ change_hosts_owner
 install_nutch_package
 
 # 建立clientremove 連結
-ln -sf /home/crawler/crawlzilla/system/client_remove /usr/local/bin/crawlzilla_remove
+ln -sf /home/crawler/crawlzilla/system/client_remove /usr/bin/crawlzilla_remove
 
 # 回覆 Hostname 和 IP 給 Master Server
 recall_hostname_ip $Master_IP_Address
