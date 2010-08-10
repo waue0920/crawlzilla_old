@@ -73,6 +73,7 @@ var timer = window.setTimeout(_refresh,15*1000);
   		<tr>
   		<th><i18n:message key="sysinfo_DbName"/></th>
   		<th><i18n:message key="sysinfo_CrawlStatus"/></th>
+  		<th><i18n:message key="sysinfo_Delete"/></th>
 		</tr>
 		<%
 		for (int j=0 ; j<statusNum ; j++){
@@ -80,6 +81,7 @@ var timer = window.setTimeout(_refresh,15*1000);
 		out.print("<tr>");
 		out.print("<td>");
 		out.print("<a href=\"../"+statusName[j].getName()+"\">");
+		out.print("<input type=\"hidden\" name=\"fileName\" value=\""+statusName[j].getName()+" \" >");
 		out.print(statusName[j].getName()+"</a>");
 		out.print("</td>");
 		out.print("<td>");

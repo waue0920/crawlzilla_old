@@ -48,3 +48,11 @@ function wait(){
 		
 	setTimeout("wait()",1000);
 }
+
+
+function deleteDBStatus(num){
+if (confirm("Delete this DataBase status ?")){
+document.forms[num].action="NutchDBStatusDelete.do";
+document.forms[num].submit();
+}
+}
