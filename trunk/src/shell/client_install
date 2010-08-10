@@ -70,7 +70,7 @@ check_systemInfo
 install_packages
 
 # 檢查之前是否有安裝NutchEz
-# 目前先檢查是否有/opt/nutchez 這個資料夾即可
+# 目前先檢查是否有/opt/crawlzilla 這個資料夾即可
 check_nez_installed
 
 # 檢查是否有安裝sun java ,並檢查是否為jdk 1.6 以上版本
@@ -82,13 +82,13 @@ check_ssh
 # 檢查是否有安裝dialog
 check_dialog
 
-# 新增nutchuser 帳號時用 Nutchuser_Passwd 當密碼
-creat_nutchuser_account
+# 新增crawler 帳號時用 Crawler_Passwd 當密碼
+creat_crawler_account
 
-# scp nutchuser@master_ip:~ 把.ssh/目錄複製下來
-# 當使用者輸入nutchuser 密碼時，將此密碼紀錄到Nutchuser_Passwd
+# scp crawler@master_ip:~ 把.ssh/目錄複製下來
+# 當使用者輸入crawler 密碼時，將此密碼紀錄到Crwaler_Passwd
 # 此步驟若無法連到 master 則跳出
-scp_master_nutchuser_sshkey $Master_IP_Address
+scp_master_crawler_sshkey $Master_IP_Address
 
 # 用scp 複製 master 的設定與安裝資料
 # 目前僅需做到能無礙的複製遠端的/opt/nutchez/到local的/opt/
@@ -101,10 +101,10 @@ change_hosts_owner
 install_nutch_package
 
 # 建立clientremove 連結
-ln -sf /home/nutchuser/nutchez/system/client_remove /usr/local/bin/nutchez_remove
+ln -sf /home/crawler/crawlzilla/system/client_remove /usr/local/bin/crawlzilla_remove
 
 # 回覆 Hostname 和 IP 給 Master Server
 recall_hostname_ip $Master_IP_Address
 show_info "$CI_finish_echo_1"
-change_ownship nutchuser /home/nutchuser/nutchez
+change_ownship crawler /home/crawler/crawlzilla
 read -p "press any key to continue..."

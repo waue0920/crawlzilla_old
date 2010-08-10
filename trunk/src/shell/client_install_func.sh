@@ -90,11 +90,11 @@ function install_packages(){
 }
 
 
-# 檢查之前是否有安裝NutchEz
-# 目前先檢查是否有/opt/nutchez 這個資料夾即可
+# 檢查之前是否有安裝Crawlzilla
+# 目前先檢查是否有/opt/crawlzilla 這個資料夾即可
 function check_nez_installed(){
   debug_info "$check_nez_1"
-  if [ -d "opt/nutchez" ]; then
+  if [ -d "opt/crawlzilla" ]; then
     show_info "$check_nez_2"
     exit
   else
@@ -197,71 +197,71 @@ function check_dialog(){
 }
 
 
-# scp nutchuser@master_ip:~ 把.ssh/目錄複製下來
-# 當使用者輸入nutchuser 密碼時，將此密碼紀錄到Nutchuser_Passwd
+# scp crawler@master_ip:~ 把.ssh/目錄複製下來
+# 當使用者輸入crawler 密碼時，將此密碼紀錄到Nutchuser_Passwd
 # 此步驟若無法連到 master 則跳出
-function scp_master_nutchuser_sshkey(){
+function scp_master_crawler_sshkey(){
   debug_info "$scp_sshkey_d1"
   debug_info "$scp_sshkey_d2"
-  mkdir -p /home/nutchuser/.ssh/
-  rm -fr /home/nutchuser/.ssh/*
-  unset Nutchuser_Passwd2
+  mkdir -p /home/crawler/.ssh/
+  rm -fr /home/crawler/.ssh/*
+  unset Crawler_Passwd2
 
   debug_info "$scp_sshkey_d3"
-expect -c "spawn scp -r -o StrictHostKeyChecking=no nutchuser@$1:~/.ssh /home/nutchuser/
+expect -c "spawn scp -r -o StrictHostKeyChecking=no crawler@$1:~/.ssh /home/crawler/
 set timeout 1
 sleep 2
-expect \"*: \" { send \"$Nutchuser_Passwd\r\" }
+expect \"*: \" { send \"$Crawler_Passwd\r\" }
 expect \"*: \" { send_user \"$scp_sshkey_expect_1\" }
 expect eof"
 
-  if [ -e "/home/nutchuser/.ssh/authorized_keys" ]; then
+  if [ -e "/home/crawler/.ssh/authorized_keys" ]; then
     show_info "$scp_sshkey_s1"    
     else
       show_info "$scp_sshkey_s2"
     exit
   fi
-  ssh-add /home/nutchuser/.ssh/id_rsa
+  ssh-add /home/crawler/.ssh/id_rsa
   debug_info "$scp_sshkey_d4"
-  chown -R nutchuser:nutchuser /home/nutchuser/.ssh
+  chown -R crawler:crawler /home/crawler/.ssh
 }
 
-# 新增nutchuser 帳號時用 Nutchuser_Passwd 當密碼
-function creat_nutchuser_account(){
-  debug_info "$create_nutchuser_d1"
-  while [ "$Nutchuser_Passwd" != "$Nutchuser_Passwd2" ]
+# 新增crawler 帳號時用 Crawler_Passwd 當密碼
+function creat_crawler_account(){
+  debug_info "$create_crawler_d1"
+  while [ "$Crawler_Passwd" != "$Crawler_Passwd2" ]
   do
       echo -e "\n"
-      read -sp "$create_nutchuser_1" Nutchuser_Passwd
+      read -sp "$create_crawler_1" Crawler_Passwd
       echo 
-      read -sp "$create_nutchuser_2" Nutchuser_Passwd2
+      read -sp "$create_crawler_2" Crawler_Passwd2
       echo 
-        if [ "$Nutchuser_Passwd" == "$Nutchuser_Passwd2" ]; then
-          show_info "$create_nutchuser_3"
+        if [ "$Crawler_Passwd" == "$Crawler_Passwd2" ]; then
+          show_info "$create_crawler_3"
         else
-          show_info "$create_nutchuser_4"
+          show_info "$create_crawler_4"
         fi
   done                                                                                                                                    
-  unset Nutchuser_Passwd2
+  unset Crawler_Passwd2
 
-  if [ $(cat /etc/passwd | grep nutchuser) ]; then
-    show_info "$create_nutchuser_s1"
-    expect -c "spawn passwd nutchuser
+  if [ $(cat /etc/passwd | grep crawler) ]; then
+    show_info "$create_crawler_s1"
+    expect -c "spawn passwd crawler
     set timeout 1
     expect \"*: \"
-    send \"$Nutchuser_Passwd\r\"
+    send \"$Crawler_Passwd\r\"
     expect \"*: \"
-    send \"$Nutchuser_Passwd\r\"
+    send \"$Crawler_Passwd\r\"
     expect eof"
     else
-      show_info "$create_nutchuser_s2"
-      useradd -m nutchuser -s /bin/bash
-      expect -c "spawn passwd nutchuser
+      show_info "$create_crawler_s2"
+      useradd -m crawler -s /bin/bash
+      expect -c "spawn passwd crawler
       set timeout 1
       expect \"*: \"
-      send \"$Nutchuser_Passwd\r\"
+      send \"$Crawler_Passwd\r\"
       expect \"*: \"
-      send \"$Nutchuser_Passwd\r\"
+      send \"$Crawler_Passwd\r\"
       expect eof"
   fi
 }
@@ -269,50 +269,48 @@ function creat_nutchuser_account(){
 # 用scp 複製 master 的設定與安裝資料
 function scp_packages(){
   debug_info "$scp_packages_d1"
-  mkdir /opt/nutchez
-  mkdir /var/lib/nutchez
-  if [ ! -e "/var/log/nutchez/shell-logs" ]; then
-      mkdir -p "/var/log/nutchez/shell-logs";
+  mkdir /opt/crawlzilla
+  mkdir /var/lib/crawlzilla
+  if [ ! -e "/var/log/crawlzilla/shell-logs" ]; then
+      mkdir -p "/var/log/crawlzilla/shell-logs";
   fi
-  mkdir /var/log/nutchez/tomcat-logs
-  mkdir /var/log/nutchez/hadoop-logs
-  mkdir /home/nutchuser/nutchez
-  mkdir /home/nutchuser/nutchez/source
-  mkdir /home/nutchuser/nutchez/system
+  mkdir /var/log/crawlzilla/tomcat-logs
+  mkdir /var/log/crawlzilla/hadoop-logs
+  mkdir /home/crawler/crawlzilla
+  mkdir /home/crawler/crawlzilla/source
+  mkdir /home/crawler/crawlzilla/system
   debug_info "$scp_packages_d2"
-  chown -R nutchuser:nutchuser /opt/nutchez
-  chown -R nutchuser:nutchuser /var/log/nutchez
-  chown -R nutchuser:nutchuser /var/lib/nutchez
-  chown -R nutchuser:nutchuser /home/nutchuser/nutchez
-  chmod 755 /opt/nutchez
+  chown -R crawler:crawler /opt/crawlzilla
+  chown -R crawler:crawler /var/log/crawlzilla
+  chown -R crawler:crawler /var/lib/crawlzilla
+  chown -R crawler:crawler /home/crawler/crawlzilla
+  chmod 755 /opt/crawlzilla
   debug_info "$scp_packages_d3"
   if [ -e "$Work_Path/NutchezForClientOf_$Master_IP_Address.tar.gz" ];then
-    mv NutchezForClientOf_$Master_IP_Address.tar.gz /home/nutchuser/nutchez/source
+    mv CrawlzillaForClientOf_$Master_IP_Address.tar.gz /home/crawler/crawlzilla/source
   fi
  
-  if [ ! -e "/home/nutchuser/nutchez/source/NutchezForClientOf_$Master_IP_Address.tar.gz" ];then
-    su nutchuser -c "scp -r -o StrictHostKeyChecking=no nutchuser@$1:/home/nutchuser/nutchez/source/NutchezForClientOf_$Master_IP_Address.tar.gz /home/nutchuser/nutchez/source"
+  if [ ! -e "/home/crawler/crawlzilla/source/CrawlzillaForClientOf_$Master_IP_Address.tar.gz" ];then
+    su crawler -c "scp -r -o StrictHostKeyChecking=no crawler@$1:/home/crawler/crawlzilla/source/CrawlzillaForClientOf_$Master_IP_Address.tar.gz /home/crawler/crawlzilla/source"
   fi
-  cp -r $Work_Path/lang /home/nutchuser/nutchez/system
-  cp $Work_Path/log.sh $Work_Path/client_remove /home/nutchuser/nutchez/system
+  cp -r $Work_Path/lang /home/crawler/crawlzilla/system
+  cp $Work_Path/log.sh $Work_Path/client_remove /home/crawler/crawlzilla/system
 }
 
 
 function install_nutch_package(){
   debug_info "$install_nutch_package_d1"
-  tar -zxvf /home/nutchuser/nutchez/source/NutchezForClientOf_$Master_IP_Address.tar.gz -C /opt/nutchez
-  cp /etc/hosts /home/nutchuser/nutchez/system/hosts.bak
+  tar -zxvf /home/crawler/crawlzilla/source/CrawlzillaForClientOf_$Master_IP_Address.tar.gz -C /opt/crawlzilla
+  cp /etc/hosts /home/crawler/crawlzilla/system/hosts.bak
   sed -i '1a '$Master_IP_Address' '$Master_Hostname'' /etc/hosts
 
-  #/opt/nutchez/nutch/bin/hadoop-daemon.sh start datanode
-  #/opt/nutchez/nutch/bin/hadoop-daemon.sh start tasktracker
 }
 
 function change_hosts_owner (){
   if [ -f /etc/hosts ];then
-    cp -f /etc/hosts /home/nutchuser/nutchez/system/
-    ln -sf /home/nutchuser/nutchez/system/hosts /etc/hosts
-    chown nutchuser:nutchuser /home/nutchuser/nutchez/system/hosts
+    cp -f /etc/hosts /home/crawler/crawlzilla/system/
+    ln -sf /home/crawler/crawlzilla/system/hosts /etc/hosts
+    chown crawler:crawler /home/crawler/crawlzilla/system/hosts
   else
     show_info "no /etc/hosts exists.. please check!!"
   fi
@@ -356,14 +354,8 @@ function recall_hostname_ip(){
   fi
 
   debug_info "$recall_hostname_ip_d2"
-  su nutchuser -c "ssh nutchuser@$1 echo $net_address $(hostname) $net_MacAddr \>\> ~/nutchez/system/nutch_nodes"
+  su crawler -c "ssh crawler@$1 echo $net_address $(hostname) $net_MacAddr \>\> ~/crawlzilla/system/crawl_nodes"
 
-#su nutchuser -c expect -c "spawn ssh nutchuser@$1
-#set timeout 1
-#expect \"*\"
-#send \"echo $net_address $(hostname) >> /home/nutchuser/nutch_nodes\r\"
-#expect \"*\"
-#send \"exit\""
 }
 
 function change_ownship(){
