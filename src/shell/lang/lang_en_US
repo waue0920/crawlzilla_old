@@ -297,7 +297,7 @@ CR_main_echo_5="You are cancelling this remove procedure！"
 CR_main_echo_6="If you want to remove Crawlzilla of this node, please execute this program again."
 ########## Lang for Client Remove - End ##########
 
-########## Lang for nutchez - Start ##########
+########## Lang for crawlzilla - Start ##########
 # [Variables Declaration] #
 ## Lang for common ##
 user_error="You aren't crawler，please change to  \"crawler\" !!!"
@@ -386,5 +386,5 @@ dia_lang_menu_1_1="English"
 dia_lang_menu_1_2="中文"
 
 ## [Lang for finish]
-nutchez_install_finish="Finish!!! press any key to continue..."
-########## Lang for nutchez - End ##########
+crawlzilla_install_finish="Finish!!! press any key to continue..."
+########## Lang for crawlzilla - End ##########

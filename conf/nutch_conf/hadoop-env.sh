@@ -7,12 +7,12 @@
 
 # The java implementation to use.  Required.
 export JAVA_HOME=/usr/lib/jvm/java-6-sun
-export NUTCH_HOME=/opt/nutchez/nutch
-export HADOOP_HOME=/opt/nutchez/nutch
-export NUTCH_CONF_DIR=/opt/nutchez/nutch/conf
-export HADOOP_CONF_DIR=/opt/nutchez/nutch/conf
-export NUTCH_LOG_DIR=/var/log/nutchez/hadoop-logs
-export HADOOP_LOG_DIR=/var/log/nutchez/hadoop-logs
+export NUTCH_HOME=/opt/crawlzilla/nutch
+export HADOOP_HOME=/opt/crawlzilla/nutch
+export NUTCH_CONF_DIR=/opt/crawlzilla/nutch/conf
+export HADOOP_CONF_DIR=/opt/crawlzilla/nutch/conf
+export NUTCH_LOG_DIR=/var/log/crawlzilla/hadoop-logs
+export HADOOP_LOG_DIR=/var/log/crawlzilla/hadoop-logs
 
 # Extra Java CLASSPATH elements.  Optional.
 # export HADOOP_CLASSPATH=

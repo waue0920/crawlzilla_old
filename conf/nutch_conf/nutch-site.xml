@@ -22,7 +22,7 @@
 </property>
 <property>
   <name>plugin.folders</name>
-  <value>/opt/nutchez/nutch/plugins</value>
+  <value>/opt/crawlzilla/nutch/plugins</value>
   <description>Directories where nutch plugins are located. </description>
 </property>
 <property>

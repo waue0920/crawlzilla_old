@@ -9,6 +9,6 @@
   </property>
   <property>
     <name>hadoop.tmp.dir</name>
-    <value>/var/nutchez/nutch-nutchuser</value>
+    <value>/var/crawlzilla/nutch-nutchuser</value>
   </property>
 </configuration>
