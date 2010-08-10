@@ -83,7 +83,7 @@ var timer = window.setTimeout(_refresh,15*1000);
 		for (int i=0 ; i<num ;i++){
 		out.print("<tr>");
 		out.print("<td>");
-		out.print("<a href=\""+files[i].getName()+"\">");
+		out.print("<a href=\"../"+files[i].getName()+"\">");
 		out.print(files[i].getName()+"</a>");
 				out.print("</td>");
 		
