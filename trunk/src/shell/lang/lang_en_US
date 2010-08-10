@@ -33,10 +33,10 @@ MI_install_pack_2="Check dependent packages"
 MI_install_pack_if_1="It will install some packages (expect, ssh, and dialog)." 
 MI_install_pack_if_2="Please manually install expect, ssh, and dialog.Please manually install expect, ssh, and dialog." 
  
-### [for check_nez_installed()] ### 
-MI_check_nez_1="chcheck_crawlzilla_installed" 
-MI_check_nez_2="System already had Crawlzilla." 
-MI_check_nez_3="System does not has Crawlzilla." 
+### [for check_crawlzilla_installed()] ### 
+MI_check_crawlzilla_1="chcheck_crawlzilla_installed" 
+MI_check_crawlzilla_2="System already had Crawlzilla." 
+MI_check_crawlzilla_3="System does not has Crawlzilla." 
  
 ### [for check_sunJava()] ### 
 MI_check_sunJava_1="check_sunJava" 
@@ -167,10 +167,10 @@ install_pack_2="Check dependent packages"
 install_pack_if_1="It will install some packages (expect, ssh, and dialog)."
 install_pack_if_2="Please manually install expect, ssh, and dialog."
 
-### [for check_nez_installed()] ###
-check_nez_1="chcheck_crawlzilla_installed"
-check_nez_2="System already had Crawlzilla."
-check_nez_3="System does not has Crawlzilla."
+### [for check_crawlzilla_installed()] ###
+check_crawlzilla_1="chcheck_crawlzilla_installed"
+check_crawlzilla_2="System already had Crawlzilla."
+check_crawlzilla_3="System does not has Crawlzilla."
 
 ### [for check_sunJava()] ###
 check_sunJava_1="check_sunJava"
