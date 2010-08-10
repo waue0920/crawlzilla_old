@@ -1,7 +1,7 @@
 command=$1
 tom_pids=$(ps x | grep -v "grep" | grep "tomcat" | awk '{print $1}')
-Tomcat_HOME="/opt/nutchez/tomcat"
-source "/home/nutchuser/nutchez/system/log.sh" tomcat_restart_sh;
+Tomcat_HOME="/opt/crawlzilla/tomcat"
+source "/home/nutchuser/crawlzilla/system/log.sh" tomcat_restart_sh;
 if [ $command == "start" ];then
 	$Tomcat_HOME/bin/startup.sh
 	debug_info "$Tomcat_HOME/bin/startup.sh"
