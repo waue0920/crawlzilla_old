@@ -90,8 +90,8 @@ function mkdir_Home_Var(){
 function link_Chown(){
 ln -sf /var/log/crawlzilla/tomcat-logs /opt/crawlzilla/tomcat/logs
 ln -sf /var/log/crawlzilla/hadoop-logs /opt/crawlzilla/nutch/logs
-ln -sf /home/crawler/crawlzilla/system/crawlzilla /usr/local/bin/crawlzilla
-ln -sf /home/crawler/crawlzilla/system/master_remove /usr/local/bin/crawlzilla_remove
+ln -sf /home/crawler/crawlzilla/system/crawlzilla /usr/bin/crawlzilla
+ln -sf /home/crawler/crawlzilla/system/master_remove /usr/bin/crawlzilla_remove
 chown -R crawler:crawler /opt/crawlzilla
 chown -R crawler:crawler /var/log/crawlzilla
 chown -R crawler:crawler /var/lib/crawlzilla
