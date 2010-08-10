@@ -76,6 +76,7 @@ var timer = window.setTimeout(_refresh,15*1000);
 		</tr>
 		<%
 		for (int j=0 ; j<statusNum ; j++){
+		out.print("<form method=\"get\" name=\"dbstatusForm\" >");
 		out.print("<tr>");
 		out.print("<td>");
 		out.print("<a href=\"../"+statusName[j].getName()+"\">");
@@ -90,6 +91,13 @@ var timer = window.setTimeout(_refresh,15*1000);
 		fr.close();
 			 
 		out.print("</td>");
+		
+		out.print("<td>");
+		out.print("<input type=\"submit\" name=\"Delete\" value=\"Delete\" onclick=\"deleteDBStatus(" + j + ")\" />");
+		out.print("</td>");		
+			
+		out.print("</form>");		
+		
 		out.print("</tr>");
 		}
 		%>
