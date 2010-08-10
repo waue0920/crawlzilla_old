@@ -172,8 +172,8 @@ install_pack_if_2="請手動安裝 expect, ssh 和 dialog 套件"
 
 ### [for check_nez_installed()] ###
 check_nez_1="chcheck_nez_installed"
-check_nez_2="系統先前已安裝NutchEz"
-check_nez_3="系統尚未安裝 NutchEz"
+check_nez_2="系統先前已安裝Crawlzilla"
+check_nez_3="系統尚未安裝 Crawlzilla"
 
 ### [for check_sunJava()] ###
 check_sunJava_1="check_sunJava"

@@ -54,7 +54,7 @@ function check_root(){
 # shutdown service
 function shutdown_service () {
   show_info "$MR_shutdown_service_echo_1" # "停止其他尚未關閉的slaves服務..."
-  slaves_list=`cat $nutch_PATH'/nutch_nodes' | cut -d' ' -f1`
+  slaves_list=`cat $nutch_PATH'/crawl_nodes' | cut -d' ' -f1`
   
   show_info "$MR_shutdown_service_echo_2" # "關閉本機服務..."
   su crawler -c "/opt/crawlzilla/nutch/bin/stop-all.sh"

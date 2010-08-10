@@ -198,7 +198,7 @@ function check_dialog(){
 
 
 # scp crawler@master_ip:~ 把.ssh/目錄複製下來
-# 當使用者輸入crawler 密碼時，將此密碼紀錄到Nutchuser_Passwd
+# 當使用者輸入crawler 密碼時，將此密碼紀錄到Crawler_Passwd
 # 此步驟若無法連到 master 則跳出
 function scp_master_crawler_sshkey(){
   debug_info "$scp_sshkey_d1"
@@ -286,7 +286,7 @@ function scp_packages(){
   chown -R crawler:crawler /home/crawler/crawlzilla
   chmod 755 /opt/crawlzilla
   debug_info "$scp_packages_d3"
-  if [ -e "$Work_Path/NutchezForClientOf_$Master_IP_Address.tar.gz" ];then
+  if [ -e "$Work_Path/CrawlzillaForClientOf_$Master_IP_Address.tar.gz" ];then
     mv CrawlzillaForClientOf_$Master_IP_Address.tar.gz /home/crawler/crawlzilla/source
   fi
  

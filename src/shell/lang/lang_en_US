@@ -174,7 +174,7 @@ check_nez_3="System does not has Crawlzilla."
 
 ### [for check_sunJava()] ###
 check_sunJava_1="check_sunJava"
-check_sunJava_2="NutchEz need Sun Java JDK 1.6.x or above version"
+check_sunJava_2="Crawlzilla need Sun Java JDK 1.6.x or above version"
 check_sunJava_if_1="Java is not Sun version, plz install sun Java 1.6.X"
 check_sunJava_if_2="Please input your choice: "
 check_sunJava_if_3="(1)System don't have Sun Java (2)Sun Java is in other path (3)Exit"

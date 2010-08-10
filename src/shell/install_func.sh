@@ -271,46 +271,46 @@ function set_install_information () {
 
 function set_crawler_passwd () {
   show_info "$MI_set_crawler_passwd_echo_1"
-  read -sp "password:" Nutchuser_Passwd
-# read -sp "Please enter crawler's password :  " Nutchuser_Passwd
+  read -sp "password:" Crawler_Passwd
+# read -sp "Please enter crawler's password :  " Crawler_Passwd
   echo -e "\n"
   show_info "$MI_set_crawler_passwd_echo_2"
-  read -sp "password:" Nutchuser_Passwd2
-# read -sp "Please enter crawler's password again:  " Nutchuser_Passwd2
+  read -sp "password:" Crawler_Passwd2
+# read -sp "Please enter crawler's password again:  " Crawler_Passwd2
   echo -e "\n"
-  if [ $Nutchuser_Passwd != $Nutchuser_Passwd2 ]; then
+  if [ $Crawler_Passwd != $Crawler_Passwd2 ]; then
     set_crawler_passwd
   fi
 }
 
-# 新增crawler 帳號時用 Nutchuser_Passwd 當密碼
+# 新增crawler 帳號時用 Crawler_Passwd 當密碼
 function creat_crawler_account(){
   debug_info "$create_crawler_d1"
-  while [ "$Nutchuser_Passwd" != "$Nutchuser_Passwd2" ]
+  while [ "$Crawler_Passwd" != "$Crawler_Passwd2" ]
   do
       echo -e "\n"
       show_info "$create_crawler_1" 
-      read -s Nutchuser_Passwd
+      read -s Crawler_Passwd
       echo 
       show_info "$create_crawler_2"
-      read -s Nutchuser_Passwd2
+      read -s Crawler_Passwd2
       echo 
-        if [ "$Nutchuser_Passwd" == "$Nutchuser_Passwd2" ]; then
+        if [ "$Crawler_Passwd" == "$Crawler_Passwd2" ]; then
           show_info "$create_crawler_3"
         else
           show_info "$create_crawler_4"
         fi
   done                                                                                                                         
-  unset Nutchuser_Passwd2
+  unset Crawler_Passwd2
 
   if [ $(cat /etc/passwd | grep crawler) ]; then
     show_info "$create_crawler_s1"
     expect -c "spawn passwd crawler
     set timeout 1
     expect \"*: \"
-    send \"$Nutchuser_Passwd\r\"
+    send \"$Crawler_Passwd\r\"
     expect \"*: \"
-    send \"$Nutchuser_Passwd\r\"
+    send \"$Crawler_Passwd\r\"
     expect eof"
     else
       show_info "$create_crawler_s2"
@@ -318,9 +318,9 @@ function creat_crawler_account(){
       expect -c "spawn passwd crawler
       set timeout 1
       expect \"*: \"
-      send \"$Nutchuser_Passwd\r\"
+      send \"$Crawler_Passwd\r\"
       expect \"*: \"
-      send \"$Nutchuser_Passwd\r\"
+      send \"$Crawler_Passwd\r\"
       expect eof"
   fi
 #  if [ -e /bin/bash ];then
@@ -496,7 +496,7 @@ function install_Nutch () {
 # debug_info "MasterIP_Address=$MasterIP_Address"
   debug_info "$MI_install_Nutch_echo_2 $(hostname)"
 # debug_info "Master_Hostname=$(hostname)"
-  su crawler -c "ssh -o StrictHostKeyChecking=no localhost echo $net_address $(hostname) $net_MacAddr \>\> ~/crawlzilla/system/nutch_nodes"
+  su crawler -c "ssh -o StrictHostKeyChecking=no localhost echo $net_address $(hostname) $net_MacAddr \>\> ~/crawlzilla/system/crawl_nodes"
   set_hosts
   set_haoop-site
   set_nutch-site
@@ -564,10 +564,10 @@ function make_client_install () {
   client_PassMasterIPAddr_for_Remove
   client_PassMasterIPAddr_for_deploy
   cd /opt/crawlzilla/
-  su crawler -c "tar -cvzf NutchezForClientOf_$MasterIP_Address.tar.gz  nutch" >> $LOG_SH_TARGET
+  su crawler -c "tar -cvzf CrawlzillaForClientOf_$MasterIP_Address.tar.gz  nutch" >> $LOG_SH_TARGET
   
   # 複製檔案至$User_HOME/source及system目錄下
-  mv NutchezForClientOf_$MasterIP_Address.tar.gz /home/crawler/crawlzilla/source
+  mv CrawlzillaForClientOf_$MasterIP_Address.tar.gz /home/crawler/crawlzilla/source
   cp $Work_Path/client_install $Work_Path/client_install_func.sh $Work_Path/client_remove $Work_Path/client_deploy.sh $Work_Path/log.sh /home/crawler/crawlzilla/source
   cp -r $Work_Path/lang  /home/crawler/crawlzilla/source
   cp -r $Work_Path/lang /home/crawler/crawlzilla/system

@@ -21,7 +21,7 @@ Master_Hostname=your_master_hostname_here
 # 此檔自己用的參數區
 Linux_Distribution="";
 Linux_Version="";
-Nutchuser_Passwd="xxxxxxxxxx";
+Crawler_Passwd="xxxxxxxxxx";
 
 Work_Path=`dirname "$0"`
 
@@ -69,7 +69,7 @@ check_systemInfo
 # 需要套件名稱 ssh, expect, dialog 
 install_packages
 
-# 檢查之前是否有安裝NutchEz
+# 檢查之前是否有安裝Crawlzilla
 # 目前先檢查是否有/opt/crawlzilla 這個資料夾即可
 check_crawlzilla_installed
 
