@@ -6,7 +6,7 @@ package org.nchc.crawlzilla;
  * 會用到 IndexInfo 以及引用 org.apache.lucene.index.IndexReader 
  * 
  * @web
- * <a href="http://code.google.com/p/nutchez/">http://code.google.com/p/nutchez </a>
+ * <a href="http://code.google.com/p/crawlzilla/">http://code.google.com/p/crawlzilla </a>
  * 
  * @author Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
  * 
@@ -64,7 +64,7 @@ public class DataInfoBean {
 		
 		
 		indexPath = Index_Path;
-		userName = "nutchuser";
+		userName = "crawler";
 
 		reader = IndexReader.open(indexPath, false);
 		indexInfo = new IndexInfo(reader, indexPath);
