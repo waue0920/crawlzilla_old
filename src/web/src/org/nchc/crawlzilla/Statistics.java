@@ -44,8 +44,8 @@ public class Statistics extends HttpServlet {
 		// 設定nutchdb路徑
 		String Index_Dir_Path;
 		String Url_Path;
-		String archieve_dir = "/home/nutchuser/nutchez/archieve/";
-		String def_search_dir = "/home/nutchuser/nutchez/search";
+		String archieve_dir = "/home/crawler/crawlzilla/archieve/";
+		String def_search_dir = "/home/crawler/crawlzilla/search";
 		DataInfoBean dataInfo = new DataInfoBean();
 		NutchDBNumBean dbnum = new NutchDBNumBean();
 		String name = request.getParameter("fileName");

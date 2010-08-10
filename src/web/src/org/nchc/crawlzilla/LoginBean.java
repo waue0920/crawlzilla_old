@@ -18,7 +18,7 @@ public class LoginBean {
 	private boolean ChangePasswdFlag = false;
 
 	public boolean getConfirm() throws IOException {
-		FileReader NP = new FileReader("/home/nutchuser/nutchez/system/.passwd");
+		FileReader NP = new FileReader("/home/crawler/crawlzilla/system/.passwd");
 		BufferedReader stdin = new BufferedReader(NP);
 		String nutchuserPasswd = new String(stdin.readLine());
 		if (nutchuserPasswd.equals(passWord)

@@ -35,7 +35,7 @@ public class NutchDBDelete extends HttpServlet {
 		String cmd;
 //		PrintWriter out = response.getWriter();
 		
-		Process process = Runtime.getRuntime().exec("rm -fr /home/nutchuser/nutchez/archieve/"+name);
+		Process process = Runtime.getRuntime().exec("rm -fr /home/crawler/crawlzilla/archieve/"+name);
 		try {
 			process.waitFor();
 		} catch (InterruptedException e) {
@@ -45,7 +45,7 @@ public class NutchDBDelete extends HttpServlet {
 		process.destroy();
 		
 
-		Process process2 = Runtime.getRuntime().exec("/home/nutchuser/nutchez/system/rm_DB.sh "+name);
+		Process process2 = Runtime.getRuntime().exec("/home/crawler/crawlzilla/system/rm_DB.sh "+name);
 
 		try {
 			process2.waitFor();
