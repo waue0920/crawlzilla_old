@@ -69,7 +69,7 @@ for (int i=0 ; i<num ;i++){
 		
 	out.print("<tr>");
 	out.print("<td>");
-	out.print("<a href=\""+files[i].getName()+"\">");
+	out.print("<a href=\"../"+files[i].getName()+"\">");
 	out.print(files[i].getName()+"</a>");
 	out.print("<input type=\"hidden\" name=\"fileName\" value=\""+files[i].getName()+" \" >");
 	out.print("</td>");
