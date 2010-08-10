@@ -1,4 +1,4 @@
-package org.nchc.nutchez;
+package org.nchc.crawlzilla;
 
 /**
  * 取出 nutch database 的入口servlet功能頁面

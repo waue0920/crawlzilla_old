@@ -1,4 +1,4 @@
-package org.nchc.nutchez;
+package org.nchc.crawlzilla;
 /**
  * LoginBean 用以比對用戶密碼，以及設定密碼
  * 

@@ -1,4 +1,4 @@
-package org.nchc.nutchez;
+package org.nchc.crawlzilla;
 
 /**
  * DataInfoBean 內的成員有資料，由Statistics 設定，然後被 statistics.jsp 讀取

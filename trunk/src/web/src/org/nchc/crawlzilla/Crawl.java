@@ -1,4 +1,4 @@
-package org.nchc.nutchez;
+package org.nchc.crawlzilla;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.nchc.nutchez.NutchDBNumBean;
+import org.nchc.crawlzilla.NutchDBNumBean;
 
 /**
  * Servlet implementation class Crawl
