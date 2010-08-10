@@ -17,7 +17,7 @@
     <property name="webRoot.dir" value="WebContent"/>
     <property name="web-inf.dir" value="${webRoot.dir}/WEB-INF"/>  
 
-    <property name="build.dir" value="/tmp/nutchez-web-build"/>
+    <property name="build.dir" value="/tmp/crawlzilla-web-build"/>
     <property name="dist.dir" value="/opt/svn_project/dist"/>
     <property name="tomcat.lib.dir" value="/opt/tomcat/lib"/>
       
@@ -79,4 +79,4 @@
     <target name="dist" depends="pack">  
         <war destfile="${dist.dir}/${ant.project.name}.war" basedir="${webRoot.dir}" webxml="${web-inf.dir}/web.xml"/>  
     </target>  
-</project>  
+</project>
