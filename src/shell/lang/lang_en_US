@@ -65,8 +65,8 @@ MI_check_dialog_2="System has dialog."
 MI_check_dialog_3="Please install dialog." 
 	 	 
 #
-MI_set_nutchuser_passwd_echo_1="Set password for nutchuser："
-MI_set_nutchuser_passwd_echo_2="keyin the password again："
+MI_set_crawler_passwd_echo_1="Set password for crawler："
+MI_set_crawler_passwd_echo_2="keyin the password again："
 
 #
 MI_select_eth_echo_1="System has detectable network cards as follows:"
@@ -198,7 +198,7 @@ check_dialog_1="check_dialog"
 check_dialog_2="System has dialog."
 check_dialog_3="Please install dialog."
 
-### scp_master_nutchuser_sshkey() ###
+### scp_master_crawler_sshkey() ###
 scp_sshkey_d1="scp_master_crawler_sshkey"
 scp_sshkey_d2="mkdir -p /home/crawler/"
 scp_sshkey_d3="scp crawler@master:~/.ssh /home/crawler/"
@@ -207,14 +207,14 @@ scp_sshkey_s1="scp correct."
 scp_sshkey_s2="scp error,\n(1)plese check crawler password in server\n(2)crawler's authorized_keys in server\n(3)server's network status"
 scp_sshkey_d4="chown -R crawler:crawler /home/crawler/.ssh"
 
-### [for creat_nutchuser_account()] ###
-create_nutchuser_d1="creat_crawler_account"
-create_nutchuser_1="Plz input crawler password of master node: "
-create_nutchuser_2="plz input crawler password, again: "
-create_nutchuser_3="Two Passwords match."
-create_nutchuser_4="Two passwords don't match, please re-input crawler's password."
-create_nutchuser_s1="System already has crawler, change crawler password."
-create_nutchuser_s2="Create crawler and change password."
+### [for creat_crawler_account()] ###
+create_crawler_d1="creat_crawler_account"
+create_crawler_1="Plz input crawler password of master node: "
+create_crawler_2="plz input crawler password, again: "
+create_crawler_3="Two Passwords match."
+create_crawler_4="Two passwords don't match, please re-input crawler's password."
+create_crawler_s1="System already has crawler, change crawler password."
+create_crawler_s2="Create crawler and change password."
 
 ### [for scp_packages()] ###
 scp_packages_d1="scp_packages"
@@ -259,7 +259,7 @@ MR_user_delete_echo_2="crawler has deleted"
 
 # main
 MR_main_echo_1="Warning - this program will remove nutchEZ, if you don't understard what this program to do, please press Ctrl+c to leave！"
-MR_main_echo_2="This program will delete all of crawlzilla's files and folders and delete user nutchuser."
+MR_main_echo_2="This program will delete all of crawlzilla's files and folders and delete user crawler."
 MR_main_echo_3="Are you sure to remove this node? 1.Yes 2.No "
 MR_main_echo_4="Crawlzilla had removed！"
 MR_main_echo_5="You are cancelling this remove procedure！"
