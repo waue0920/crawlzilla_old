@@ -24,7 +24,7 @@ Work_Path=$Crawlzilla_HOME/system
 ##  Work Path setup ##
 #echo $0 | grep '/' || Work_Path_J=1
 #if [ "$Work_Path_J" == "0"  ]; then
-#	Work_Path=$(echo $0 | sed 's/nutchez//')
+#	Work_Path=$(echo $0 | sed 's/crawlzilla//')
 #fi
 
 # [Env Declaration] #
@@ -35,14 +35,14 @@ Work_Path=$Crawlzilla_HOME/system
 function prepare_lang(){
 lang=$(locale | grep 'LANG=' | cut -d "=" -f2)
 
-# if lang=zh then source lang_zh_TW_nutchez
+# if lang=zh then source lang_zh_TW_crawlzilla
 echo $lang | grep 'zh' && source $Work_Path/lang/lang_zh_TW
 }
 
 
 ## [Pre-Check for nutch_nodes file] ##
 function prepare_check(){ 
-# 若無 nutchez_nodes　則跳出
+# 若無 crawlzilla_nodes　則跳出
 if [ ! -e "${Crawlzilla_HOME}/system/crawl_nodes" ]; then
     $DIALOG --clear --backtitle "$dia_back" --title "$dia_pre_check_title_1" \
     --msgbox "$dia_pre_check_msg_1 $Crawlzilla_HOME/system/crawl_nodes !!!" 10 40

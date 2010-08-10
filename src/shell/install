@@ -68,6 +68,6 @@ load_default_lang
 check_info
 main
 generateReadme
-change_ownship crawler /home/crawler/nutchez
+change_ownship crawler /home/crawler/crawlzilla
 show_info $crawlzilla_install_finish
 read

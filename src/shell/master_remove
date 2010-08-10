@@ -97,9 +97,9 @@ function edit_hosts () {
 
 # 移除使用者
 function user_delete () {
-  show_info "$MR_user_delete_echo_1" # "正在刪除nutchuser使用者..."
+  show_info "$MR_user_delete_echo_1" # "正在刪除crawler使用者..."
   userdel -rf crawler >/dev/null 2>&1
-  show_info "$MR_user_delete_echo_2" # "使用者nutchuser已刪除"
+  show_info "$MR_user_delete_echo_2" # "使用者crawler已刪除"
 }
 
 # Main function
