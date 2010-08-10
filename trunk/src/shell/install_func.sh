@@ -450,14 +450,14 @@ function format_HDFS () {
   debug_info "$MI_format_HDFS_echo_2"
 }
 
-function start_up_NutchEZ (){
-  show_info "$MI_start_up_NutchEZ_echo_1"
+function start_up_Crawlzilla (){
+  show_info "$MI_start_up_Crawlzilla_echo_1"
   # start namenode
   su crawler -c "$Nutch_HOME/bin/hadoop-daemon.sh --config $Nutch_HOME/conf start namenode"
   if [ $? -eq 0 ];then
     debug_info "namenode ok"
     # if ok , start jobtracker
-    show_info "$MI_start_up_NutchEZ_echo_2"
+    show_info "$MI_start_up_Crawlzilla_echo_2"
     su crawler -c "$Nutch_HOME/bin/hadoop-daemon.sh --config $Nutch_HOME/conf start jobtracker"
     if [ $? -eq 0 ];then
       debug_info "jobtracker ok"
