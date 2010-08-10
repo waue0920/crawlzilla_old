@@ -97,7 +97,7 @@ chown -R crawler:crawler /var/log/crawlzilla
 chown -R crawler:crawler /var/lib/crawlzilla
 }
 function unzip_nV2_pack(){
-  local pac_name=crawlzilla-0.2pack-current.tar.gz
+  local pac_name=crawlzilla-pack-current.tar.gz
   if [ ! -d "$Install_Dir/package" ];then
     mkdir $Install_Dir/package
   fi
@@ -112,7 +112,7 @@ function unzip_nV2_pack(){
 	exit 8;
     fi
   fi
-  debug_info "unpack tomcat and nutch to /opt/nutchez"
+  debug_info "unpack tomcat and nutch to /opt/crawlzilla"
   tar -zxvf $Install_Dir/package/$pac_name -C /opt/ >> $LOG_SH_TARGET
 
   # work_path = this bin dir , conf_path = bin/../conf
