@@ -1,6 +1,6 @@
 #!/bin/bash
 # Program:
-#   Chinese Language file for NutchEZ 
+#   Chinese Language file for Crawlzilla 
 # Author:
 #   Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
 # Version:
@@ -103,8 +103,8 @@ MI_format_HDFS_echo_1="格式化HDFS..."
 MI_format_HDFS_echo_2="格式化HDFS完成"
 
 #
-MI_start_up_NutchEZ_echo_1="啟動資料管理程序[Namenode] ... "
-MI_start_up_NutchEZ_echo_2="啟動運算管理程序[JobTracker] ... "
+MI_start_up_Crawlzilla_echo_1="啟動資料管理程序[Namenode] ... "
+MI_start_up_Crawlzilla_echo_2="啟動運算管理程序[JobTracker] ... "
 
 #
 MI_set_hosts_echo_1="設定master上的hosts"

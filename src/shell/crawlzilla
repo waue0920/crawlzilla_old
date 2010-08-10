@@ -72,8 +72,8 @@ if [ ! -e "${Crawlzilla_HOME}/system/crawl_nodes.bak" ]; then
 
 #    echo -e "$pre_check_echo_1"
     $Work_Path/duplicate_del "${Crawlzilla_HOME}/system/crawl_nodes"
-    $Work_Path/duplicate_del $Work_Path/hosts && $Work_Path/add_hosts ${NutchEZ_HOME}/system/crawl_nodes $Work_Path/hosts
-#    su root -c "$Work_Path/duplicate_del /etc/hosts && $Work_Path/add_hosts ${NutchEZ_HOME}/system/nutch_nodes /etc/hosts"
+    $Work_Path/duplicate_del $Work_Path/hosts && $Work_Path/add_hosts ${Crawlzilla_HOME}/system/crawl_nodes $Work_Path/hosts
+#    su root -c "$Work_Path/duplicate_del /etc/hosts && $Work_Path/add_hosts ${Crawlzilla_HOME}/system/nutch_nodes /etc/hosts"
     #　若密碼輸入失敗則跳出
     if [ $? == "1" ]; then
         echo "$pre_check_echo_2"
@@ -87,10 +87,10 @@ elif [ ${Crawlzilla_HOME}/system/crawl_nodes -nt ${Crawlzilla_HOME}/system/crawl
     --yesno "$dia_pre_check_yesno_3\n$dia_pre_check_yesno_2" 10 55
 
 #    echo -e "$pre_check_echo_1"
-    $Work_Path/duplicate_del "${NutchEZ_HOME}/system/crawl_nodes"
+    $Work_Path/duplicate_del "${Crawlzilla_HOME}/system/crawl_nodes"
     cp -f "${Crawlzilla_HOME}/system/crawl_nodes" "${Crawlzilla_HOME}/system/crawl_nodes.bak"
-    $Work_Path/duplicate_del $Work_Path/hosts && $Work_Path/add_hosts ${NutchEZ_HOME}/system/crawl_nodes $Work_Path/hosts
-#    su root -c "$Work_Path/duplicate_del /etc/hosts && $Work_Path/add_hosts ${NutchEZ_HOME}/system/nutch_nodes /etc/hosts"
+    $Work_Path/duplicate_del $Work_Path/hosts && $Work_Path/add_hosts ${Crawlzilla_HOME}/system/crawl_nodes $Work_Path/hosts
+#    su root -c "$Work_Path/duplicate_del /etc/hosts && $Work_Path/add_hosts ${Crawlzilla_HOME}/system/nutch_nodes /etc/hosts"
     #　若密碼輸入失敗則跳出                   
     if [ $? == "1" ]; then                    
         echo "$pre_check_echo_2="
@@ -201,7 +201,7 @@ elif [ "$(cat $serverSetup)" == "restart" ]; then
     $Crawlzilla_Install_PATH/nutch/bin/stop-dfs.sh
     $Crawlzilla_Install_PATH/nutch/bin/stop-mapred.sh
     $Crawlzilla_Install_PATH/nutch/bin/start-dfs.sh
-    $NutchEZ_Install_PATH/nutch/bin/start-mapred.sh
+    $Crawlzilla_Install_PATH/nutch/bin/start-mapred.sh
     # Back to main menu                                                                                    
     main_menu
     menu_choose
@@ -218,8 +218,8 @@ fi
 ## [Cluster Setup (datanode & tasktracker)] ##
 function cluster_setup(){
 # 從 nutch_nodes 讀出 ip　和 hostname
-#IP_list=$(cat $NutchEZ_HOME/system/nutch_nodes | grep -v '^$' | grep -v '#' | awk '{print $1}')
-#HOST_list=$(cat $NutchEZ_HOME/system/nutch_nodes | grep -v '^$' | grep -v '#' | awk '{print $2}')
+#IP_list=$(cat $Crawlzilla_HOME/system/nutch_nodes | grep -v '^$' | grep -v '#' | awk '{print $1}')
+#HOST_list=$(cat $Crawlzilla_HOME/system/nutch_nodes | grep -v '^$' | grep -v '#' | awk '{print $2}')
 LIST_status="off"
 allpart="/tmp/allpart"
 runNodes="/tmp/runNodes"
