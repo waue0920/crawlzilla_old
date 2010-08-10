@@ -21,7 +21,7 @@ function checkMethod(){
 
 SvnProject=/opt/svn_project
 GoogleCodeCrawlzilla=$SvnProject/crawlzilla
-TmpDir=/tmp/Crawlzilla_Install
+TmpDir=Crawlzilla_Install
 ShellTar=Crawlzilla-0.2-$DATE_VER-Shell.tar.gz
 FullTar=Crawlzilla-0.2-$DATE_VER-Full.tar.gz
 
