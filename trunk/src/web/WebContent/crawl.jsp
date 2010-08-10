@@ -9,8 +9,8 @@
 <li><a href="index.jsp">HOME</a></li>
 <li id="active"><a href="crawl.jsp" id="current">Crawl</a></li>
 <li id="active"><a href="nutch_DB.jsp" >&#36039;&#26009;&#24235;&#31649;&#29702;</a></li>
-<li id="active"><a href="usersetup.jsp">&#x4F7F;&#x7528;&#x8005;&#x8A2D;&#x5B9A;</a></li>
 <li><a href="sysinfo.jsp">&#31995;&#32113;&#29376;&#24907;</a></li>
+<li id="active"><a href="usersetup.jsp">&#x4F7F;&#x7528;&#x8005;&#x8A2D;&#x5B9A;</a></li>
 <% if(session.getAttribute("confirm") == "true") { %>
 <li><a href="logout.jsp">&#30331;&#20986;&#31995;&#32113;</a></li>
 <%} else { %>	
