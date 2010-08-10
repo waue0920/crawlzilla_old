@@ -65,8 +65,8 @@ MI_check_dialog_2="系統已有 dialog."
 MI_check_dialog_3="請安裝 dialog." 
 	 	 
 #
-MI_set_nutchuser_passwd_echo_1="請輸入欲設定的crawler密碼："
-MI_set_nutchuser_passwd_echo_2="請再輸入一次確認密碼："
+MI_set_crawler_passwd_echo_1="請輸入欲設定的crawler密碼："
+MI_set_crawler_passwd_echo_2="請再輸入一次確認密碼："
 
 #
 MI_select_eth_echo_1="系統偵測到目前擁有網卡如下："
@@ -201,7 +201,7 @@ check_dialog_1="check_dialog"
 check_dialog_2="系統已有 dialog."
 check_dialog_3="請安裝 dialog."
 
-### scp_master_nutchuser_sshkey() ###
+### scp_master_crawler_sshkey() ###
 scp_sshkey_d1="scp_master_crawler_sshkey"
 scp_sshkey_d2="mkdir -p /home/crawler/"
 scp_sshkey_d3="scp crawler@master:~/.ssh /home/crawler/"
@@ -210,14 +210,14 @@ scp_sshkey_s1="scp 正確"
 scp_sshkey_s2="scp 失敗,\n(1)請確認 Master 的 crawler 的密碼\n(2)Master 上 crawler's 的 sshkey\n(3)Master 的網路狀態"
 scp_sshkey_d4="chown -R crawler:crawler /home/crawler/.ssh"
 
-### [for creat_nutchuser_account()] ###
-create_nutchuser_d1="creat_crawler_account"
-create_nutchuser_1="請輸入 Master 上 crawler 使用者的密碼: "
-create_nutchuser_2="請再輸入一次: "
-create_nutchuser_3="兩次密碼一致"
-create_nutchuser_4="兩次密碼不一致，請重新輸入"
-create_nutchuser_s1="系統已經有 crawler，直接更改 crawler 密碼"
-create_nutchuser_s2="建立 crawler 使用者並更改密碼"
+### [for creat_crawler_account()] ###
+create_crawler_d1="creat_crawler_account"
+create_crawler_1="請輸入 Master 上 crawler 使用者的密碼: "
+create_crawler_2="請再輸入一次: "
+create_crawler_3="兩次密碼一致"
+create_crawler_4="兩次密碼不一致，請重新輸入"
+create_crawler_s1="系統已經有 crawler，直接更改 crawler 密碼"
+create_crawler_s2="建立 crawler 使用者並更改密碼"
 
 ### [for scp_packages()] ###
 scp_packages_d1="scp_packages"
