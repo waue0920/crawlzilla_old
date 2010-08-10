@@ -3,7 +3,7 @@
 SHELLNAME=$1
 DATE=`date +%y%m%d`
 TIME=`date +%Y/%m/%d-%H:%M:%S`
-export LOG_SH_TARGET=/var/log/nutchez/shell-logs/$SHELLNAME-$DATE.log
+export LOG_SH_TARGET=/var/log/crawlzilla/shell-logs/$SHELLNAME-$DATE.log
 
 ##########  echo function  ##########
 function debug_info () {
@@ -22,8 +22,8 @@ function show_info () {
 #########end echo function ##########
 
 
-if [ ! -e "/var/log/nutchez/shell-logs/" ]; then
-    mkdir -p "/var/log/nutchez/shell-logs/";
+if [ ! -e "/var/log/crawlzilla/shell-logs/" ]; then
+    mkdir -p "/var/log/crawlzilla/shell-logs/";
 fi
 # file descriptor 4 prints to STDOUT and to TARGET
 #exec 4> >(while read a; do echo $a; echo $a >> $LOG_SH_TARGET; done)

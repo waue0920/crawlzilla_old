@@ -76,7 +76,7 @@ checkMethod 5.1
 
 # 6 放入 pack 檔
 # mkdir $TmpDir/package
-# cp $GoogleCodeNutcheEz/src/package/nutchez-0.2pack-current.tar.gz $TmpDir/package/
+# cp $GoogleCodeNutcheEz/src/package/crawlzilla-pack-current.tar.gz $TmpDir/package/
 # checkMethod 6.1
 
 # 7 壓縮完整包
