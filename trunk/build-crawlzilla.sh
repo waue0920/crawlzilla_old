@@ -62,7 +62,7 @@ checkMethod 3.3
 
 # 4 複製與鍊結檔案
 
-cp $GoogleCrawlzilla/LICENSE.txt $TmpDir/
+cp $GoogleCodeCrawlzilla/LICENSE.txt $TmpDir/
 checkMethod 4.1
 cd $TmpDir
 ln -sf docs/README.en.txt README.txt
