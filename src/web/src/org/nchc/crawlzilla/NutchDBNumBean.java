@@ -1,5 +1,5 @@
 // Search numbers of nutch DB 
-package org.nchc.nutchez;
+package org.nchc.crawlzilla;
 
 import java.io.*;
 

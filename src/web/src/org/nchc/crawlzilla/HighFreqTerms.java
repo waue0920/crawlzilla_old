@@ -1,4 +1,4 @@
-package org.nchc.nutchez;
+package org.nchc.crawlzilla;
 
 /**
  * Statistics <-- DataInfoBean <- IndexInfo <- this
