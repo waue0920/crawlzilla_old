@@ -7,11 +7,11 @@ import java.io.IOException;
 public class CheckFristLogin {
 	private boolean ChangePasswdFlag = false;
 	public boolean fristLogin() throws IOException{
-		FileReader NP = new FileReader("/home/nutchuser/nutchez/system/.passwd");
+		FileReader NP = new FileReader("/home/crawler/crawlzilla/system/.passwd");
 		BufferedReader stdin = new BufferedReader(NP);
 		String nutchuserPasswd = new String(stdin.readLine());
-		if (nutchuserPasswd.equals("nutchuser")
-				&& nutchuserPasswd.equals("nutchuser")) {
+		if (nutchuserPasswd.equals("crawler")
+				&& nutchuserPasswd.equals("crawler")) {
 			ChangePasswdFlag = true;
 		}
 
