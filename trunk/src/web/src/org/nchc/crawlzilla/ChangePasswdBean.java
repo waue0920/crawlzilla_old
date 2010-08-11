@@ -18,14 +18,14 @@ public class ChangePasswdBean {
 	private String oldPasswd;
 	private String newPasswd;
 	private String checkNewPassword;
-	
+	private String passwdPath = "/home/crawler/crawlzilla/system/.passwd";
 	public boolean editPasswd() throws IOException {
-		FileReader NP = new FileReader("/home/crawler/crawlzilla/system/.passwd");
+		FileReader NP = new FileReader(passwdPath);
 		BufferedReader stdin = new BufferedReader(NP);
 		String crawlerPasswd = new String(stdin.readLine());
 		
 		if(crawlerPasswd.equals(oldPasswd) && newPasswd.equals(checkNewPassword)){
-			File editNP = new File("/home/crawler/crawlzilla/system/.passwd");
+			File editNP = new File(passwdPath);
 			FileWriter fw = new FileWriter(editNP , false);
 			fw.write(newPasswd);
 			fw.close();
@@ -37,7 +37,6 @@ public class ChangePasswdBean {
 			return false;
 		}		
 	}
-	
 	
 	public void setOldPasswd(String oldPasswd) {
 		this.oldPasswd = oldPasswd;

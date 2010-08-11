@@ -1,31 +1,55 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="/include/header.jsp" %>
-
+<%@ taglib uri="http://jakarta.apache.org/taglibs/i18n-1.0"
+	prefix="i18n"%>
+<%@ page import="java.util.*"%>
 <jsp:useBean id="checkFristLogin" class="org.nchc.crawlzilla.CheckFristLogin" /> 
 <jsp:setProperty name="checkFristLogin" property="*" /> 
 
+<%
+		String sIPAddress = request.getServerName();
+		String lang = (String) session.getAttribute("lang");
+		if (lang == null) {
+			lang = pageContext.getResponse().getLocale().toString();
+			session.setAttribute("lang", lang);
+		}
+		Locale locale = new Locale(lang, "");
+%>
+<i18n:bundle baseName="org.nchc.crawlzilla.i18n.lang"
+	locale="<%=locale%>" id="bundle" />
+
+<%@ include file="/include/header.jsp"%>
 <div id="navcontainer">
 <ul id="navlist">
-<li><a href="index.jsp">HOME</a></li>
-<li><a href="crawl.jsp">Crawl</a></li>
-<li id="active"><a href="nutch_DB.jsp" >&#36039;&#26009;&#24235;&#31649;&#29702;</a></li>
-<li><a href="sysinfo.jsp">&#31995;&#32113;&#29376;&#24907;</a></li>
-<li id="active"><a href="adminLogin.jsp" id="current">&#31649;&#29702;&#32773;&#30331;&#20837;</a></li>
+	<li><a href="index.jsp"><i18n:message key="title_Home" /></a></li>
+	<li><a href="crawl.jsp"><i18n:message key="title_Crawl" /></a></li>
+	<li><a href="nutch_DB.jsp"><i18n:message key="title_DbManage" /></a></li>
+	<li><a href="sysinfo.jsp"><i18n:message	key="title_SysInfo" /></a></li>
+	<li><a href="usersetup.jsp"><i18n:message key="title_UserSetup" /></a></li>
+	<%
+		if (session.getAttribute("confirm") == "true") {
+	%>
+	<li><a href="logout.jsp"><i18n:message key="title_Logout" /></a></li>
+	<%
+		} else {
+	%>
+	<li><a href="adminLogin.jsp"><i18n:message key="title_Login" /></a></li>
+	<%
+		}
+	%>
 </ul>
-</div>
+</div></div>
 
-</div>
 <div class='featurebox_center'>
 <%@ include file="/include/right_side.jsp" %>
 
 <div id="content">
 
-<h3>登入管理系統</h3>
+<h3><i18n:message key="admLogin_login" /></h3>
 
 
 <form name="login" method="post" action="login.jsp">
-  <p>請輸入管理者密碼：</p>
+  <p><i18n:message key="admLogin_inputPasswd" /></p>
     <p>
       <label>
          <input type="password" name="passWord" >
@@ -33,10 +57,10 @@
   </p>
     <p>
       <label>
-        <input type="submit" name="login" id="login" value="&#36865;&#20986;" />
+        <input type="submit" name="login" id="login" value="<i18n:message key="button_submit" />" />
         </label>
       <label>
-        <input type="reset" name="cancel" id="cancel" value="&#37325;&#35373;" />
+        <input type="reset" name="cancel" id="cancel" value="<i18n:message key="button_reset" />" />
         </label>
       </p>
       <%

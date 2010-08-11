@@ -51,10 +51,10 @@ if (checkFristLogin.fristLogin()){
     </table>
        <p>
          <label>
-           <input type="submit" name="login" id="login" value="&#36865;&#20986;" />
+           <input type="submit" name="login" id="login" value="<i18n:message key="button_submit"/>" />
          </label>
          <label>
-        <input type="reset" name="cancel" id="cancel" value="&#37325;&#35373;" />
+        <input type="reset" name="cancel" id="cancel" value="<i18n:message key="button_reset" />" />
         </label>
       </p>
   </form>
