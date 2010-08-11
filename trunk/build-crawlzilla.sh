@@ -27,7 +27,7 @@ FullTar=Crawlzilla-0.2-$DATE_VER-Full.tar.gz
 
 # 1 同步資料與編譯web資料
 
-cd $GoogleCodeNutcheEz ; svn update;
+cd $GoogleCodeCrawlzilla; svn update;
 checkMethod 1.1
 ant -f /opt/svn_project/crawlzilla/src/web/build.xml clean
 ant -f /opt/svn_project/crawlzilla/src/web/build.xml
