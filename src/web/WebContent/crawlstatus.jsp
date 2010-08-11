@@ -59,9 +59,7 @@
 	(2)<a href="index.jsp">Mian page</a><br />
 	    <% } 
     else {
-		response.setHeader("Refresh", "0; URL=" + loginFormURL); %>
-        <div class='featurebox_center'>&#31995;&#32113;&#31649;&#29702;&#21729;&#23578;&#26410;&#30331;&#20837;&#65292;&#31995;&#32113;&#23559;&#26044;3&#31186;&#24460;&#36339;&#36681;&#33267;&#30331;&#20837;&#38913;&#38754;(<a href="adminLogin.jsp">&#33509;&#28961;&#36339;&#36681;&#35531;&#25353;&#27492;</a>)</div>        
-    	<% } %>
+		response.setHeader("Refresh", "0; URL=" + loginFormURL);  } %>
 
 </div>
 
