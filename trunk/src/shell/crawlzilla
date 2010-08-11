@@ -77,6 +77,7 @@ if [ ! -e "${Crawlzilla_HOME}/system/crawl_nodes.bak" ]; then
     #　若密碼輸入失敗則跳出
     if [ $? == "1" ]; then
         echo "$pre_check_echo_2"
+
         exit
     fi 
     cp -f "${Crawlzilla_HOME}/system/crawl_nodes" "${Crawlzilla_HOME}/system/crawl_nodes.bak"
