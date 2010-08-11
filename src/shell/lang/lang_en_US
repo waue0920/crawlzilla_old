@@ -133,7 +133,8 @@ MI_start_up_tomcat_echo_3="Tomcat has been started！"
 
 #
 MI_client_install_commands_echo_1="For client install, please refer commands as follows："
-MI_client_install_commands_echo_2="scp crawler@$MasterIP_Address:/home/crawler/crawlzilla/source/client_deploy.sh ."
+MI_client_install_commands_echo_20="scp crawler@"
+MI_client_install_commands_echo_25=":/home/crawler/crawlzilla/source/client_deploy.sh ."
 MI_client_install_commands_echo_3="./client_deploy.sh"
 MI_client_install_commands_echo_4="~/crawlzilla_client_install/client_install"
 
