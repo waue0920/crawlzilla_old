@@ -209,8 +209,8 @@ function scp_master_crawler_sshkey(){
 
   debug_info "$scp_sshkey_d3"
 expect -c "spawn scp -r -o StrictHostKeyChecking=no crawler@$1:~/.ssh /home/crawler/
-set timeout 1
-sleep 2
+set timeout 5
+sleep 5
 expect \"*: \" { send \"$Crawler_Passwd\r\" }
 expect \"*: \" { send_user \"$scp_sshkey_expect_1\" }
 expect eof"
@@ -287,7 +287,7 @@ function scp_packages(){
   chmod 755 /opt/crawlzilla
   debug_info "$scp_packages_d3"
   if [ -e "$Work_Path/CrawlzillaForClientOf_$Master_IP_Address.tar.gz" ];then
-    mv CrawlzillaForClientOf_$Master_IP_Address.tar.gz /home/crawler/crawlzilla/source
+    mv $Work_Path/CrawlzillaForClientOf_$Master_IP_Address.tar.gz /home/crawler/crawlzilla/source
   fi
  
   if [ ! -e "/home/crawler/crawlzilla/source/CrawlzillaForClientOf_$Master_IP_Address.tar.gz" ];then
