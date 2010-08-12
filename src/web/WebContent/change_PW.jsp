@@ -1,16 +1,31 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="/include/header.jsp" %>
-
+<%@ page import="java.util.*"%>
+<%@ taglib uri="http://jakarta.apache.org/taglibs/i18n-1.0"
+	prefix="i18n"%>
 <jsp:useBean id="checkFristLogin" class="org.nchc.crawlzilla.CheckFristLogin" /> 
 <jsp:setProperty name="checkFristLogin" property="*" /> 
+
+<%
+		String sIPAddress = request.getServerName();
+		String lang = (String) session.getAttribute("lang");
+		if (lang == null) {
+			lang = pageContext.getResponse().getLocale().toString();
+			session.setAttribute("lang", lang);
+		}
+		Locale locale = new Locale(lang, "");
+%>
+<i18n:bundle baseName="org.nchc.crawlzilla.i18n.lang"
+	locale="<%=locale%>" id="bundle" />
+
+<%@ include file="/include/header.jsp" %>
 <div id="navcontainer">
 <ul id="navlist">
-<li><a href="index.jsp">HOME</a></li>
-<li><a href="crawl.jsp">Crawl</a></li>
-<li id="active"><a href="nutch_DB.jsp" >&#36039;&#26009;&#24235;&#31649;&#29702;</a></li>
-<li><a href="sysinfo.jsp">&#31995;&#32113;&#29376;&#24907;</a></li>
-<li id="active"><a href="adminLogin.jsp" id="current">&#20462;&#25913;&#23494;&#30908;</a></li>
+	<li><a href="index.jsp"><i18n:message key="title_Home" /></a></li>
+	<li><a href="crawl.jsp"><i18n:message key="title_Crawl" /></a></li>
+	<li><a href="nutch_DB.jsp"><i18n:message key="title_DbManage" /></a></li>
+	<li><a href="sysinfo.jsp"><i18n:message key="title_SysInfo" /></a></li>
+	<li><a href="usersetup.jsp"><i18n:message key="title_UserSetup" /></a></li>
 </ul>
 </div>
 
@@ -23,27 +38,28 @@
 <%
 String oldPW="";
 if (checkFristLogin.fristLogin()){
-	oldPW="crawler";
-	out.println("首次登入，請先修改密碼！");
-	out.println("預設密碼為 \"crawler\"");
+	oldPW="crawler"; %>
+	<i18n:message key="ch_PW_First" />
+	<i18n:message key="ch_PW_Def" />
+	<%
 }
 %>
   <form name="login" method="post" action="changePW.jsp">
   <table width="460" border="0">
       <tr>
-        <td width="194">請輸入舊密碼：</td>
+        <td width="194"><i18n:message key="ch_PW_Old" /></td>
         <td width="158"><label>
           <input name="oldPasswd" type="password" id="oldPasswd" value="<%out.println(oldPW); %>" size="20" />
         </label></td>
         </tr>
     <tr>
-      <td>&#35531;&#36664;&#20837;&#27442;&#26356;&#25913;&#30340;&#26032;&#23494;&#30908;&#65306;</td>
+      <td><i18n:message key="ch_PW_Pw" /></td>
       <td><label>
         <input name="newPasswd" type="password" id="newPasswd" size="20" />
       </label></td>
       </tr>
     <tr>
-      <td>&#35531;&#20877;&#36664;&#20837;&#19968;&#27425;&#26032;&#23494;&#30908;&#65306;</td>
+      <td><i18n:message key="ch_PW_Confirm" /></td>
       <td><label>
         <input name="checkNewPassword" type="password" id="checkNewPassword" size="20" />
       </label></td>
