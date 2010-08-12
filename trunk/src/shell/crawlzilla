@@ -68,7 +68,7 @@ fi
 
 if [ ! -e "${Crawlzilla_HOME}/system/crawl_nodes.bak" ]; then
     $DIALOG --clear --backtitle "$dia_back" --title "$dia_pre_check_title_2" \
-    --yesno "$dia_pre_check_yesno_1\n$dia_pre_check_yesno_2" 10 55
+    --msgbox "$dia_pre_check_yesno_1\n$dia_pre_check_yesno_2" 10 55
 
 #    echo -e "$pre_check_echo_1"
     $Work_Path/duplicate_del "${Crawlzilla_HOME}/system/crawl_nodes"
@@ -85,7 +85,7 @@ if [ ! -e "${Crawlzilla_HOME}/system/crawl_nodes.bak" ]; then
 # 若 crawl_nodes 被更新過，則要求更新 /etc/hosts
 elif [ ${Crawlzilla_HOME}/system/crawl_nodes -nt ${Crawlzilla_HOME}/system/crawl_nodes.bak ]; then
     $DIALOG --clear --backtitle "$dia_back" --title "$dia_pre_check_title_2" \
-    --yesno "$dia_pre_check_yesno_3\n$dia_pre_check_yesno_2" 10 55
+    --msgbox "$dia_pre_check_yesno_3\n$dia_pre_check_yesno_2" 10 55
 
 #    echo -e "$pre_check_echo_1"
     $Work_Path/duplicate_del "${Crawlzilla_HOME}/system/crawl_nodes"
