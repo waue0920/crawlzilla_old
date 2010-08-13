@@ -28,13 +28,13 @@ echo $lang | grep 'zh' >> /dev/null && source $Work_Path/lang/lang_zh_TW
 
 function check_root(){
 
-  bb=`sudo cat /etc/shadow |grep "root"`
-  bb=`echo $bb |awk 'BEGIN {FS=":"} {print $2}'`
-  if [ "$bb" == "*" ];then
-    show_info "!!! root's password have not been set !!!"
-    show_info "press \"Enter\" key to continue"
-    read ;
-  fi
+#  bb=`sudo cat /etc/shadow |grep "root"`
+#  bb=`echo $bb |awk 'BEGIN {FS=":"} {print $2}'`
+#  if [ "$bb" == "*" ];then
+#    show_info "!!! root's password have not been set !!!"
+#    show_info "press \"Enter\" key to continue"
+#    read ;
+#  fi
 
 
   debug_info "check_root"
