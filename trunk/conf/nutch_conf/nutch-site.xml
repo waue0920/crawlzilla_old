@@ -81,17 +81,6 @@
   otherwise, no truncation at all.
   </description>
 </property>
-<property>
-  <name>ftp.username</name>
-  <value>ftpname</value>
-  <description>ftp login username.</description>
-</property>
-
-<property>
-  <name>ftp.password</name>
-  <value>ftppasswd</value>
-  <description>ftp login password.</description>
-</property>
 
 </configuration>
 
