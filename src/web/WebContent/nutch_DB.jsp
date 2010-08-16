@@ -76,19 +76,23 @@
 <%
 String InPreview = request.getParameter("inpreview");
 for (int i=0 ; i<num ;i++){
-	out.print("<form method=\"get\" name=\"dbForm\" >");
+%>
+
+	<form method="get" name="dbForm" >
 		
-	out.print("<tr>");
-	out.print("<td>");
-	out.print("<a href=\"../"+files[i].getName()+"\">");
-	out.print(files[i].getName()+"</a>");
-	out.print("<input type=\"hidden\" name=\"fileName\" value=\""+files[i].getName()+" \" >");
-	out.print("</td>");
+	<tr>
+	<td>
+	<a href="../<%=files[i].getName()%>">
+	<%=files[i].getName()%></a>
+	<input type="hidden" name="fileName" value="<%=files[i].getName()%>" >
+	</td>
 	
-	out.print("<td>");
+	<td>
+	<%
 	Date lastModified = new Date(files[i].lastModified());
 	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 	out.print(dateFormat.format(lastModified));
+
 	out.print("</td>");
 	
 	out.print("<td>");
@@ -99,15 +103,18 @@ for (int i=0 ; i<num ;i++){
 	out.print("<input type=\"button\" name=\"Preview\" value=\"Preview\" onclick=\"preview(" + i + ")\" />");
 	out.print("</td>");
 	out.print("<td>");
-	out.print("<input type=\"button\" name=\"embed\" value=\"embed code\" onclick=\"embed_code(" + i + ")\" />");
-	out.print("<input type=\"hidden\" name=\"serverIP\" value=\""+sIPAddress+" \" >");
+	%>
+	<input type="hidden" name="serverIP" value=<%=sIPAddress%> />
+	<input type="button" name="embed" value="embed code" onclick="embed_code(<%=i%>)" />
 	
-	out.print("</td>");
 	
-	out.print("</form>");
+	</td>
+	
+	</form>
+<%
 }
-
 %>
+
 </table>
 <div class='featurebox_center'><i18n:message key="nutchDB_Overview"/> <b><br><br>
 <table width="100%" border="0">
