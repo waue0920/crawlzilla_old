@@ -71,11 +71,12 @@
   	<th><i18n:message key="nutchDB_CreateTime"/></th>
   	<th><i18n:message key="nutchDB_DelDb"/></th>
   	<th><i18n:message key="nutchDB_Preview"/><br><i18n:message key="nutchDB_Statistics"/></th>
+  	<th>embed search engine<br /> to page</th>
   </tr>
 <%
 String InPreview = request.getParameter("inpreview");
 for (int i=0 ; i<num ;i++){
-	out.print("<form method=\"get\" name=\"dbForm\" action=\"NutchDBSetup.do\" >");
+	out.print("<form method=\"get\" name=\"dbForm\" >");
 		
 	out.print("<tr>");
 	out.print("<td>");
@@ -95,7 +96,14 @@ for (int i=0 ; i<num ;i++){
 	out.print("</td>");
 	out.print("<td>");
 	out.print("<input type=\"hidden\" name=\"inpreview\" value=\""+String.valueOf(i)+"\" >");
-	out.print("<input type=\"submit\" name=\"Preview\" value=\"Preview\" onclick=\"preview(" + i + ")\" />");
+	out.print("<input type=\"button\" name=\"Preview\" value=\"Preview\" onclick=\"preview(" + i + ")\" />");
+	out.print("</td>");
+	out.print("<td>");
+	out.print("<input type=\"button\" name=\"embed\" value=\"embed code\" onclick=\"embed_code(" + i + ")\" />");
+	out.print("<input type=\"hidden\" name=\"serverIP\" value=\""+sIPAddress+" \" >");
+	
+	out.print("</td>");
+	
 	out.print("</form>");
 }
 

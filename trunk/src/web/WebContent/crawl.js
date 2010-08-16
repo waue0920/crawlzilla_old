@@ -56,3 +56,7 @@ document.forms[num].action="NutchDBStatusDelete.do";
 document.forms[num].submit();
 }
 }
+
+function embed_code(num){
+	alert('<form name="search" action="http://' + serverIP + ':8080/' + fileName + '/search.jsp" method="get"><input name="query" size=20 value="haha"><input type="hidden" name="hitsPerPage" value="50"><input type="hidden" name="lang" value="zh"></form>');
+}
