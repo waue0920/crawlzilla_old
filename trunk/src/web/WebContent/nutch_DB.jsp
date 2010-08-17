@@ -71,7 +71,7 @@
   	<th><i18n:message key="nutchDB_CreateTime"/></th>
   	<th><i18n:message key="nutchDB_DelDb"/></th>
   	<th><i18n:message key="nutchDB_Preview"/><br><i18n:message key="nutchDB_Statistics"/></th>
-  	<th>embed search engine<br /> to page</th>
+  	<th><i18n:message key="nutchDB_embed1"/><br /><i18n:message key="nutchDB_embed2"/></th>
   </tr>
 <%
 String InPreview = request.getParameter("inpreview");
