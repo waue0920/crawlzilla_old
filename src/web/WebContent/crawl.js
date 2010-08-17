@@ -60,5 +60,5 @@ document.forms[num].submit();
 function embed_code(num){
 	serverIP = document.forms[num].serverIP.value
 	fileName = document.forms[num].fileName.value
-	alert('<img src="http://' +serverIP+':8080/crawlzilla/' + 'img/logo.png" >'+'<form name="search" action="http://' +serverIP+ ':8080/' +fileName+ '/search.jsp" method="get"><input name="query" size=15 value="haha"><input type="hidden" name="hitsPerPage" value="50"><input type="hidden" name="lang" value="zh"></form>');
+	alert('<img src="http://' +serverIP+':8080/crawlzilla/' + 'img/logo.png" >'+'<form name="search" action="http://' +serverIP+ ':8080/' +fileName+ '/search.jsp" method="get"><input name="query" size=15><input type="hidden" name="hitsPerPage" value="50"><input type="hidden" name="lang" value="zh"></form>');
 }
