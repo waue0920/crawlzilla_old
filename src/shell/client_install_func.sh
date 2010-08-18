@@ -78,10 +78,23 @@ function install_packages(){
   # deb 系列系統
   debug_info "$install_pack_1"
   debug_info "$install_pack_2"
-  if [ "$Linux_Distribution" == "Ubuntu" ] || [ "$Linux_Distribution" == "Debian" ] ;then
-    echo -e "\n$install_pack_if_1\n"
-    aptitude install -y expect ssh dialog
+  if [ "$Linux_Distribution" == "Ubuntu" ] ;then
+        if [ $Linux_Version == "10.04" ]; then
+            echo -e "\n$install_pack_if_1\n"
+            add-apt-repository "deb http://archive.canonical.com/ lucid partner"
+            apt-get update
+            aptitude install -y expect ssh dialog sun-java6-jdk sun-java6-plugin
+            update-java-alternatives -s java-6-sun
+        else
+            echo -e "\n$install_pack_if_1\n"
+            apt-get update
+            aptitude install -y expect ssh dialog
+        fi
   # rpm 系列系統
+  elif [ "$Linux_Distribution" == "Debian" ]; then
+    echo -e "\n$install_pack_if_1\n"
+    apt-get update
+    aptitude install -y expect ssh dialog
   elif [ "$Linux_Distribution" == "Fedora" ] || [ "$Linux_Distribution" == "CentOS" ] ;then
     show_info "$install_pack_if_2"
   else
