@@ -97,6 +97,9 @@ function install_packages(){
     aptitude install -y expect ssh dialog
   elif [ "$Linux_Distribution" == "Fedora" ] || [ "$Linux_Distribution" == "CentOS" ] ;then
     show_info "$install_pack_if_2"
+  elif [ "$Linux_Distribution" == "SUSE" ] ;then
+    zypper install -n expect openssh dialog java-1_6_0-sun
+
   else
     show_info "$install_pack_if_2"
   fi 
@@ -241,6 +244,7 @@ expect eof"
 
 # 新增crawler 帳號時用 Crawler_Passwd 當密碼
 function creat_crawler_account(){
+  groupadd crawler
   debug_info "$create_crawler_d1"
   while [ "$Crawler_Passwd" != "$Crawler_Passwd2" ]
   do

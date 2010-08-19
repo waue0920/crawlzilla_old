@@ -64,7 +64,7 @@ function install_packages(){
   elif [ "$Linux_Distribution" == "Fedora" ] || [ "$Linux_Distribution" == "CentOS" ] ;then
     show_info "$MI_install_pack_if_2"
   elif [ "$Linux_Distribution" == "SUSE" ] ;then
-    zypper install -n expect openssh dialog
+    zypper install -n expect openssh dialog java-1_6_0-sun-devel java-1_6_0-sun
   else
     show_info "$MI_install_pack_if_2"
   fi
@@ -151,6 +151,16 @@ function unzip_nV2_pack(){
 	  fi
     fi
   fi
+  
+   # change sun-jre home path to each linux os
+  
+  if [ "$Linux_Distribution" == "SUSE" ] ;then
+    if [ -d /usr/lib/jvm/jre-1.6.0-sun/ ] ;then
+	debug_info "Change JAVA_HOME=/usr/lib/jvm/jre-1.6.0-sun/"
+	sed -i 's/java-6-sun/jre-1.6.0-sun/' /opt/crawlzilla/nutch/conf/hadoop-env.sh
+    fi
+  fi
+
 }
 
 function check_crawlzilla_installed(){

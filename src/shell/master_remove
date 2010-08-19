@@ -54,10 +54,20 @@ function check_root(){
 # shutdown service
 function shutdown_service () {
   show_info "$MR_shutdown_service_echo_1" # "停止其他尚未關閉的slaves服務..."
-  slaves_list=`cat $nutch_PATH'/crawl_nodes' | cut -d' ' -f1`
-  
-  show_info "$MR_shutdown_service_echo_2" # "關閉本機服務..."
-  su crawler -c "/opt/crawlzilla/nutch/bin/stop-all.sh"
+  slaves_list=`cat /home/crawler/crawlzilla/system/crawl_nodes | cut -d' ' -f1`
+  for i in $slaves_list ;
+  do
+      show_info "$i $MR_shutdown_service_echo_2" # "關閉本機服務..."
+      su crawler -c 'ssh -o StrictHostKeyChecking=no $i /opt/crawlzilla/nutch/bin/hadoop-daemon.sh stop tasktracker'
+      su crawler -c 'ssh -o StrictHostKeyChecking=no $i /opt/crawlzilla/nutch/bin/hadoop-daemon.sh stop datanode'
+  done  
+
+  show_info "$i $MR_shutdown_service_echo_2" # "關閉本機服務..."
+  su crawler -c "/opt/crawlzilla/nutch/bin/hadoop-daemon.sh stop jobtracker"
+  su crawler -c "/opt/crawlzilla/nutch/bin/hadoop-daemon.sh stop namenode"
+
+
+
   tom_pids=$(ps x | grep -v 'grep' | grep "tomcat" | awk '{print $1}')  
   if [ -n "$tom_pids" ]; then
     su crawler -c "/opt/crawlzilla/tomcat/bin/shutdown.sh"
@@ -99,6 +109,7 @@ function edit_hosts () {
 function user_delete () {
   show_info "$MR_user_delete_echo_1" # "正在刪除crawler使用者..."
   userdel -rf crawler >/dev/null 2>&1
+  groupdel crawler >/dev/null 2>&1
   show_info "$MR_user_delete_echo_2" # "使用者crawler已刪除"
 }
 
