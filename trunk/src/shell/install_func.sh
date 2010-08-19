@@ -63,6 +63,8 @@ function install_packages(){
   # rpm 系列系統
   elif [ "$Linux_Distribution" == "Fedora" ] || [ "$Linux_Distribution" == "CentOS" ] ;then
     show_info "$MI_install_pack_if_2"
+  elif [ "$Linux_Distribution" == "SUSE" ] ;then
+    zypper install -n expect openssh dialog
   else
     show_info "$MI_install_pack_if_2"
   fi
@@ -286,6 +288,7 @@ function set_crawler_passwd () {
 # 新增crawler 帳號時用 Crawler_Passwd 當密碼
 function creat_crawler_account(){
   debug_info "$create_crawler_d1"
+  groupadd crawler
   while [ "$Crawler_Passwd" != "$Crawler_Passwd2" ]
   do
       echo -e "\n"
@@ -300,7 +303,7 @@ function creat_crawler_account(){
         else
           show_info "$create_crawler_4"
         fi
-  done                                                                                                                         
+  done                                                                                  
   unset Crawler_Passwd2
 
   if [ $(cat /etc/passwd | grep crawler) ]; then
