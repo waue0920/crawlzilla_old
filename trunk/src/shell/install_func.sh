@@ -630,8 +630,7 @@ function client_install_commands () {
 function generateReadme (){
   cat > $Install_Dir/Client_Install_DIR/README.txt << EOF
 $MI_client_install_commands_echo_1
-$MI_client_install_commands_echo_20$MasterIP_Address$MI_client_install_commands_echo_25
-1. $MI_client_install_commands_echo_2
+1. $MI_client_install_commands_echo_20$MasterIP_Address$MI_client_install_commands_echo_25
 2. $MI_client_install_commands_echo_3
 3. $MI_client_install_commands_echo_4
 EOF
