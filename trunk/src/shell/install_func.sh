@@ -359,13 +359,13 @@ function creat_crawler_account(){
 }
 
 function select_eth () {
-  net_interfaces=$(ifconfig | grep ^eth | cut -d " " -f1)
+  net_interfaces=$(/sbin/ifconfig | grep ^eth | cut -d " " -f1)
   net_nu=$(echo $net_interfaces | wc -w)
 
   # 若只有一個 eth　時
   if [ "$net_nu" == "1" ]; then
-    net_address=$(ifconfig $net_interfaces | grep "inet addr:" | sed 's/^.*inet addr://g' | cut -d " " -f1)
-    net_MacAddr=$(ifconfig $net_interfaces | grep 'HW' | sed 's/^.*HWaddr //g')
+    net_address=$(/sbin/ifconfig $net_interfaces | grep "inet addr:" | sed 's/^.*inet addr://g' | cut -d " " -f1)
+    net_MacAddr=$(/sbin/ifconfig $net_interfaces | grep 'HW' | sed 's/^.*HWaddr //g')
 
   # 若有多個 eth 時
   else
@@ -375,7 +375,7 @@ function select_eth () {
 
     for net in $net_interfaces
       do
-        show_info "($i)  $net  $(ifconfig $net | grep "inet addr:" | sed 's/^.*inet addr://g' | cut -d " " -f1)"
+        show_info "($i)  $net  $(/sbin/ifconfig $net | grep "inet addr:" | sed 's/^.*inet addr://g' | cut -d " " -f1)"
         i=i+1
       done
       show_info "$MI_select_eth_echo_2"
@@ -389,8 +389,8 @@ function select_eth () {
 #   show_info "Your choice is $net_choice"
     net_interface=$(echo $net_interfaces | cut -d " " -f $net_choice)
     #ifconfig $net_interface | grep "inet addr:" | sed 's/^.*inet addr://g' | cut -d " " -f1
-    net_address=$(ifconfig $net_interface | grep "inet addr:" | sed 's/^.*inet addr://g' | cut -d " " -f1)
-    net_MacAddr=$(ifconfig $net_interface | grep 'HW' | sed 's/^.*HWaddr //g')
+    net_address=$(/sbin/ifconfig $net_interface | grep "inet addr:" | sed 's/^.*inet addr://g' | cut -d " " -f1)
+    net_MacAddr=$(/sbin/ifconfig $net_interface | grep 'HW' | sed 's/^.*HWaddr //g')
 
 #    show_info "$MI_select_eth_echo_4 $net_address"
 #   show_info "net_address is $net_address"
