@@ -99,15 +99,16 @@ chown -R crawler:crawler /var/log/crawlzilla
 chown -R crawler:crawler /var/lib/crawlzilla
 }
 function unzip_nV2_pack(){
-  local pac_name=crawlzilla-pack-current.tar.gz
+  local pac_name=crawlzilla-0.2pack-current.tar.gz
   if [ ! -d "$Install_Dir/package" ];then
     mkdir $Install_Dir/package
   fi
   if [ ! -e "$Install_Dir/package/$pac_name" ];then
-    #@@@@@@@@@@@@@@@@@@@@@@@package檔案上傳後再修改@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    wget "http://crawlzilla.googlecode.com/files/$pac_name";
+    # wget "http://crawlzilla.googlecode.com/files/$pac_name"; # google code
+    wget "http://sourceforge.net/downloads/crawlzilla/package/$pac_name"; # source-forge
     if [ $? -eq 0 ];then
 	mv $pac_name $Install_Dir/package;
+	chmod -R 777 $Install_Dir/package;
 	debug_info "move $pac_name ==> $Install_Dir/package/";
     else
 	show_info "$pac_name not found, installation was not finished!";
