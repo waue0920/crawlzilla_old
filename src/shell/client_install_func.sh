@@ -351,13 +351,13 @@ function change_hosts_owner (){
 
 function recall_hostname_ip(){
   debug_info "$recall_hostname_ip_d1"
-  net_interfaces=$(ifconfig | grep ^eth | cut -d " " -f1)
+  net_interfaces=$(/sbin/ifconfig | grep ^eth | cut -d " " -f1)
   net_nu=$(echo $net_interfaces | wc -w)
   # 若只有一個 eth　時
   if [ "$net_nu" == "1" ]; then
   # ifconfig $net_interfaces | grep "inet addr:" | sed 's/^.*inet addr://g' | cut -d " " -f1
-  net_address=$(ifconfig $net_interfaces | grep "inet addr:" | sed 's/^.*inet addr://g' | cut -d " " -f1)
-  net_MacAddr=$(ifconfig $net_interfaces | grep 'HW' | sed 's/^.*HWaddr //g')
+  net_address=$(/sbin/ifconfig $net_interfaces | grep "inet addr:" | sed 's/^.*inet addr://g' | cut -d " " -f1)
+  net_MacAddr=$(/sbin/ifconfig $net_interfaces | grep 'HW' | sed 's/^.*HWaddr //g')
   show_info "$recall_hostname_ip_1 $net_address"
   show_info "$recall_hostname_ip_2 $net_MacAddr"
 
@@ -368,7 +368,7 @@ function recall_hostname_ip(){
        
       for net in $net_interfaces
       do  
-        echo "($i)  $net  $(ifconfig $net | grep "inet addr:" | sed 's/^.*inet addr://g' | cut -d " " -f1)"
+        echo "($i)  $net  $(/sbin/ifconfig $net | grep "inet addr:" | sed 's/^.*inet addr://g' | cut -d " " -f1)"
         i=i+1
       done
        
@@ -380,8 +380,8 @@ function recall_hostname_ip(){
   show_info "choice is $net_choice"
   net_interface=$(echo $net_interfaces | cut -d " " -f $net_choice)
   # config $net_interface | grep "inet addr:" | sed 's/^.*inet addr://g' | cut -d " " -f1
-  net_address=$(ifconfig $net_interface | grep "inet addr:" | sed 's/^.*inet addr://g' | cut -d " " -f1)
-  net_MacAddr=$(ifconfig $net_interface | grep 'HW' | sed 's/^.*HWaddr //g') 
+  net_address=$(/sbin/ifconfig $net_interface | grep "inet addr:" | sed 's/^.*inet addr://g' | cut -d " " -f1)
+  net_MacAddr=$(/sbin/ifconfig $net_interface | grep 'HW' | sed 's/^.*HWaddr //g') 
   show_info "$recall_hostname_ip_1 $net_address"
   show_info "$recall_hostname_ip_2 $net_MacAddr"
   fi
