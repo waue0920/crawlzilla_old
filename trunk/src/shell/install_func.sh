@@ -313,6 +313,7 @@ function set_crawler_passwd () {
 # 新增crawler 帳號時用 Crawler_Passwd 當密碼
 function creat_crawler_account(){
   debug_info "$create_crawler_d1"
+
   while [ "$Crawler_Passwd" != "$Crawler_Passwd2" ]
   do
       echo -e "\n"
@@ -349,6 +350,11 @@ function creat_crawler_account(){
       expect \"*: \"
       send \"$Crawler_Passwd\r\"
       expect eof"
+  fi
+  # fix opensuse 
+  if [ "$Linux_Distribution" == "SUSE" ] ;then 
+    groupadd crawler;
+    chown -R crawler:crawler /home/crawler
   fi
 #  if [ -e /bin/bash ];then
 #    exec ssh-agent /bin/bash
@@ -500,8 +506,12 @@ function start_up_Crawlzilla (){
 function change_hosts_owner (){
   if [ -f /etc/hosts ];then
     cp -f /etc/hosts /home/crawler/crawlzilla/system/
-    ln -sf /home/crawler/crawlzilla/system/hosts /etc/hosts
-    chown crawler:crawler /home/crawler/crawlzilla/system/hosts
+    if [ $? -eq 0 ];then
+	ln -sf /home/crawler/crawlzilla/system/hosts /etc/hosts
+	chown crawler:crawler /home/crawler/crawlzilla/system/hosts
+    else
+	show_info "/etc/hosts has not been modified."
+    fi
   else
     show_info "no /etc/hosts exists.. please check!!"
   fi
