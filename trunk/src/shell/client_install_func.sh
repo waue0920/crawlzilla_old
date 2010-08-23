@@ -75,10 +75,10 @@ function check_systemInfo(){
 
 # 安裝需要的相依套件 (目前只支援 deb 套件的系統自動安裝，yum或其他套件系統的則需手動安裝)
 function install_packages(){
-  # deb 系列系統
+  # deb 系列系統(Ubuntu)
   debug_info "$install_pack_1"
   debug_info "$install_pack_2"
-  if [ "$Linux_Distribution" == "Ubuntu" ] ;then
+  if [ "$Linux_Distribution" == "Ubuntu" ]; then
         if [ $Linux_Version == "10.04" ]; then
             echo -e "\n$install_pack_if_1\n"
             add-apt-repository "deb http://archive.canonical.com/ lucid partner"
@@ -90,12 +90,28 @@ function install_packages(){
             apt-get update
             aptitude install -y expect ssh dialog
         fi
-  # rpm 系列系統
+  # deb 系列系統(Debian)
   elif [ "$Linux_Distribution" == "Debian" ]; then
     echo -e "\n$install_pack_if_1\n"
     apt-get update
     aptitude install -y expect ssh dialog
-  elif [ "$Linux_Distribution" == "Fedora" ] || [ "$Linux_Distribution" == "CentOS" ] ;then
+
+  # rpm 系列系統(Fedora)                    
+  elif [ "$Linux_Distribution" == "Fedora" ]; then
+    show_info "$MI_install_pack_if_2"       
+  # rpm 系列系統(CentOS)                    
+  elif [ "$Linux_Distribution" == "CentOS" ]; then
+                                            
+        if [ $Linux_bit != "x86_64" ]; then 
+            Linux_bit="i386"                
+        fi                                  
+                                            
+        echo -e "\n$MI_install_pack_if_1\n" 
+        yum update                          
+        yum -y install expect.${Linux_bit} openssh.${Linux_bit} dialog.${Linux_bit} 
+
+
+elif [ "$Linux_Distribution" == "Fedora" ] || [ "$Linux_Distribution" == "CentOS" ] ;then
     show_info "$install_pack_if_2"
   elif [ "$Linux_Distribution" == "SUSE" ] ;then
     zypper install -n expect openssh dialog java-1_6_0-sun
