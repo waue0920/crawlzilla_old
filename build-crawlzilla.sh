@@ -8,6 +8,8 @@
 
 DELETE_LOCK=1 # 1= 刪除 $TmpDir 資料夾
 DATE_VER=`date +%y%m%d` # 年月日
+CURRENT_VER=0.2 # 專案目前的版本
+
 
 function checkMethod(){
   if [ $? -eq 0 ];then
@@ -112,5 +114,20 @@ if [ $DELETE_LOCK -eq 1 ];then
   checkMethod 9.1
 fi
 
+
+# 10 上傳到 source forge
+# 做local user 與 sf.net 上的user 對應, fafa 與
+if [ $USER == "waue" ];then
+    USER=waue0920;
+elif [ $USER == "rock" ];then
+    USER=goldjay1231;
+fi
+
+# 上傳到sf.net
+scp $SvnProject/dist/$ShellTar $USER,crawlzilla@frs.sourceforge.net:/home/frs/project/c/cr/crawlzilla/stable/Crawlzilla-$CURRENT_VER/
+
+
 echo "完成，一切確認後，最後的檔案放在這個目錄內："
 echo "	../dist/ "
+echo "最新的版本[ $ShellTar ]也同時上傳到sf.net囉"
+echo "http://sourceforge.net/downloads/crawlzilla/stable/Crawlzilla-0.2/"
