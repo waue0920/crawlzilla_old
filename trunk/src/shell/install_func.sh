@@ -54,7 +54,7 @@ function check_systemInfo(){
     Linux_Distribution=$(cat /etc/*-release | uniq | awk '{print $1}')
     Linux_Version=`cat /etc/*-release | uniq | awk '{print $3}'`
   fi
-
+  Linux_bit=$(uname -m)
   show_info "$Linux_Distribution , $Linux_Version"
 }
 
@@ -69,7 +69,14 @@ function install_packages(){
   elif [ "$Linux_Distribution" == "Fedora" ] ;then
     yum install -y expect ssh dialog wget 
   elif [ "$Linux_Distribution" == "CentOS" ] ;then
-    show_info "$MI_install_pack_if_2"
+    show_info "$MI_install_pack_if_1"
+        if [ $Linux_bit != "x86_64" ]; then
+            Linux_bit="i386"
+        fi  
+                                                                                                          
+        echo -e "\n$MI_install_pack_if_1\n"
+        yum update
+        yum -y install expect.${Linux_bit} openssh.${Linux_bit} dialog.${Linux_bit}
   elif [ "$Linux_Distribution" == "SUSE" ] ;then
     zypper install -n expect openssh dialog java-1_6_0-sun-devel java-1_6_0-sun
   else
