@@ -50,6 +50,11 @@ function check_systemInfo(){
   show_info "$MI_check_sys_2"
   Linux_Distribution=$(lsb_release -a 2> /dev/null | grep "Distributor ID:" | awk '{print $3}')
   Linux_Version=$(lsb_release -a 2> /dev/null | grep "Release" | awk '{print $2}')
+  if [ "$Linux_Distribution" == "" ]; then
+    Linux_Distribution=$(cat /etc/*-release | uniq | awk '{print $1}')
+    Linux_Version=`cat /etc/*-release | uniq | awk '{print $3}'`
+  fi
+
   show_info "$Linux_Distribution , $Linux_Version"
 }
 
@@ -61,7 +66,9 @@ function install_packages(){
     echo -e "\n$MI_install_pack_if_1\n"
     aptitude install -y expect ssh dialog
   # rpm 系列系統
-  elif [ "$Linux_Distribution" == "Fedora" ] || [ "$Linux_Distribution" == "CentOS" ] ;then
+  elif [ "$Linux_Distribution" == "Fedora" ] ;then
+    yum install -y expect ssh dialog wget 
+  elif [ "$Linux_Distribution" == "CentOS" ] ;then
     show_info "$MI_install_pack_if_2"
   elif [ "$Linux_Distribution" == "SUSE" ] ;then
     zypper install -n expect openssh dialog java-1_6_0-sun-devel java-1_6_0-sun
@@ -99,16 +106,15 @@ chown -R crawler:crawler /var/log/crawlzilla
 chown -R crawler:crawler /var/lib/crawlzilla
 }
 function unzip_nV2_pack(){
-  local pac_name=crawlzilla-0.2pack-current.tar.gz
+  local pac_name=crawlzilla-pack-current.tar.gz
   if [ ! -d "$Install_Dir/package" ];then
     mkdir $Install_Dir/package
   fi
   if [ ! -e "$Install_Dir/package/$pac_name" ];then
-    # wget "http://crawlzilla.googlecode.com/files/$pac_name"; # google code
-    wget "http://sourceforge.net/downloads/crawlzilla/package/$pac_name"; # source-forge
+    #@@@@@@@@@@@@@@@@@@@@@@@package檔案上傳後再修改@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    wget "http://crawlzilla.googlecode.com/files/$pac_name";
     if [ $? -eq 0 ];then
 	mv $pac_name $Install_Dir/package;
-	chmod -R 777 $Install_Dir/package;
 	debug_info "move $pac_name ==> $Install_Dir/package/";
     else
 	show_info "$pac_name not found, installation was not finished!";
@@ -175,8 +181,8 @@ function check_crawlzilla_installed(){
 }
 
 function check_sunJava(){
-  debug_info "$MI_check_sunJava_1"
-  debug_info "$MI_check_sunJava_2"
+  show_info "$MI_check_sunJava_1"
+  show_info "$MI_check_sunJava_2"
 
   javaPath="/usr"
   yesno="no"
@@ -299,7 +305,6 @@ function set_crawler_passwd () {
 # 新增crawler 帳號時用 Crawler_Passwd 當密碼
 function creat_crawler_account(){
   debug_info "$create_crawler_d1"
-  groupadd crawler
   while [ "$Crawler_Passwd" != "$Crawler_Passwd2" ]
   do
       echo -e "\n"
