@@ -199,12 +199,19 @@ function unzip_nV2_pack(){
 	debug_info "Change JAVA_HOME=/usr/lib/jvm/jre-1.6.0-sun/"
 	sed -i 's/java-6-sun/jre-1.6.0-sun/' /opt/crawlzilla/nutch/conf/hadoop-env.sh
     fi
+  elif [ "$Linux_Distribution" == "CentOS" ] ;then
+    if [  -d /usr/java/jdk1.6.0_21/ ] ;then
+    debug_info "Change JAVA_HOME=/usr/java/jdk1.6.0_21/"
+    sudo sed -i 's/\/usr\/lib\/jvm\/java-6-sun/\/usr\/java\/jdk1.6.0_21\//' /opt/crawlzilla/nutch/conf/hadoop-env.s
+    fi
   fi
+    
+    
 
 }
 
 function CentOS_install_sun_java_i586(){
-wget 'https://sourceforge.net/projects/crawlzilla/files/other/jdk-6u21-linux-i586-rpm.bin/download'
+wget -nc 'https://sourceforge.net/projects/crawlzilla/files/other/jdk-6u21-linux-i586-rpm.bin/download'
 echo y | bash jdk-6u21-linux-i586-rpm.bin
 rpm -Uvh jdk-6u21-linux-i586.rpm
 /usr/sbin/alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_21/bin/java 1
@@ -212,12 +219,13 @@ rpm -Uvh jdk-6u21-linux-i586.rpm
 }
 
 function CentOS_install_sun_java_x86_64(){
-wget 'https://sourceforge.net/projects/crawlzilla/files/other/jdk-6u21-linux-x64-rpm.bin/download'
+wget -nc 'https://sourceforge.net/projects/crawlzilla/files/other/jdk-6u21-linux-x64-rpm.bin/download'
 echo y | bash jdk-6u21-linux-x64-rpm.bin               
 rpm -Uvh jdk-6u21-linux-amd64.r                      
 /usr/sbin/alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_21/bin/java 1
 /usr/sbin/alternatives --set java /usr/java/jdk1.6.0_21/bin/java                                                                                                               
 }
+
 
 function check_crawlzilla_installed(){
   debug_info "$MI_check_crawlzilla_1"
@@ -383,7 +391,7 @@ function creat_crawler_account(){
     expect eof"
     else
       show_info "$create_crawler_s2"
-      useradd -m crawler -s /bin/bash
+      /usr/sbin/useradd -m crawler -s /bin/bash
       expect -c "spawn passwd crawler
       set timeout 1
       expect \"*: \"
