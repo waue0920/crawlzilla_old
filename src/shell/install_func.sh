@@ -62,24 +62,40 @@ function install_packages(){
   # deb 系列系統
   debug_info "$MI_install_pack_1"
   debug_info "$MI_install_pack_2"
-  if [ "$Linux_Distribution" == "Ubuntu" ] || [ "$Linux_Distribution" == "Debian" ] ;then
-    echo -e "\n$MI_install_pack_if_1\n"
-    aptitude install -y expect ssh dialog
+  if [ "$Linux_Distribution" == "Ubuntu" ]; then
+        if [ $Linux_Version == "10.04" ]; then
+            echo -e "\n$install_pack_if_1\n"
+            add-apt-repository "deb http://archive.canonical.com/ lucid partner"
+            apt-get update
+            aptitude install -y expect ssh dialog sun-java6-jdk sun-java6-plugin
+            update-java-alternatives -s java-6-sun
+        else
+            echo -e "\n$install_pack_if_1\n"
+            apt-get update
+            aptitude install -y expect ssh dialog
+        fi
+
+  # deb 系列系統(Debian)
+  elif [ "$Linux_Distribution" == "Debian" ]; then
+    echo -e "\n$install_pack_if_1\n"
+        apt-get update
+        aptitude install -y expect ssh dialog
+
   # rpm 系列系統
   elif [ "$Linux_Distribution" == "Fedora" ] ;then
-    yum install -y expect ssh dialog wget 
+        yum install -y expect ssh dialog wget 
   
   elif [ "$Linux_Distribution" == "CentOS" ] ;then
-    show_info "$MI_install_pack_if_1"
+        show_info "$MI_install_pack_if_1"
 
         if [ $Linux_bit != "x86_64" ]; then  
             Linux_bit="i386"                 
         fi 
 
-    yum update
-    yum -y install expect openssh dialog
+        yum update
+        yum -y install expect openssh dialog
 
-
+    # install sun java
     if [$Linux_bit == "x86_64" ]; then    
         CentOS_install_sun_java_x86_64
     else
@@ -195,12 +211,12 @@ alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_21/bin/java 1
 alternatives --set java /usr/java/jdk1.6.0_21/bin/java
 }
 
-function CentOS_install_sun_java_x86_64(){             
+
 wget 'http://cds.sun.com/is-bin/INTERSHOP.enfinity/WFS/CDS-CDS_Developer-Site/en_US/-/USD/VerifyItem-Start/jdk-6u21-linux-x64-rpm.bin?BundledLineItemUUID=mByJ_hCwbTcAAAEqNHkBiqIJ&OrderID=UeCJ_hCwdhQAAAEqGHkBiqIJ&ProductID=xKiJ_hCySHIAAAEpT7wzBGsB&FileName=/jdk-6u21-linux-x64-rpm.bin' -O jdk-6u21-linux-x64-rpm.bin
 echo y | bash jdk-6u21-linux-x64-rpm.bin               
-rpm -Uvh jdk-6u21-linux-amd64.rpm                      
-alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_21/bin/java 1
-alternatives --set java /usr/java/jdk1.6.0_21/bin/java                                                                                                               
+rpm -Uvh jdk-6u21-linux-amd64.r                      
+/sbin/alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_21/bin/java 1
+/sbin/alternatives --set java /usr/java/jdk1.6.0_21/bin/java                                                                                                               
 }
 
 function check_crawlzilla_installed(){
