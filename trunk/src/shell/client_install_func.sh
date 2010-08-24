@@ -69,6 +69,10 @@ function check_systemInfo(){
   show_info "$check_sys_2"
   Linux_Distribution=$(lsb_release -a 2> /dev/null | grep "Distributor ID:" | awk '{print $3}')
   Linux_Version=$(lsb_release -a 2> /dev/null | grep "Release" | awk '{print $2}')
+  if [ "$Linux_Distribution" == "" ]; then
+    Linux_Distribution=$(cat /etc/*-release | uniq | awk '{print $1}')
+    Linux_Version=`cat /etc/*-release | uniq | awk '{print $3}'`
+  fi
   show_info "$Linux_Distribution , $Linux_Version"
   Linux_bit=$(uname -m)
 }
@@ -99,6 +103,7 @@ function install_packages(){
 
   # rpm 系列系統(Fedora)                    
   elif [ "$Linux_Distribution" == "Fedora" ]; then
+    yum install -y expect ssh dialog wget
     show_info "$MI_install_pack_if_2"       
   # rpm 系列系統(CentOS)                    
   elif [ "$Linux_Distribution" == "CentOS" ]; then
