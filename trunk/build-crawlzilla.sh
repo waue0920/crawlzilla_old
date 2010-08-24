@@ -130,4 +130,4 @@ scp $SvnProject/dist/$ShellTar $USER,crawlzilla@frs.sourceforge.net:/home/frs/pr
 echo "完成，一切確認後，最後的檔案放在這個目錄內："
 echo "	../dist/ "
 echo "最新的版本[ $ShellTar ]也同時上傳到sf.net囉"
-echo "http://sourceforge.net/downloads/crawlzilla/stable/Crawlzilla-0.2/"
+echo "http://sourceforge.net/downloads/crawlzilla/testing/Crawlzilla-0.2/"
