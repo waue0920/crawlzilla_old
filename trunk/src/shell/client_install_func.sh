@@ -108,8 +108,13 @@ function install_packages(){
                                             
         echo -e "\n$MI_install_pack_if_1\n" 
         yum update                          
-        yum -y install expect.${Linux_bit} openssh.${Linux_bit} dialog.${Linux_bit} 
+        yum -y install expect openssh dialog
 
+    if [$Linux_bit == "x86_64" ]; then        
+        CentOS_install_sun_java_x86_64
+    else
+        CentOS_install_sun_java_i586                                                                                                                                 
+    fi 
 
 elif [ "$Linux_Distribution" == "Fedora" ] || [ "$Linux_Distribution" == "CentOS" ] ;then
     show_info "$install_pack_if_2"
@@ -121,6 +126,21 @@ elif [ "$Linux_Distribution" == "Fedora" ] || [ "$Linux_Distribution" == "CentOS
   fi 
 }
 
+function CentOS_install_sun_java_i586(){
+wget 'http://cds.sun.com/is-bin/INTERSHOP.enfinity/WFS/CDS-CDS_Developer-Site/en_US/-/USD/VerifyItem-Start/jdk-6u21-linux-i586-rpm.bin?BundledLineItemUUID=HEaJ_hCwC8gAAAEqqdUBiqHq&OrderID=tLOJ_hCwFOYAAAEqkNUBiqHq&ProductID=LxaJ_hCy4mIAAAEpXLwzBGsB&FileName=/jdk-6u21-linux-i586-rpm.bin' -O jdk-6u21-linux-i586-rpm.bin
+echo y | bash jdk-6u21-linux-i586-rpm.bin
+rpm -Uvh jdk-6u21-linux-i586.rpm
+alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_21/bin/java 1
+alternatives --set java /usr/java/jdk1.6.0_21/bin/java
+}
+
+function CentOS_install_sun_java_x86_64(){
+wget 'http://cds.sun.com/is-bin/INTERSHOP.enfinity/WFS/CDS-CDS_Developer-Site/en_US/-/USD/VerifyItem-Start/jdk-6u21-linux-x64-rpm.bin?BundledLineItemUUID=mByJ_hCwbTcAAAEqNHkBiqIJ&OrderID=UeCJ_hCwdhQAAAEqGHkBiqIJ&ProductID=xKiJ_hCySHIAAAEpT7wzBGsB&FileName=/jdk-6u21-linux-x64-rpm.bin' -O jdk-6u21-linux-x64-rpm.bin
+echo y | bash jdk-6u21-linux-x64-rpm.bin
+rpm -Uvh jdk-6u21-linux-amd64.rpm
+alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_21/bin/java 1
+alternatives --set java /usr/java/jdk1.6.0_21/bin/java
+}
 
 # 檢查之前是否有安裝Crawlzilla
 # 目前先檢查是否有/opt/crawlzilla 這個資料夾即可
