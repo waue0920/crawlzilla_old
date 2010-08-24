@@ -202,7 +202,7 @@ function unzip_nV2_pack(){
   elif [ "$Linux_Distribution" == "CentOS" ] ;then
     if [  -d /usr/java/jdk1.6.0_21/ ] ;then
     debug_info "Change JAVA_HOME=/usr/java/jdk1.6.0_21/"
-    sudo sed -i 's/\/usr\/lib\/jvm\/java-6-sun/\/usr\/java\/jdk1.6.0_21\//' /opt/crawlzilla/nutch/conf/hadoop-env.s
+    sed -i 's/\/usr\/lib\/jvm\/java-6-sun/\/usr\/java\/jdk1.6.0_21\//' /opt/crawlzilla/nutch/conf/hadoop-env.sh
     fi
   fi
     

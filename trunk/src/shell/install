@@ -6,6 +6,7 @@
 # 變數宣告
 
 Work_Path=`dirname "$0"`
+Linux_Distribution=""
 
 if [ -f $Work_Path/install_func.sh ];then
   Work_Path=`cd "$Work_Path"; pwd`
