@@ -103,23 +103,29 @@ function install_packages(){
 
   # rpm 系列系統(Fedora)                    
   elif [ "$Linux_Distribution" == "Fedora" ]; then
-    yum install -y expect ssh dialog wget
+        if [ $Linux_bit != "x86_64" ]; then
+            Linux_bit="i386"
+        fi
+        yum install -y expect ssh dialog wget
+
+        if [ $Linux_bit == "x86_64" ]; then
+          yum_install_sun_java_x86_64
+      else
+          yum_install_sun_java_i586                                                                                                fi
     show_info "$MI_install_pack_if_2"       
   # rpm 系列系統(CentOS)                    
   elif [ "$Linux_Distribution" == "CentOS" ]; then
-                                            
         if [ $Linux_bit != "x86_64" ]; then 
             Linux_bit="i386"                
         fi                                  
-                                            
         echo -e "\n$MI_install_pack_if_1\n" 
         yum update                          
         yum -y install expect openssh dialog
 
     if [ $Linux_bit == "x86_64" ]; then        
-        CentOS_install_sun_java_x86_64
+        yum_install_sun_java_x86_64
     else
-        CentOS_install_sun_java_i586                                                                                                                                 
+        yum_install_sun_java_i586                                                                                                                                 
     fi 
 
   elif [ "$Linux_Distribution" == "SUSE" ] ;then
@@ -130,7 +136,7 @@ function install_packages(){
   fi 
 }
 
-function CentOS_install_sun_java_i586(){
+function yum_install_sun_java_i586(){
 wget -nc 'https://sourceforge.net/projects/crawlzilla/files/other/jdk-6u21-linux-i586-rpm.bin/download'
 echo y | bash jdk-6u21-linux-i586-rpm.bin
 rpm -Uvh jdk-6u21-linux-i586.rpm
@@ -138,7 +144,7 @@ rpm -Uvh jdk-6u21-linux-i586.rpm
 /usr/sbin/alternatives --set java /usr/java/jdk1.6.0_21/bin/java
 }
 
-function CentOS_install_sun_java_x86_64(){
+function yum_install_sun_java_x86_64(){
 wget -nc 'https://sourceforge.net/projects/crawlzilla/files/other/jdk-6u21-linux-x64-rpm.bin/download'
 echo y | bash jdk-6u21-linux-x64-rpm.bin
 rpm -Uvh jdk-6u21-linux-amd64.rpm
