@@ -124,7 +124,7 @@ elif [ $USER == "rock" ];then
 fi
 
 # 上傳到sf.net
-scp $SvnProject/dist/$ShellTar $USER,crawlzilla@frs.sourceforge.net:/home/frs/project/c/cr/crawlzilla/stable/Crawlzilla-$CURRENT_VER/
+scp $SvnProject/dist/$ShellTar $USER,crawlzilla@frs.sourceforge.net:/home/frs/project/c/cr/crawlzilla/testing/Crawlzilla-$CURRENT_VER/
 
 
 echo "完成，一切確認後，最後的檔案放在這個目錄內："
