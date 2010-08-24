@@ -126,7 +126,7 @@ function install_packages(){
 }
 
 function CentOS_install_sun_java_i586(){
-wget 'https://sourceforge.net/projects/crawlzilla/files/other/jdk-6u21-linux-i586-rpm.bin/download'
+wget -nc 'https://sourceforge.net/projects/crawlzilla/files/other/jdk-6u21-linux-i586-rpm.bin/download'
 echo y | bash jdk-6u21-linux-i586-rpm.bin
 rpm -Uvh jdk-6u21-linux-i586.rpm
 /usr/sbin/alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_21/bin/java 1
@@ -134,7 +134,7 @@ rpm -Uvh jdk-6u21-linux-i586.rpm
 }
 
 function CentOS_install_sun_java_x86_64(){
-wget 'https://sourceforge.net/projects/crawlzilla/files/other/jdk-6u21-linux-x64-rpm.bin/download'
+wget -nc 'https://sourceforge.net/projects/crawlzilla/files/other/jdk-6u21-linux-x64-rpm.bin/download'
 echo y | bash jdk-6u21-linux-x64-rpm.bin
 rpm -Uvh jdk-6u21-linux-amd64.rpm
 /usr/sbin/alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_21/bin/java 1
@@ -307,7 +307,7 @@ function creat_crawler_account(){
     expect eof"
     else
       show_info "$create_crawler_s2"
-      useradd -m crawler -s /bin/bash
+      /usr/sbin/useradd -m crawler -s /bin/bash
       expect -c "spawn passwd crawler
       set timeout 1
       expect \"*: \"
