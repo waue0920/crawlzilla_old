@@ -116,8 +116,6 @@ function install_packages(){
         CentOS_install_sun_java_i586                                                                                                                                 
     fi 
 
-elif [ "$Linux_Distribution" == "Fedora" ] || [ "$Linux_Distribution" == "CentOS" ] ;then
-    show_info "$install_pack_if_2"
   elif [ "$Linux_Distribution" == "SUSE" ] ;then
     zypper install -n expect openssh dialog java-1_6_0-sun
 
@@ -130,8 +128,8 @@ function CentOS_install_sun_java_i586(){
 wget 'http://cds.sun.com/is-bin/INTERSHOP.enfinity/WFS/CDS-CDS_Developer-Site/en_US/-/USD/VerifyItem-Start/jdk-6u21-linux-i586-rpm.bin?BundledLineItemUUID=HEaJ_hCwC8gAAAEqqdUBiqHq&OrderID=tLOJ_hCwFOYAAAEqkNUBiqHq&ProductID=LxaJ_hCy4mIAAAEpXLwzBGsB&FileName=/jdk-6u21-linux-i586-rpm.bin' -O jdk-6u21-linux-i586-rpm.bin
 echo y | bash jdk-6u21-linux-i586-rpm.bin
 rpm -Uvh jdk-6u21-linux-i586.rpm
-alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_21/bin/java 1
-alternatives --set java /usr/java/jdk1.6.0_21/bin/java
+/sbin/alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_21/bin/java 1
+/sbin/alternatives --set java /usr/java/jdk1.6.0_21/bin/java
 }
 
 function CentOS_install_sun_java_x86_64(){
