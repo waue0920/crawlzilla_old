@@ -83,7 +83,19 @@ function install_packages(){
 
   # rpm 系列系統
   elif [ "$Linux_Distribution" == "Fedora" ] ;then
-        yum install -y expect ssh dialog wget 
+        if [ $Linux_bit != "x86_64" ]; then
+            Linux_bit="i386"
+        fi
+
+        yum update
+        yum install -y expect ssh dialog wget
+
+      # install sun java
+      if [ $Linux_bit == "x86_64" ]; then
+          yum_install_sun_java_x86_64
+      else
+          yum_install_sun_java_i586
+      fi
   
   elif [ "$Linux_Distribution" == "CentOS" ] ;then
         show_info "$MI_install_pack_if_1"
@@ -97,9 +109,9 @@ function install_packages(){
 
     # install sun java
     if [ $Linux_bit == "x86_64" ]; then    
-        CentOS_install_sun_java_x86_64
+        yum_install_sun_java_x86_64
     else
-        CentOS_install_sun_java_i586
+        yum_install_sun_java_i586
     fi
 
   elif [ "$Linux_Distribution" == "SUSE" ] ;then
@@ -204,13 +216,18 @@ function unzip_nV2_pack(){
     debug_info "Change JAVA_HOME=/usr/java/jdk1.6.0_21/"
     sed -i 's/\/usr\/lib\/jvm\/java-6-sun/\/usr\/java\/jdk1.6.0_21\//' /opt/crawlzilla/nutch/conf/hadoop-env.sh
     fi
+  elif [ "$Linux_Distribution" == "Fedora" ] ;then
+    if [  -d /usr/java/jdk1.6.0_21/ ] ;then
+    debug_info "Change JAVA_HOME=/usr/java/jdk1.6.0_21/"
+    sed -i 's/\/usr\/lib\/jvm\/java-6-sun/\/usr\/java\/jdk1.6.0_21\//' /opt/crawlzilla/nutch/conf/hadoop-env.sh
+    fi
   fi
     
     
 
 }
 
-function CentOS_install_sun_java_i586(){
+function yum_install_sun_java_i586(){
 wget -nc 'https://sourceforge.net/projects/crawlzilla/files/other/jdk-6u21-linux-i586-rpm.bin/download'
 echo y | bash jdk-6u21-linux-i586-rpm.bin
 rpm -Uvh jdk-6u21-linux-i586.rpm
@@ -218,7 +235,7 @@ rpm -Uvh jdk-6u21-linux-i586.rpm
 /usr/sbin/alternatives --set java /usr/java/jdk1.6.0_21/bin/java
 }
 
-function CentOS_install_sun_java_x86_64(){
+function yum_install_sun_java_x86_64(){
 wget -nc 'https://sourceforge.net/projects/crawlzilla/files/other/jdk-6u21-linux-x64-rpm.bin/download'
 echo y | bash jdk-6u21-linux-x64-rpm.bin               
 rpm -Uvh jdk-6u21-linux-amd64.r                      
