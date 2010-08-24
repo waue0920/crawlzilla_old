@@ -70,6 +70,7 @@ function check_systemInfo(){
   Linux_Distribution=$(lsb_release -a 2> /dev/null | grep "Distributor ID:" | awk '{print $3}')
   Linux_Version=$(lsb_release -a 2> /dev/null | grep "Release" | awk '{print $2}')
   show_info "$Linux_Distribution , $Linux_Version"
+  Linux_bit=$(uname -m)
 }
 
 
@@ -110,7 +111,7 @@ function install_packages(){
         yum update                          
         yum -y install expect openssh dialog
 
-    if [$Linux_bit == "x86_64" ]; then        
+    if [ $Linux_bit == "x86_64" ]; then        
         CentOS_install_sun_java_x86_64
     else
         CentOS_install_sun_java_i586                                                                                                                                 
@@ -125,19 +126,19 @@ function install_packages(){
 }
 
 function CentOS_install_sun_java_i586(){
-wget 'http://cds.sun.com/is-bin/INTERSHOP.enfinity/WFS/CDS-CDS_Developer-Site/en_US/-/USD/VerifyItem-Start/jdk-6u21-linux-i586-rpm.bin?BundledLineItemUUID=HEaJ_hCwC8gAAAEqqdUBiqHq&OrderID=tLOJ_hCwFOYAAAEqkNUBiqHq&ProductID=LxaJ_hCy4mIAAAEpXLwzBGsB&FileName=/jdk-6u21-linux-i586-rpm.bin' -O jdk-6u21-linux-i586-rpm.bin
+wget 'https://sourceforge.net/projects/crawlzilla/files/other/jdk-6u21-linux-i586-rpm.bin/download'
 echo y | bash jdk-6u21-linux-i586-rpm.bin
 rpm -Uvh jdk-6u21-linux-i586.rpm
-/sbin/alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_21/bin/java 1
-/sbin/alternatives --set java /usr/java/jdk1.6.0_21/bin/java
+/usr/sbin/alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_21/bin/java 1
+/usr/sbin/alternatives --set java /usr/java/jdk1.6.0_21/bin/java
 }
 
 function CentOS_install_sun_java_x86_64(){
-wget 'http://cds.sun.com/is-bin/INTERSHOP.enfinity/WFS/CDS-CDS_Developer-Site/en_US/-/USD/VerifyItem-Start/jdk-6u21-linux-x64-rpm.bin?BundledLineItemUUID=mByJ_hCwbTcAAAEqNHkBiqIJ&OrderID=UeCJ_hCwdhQAAAEqGHkBiqIJ&ProductID=xKiJ_hCySHIAAAEpT7wzBGsB&FileName=/jdk-6u21-linux-x64-rpm.bin' -O jdk-6u21-linux-x64-rpm.bin
+wget 'https://sourceforge.net/projects/crawlzilla/files/other/jdk-6u21-linux-x64-rpm.bin/download'
 echo y | bash jdk-6u21-linux-x64-rpm.bin
 rpm -Uvh jdk-6u21-linux-amd64.rpm
-alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_21/bin/java 1
-alternatives --set java /usr/java/jdk1.6.0_21/bin/java
+/usr/sbin/alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_21/bin/java 1
+/usr/sbin/alternatives --set java /usr/java/jdk1.6.0_21/bin/java
 }
 
 # 檢查之前是否有安裝Crawlzilla
