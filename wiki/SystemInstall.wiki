@@ -51,7 +51,7 @@ tzr zxvf Crawlzilla-0.2-100813-Shell.tar.gz
 
 ==== Step B1. 透過PC1取得安裝提示 ====
  * 於client端執行"ssh PC1"，並執行 "crawlzilla" 指令，找到"client安裝步驟"，如下圖所示：
-[[Image(2.png)]]
+[http://crawlzilla.googlecode.com/svn/tags/pics/wiki/SysIns/2.png]
 
  * 相關提示字元範例如下：
 {{{
@@ -67,25 +67,25 @@ $ ./client_deploy.sh
 
 執行畫面如下：
  * 確認安裝資訊
-[[Image(3.png)]]
+[http://crawlzilla.googlecode.com/svn/tags/pics/wiki/SysIns/3.png]
 
  * 輸入密碼
-[[Image(4.png)]]
+[http://crawlzilla.googlecode.com/svn/tags/pics/wiki/SysIns/4.png]
 
  * 安裝完成
-[[Image(5.png)]]
+[http://crawlzilla.googlecode.com/svn/tags/pics/wiki/SysIns/5.png]
 
 ==== Step B3. 驗證是否安裝成功 ====
  
  * 於PC1執行指令-"crawlzilla"，出現以下畫面後選擇 "檢查Cluster 狀態"，畫面如下：
-[[Image(7.png)]]
+[http://crawlzilla.googlecode.com/svn/tags/pics/wiki/SysIns/7.png]
 
  * 若出現2個運算節點表示安裝成功！
-[[Image(8.png)]]
+[http://crawlzilla.googlecode.com/svn/tags/pics/wiki/SysIns/8.png]
 
 == 註解 ==
  * 單機版安裝程序完成後，系統將會自動開啟tomcat服務及hadoop中的namenode及jobtracker，若要執行網頁crawl功能需自行透過系統管理介面開啟datanode及tasktracker。
  * 叢集版安裝完成後，需回PC1執行系統管理介面開啟運算服務後才可加入crawl運算分派資源中。
  * 系統管理介面操作方式請參考[wiki:crawlzilla/sysmanagement_zh 此頁說明]
 
-last modified: 2010/08/19
+last modified: 2010/08/25
