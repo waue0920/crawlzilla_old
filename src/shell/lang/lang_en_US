@@ -12,7 +12,7 @@
 MI_main_echo_1="Welcome to use Crawlzilla, this install program will create a new accunt and to assist you to setup the password of crawler."
 MI_main_echo_2="Please confirm the install infomation of above ：1.Yes 2.No "
 MI_main_echo_3="Installed successfully!"
-MI_main_echo_4="You can visit the manage website ：http://$MasterIP_Address:8080"
+MI_main_echo_4="You can visit the manage website ：http://"
 
 ## Lang for master_install_func.sh ##
 ### [for choose_lang()] ### 
