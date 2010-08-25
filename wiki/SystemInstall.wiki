@@ -46,7 +46,7 @@ tar zxvf Crawlzilla-0.2-100813-Shell.tar.gz
  * 此一步驟將會在系統中新建一組user帳號-crawler，系統服務及叢集間的溝通將會已此一帳號密碼作為執行身份。
  * 設定密碼並確認網路狀態資訊後，等候完成安裝即可。
  * 畫面如下：
-[http://crawlzilla.googlecode.com/svn/tags/pics/wiki/SysIns/1.png height="200"]
+[http://crawlzilla.googlecode.com/svn/tags/pics/wiki/SysIns/1.png]
 
  * 待出現"恭喜您完成Crawlzilla安裝,按Enter鍵離開..."即表示單機環境已安裝完成！安裝完成後開啟網頁將會顯示畫面如下：
 [http://crawlzilla.googlecode.com/svn/tags/pics/wiki/SysIns/6.png]
