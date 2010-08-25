@@ -20,6 +20,8 @@ sudo apt-get install sun-java6-jdk sun-java6-plugin
 sudo update-java-alternatives -s java-6-sun
 }}}
  
+
+<a href="http://secuse.nchc.org.tw/">hahahahahah</a>
 == 二、安裝步驟 ==
 
  * 如果你只有一台機器作運算，那你可以直接讀 "A 單機安裝" 這個部份；
