@@ -1,0 +1,94 @@
+
+= 單機及叢集三分鐘快速安裝教學影片版 =
+[http://www.youtube.com/watch?v=bRWQ3BXEj4A 教學影片 at Youtobe]
+
+= Crawlzilla  =
+
+ * 雖然CrawlZilla 是設計給所有Linux Distributions 使用的，但是我們人力開發有限，目前只於以下平台測試為穩定：
+
+   * Ubuntu 8.04 ~ 10.04
+   * Debian 5.0 以上
+
+== 安裝環境 ==
+執行安裝程式前請確認以下套件是否安裝，以避免相關套件檢查時中斷安裝程序。
+ * Sun Java(註：crawlzilla執行環境必須於Sun Java中執行，Ubuntu 10.04換成sun-java-jdk可參考以下指令)
+{{{
+sudo add-apt-repository "deb http://archive.canonical.com/ lucid partner"
+sudo apt-get update
+sudo apt-get install sun-java6-jdk sun-java6-plugin
+sudo update-java-alternatives -s java-6-sun
+}}}
+ * openssh及openssh-server
+ * dialog
+ 
+== 安裝步驟 ==
+
+=== 單機安裝 ===
+此一安裝過程將假設欲安裝crawlzilla單機版於PC1中
+
+==== Step1. 取得安裝檔 ====
+ * 於[http://code.google.com/p/nutchez/ Crawlzilla@GoogleCode]或[https://sourceforge.net/p/crawlzilla/home/ Crawlzilla@SourceForge]中取得crawlzilla最新安裝檔
+
+==== Step2. 解壓縮並執行安裝程式 ====
+ * 參考指令如下：
+{{{
+tzr zxvf Crawlzilla-0.2-100813-Shell.tar.gz
+./Crawlzilla_Install/install
+}}}
+
+==== Step3. 設定密碼及確認網路資訊 ====
+
+ * 此一步驟將會在系統中新建一組user帳號-crawler，系統服務及叢集間的溝通將會已此一帳號密碼作為執行身份。
+ * 設定密碼並確認網路狀態資訊後，等候完成安裝即可。
+ * 畫面如下：
+[[Image(1.png)]]
+
+ * 待出現"恭喜您完成Crawlzilla安裝,按Enter鍵離開..."即表示單機環境已安裝完成！安裝完成後開啟網頁將會顯示畫面如下：
+[[Image(6.png)]]
+ 
+=== 叢集安裝 ===
+
+此一叢集安裝將於上述之PC1加入叢集運算節點PC2之安裝流程。
+
+==== Step1. 透過PC1取得安裝提示 ====
+ * 於client端執行"ssh PC1"，並執行 "crawlzilla" 指令，找到"client安裝步驟"，如下圖所示：
+[[Image(2.png)]]
+
+ * 相關提示字元範例如下：
+{{{
+$ scp crawler@PC1:/home/crawler/crawlzilla/source/client_deploy.sh .
+$ ./client_deploy.sh
+}}}
+
+ * 由於此一步驟需以crawler的身份ssh至PC1，因此過程中約需輸入1～2次crawler密碼
+
+==== Step2. 於PC2執行上述之提示字元 ====
+
+ * 取得提示執行後輸入主機之clawer密碼兩次並確認網路資訊即可自動完成安裝
+
+執行畫面如下：
+ * 確認安裝資訊
+[[Image(3.png)]]
+
+ * 輸入密碼
+[[Image(4.png)]]
+
+ * 安裝完成
+[[Image(5.png)]]
+
+==== Step3. 驗證是否安裝成功 ====
+ 
+ * 於PC1執行指令-"crawlzilla"，出現以下畫面後選擇 "檢查Cluster 狀態"，畫面如下：
+[[Image(7.png)]]
+
+ * 若出現2個運算節點表示安裝成功！
+[[Image(8.png)]]
+
+
+
+== 註解 ==
+ * 單機版安裝程序完成後，系統將會自動開啟tomcat服務及hadoop中的namenode及jobtracker，若要執行網頁crawl功能需自行透過系統管理介面開啟datanode及tasktracker。
+ * 叢集版安裝完成後，需回PC1執行系統管理介面開啟運算服務後才可加入crawl運算分派資源中。
+ * 系統管理介面操作方式請參考[wiki:crawlzilla/sysmanagement_zh 此頁說明]
+
+last modified: 2010/08/19
