@@ -21,9 +21,9 @@
   [http://code.google.com/p/crawlzilla/wiki/WebManagement?ts=1282724706&updated=WebManagement#%E3%80%903.%E5%9C%A8%E7%B6%B2%E9%A0%81%E4%B8%AD%E5%B5%8C%E5%85%A5%E6%90%9C%E5%B0%8B%E5%BC%95%E6%93%8E%E3%80%91 3. 在網頁中嵌入搜尋引擎]
 
 
-[ http://code.google.com/p/crawlzilla/wiki/ShellAdmin#%E3%80%90_%E7%B3%BB%E7%B5%B1%E7%AE%A1%E7%90%86%E4%BB%8B%E9%9D%A2%E6%93%8D%E4%BD%9C%E8%AA%AA%E6%98%8E_%E3%80%91 系統管理介面操作說明 ]
+[http://code.google.com/p/crawlzilla/wiki/ShellAdmin#%E3%80%90_%E7%B3%BB%E7%B5%B1%E7%AE%A1%E7%90%86%E4%BB%8B%E9%9D%A2%E6%93%8D%E4%BD%9C%E8%AA%AA%E6%98%8E_%E3%80%91 系統管理介面操作說明 ]
 
-  [ http://code.google.com/p/crawlzilla/wiki/ShellAdmin#%E3%80%90_%E7%B3%BB%E7%B5%B1%E9%81%8B%E7%AE%97%E6%9E%B6%E6%A7%8B%E3%80%91 系統運算架構]
+  [http://code.google.com/p/crawlzilla/wiki/ShellAdmin#%E3%80%90_%E7%B3%BB%E7%B5%B1%E9%81%8B%E7%AE%97%E6%9E%B6%E6%A7%8B%E3%80%91 系統運算架構]
 
   [http://code.google.com/p/crawlzilla/wiki/ShellAdmin#%E3%80%90_%E7%B3%BB%E7%B5%B1%E7%AE%A1%E7%90%86%E4%BB%8B%E9%9D%A2%E5%8A%9F%E8%83%BD_%E3%80%91 系統管理介面功能 ]
 
