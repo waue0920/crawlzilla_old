@@ -13,7 +13,6 @@
  * 若無法了解上述運算架構及原理，僅需記住以下啟動順序即可。 
 
 {{{
-#!text
 Step1. 啟動Namnode & Jobtracker
 Step2. 啟動Datanode & Tasktracker
 }}}
