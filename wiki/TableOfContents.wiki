@@ -1,3 +1,15 @@
+[http://code.google.com/p/crawlzilla/wiki/SystemInstall#%E3%80%90%E5%96%AE%E6%A9%9F%E5%8F%8A%E5%8F%A2%E9%9B%86%E4%B8%89%E5%88%86%E9%90%98%E5%BF%AB%E9%80%9F%E5%AE%89%E8%A3%9D%E6%95%99%E5%AD%B8%E5%BD%B1%E7%89%87%E7%89%88%E3%80%91 單機及叢集三分鐘快速安裝教學影片版]
+
+  [http://code.google.com/p/crawlzilla/wiki/SystemInstall#%E3%80%90_Crawlzilla_%E8%AA%AA%E6%98%8E_%E3%80%91 Crawlzilla 說明]
+
+  [http://code.google.com/p/crawlzilla/wiki/SystemInstall#%E3%80%90%E5%AE%89%E8%A3%9D%E7%92%B0%E5%A2%83%E3%80%91 安裝環境 ]
+
+  [http://code.google.com/p/crawlzilla/wiki/SystemInstall#%E3%80%90_%E5%AE%89%E8%A3%9D%E6%AD%A5%E9%A9%9F_%E3%80%91 安裝步驟 ]
+
+  [http://code.google.com/p/crawlzilla/wiki/SystemInstall#%E3%80%90_A_%E5%96%AE%E6%A9%9F%E5%AE%89%E8%A3%9D_%E3%80%91 A 單機安裝 ]
+
+  [http://code.google.com/p/crawlzilla/wiki/SystemInstall#%E3%80%90_B._%E5%8F%A2%E9%9B%86%E5%AE%89%E8%A3%9D%E3%80%91 B. 叢集安裝]
+
 [http://code.google.com/p/crawlzilla/wiki/WebManagement?ts=1282724706&updated=WebManagement#%E3%80%90Crawlzilla_%E7%B6%B2%E9%A0%81%E5%9F%B7%E8%A1%8C%E4%BB%8B%E9%9D%A2%E3%80%91 Crawlzilla 網頁執行介面]
 
   [http://code.google.com/p/crawlzilla/wiki/WebManagement?ts=1282724706&updated=WebManagement#%E3%80%900.%E8%A8%AD%E5%AE%9A%E7%B6%B2%E9%A0%81%E7%AE%A1%E7%90%86%E8%80%85%E5%AF%86%E7%A2%BC%E3%80%91 0. 設定網頁管理者密碼 ]
@@ -7,3 +19,22 @@
   [http://code.google.com/p/crawlzilla/wiki/WebManagement?ts=1282724706&updated=WebManagement#%E3%80%902.%E7%B4%A2%E5%BC%95%E5%BA%AB%E7%AE%A1%E7%90%86%E3%80%91 2. 索引庫管理]
 
   [http://code.google.com/p/crawlzilla/wiki/WebManagement?ts=1282724706&updated=WebManagement#%E3%80%903.%E5%9C%A8%E7%B6%B2%E9%A0%81%E4%B8%AD%E5%B5%8C%E5%85%A5%E6%90%9C%E5%B0%8B%E5%BC%95%E6%93%8E%E3%80%91 3. 在網頁中嵌入搜尋引擎]
+
+
+[ http://code.google.com/p/crawlzilla/wiki/ShellAdmin#%E3%80%90_%E7%B3%BB%E7%B5%B1%E7%AE%A1%E7%90%86%E4%BB%8B%E9%9D%A2%E6%93%8D%E4%BD%9C%E8%AA%AA%E6%98%8E_%E3%80%91 系統管理介面操作說明 ]
+
+  [ http://code.google.com/p/crawlzilla/wiki/ShellAdmin#%E3%80%90_%E7%B3%BB%E7%B5%B1%E9%81%8B%E7%AE%97%E6%9E%B6%E6%A7%8B%E3%80%91 系統運算架構]
+
+  [http://code.google.com/p/crawlzilla/wiki/ShellAdmin#%E3%80%90_%E7%B3%BB%E7%B5%B1%E7%AE%A1%E7%90%86%E4%BB%8B%E9%9D%A2%E5%8A%9F%E8%83%BD_%E3%80%91 系統管理介面功能 ]
+
+  [http://code.google.com/p/crawlzilla/wiki/ShellAdmin#%E3%80%90_1._%E6%AA%A2%E6%9F%A5Cluster%E7%8B%80%E6%85%8B_%E3%80%91 1. 檢查Cluster狀態 ]
+
+  [http://code.google.com/p/crawlzilla/wiki/ShellAdmin#%E3%80%90_2._%E5%95%9F%E5%8B%95Datanode_&_Tasktracker_%E3%80%91 2. 啟動Datanode & Tasktracker ]
+
+  [http://code.google.com/p/crawlzilla/wiki/ShellAdmin#%E3%80%90_3._%E5%95%9F%E5%8B%95Namenode%E5%8F%8AJobtracker_%E3%80%91 3. 啟動Namenode及Jobtracker ]
+
+  [http://code.google.com/p/crawlzilla/wiki/ShellAdmin#%E3%80%90_4._%E5%95%9F%E5%8B%95/%E5%81%9C%E6%AD%A2/%E9%87%8D%E6%96%B0%E5%95%9F%E5%8B%95_Tomcat%E6%9C%8D%E5%8B%99_%E3%80%91 4. 啟動/停止/重新啟動 Tomcat服務 ]
+
+  [http://code.google.com/p/crawlzilla/wiki/ShellAdmin#%E3%80%90_5._%E6%9B%B4%E6%94%B9Tomcat_Port_%E3%80%91 5. 更改Tomcat Port ]
+
+  [http://code.google.com/p/crawlzilla/wiki/ShellAdmin#%E3%80%90_6._%E6%9B%B4%E6%8F%9B%E8%AA%9E%E8%A8%80_%E3%80%91 6. 更換語言 ]
