@@ -1,4 +1,4 @@
-= 【 單機及叢集三分鐘快速安裝教學影片版】=
+=【單機及叢集三分鐘快速安裝教學影片版】=
 [http://www.youtube.com/watch?v=bRWQ3BXEj4A 教學影片 at Youtobe]
 
 = 【 Crawlzilla 說明 】=
@@ -8,7 +8,7 @@
  || Ubuntu  || 8.04 ~ 10.04 || 
  || Debian  || 5.0 以上 || 
 
-== 【 安裝環境 】==
+==【安裝環境】==
 
  * 系統會自動檢查以下套件是否有安裝，並試著自動安裝 （ubuntu, debian），若其他系統無法自動安裝上面套件，請自行手動安裝
     * openssh, openssh-server, Sun 6 Java
