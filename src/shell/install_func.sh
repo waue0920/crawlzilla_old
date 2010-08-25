@@ -86,9 +86,11 @@ function install_packages(){
         if [ $Linux_bit != "x86_64" ]; then
             Linux_bit="i386"
         fi
-
-        yum update
-        yum install -y expect ssh dialog wget
+        # 如果是新裝系統update會很花時間
+        # yum update
+        # 新裝系統，預設ssh為關閉
+        /etc/init.d/sshd restart
+        yum install -y expect dialog wget
 
       # install sun java
       if [ $Linux_bit == "x86_64" ]; then
