@@ -22,16 +22,22 @@ sudo update-java-alternatives -s java-6-sun
  
 == 二、安裝步驟 ==
 
+ * 如果你只有一台機器作運算，那你可以直接讀 "A 單機安裝" 這個部份；
+
+ * 如果你有兩台機器以上，你需要先做 "A 單機安裝"，接著在環境內的每一台機器上做"B. 叢集安裝"，
+
+ 建議初期您可以先安裝一台機器，接著操作crawlzilla，玩轉看看是否是您要的自由軟體再進行更進一步的操作
+
 === A 單機安裝 ===
 此一安裝過程將假設欲安裝crawlzilla單機版於PC1中
 
 ==== Step A1. 取得安裝檔 ====
- * 於[http://code.google.com/p/nutchez/ Crawlzilla@GoogleCode]或[https://sourceforge.net/p/crawlzilla/home/ Crawlzilla@SourceForge]中取得crawlzilla最新安裝檔
+ * [http://sourceforge.net/downloads/crawlzilla/stable/  取得crawlzilla最新安裝檔]
 
 ==== Step A2. 解壓縮並執行安裝程式 ====
  * 參考指令如下：
 {{{
-tzr zxvf Crawlzilla-0.2-100813-Shell.tar.gz
+tar zxvf Crawlzilla-0.2-100813-Shell.tar.gz
 ./Crawlzilla_Install/install
 }}}
 
