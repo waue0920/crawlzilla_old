@@ -2,6 +2,8 @@
 
 下面的步驟 【 A 安裝Master Server 】 與 [http://code.google.com/p/crawlzilla/wiki/SystemInstall Crawlzilla 單機系統安裝說明] 內容一模一樣
 
+如果你已經操作了 Crawlzilla 單機系統安裝說明，之後又想要再加入第二個節點，可以直接跳到【 Step B . 安裝 Slave 節點】
+
 == 【 A 安裝Master Server 】==
 
 此一安裝過程將假設欲安裝crawlzilla單機版於PC1中
@@ -29,7 +31,9 @@ tar zxvf Crawlzilla-0.2-100813-Shell.tar.gz
 
  * 待出現"恭喜您完成Crawlzilla安裝,按Enter鍵離開..."即表示單機環境已安裝完成！安裝完成後開啟網頁將會顯示畫面如下：
 [http://crawlzilla.googlecode.com/svn/tags/pics/wiki/SysIns/6.png]
- 
+
+==【 Step B  安裝 Slave 節點】==
+
 
 === 【 Step B1. 透過PC1取得安裝提示】===
 
