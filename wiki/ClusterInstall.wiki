@@ -1,0 +1,79 @@
+=【 Crawlzilla 叢集安裝】=
+
+下面的步驟 【 A 安裝Master Server 】 與 [http://code.google.com/p/crawlzilla/wiki/SystemInstall Crawlzilla 單機系統安裝說明] 內容一模一樣
+
+== 【 A 安裝Master Server 】==
+
+此一安裝過程將假設欲安裝crawlzilla單機版於PC1中
+
+=== 【 Step A1. 取得安裝檔】===
+
+ * [http://sourceforge.net/downloads/crawlzilla/stable/  取得crawlzilla最新安裝檔 ]
+
+=== 【 Step A2. 解壓縮並執行安裝程式】===
+ * 參考指令如下：
+{{{
+tar zxvf Crawlzilla-0.2-100813-Shell.tar.gz
+./Crawlzilla_Install/install
+}}}
+
+=== 【 Step A3. 設定密碼及確認網路資訊】===
+
+ * 此一步驟將會在系統中新建一組user帳號-crawler，系統服務及叢集間的溝通將會已此一帳號密碼作為執行身份。
+
+ * 設定密碼並確認網路狀態資訊後，等候完成安裝即可。
+
+ * 畫面如下：
+
+[http://crawlzilla.googlecode.com/svn/tags/pics/wiki/SysIns/1.png]
+
+ * 待出現"恭喜您完成Crawlzilla安裝,按Enter鍵離開..."即表示單機環境已安裝完成！安裝完成後開啟網頁將會顯示畫面如下：
+[http://crawlzilla.googlecode.com/svn/tags/pics/wiki/SysIns/6.png]
+ 
+
+=== 【 Step B1. 透過PC1取得安裝提示】===
+
+ * 於client端執行"ssh PC1"，並執行 "crawlzilla" 指令，找到"client安裝步驟"，如下圖所示：
+[http://crawlzilla.googlecode.com/svn/tags/pics/wiki/SysIns/2.png]
+
+ * 相關提示字元範例如下：
+
+{{{
+$ scp crawler@PC1:/home/crawler/crawlzilla/source/client_deploy.sh .
+$ ./client_deploy.sh
+}}}
+
+ * 由於此一步驟需以crawler的身份ssh至PC1，因此過程中約需輸入1～2次crawler密碼
+
+=== 【 Step B2. 於PC2執行上述之提示字元】===
+
+ * 取得提示執行後輸入主機之clawer密碼兩次並確認網路資訊即可自動完成安裝
+
+執行畫面如下：
+
+ * 確認安裝資訊
+
+[http://crawlzilla.googlecode.com/svn/tags/pics/wiki/SysIns/3.png]
+
+ * 輸入密碼
+
+[http://crawlzilla.googlecode.com/svn/tags/pics/wiki/SysIns/4.png]
+
+ * 安裝完成
+
+[http://crawlzilla.googlecode.com/svn/tags/pics/wiki/SysIns/5.png]
+
+=== 【 Step B3. 驗證是否安裝成功】===
+ 
+ * 於PC1執行指令-"crawlzilla"，出現以下畫面後選擇 "檢查Cluster 狀態"，畫面如下：
+
+[http://crawlzilla.googlecode.com/svn/tags/pics/wiki/SysIns/7.png]
+
+ * 若出現2個運算節點表示安裝成功！
+
+[http://crawlzilla.googlecode.com/svn/tags/pics/wiki/SysIns/8.png]
+
+= 【 註解 】=
+
+ * 叢集版安裝完成後，需回PC1執行系統管理介面開啟運算服務後才可加入crawl運算分派資源中。
+ * 第三個運算節點以上的安裝方式，則是重複步驟B即可
