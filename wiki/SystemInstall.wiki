@@ -32,7 +32,7 @@ sudo update-java-alternatives -s java-6-sun
 此一安裝過程將假設欲安裝crawlzilla單機版於PC1中
 
 ==== Step A1. 取得安裝檔 ====
- * [http://sourceforge.net/downloads/crawlzilla/stable/  取得crawlzilla最新安裝檔]
+ * [http://sourceforge.net/downloads/crawlzilla/stable/  取得crawlzilla最新安裝檔 height="200"]
 
 ==== Step A2. 解壓縮並執行安裝程式 ====
  * 參考指令如下：
