@@ -110,6 +110,7 @@ function install_packages(){
 
         if [ $Linux_bit == "x86_64" ]; then
           yum_install_sun_java_x86_64
+          ln -sf /usr/java/jdk1.6.0_21/bin/jps /usr/bin/jps
       else
           yum_install_sun_java_i586                                                                                                fi
     show_info "$MI_install_pack_if_2"       
