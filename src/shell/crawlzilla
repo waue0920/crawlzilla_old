@@ -112,14 +112,15 @@ main_choice="/tmp/main_choice"
 
 $DIALOG --clear --backtitle "$dia_back" \
     --title "$dia_main_title_1" \
-        --menu "$dia_choose" 15 60 8 \
+        --menu "$dia_choose" 18 60 9 \
         "cluster_status" "$dia_main_menu_1_1" \
-        "cluster_setup" "$dia_main_menu_1_2" \
-        "server_setup" "$dia_main_menu_1_3" \
-        "tomcat_switch" "$dia_main_menu_1_4" \
-        "tomcat_port" "$dia_main_menu_1_5" \
-        "lang_switch" "$dia_main_menu_1_6" \
-        "client_install" "$dia_main_menu_1_7" \
+        "fast_manage"  "$dia_main_menu_1_2" \
+        "cluster_setup" "$dia_main_menu_1_3" \
+        "server_setup" "$dia_main_menu_1_4" \
+        "tomcat_switch" "$dia_main_menu_1_5" \
+        "tomcat_port" "$dia_main_menu_1_6" \
+        "lang_switch" "$dia_main_menu_1_7" \
+        "client_install" "$dia_main_menu_1_8" \
         "exit" "$dia_exit" 2>$main_choice
 }
 
@@ -156,6 +157,26 @@ $DIALOG --clear --backtitle "$dia_back" \
     # Back to main menu 
     main_menu
     menu_choose
+}
+
+## [Fast Manage (namenode, jobtracker, datanode, tasktracker and tomcat)]
+function fast_manage(){
+  fastStatus=/tmp/fastStatus
+  $DIALOG --clear --backtitle "$dia_back" --title "$dia_server_title_2" \
+      --menu "$dia_choose" 15 65 2 \
+      "startup" "$dia_fast_manage_1" \
+      "shutdown" "$dia_fast_manage_2" 2>$fastStatus
+  if [ "$(cat $fastStatus)" == "startup" ]; then
+    fast_startup_all    
+    # Back to main menu                                                                                    
+    main_menu
+    menu_choose
+  elif [ "$(cat $fastStatus)" == "shutdown"  ]; then
+    fast_shutdown_all
+    # Back to main menu                                                                                    
+    main_menu
+    menu_choose
+  fi
 }
 
 
@@ -433,6 +454,84 @@ function client_install (){
   menu_choose
 }
 
+#function for fast_start_all computing nodes and tomcat server
+function fast_startup_all(){
+  # startup tomcat
+  tom_pids=$(ps x | grep -v 'grep' | grep "tomcat" | awk '{print $1}')
+  if [ -z "$tom_pids" ]; then
+    $Tomcat_HOME/bin/startup.sh
+  fi
+
+  # startup namenode and jobtracker
+  pid_name=$(jps | grep NameNode)
+  pid_job=$(jps | grep JobTracker)
+
+  if [ -z "$pid_name" ]; then
+    $Crawlzilla_Install_PATH/nutch/bin/start-dfs.sh
+  fi
+
+  if [ -z "$pid_job" ]; then 
+    $Crawlzilla_Install_PATH/nutch/bin/start-mapred.sh
+  fi
+
+  # startup datanode and tasktracker
+  for ip in $IP_list
+    do
+      # Check Network status
+      ip_status="online"
+      ping -c1 -w1 $ip 2>&1 > /dev/null || ip_status="offline"
+      # Check Hadoop/Nutch service through ssh
+      Task_Data_status="shutdown"
+      if [ $ip_status == "online" ]; then
+        Task_Data=$(ssh -o StrictHostKeyChecking=no $ip "jps |grep TaskTracker ; jps | grep  DataNode")
+      fi
+
+      if [ -z"$Task_Data" ] ;then
+        ssh -o StrictHostKeyChecking=no $node "$Crawlzilla_Install_PATH/nutch/bin/hadoop-daemon.sh start datanode \
+        ; $Crawlzilla_Install_PATH/nutch/bin/hadoop-daemon.sh start tasktracker" 2>/dev/null
+      fi
+    done
+}
+
+#function for fast_shutdown_all computing nodes and tomcat server
+function fast_shutdown_all(){
+  # shutdown tomcat
+  tom_pids=$(ps x | grep -v 'grep' | grep "tomcat" | awk '{print $1}')
+  if [ -n "$tom_pids" ]; then
+    $Tomcat_HOME/bin/shutdown.sh
+  fi
+
+  # shutdown namenode and jobtracker
+  pid_name=$(jps | grep NameNode)
+  pid_job=$(jps | grep JobTracker)
+
+  if [ -n "$pid_name" ]; then
+    $Crawlzilla_Install_PATH/nutch/bin/stop-dfs.sh
+  fi
+
+  if [ -n "$pid_job" ]; then
+    $Crawlzilla_Install_PATH/nutch/bin/stop-mapred.sh
+  fi
+  IP_list=$(cat $Crawlzilla_HOME/system/crawl_nodes | grep -v '^$' | grep -v '#'  | awk '{print $1}')
+  # shutdown datanode and tasktracker
+  for ip in $IP_list
+    do
+      # Check Network status
+      ip_status="online"
+      ping -c1 -w1 $ip 2>&1 > /dev/null || ip_status="offline"
+      # Check Hadoop/Nutch service through ssh
+      Task_Data_status="shutdown"
+      if [ $ip_status == "online" ]; then
+        Task_Data=$(ssh -o StrictHostKeyChecking=no $ip "jps |grep TaskTracker ; jps | grep  DataNode")
+      fi
+    
+      if [ -n "$Task_Data" ] ;then
+        ssh -o StrictHostKeyChecking=no $node "$Crawlzilla_Install_PATH/nutch/bin/hadoop-daemon.sh start datanode \
+        ; $Crawlzilla_Install_PATH/nutch/bin/hadoop-daemon.sh stop tasktracker" 2>/dev/null
+      fi
+    done
+
+}
 
 ## [Menu_choose] ##
 function menu_choose(){
@@ -441,6 +540,8 @@ case $(cat $main_choice) in
         cluster_status;;
     "cluster_setup")
         cluster_setup;;
+    "fast_manage")
+        fast_manage;;
     "server_setup")    
         server_setup;;
     "tomcat_switch")

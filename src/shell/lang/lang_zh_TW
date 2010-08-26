@@ -324,18 +324,23 @@ dia_pre_check_yesno_3="crawl_nodes 檔案已被修改過"
 ## [Lang for main_menu()] ##
 dia_main_title_1="[管理功能選項]"
 dia_main_menu_1_1="檢查 Cluster 狀態"
-dia_main_menu_1_2="設定 datanode & tasktracker"
-dia_main_menu_1_3="設定 namenode & jobtracker"
-dia_main_menu_1_4="啟動/停止/重新啟動 Tomcat"
-dia_main_menu_1_5="更改 Tomcat port"
-dia_main_menu_1_6="更換語言"
-dia_main_menu_1_7="Client 安裝步驟"
+dia_main_menu_1_2="快速啟動/關閉所有服務及Tomcat"
+dia_main_menu_1_3="設定 datanode & tasktracker"
+dia_main_menu_1_4="設定 namenode & jobtracker"
+dia_main_menu_1_5="啟動/停止/重新啟動 Tomcat"
+dia_main_menu_1_6="更改 Tomcat port"
+dia_main_menu_1_7="更換語言"
+dia_main_menu_1_8="Client 安裝步驟"
 
 ## [Lang for cluster_status()] ##
 cluster_status_echo_1="[IP] \t\t [Hostname] \t [Network] \t [Dtatnode & Tasktracker]"
 cluster_status_echo_2="開始檢查 Cluster...請稍候（node數越多,等待時間越長） "
 cluster_status_read_1="請輸入任何鍵繼續..."
 dia_cluster_status_title_1="[Cluster 狀態]"
+
+## [Lang for fast_manage()] ##
+dia_fast_manage_1="啟動所有運算節點及Tomcat"
+dia_fast_manage_2="關閉所有運算節點及Tomcat"
 
 ## [Lang for srver_setup()] ##
 dia_server_title_1="[Server 狀態]"
