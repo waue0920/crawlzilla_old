@@ -222,6 +222,7 @@ function unzip_nV2_pack(){
     if [  -d /usr/java/jdk1.6.0_21/ ] ;then
     debug_info "Change JAVA_HOME=/usr/java/jdk1.6.0_21/"
     sed -i 's/\/usr\/lib\/jvm\/java-6-sun/\/usr\/java\/jdk1.6.0_21\//' /opt/crawlzilla/nutch/conf/hadoop-env.sh
+    ln -sf /usr/java/jdk1.6.0_21/bin/jps /usr/bin/jps
     fi
   fi
     
