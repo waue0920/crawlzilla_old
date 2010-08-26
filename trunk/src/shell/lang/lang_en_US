@@ -322,6 +322,7 @@ dia_pre_check_yesno_3="crawl_nodes has modified"
 ## [Lang for main_menu()] ##
 dia_main_title_1="[Management Options]"
 dia_main_menu_1_1="Check cluster state"
+dia_main_menu_1_2="Fast Startup/Stop all Sevices"
 dia_main_menu_1_2="Set datanode & tasktracker"
 dia_main_menu_1_3="Set namenode & jobtracker"
 dia_main_menu_1_4="Startup/Shutdown/Restart Tomcat"
@@ -335,6 +336,10 @@ cluster_status_echo_1="[IP] \t\t [Hostname] \t [Network] \t [Dtatnode & Tasktrac
 cluster_status_echo_2="Start check cluster..."
 cluster_status_read_1="press any key to continue..."
 dia_cluster_status_title_1="[Cluster state]"
+
+## [Lang for fast_manage()] ##
+dia_fast_manage_1="Startup all Computing Nodes and Tomcat"
+dia_fast_manage_2="Shutdown all Computing Nodes and Tomcat"
 
 ## [Lang for srver_setup()] ##
 dia_server_title_1="[Server State]"
