@@ -368,6 +368,24 @@ function install_nutch_package(){
   cp /etc/hosts /home/crawler/crawlzilla/system/hosts.bak
   sed -i '1a '$Master_IP_Address' '$Master_Hostname'' /etc/hosts
 
+   # change sun-jre home path to each linux os
+  if [ "$Linux_Distribution" == "SUSE" ] ;then
+    if [ -d /usr/lib/jvm/jre-1.6.0-sun/ ] ;then
+        debug_info "Change JAVA_HOME=/usr/lib/jvm/jre-1.6.0-sun/"
+        sed -i 's/java-6-sun/jre-1.6.0-sun/' /opt/crawlzilla/nutch/conf/hadoop-env.sh
+    fi
+  elif [ "$Linux_Distribution" == "CentOS" ] ;then
+    if [  -d /usr/java/jdk1.6.0_21/ ] ;then
+    debug_info "Change JAVA_HOME=/usr/java/jdk1.6.0_21/"
+    sed -i 's/\/usr\/lib\/jvm\/java-6-sun/\/usr\/java\/jdk1.6.0_21\//' /opt/crawlzilla/nutch/conf/hadoop-env.sh
+    fi
+  elif [ "$Linux_Distribution" == "Fedora" ] ;then
+    if [  -d /usr/java/jdk1.6.0_21/ ] ;then
+    debug_info "Change JAVA_HOME=/usr/java/jdk1.6.0_21/"
+    sed -i 's/\/usr\/lib\/jvm\/java-6-sun/\/usr\/java\/jdk1.6.0_21\//' /opt/crawlzilla/nutch/conf/hadoop-env.sh
+    ln -sf /usr/java/jdk1.6.0_21/bin/jps /usr/bin/jps
+    fi
+  fi
 }
 
 function change_hosts_owner (){
@@ -419,7 +437,6 @@ function recall_hostname_ip(){
 
   debug_info "$recall_hostname_ip_d2"
   su crawler -c "ssh crawler@$1 echo $net_address $(hostname) $net_MacAddr \>\> ~/crawlzilla/system/crawl_nodes"
-
 }
 
 function change_ownship(){
