@@ -332,7 +332,7 @@ dia_main_menu_1_8="Client Install Steps"
 
 
 ## [Lang for cluster_status()] ##
-cluster_status_echo_1="[IP] \t\t [Hostname] \t [Network] \t [Dtatnode & Tasktracker]"
+cluster_status_echo_1="[IP] \t\t [Hostname] \t [Network] \t [Datanode & Tasktracker]"
 cluster_status_echo_2="Start check cluster..."
 cluster_status_read_1="press any key to continue..."
 dia_cluster_status_title_1="[Cluster state]"

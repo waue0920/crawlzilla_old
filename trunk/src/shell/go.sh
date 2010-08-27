@@ -49,6 +49,9 @@ fi
 # 開始紀錄程序狀態
 echo "begin" > "$tmp_dir/$crawlname_from_jsp"
 
+# 紀錄開始時間
+StartTime=$(date +%s)
+
 /opt/crawlzilla/nutch/bin/hadoop dfs -mkdir $crawlname_from_jsp
 checkMethod "hadoop dfs -mkdir $crawlname_from_jsp"
 /opt/crawlzilla/nutch/bin/hadoop dfs -put /home/crawler/crawlzilla/urls $crawlname_from_jsp/urls
@@ -71,6 +74,13 @@ checkMethod "sed"
 
 # 完成搜尋狀態
 echo "finish" > "$tmp_dir/$crawlname_from_jsp"
+
+# 紀錄完成時間
+FinishTime=$(date +%s)
+
+# 花費時間
+Spend=$(( $StartTime - $FinishTime))
+
 
 # 策略改變，不分別下載
 # /opt/crawlzilla/nutch/bin/hadoop dfs -get search $archieve_dir/$crawlname_from_jsp
