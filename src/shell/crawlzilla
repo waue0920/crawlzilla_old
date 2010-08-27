@@ -129,7 +129,7 @@ function cluster_status(){
 IP_list=$(cat $Crawlzilla_HOME/system/crawl_nodes | grep -v '^$' | grep -v '#'  | awk '{print $1}')
 clusterStatus="/tmp/clusterStatus"
 rm $clusterStatus 2> /dev/null
-#printf '%16s\t %11s\t %10s\t %25s\n' "[IP] [Hostanme] [Network] [Dtatnode & Tasktracker]" >>$clusterStatus
+#printf '%16s\t %11s\t %10s\t %25s\n' "[IP] [Hostanme] [Network] [Datanode & Tasktracker]" >>$clusterStatus
 echo -e "$cluster_status_echo_1" >>$clusterStatus
 echo -e "------------------------------------------------------------------------" >>$clusterStatus
 echo -e "\n$cluster_status_echo_2"
