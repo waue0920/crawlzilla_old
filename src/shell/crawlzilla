@@ -163,9 +163,10 @@ $DIALOG --clear --backtitle "$dia_back" \
 function fast_manage(){
   fastStatus=/tmp/fastStatus
   $DIALOG --clear --backtitle "$dia_back" --title "$dia_server_title_2" \
-      --menu "$dia_choose" 15 65 2 \
+      --menu "$dia_choose" 15 65 3 \
       "startup" "$dia_fast_manage_1" \
-      "shutdown" "$dia_fast_manage_2" 2>$fastStatus
+      "shutdown" "$dia_fast_manage_2" \
+      "main" "$dia_backto_main" 2>$fastStatus
   if [ "$(cat $fastStatus)" == "startup" ]; then
     fast_startup_all    
     # Back to main menu                                                                                    
@@ -173,7 +174,11 @@ function fast_manage(){
     menu_choose
   elif [ "$(cat $fastStatus)" == "shutdown"  ]; then
     fast_shutdown_all
-    # Back to main menu                                                                                    
+    # Back to main menu        
+    main_menu
+    menu_choose
+
+  elif [ "$(cat $fastStatus)" == "main" ]; then
     main_menu
     menu_choose
   fi
@@ -460,6 +465,7 @@ function fast_startup_all(){
   tom_pids=$(ps x | grep -v 'grep' | grep "tomcat" | awk '{print $1}')
   if [ -z "$tom_pids" ]; then
     $Tomcat_HOME/bin/startup.sh
+    kill -9 $tom_pid
   fi
 
   # startup namenode and jobtracker
