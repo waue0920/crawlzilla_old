@@ -465,7 +465,7 @@ function fast_startup_all(){
   tom_pids=$(ps x | grep -v 'grep' | grep "tomcat" | awk '{print $1}')
   if [ -z "$tom_pids" ]; then
     $Tomcat_HOME/bin/startup.sh
-    kill -9 $tom_pid
+    kill -9 $tom_pids
   fi
 
   # startup namenode and jobtracker
