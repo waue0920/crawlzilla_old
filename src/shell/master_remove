@@ -83,8 +83,14 @@ function remove_folders () {
   rm -rf /opt/crawlzilla
   rm -rf /var/log/crawlzilla
   rm -rf /var/lib/crawlzilla
-  rm -rf /tmp/*.pid
+  
   show_info "$MR_remove_folders_echo_2" # "安裝時所建立的檔案及資料夾已刪除"
+  # 刪除/tmp下的crawler檔案
+  fileList=$(ls -al /tmp | grep crawler | awk '{print $8}')
+    for file in $(echo $fileList)
+      do
+        rm -rf /tmp/$file
+    done
 }
 
 # 還原/etc/hosts
