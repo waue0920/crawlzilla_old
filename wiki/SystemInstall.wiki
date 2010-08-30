@@ -3,7 +3,7 @@
 
 = 【 Crawlzilla 說明 】=
 
- * 雖然CrawlZilla 是設計給所有Linux Distributions 使用的，但是我們人力開發有限，目前只於以下平台測試為穩定：
+ * 雖然Crawlzilla 是設計給所有Linux Distributions 使用的，但是我們人力開發有限，目前只於以下平台測試為穩定：
 
  || Ubuntu  || 8.04 ~ 10.04 || 
  || Debian  || 5.0 以上 || 
