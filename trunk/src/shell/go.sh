@@ -20,7 +20,7 @@ function checkMethod(){
   if [ $? -eq 0 ];then
     echo "$1 is ok";
   else
-    echo "error: $1 broken" > "$tmp_dir/$crawlname_from_jsp"
+    echo "error: $1 broken" > "$tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp"
     show_info "error: $1 broken"
     exit 8
   fi
@@ -46,8 +46,16 @@ if [ ! -e $tmp_dir ];then
    mkdir $tmp_dir
    checkMethod "mkdir .tmp"
 fi
+
+# 存儲crawling狀態及花費時間的資料夾
+if [ ! -e "$tmp_dir/$crawlname_from_jsp" ];then
+   mkdir "$tmp_dir/$crawlname_from_jsp"
+   checkMethod "mkdir crawlStatusDir"
+fi
+
 # 開始紀錄程序狀態
-echo "begin" > "$tmp_dir/$crawlname_from_jsp"
+echo "begin" > "$tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp"
+echo "0" > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'PassTime'
 
 # 檢查並刪除HDFS上的重複目錄
 CheckFlag=$(/opt/crawlzilla/nutch/bin/hadoop fs -ls /user/crawler/ | awk '{print $1}' | grep $crawlname_from_jsp)
@@ -59,20 +67,37 @@ fi
 
 # 紀錄開始時間
 StartTime=$(date +%s)
-
 /opt/crawlzilla/nutch/bin/hadoop dfs -mkdir $crawlname_from_jsp
 checkMethod "hadoop dfs -mkdir $crawlname_from_jsp"
+
+TempTime=$(date +%s)
+PassTime=$(( $TempTime - $StartTime ))
+echo $PassTime > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'PassTime'
+
 /opt/crawlzilla/nutch/bin/hadoop dfs -put /home/crawler/crawlzilla/urls $crawlname_from_jsp/urls
 checkMethod "hadoop dfs -put urls"
 
+TempTime=$(date +%s)
+PassTime=$(( $TempTime - $StartTime ))
+echo $PassTime > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'PassTime'
+
 # 開始nutch 搜尋
-echo "crawling" > "$tmp_dir/$crawlname_from_jsp"
+echo "crawling" > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp
 
 /opt/crawlzilla/nutch/bin/nutch crawl $crawlname_from_jsp/urls -dir $crawlname_from_jsp -depth $crawl_dep -topN 5000 -threads 1000
 checkMethod "nutch crawl"
 
+TempTime=$(date +%s)
+PassTime=$(( $TempTime - $StartTime ))
+echo $PassTime > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'PassTime'
+
 /opt/crawlzilla/nutch/bin/hadoop dfs -get $crawlname_from_jsp $archieve_dir/$crawlname_from_jsp
 checkMethod "download search"
+
+TempTime=$(date +%s)
+PassTime=$(( $TempTime - $StartTime ))
+echo $PassTime > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'PassTime'
+
 
 # 製作 $crawlname_from_jsp 於 tomcat
 cp -rf /opt/crawlzilla/tomcat/webapps/default /opt/crawlzilla/tomcat/webapps/$crawlname_from_jsp
@@ -81,13 +106,12 @@ sed -i '8s/search/'${crawlname_from_jsp}'/g' /opt/crawlzilla/tomcat/webapps/$cra
 checkMethod "sed"
 
 # 完成搜尋狀態
-echo "finish" > "$tmp_dir/$crawlname_from_jsp"
-
-# 紀錄完成時間
-FinishTime=$(date +%s)
+echo "finish" > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp
 
 # 花費時間
-Spend=$(( $StartTime - $FinishTime))
+TempTime=$(date +%s)
+PassTime=$(( $TempTime - $StartTime ))
+echo $PassTime > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'PassTime'
 
 
 # 策略改變，不分別下載

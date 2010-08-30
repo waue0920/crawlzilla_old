@@ -67,7 +67,6 @@
 	scope="session" /> <%
  	nutchDBStatus.setFiles("/home/crawler/crawlzilla/.tmp/");
  		File statusName[] = nutchDBStatus.getFiles();
-
  		nutchDBNum.setNum("/home/crawler/crawlzilla/.tmp/");
  		int statusNum = nutchDBNum.getNum();
  %> <i18n:message key="sysinfo_DbStatus" /><br>
@@ -77,6 +76,7 @@
 	<tr>
 		<th><i18n:message key="sysinfo_DbName" /></th>
 		<th><i18n:message key="sysinfo_CrawlStatus" /></th>
+		<th><i18n:message key="sysinfo_PassTime" /></th>
 		<th><i18n:message key="sysinfo_Delete" /></th>
 	</tr>
 	<%
@@ -92,16 +92,29 @@
 								+ statusName[j].getName() + " \" >");
 				out.print(statusName[j].getName() + "</a>");
 				out.print("</td>");
-				out.print("<td>");
 
-				FileReader fr = new FileReader(statusName[j]);
+				out.print("<td>");
+				
+				FileReader fr = new FileReader(statusName[j] + "/" + statusName[j].getName());
 				BufferedReader br = new BufferedReader(fr);
 				out.print(br.readLine());
 				br.close();
 				fr.close();
-
+				
 				out.print("</td>");
 
+				out.print("<td>");
+				
+				FileReader fr2 = new FileReader(statusName[j] + "/" + statusName[j].getName()+"PassTime");
+				BufferedReader br2 = new BufferedReader(fr2);
+				out.print(br2.readLine());
+				br2.close();
+				fr2.close();
+				
+				out.print("</td>");
+
+				
+				
 				out.print("<td>");
 				out
 						.print("<input type=\"submit\" name=\"Delete\" value=\"Delete\" onclick=\"deleteDBStatus("
@@ -110,7 +123,7 @@
 
 				out.print("</form>");
 
-				out.print("</tr>");
+				out.print("</tr>"); 
 			}
 	%>
 </table>
