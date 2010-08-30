@@ -49,6 +49,14 @@ fi
 # 開始紀錄程序狀態
 echo "begin" > "$tmp_dir/$crawlname_from_jsp"
 
+# 檢查並刪除HDFS上的重複目錄
+CheckFlag=$(/opt/crawlzilla/nutch/bin/hadoop fs -ls /user/crawler/ | awk '{print $1}' | grep $crawlname_from_jsp)
+
+if [ -n $CheckFlag ]; then
+  /opt/crawlzilla/nutch/bin/hadoop dfs -rmr /user/crawler/$crawlname_from_jsp
+fi
+
+
 # 紀錄開始時間
 StartTime=$(date +%s)
 
