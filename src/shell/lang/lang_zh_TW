@@ -333,7 +333,7 @@ dia_main_menu_1_7="更換語言"
 dia_main_menu_1_8="Client 安裝步驟"
 
 ## [Lang for cluster_status()] ##
-cluster_status_echo_1="[IP] \t\t [Hostname] \t [Network] \t [Dtatnode & Tasktracker]"
+cluster_status_echo_1="[IP] \t\t [Hostname] \t [Network] \t [Datanode & Tasktracker]"
 cluster_status_echo_2="開始檢查 Cluster...請稍候（node數越多,等待時間越長） "
 cluster_status_read_1="請輸入任何鍵繼續..."
 dia_cluster_status_title_1="[Cluster 狀態]"
