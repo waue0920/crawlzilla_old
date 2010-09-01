@@ -65,21 +65,17 @@ if [ -n $CheckFlag ]; then
 fi
 
 
-# 紀錄開始時間
-StartTime=$(date +%s)
+
+# 呼叫counter.sh紀錄時間
+./counter.sh $crawlname_from_jsp &
+
 /opt/crawlzilla/nutch/bin/hadoop dfs -mkdir $crawlname_from_jsp
 checkMethod "hadoop dfs -mkdir $crawlname_from_jsp"
 
-TempTime=$(date +%s)
-PassTime=$(( $TempTime - $StartTime ))
-echo $PassTime > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'PassTime'
 
 /opt/crawlzilla/nutch/bin/hadoop dfs -put /home/crawler/crawlzilla/urls $crawlname_from_jsp/urls
 checkMethod "hadoop dfs -put urls"
 
-TempTime=$(date +%s)
-PassTime=$(( $TempTime - $StartTime ))
-echo $PassTime > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'PassTime'
 
 # 開始nutch 搜尋
 echo "crawling" > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp
@@ -87,17 +83,8 @@ echo "crawling" > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp
 /opt/crawlzilla/nutch/bin/nutch crawl $crawlname_from_jsp/urls -dir $crawlname_from_jsp -depth $crawl_dep -topN 5000 -threads 1000
 checkMethod "nutch crawl"
 
-TempTime=$(date +%s)
-PassTime=$(( $TempTime - $StartTime ))
-echo $PassTime > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'PassTime'
-
 /opt/crawlzilla/nutch/bin/hadoop dfs -get $crawlname_from_jsp $archieve_dir/$crawlname_from_jsp
 checkMethod "download search"
-
-TempTime=$(date +%s)
-PassTime=$(( $TempTime - $StartTime ))
-echo $PassTime > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'PassTime'
-
 
 # 製作 $crawlname_from_jsp 於 tomcat
 cp -rf /opt/crawlzilla/tomcat/webapps/default /opt/crawlzilla/tomcat/webapps/$crawlname_from_jsp
@@ -108,10 +95,13 @@ checkMethod "sed"
 # 完成搜尋狀態
 echo "finish" > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp
 
+count_pid=$(cat $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'count_pid')
+kill -9 $count_pid
+
 # 花費時間
-TempTime=$(date +%s)
-PassTime=$(( $TempTime - $StartTime ))
-echo $PassTime > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'PassTime'
+#TempTime=$(date +%s)
+#PassTime=$(( $TempTime - $StartTime ))
+#echo $PassTime > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'PassTime'
 
 
 # 策略改變，不分別下載
