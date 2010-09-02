@@ -506,6 +506,7 @@ function fast_shutdown_all(){
   tom_pids=$(ps x | grep -v 'grep' | grep "tomcat" | awk '{print $1}')
   if [ -n "$tom_pids" ]; then
     $Tomcat_HOME/bin/shutdown.sh
+    kill -9 $tom_pids
   fi
 
   # shutdown namenode and jobtracker

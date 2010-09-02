@@ -67,7 +67,7 @@ fi
 
 
 # 呼叫counter.sh紀錄時間
-./counter.sh $crawlname_from_jsp &
+/home/crawler/crawlzilla/system/counter.sh $crawlname_from_jsp &
 
 /opt/crawlzilla/nutch/bin/hadoop dfs -mkdir $crawlname_from_jsp
 checkMethod "hadoop dfs -mkdir $crawlname_from_jsp"
