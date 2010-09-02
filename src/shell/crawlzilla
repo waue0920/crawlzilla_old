@@ -534,7 +534,7 @@ function fast_shutdown_all(){
       fi
     
       if [ -n "$Task_Data" ] ;then
-        ssh -o StrictHostKeyChecking=no $node "$Crawlzilla_Install_PATH/nutch/bin/hadoop-daemon.sh start datanode \
+        ssh -o StrictHostKeyChecking=no $node "$Crawlzilla_Install_PATH/nutch/bin/hadoop-daemon.sh stop datanode \
         ; $Crawlzilla_Install_PATH/nutch/bin/hadoop-daemon.sh stop tasktracker" 2>/dev/null
       fi
     done
