@@ -24,7 +24,7 @@
  * http://code.google.com/p/crawlzilla 
  * @author Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
  */
-package org.nchc.crawlzilla;/**
+package org.nchc.crawlzilla;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
