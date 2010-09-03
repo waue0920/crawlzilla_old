@@ -291,7 +291,9 @@ expect eof"
 
 # 新增crawler 帳號時用 Crawler_Passwd 當密碼
 function creat_crawler_account(){
-  groupadd crawler
+  if [ "$Linux_Distribution" == "SUSE" ] ;then
+      groupadd crawler
+  fi
   debug_info "$create_crawler_d1"
   while [ "$Crawler_Passwd" != "$Crawler_Passwd2" ]
   do
