@@ -1,3 +1,6 @@
+=【單機及叢集三分鐘快速安裝教學影片版】=
+<wiki:video url="http://www.youtube.com/watch?v=bRWQ3BXEj4A"/>
+
 =【 Crawlzilla 叢集安裝】=
 
 下面的步驟 【 A 安裝Master Server 】 與 [http://code.google.com/p/crawlzilla/wiki/SystemInstall Crawlzilla 單機系統安裝說明] 內容一模一樣
