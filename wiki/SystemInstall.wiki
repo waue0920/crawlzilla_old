@@ -1,5 +1,5 @@
 =【單機及叢集三分鐘快速安裝教學影片版】=
-[http://www.youtube.com/watch?v=bRWQ3BXEj4A 教學影片 at Youtobe]
+<wiki:video url="http://www.youtube.com/watch?v=bRWQ3BXEj4A"/>
 
 = 【 Crawlzilla 說明 】=
 
