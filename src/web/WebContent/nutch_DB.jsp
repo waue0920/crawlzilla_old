@@ -86,7 +86,7 @@
   	<th><i18n:message key="nutchDB_CreateTime"/></th>
   	<th><i18n:message key="nutchDB_DelDb"/></th>
   	<th><i18n:message key="nutchDB_Preview"/><br><i18n:message key="nutchDB_Statistics"/></th>
-  	<th><br>重新爬取</th>
+  	<th><i18n:message key="nutchDB_ReCrawl"/></th>
   	<th><i18n:message key="nutchDB_embed1"/><br /><i18n:message key="nutchDB_embed2"/></th>
   </tr>
 <%
