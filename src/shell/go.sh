@@ -68,6 +68,9 @@ if [ ! -e "$tmp_dir/$crawlname_from_jsp" ];then
    checkMethod "mkdir crawlStatusDir"
 fi
 
+# 紀錄爬取深度
+echo $1 > $tmp_dir/$crawlname_from_jsp/.crawl_depth
+
 # 開始紀錄程序狀態
 echo "begin" > "$tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp"
 echo "0" > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'PassTime'
@@ -78,8 +81,6 @@ CheckFlag=$(/opt/crawlzilla/nutch/bin/hadoop fs -ls /user/crawler/ | awk '{print
 if [ -n $CheckFlag ]; then
   /opt/crawlzilla/nutch/bin/hadoop dfs -rmr /user/crawler/$crawlname_from_jsp
 fi
-
-
 
 # 呼叫counter.sh紀錄時間
 /home/crawler/crawlzilla/system/counter.sh $crawlname_from_jsp &
@@ -108,6 +109,7 @@ sed -i '8s/search/'${crawlname_from_jsp}'/g' /opt/crawlzilla/tomcat/webapps/$cra
 checkMethod "sed"
 
 # 完成搜尋狀態
+cp $tmp_dir/$crawlname_from_jsp/.crawl_depth $archieve_dir/$crawlname_from_jsp/
 echo "finish" > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp
 
 count_pid=$(cat $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'count_pid')
