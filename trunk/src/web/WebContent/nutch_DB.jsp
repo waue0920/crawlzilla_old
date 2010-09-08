@@ -86,6 +86,7 @@
   	<th><i18n:message key="nutchDB_CreateTime"/></th>
   	<th><i18n:message key="nutchDB_DelDb"/></th>
   	<th><i18n:message key="nutchDB_Preview"/><br><i18n:message key="nutchDB_Statistics"/></th>
+  	<th><br>重新爬取</th>
   	<th><i18n:message key="nutchDB_embed1"/><br /><i18n:message key="nutchDB_embed2"/></th>
   </tr>
 <%
@@ -116,6 +117,9 @@ for (int i=0 ; i<num ;i++){
 	out.print("<td>");
 	out.print("<input type=\"hidden\" name=\"inpreview\" value=\""+String.valueOf(i)+"\" >");
 	out.print("<input type=\"button\" name=\"Preview\" value=\"Preview\" onclick=\"preview(" + i + ")\" />");
+	out.print("</td>");
+	out.print("<td>");
+	out.print("<input type=\"button\" name=\"Re-Crawl\" value=\"ReCrawl\" onclick=\"ReCrawl(" + i + ")\" />");
 	out.print("</td>");
 	out.print("<td>");
 	%>

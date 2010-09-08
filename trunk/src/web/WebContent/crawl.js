@@ -19,6 +19,13 @@ function preview(num){
 		document.forms[num].submit();
 }
 
+function ReCrawl(num){
+	if (confirm("Warning! This action will delete this index pool and re-crawl a new index pool, are you sure?")){
+		document.forms[num].action="ReCrawl.do";
+		document.forms[num].submit();
+	}
+}
+
 function tomcat_cancle(){
 	location.href='nutch_DB.jsp';
 }
