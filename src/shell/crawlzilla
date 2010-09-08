@@ -157,9 +157,9 @@ do
     Task_Data_status="shutdown"
     if [ $ip_status == "online" ]; then
     Task_Data=$(ssh -o StrictHostKeyChecking=no $ip "jps |grep TaskTracker ; jps | grep  DataNode")
+    [ -z "$Task_Data" ] || Task_Data_status="running"
     fi
 
-    [ -z "$Task_Data" ] || Task_Data_status="running"
     host_name=$(cat $Crawlzilla_HOME/system/crawl_nodes | grep $ip | awk '{print $2}')
     echo -e "$ip  $host_name \t\t $ip_status \t $Task_Data_status" >>$clusterStatus
 #    printf '%16s\t %11s\t %10s\t %25s\n' "$ip $host_name $ip_status $Task_Data_status" >>$clusterStatus
