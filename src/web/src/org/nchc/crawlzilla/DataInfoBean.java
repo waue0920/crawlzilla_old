@@ -18,11 +18,7 @@
 
 /**
  * @guide
- * The data of DataInfoBean is set by "Statistics" then read by "statistics.jsp"
- * It uses "IndexInfo" and org.apache.lucene.index.IndexReader
- * @web
- * http://code.google.com/p/crawlzilla 
- * @author Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
+ * 未完成，也還沒開始使用
  */
 
 package org.nchc.crawlzilla;

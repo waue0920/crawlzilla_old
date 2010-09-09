@@ -18,39 +18,22 @@
 <%@ taglib uri="http://jakarta.apache.org/taglibs/i18n-1.0" prefix="i18n" %>
 
 <%@page import="java.util.*" %>
-
+<%@page import="org.nchc.crawlzilla.UserInfoAttrSet" %>
 <%
 	String loginFormURL = "adminLogin.jsp";
 	String user = (String) session.getAttribute("user");
+	
 	if (session.getAttribute("confirm") == "true") {
-		String sIPAddress = request.getServerName();
-
-		
-		String language = (String) request.getParameter("language");
-		if (language != null ) {			
-			int lan_int = Integer.parseInt(language);
-			switch (lan_int) {
-			case 1:
-				language = "en";
-				break;
-			case 2:
-				language = "zh_TW";
-				break;
-			}
-			session.setAttribute("lang", language);
-		}
-		
+		UserInfoAttrSet xml = new UserInfoAttrSet();
      	String lang = (String) session.getAttribute("lang"); 
+     	Locale locale =new Locale(lang,"");
      	if (lang == null) {
      		lang = pageContext.getResponse().getLocale().toString();
      		session.setAttribute("lang", lang);
      	}
-     	Locale locale =new Locale(lang,"");
 %>
 
  <i18n:bundle baseName="org.nchc.crawlzilla.i18n.lang" locale="<%=locale%>" id="bundle" />
-
-
 
 <%@ include file="/include/header.jsp" %>
 <div id="navcontainer">
@@ -80,11 +63,11 @@
 
 <h3><i18n:message key="title_UserSetup" /></h3>
 
-<form action="usersetup.jsp"><i18n:message
+<form action="usersetupset.jsp"><i18n:message
 	key="usersetup_EngineName" /><br>
-<input type="text" class="haha" id="enginename" name="enginename"></input><br>
+<input type="text" class="haha" id="enginename" name="enginename" value=<%=xml.getEngineName()%>></input><br>
 <i18n:message key="usersetup_AdminEmail" /><br>
-<input type="text" class="haha" id="email" name="email"></input><br>
+<input type="text" class="haha" id="email" name="email" value=<%=xml.getEmail()%>></input><br>
 
 <i18n:message key="usersetup_Language" /><br>
 <select name="language">
