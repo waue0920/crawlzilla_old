@@ -1,13 +1,19 @@
 =【單機及叢集三分鐘快速安裝教學影片版】=
-<wiki:video url="http://www.youtube.com/watch?v=bRWQ3BXEj4A"/>
+<wiki:video url="http://www.youtube.com/watch?v=kHbQSEiMZOI"/>
 
 =【 Crawlzilla 單機安裝 】 =
 == 【 Crawlzilla 說明 】==
 
- * 雖然Crawlzilla 是設計給所有Linux Distributions 使用的，但是我們人力開發有限，目前只於以下平台測試為穩定：
+ * 雖然 Crawlzilla 是設計給所有Linux Distributions 使用的，但是我們人力開發有限，目前只於以下平台測試為穩定
+
+建議作業系統：
 
  || Ubuntu  || 8.04 ~ 10.04 || 
  || Debian  || 5.0 以上 || 
+
+建議系統記憶體： 
+
+   1.5 G 以上
 
 ==【安裝環境】==
 
