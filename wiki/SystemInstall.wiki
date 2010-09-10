@@ -1,4 +1,6 @@
 =【單機及叢集三分鐘快速安裝教學影片版】=
+
+ * 示範如何用彈指間的四個步驟，完成一個搜尋引擎的安裝
 <wiki:video url="http://www.youtube.com/watch?v=kHbQSEiMZOI"/>
 
 =【 Crawlzilla 單機安裝 】 =
