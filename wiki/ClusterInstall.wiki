@@ -3,9 +3,11 @@
 
 =【 Crawlzilla 叢集安裝】=
 
-下面的步驟 【 A 安裝Master Server 】 與 [http://code.google.com/p/crawlzilla/wiki/SystemInstall Crawlzilla 單機系統安裝說明] 內容一模一樣
+用一台普通pc (core 2 CPU , 2G Mem ) 安裝了 Crawlzilla 的主機，去爬取總資料量約200MB的任務，需要6 個小時。因此，如果你的搜尋需求更大，即時性更急迫些，你可以考慮用叢集運作的方式來平行分散工作到多台電腦去運算。
 
-如果你已經操作了 Crawlzilla 單機系統安裝說明，之後又想要再加入第二個節點，可以直接跳到【 Step B . 安裝 Slave 節點】
+要完成安裝 Crawlzilla 的叢集模式一點都不複雜，只要注意安裝步驟即可。概念是，安裝的第一台為Master，此台也可以獨立執行運作全部的服務，方法與 [http://code.google.com/p/crawlzilla/wiki/SystemInstall Crawlzilla 單機系統安裝說明] 內容一模一樣；第二台以上的電腦，則利用Master所產生出來的*Client安裝包*來完成安裝；之後就可以用Crawlzilla 的管理工具輕鬆的*動態*[新增＼移除]運算節點囉！
+
+你會發現 *A 安裝Master Server* 與單機安裝的步驟方法是一模一樣的，因此如果你已經操作了 Crawlzilla 單機系統安裝說明，之後又想要再加入第二、三....多個節點，可以直接跳到【 Step B . 安裝 Slave 節點】分別執行即可
 
 == 【 A 安裝Master Server 】==
 
