@@ -107,7 +107,7 @@ function install_packages(){
         yum install -y expect dialog wget
 
       # install sun java
-      if [ $Linux_bit == "x86_64" ]; then
+      if [ "$Linux_bit" == "x86_64" ]; then
           yum_install_sun_java_x86_64
       else
           yum_install_sun_java_i586
