@@ -54,14 +54,15 @@ public class ReCrawl extends HttpServlet {
 		String name = request.getParameter("fileName");
 //		PrintWriter out = response.getWriter();
 		
-		Process process = Runtime.getRuntime().exec("rm -fr /home/crawler/crawlzilla/archieve/"+name);
+/*		Process process = Runtime.getRuntime().exec("rm -fr /home/crawler/crawlzilla/archieve/"+name);
 		try {
 			process.waitFor();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		process.destroy();		
+		process.destroy();
+*/		
 		
 		response.sendRedirect("sysinfo.jsp");
 		
