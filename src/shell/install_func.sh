@@ -171,8 +171,9 @@ function unzip_nV2_pack(){
     mkdir $Install_Dir/package
   fi
   if [ ! -e "$Install_Dir/package/$pac_name" ];then
-    # wget "http://crawlzilla.googlecode.com/files/$pac_name"; # google code  
-    wget "http://sourceforge.net/downloads/crawlzilla/stable/package/$pac_name"; # source-forge
+    # wget "http://crawlzilla.googlecode.com/files/$pac_name"; # google code 
+    wget "http://sourceforge.net/projects/crawlzilla/files/stable/package/$pac_name/download" -o $pac_name; # source-forge
+#    wget "http://sourceforge.net/downloads/crawlzilla/stable/package/$pac_name"; # source-forge
   if [ $? -eq 0 ];then
 	mv $pac_name $Install_Dir/package;
         chmod -R 777 $Install_Dir/package;
