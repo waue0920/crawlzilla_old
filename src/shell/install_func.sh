@@ -77,7 +77,7 @@ function install_packages(){
   debug_info "$MI_install_pack_1"
   debug_info "$MI_install_pack_2"
   if [ "$Linux_Distribution" == "Ubuntu" ]; then
-        if [ $Linux_Version == "10.04" ]; then
+        if [ "$Linux_Version" == "10.04" ]; then
             echo -e "\n$install_pack_if_1\n"
             add-apt-repository "deb http://archive.canonical.com/ lucid partner"
             apt-get update
@@ -97,7 +97,7 @@ function install_packages(){
 
   # rpm 系列系統
   elif [ "$Linux_Distribution" == "Fedora" ] ;then
-        if [ $Linux_bit != "x86_64" ]; then
+        if [ "$Linux_bit" != "x86_64" ]; then
             Linux_bit="i386"
         fi
         # 如果是新裝系統update會很花時間
@@ -124,7 +124,7 @@ function install_packages(){
         yum -y install expect openssh dialog
 
     # install sun java
-    if [ $Linux_bit == "x86_64" ]; then    
+    if [ "$Linux_bit" == "x86_64" ]; then    
         yum_install_sun_java_x86_64
     else
         yum_install_sun_java_i586
@@ -172,7 +172,7 @@ function unzip_nV2_pack(){
   fi
   if [ ! -e "$Install_Dir/package/$pac_name" ];then
     # wget "http://crawlzilla.googlecode.com/files/$pac_name"; # google code 
-    wget "http://sourceforge.net/projects/crawlzilla/files/stable/package/$pac_name/download" -o $pac_name; # source-forge
+    wget "http://sourceforge.net/projects/crawlzilla/files/stable/package/$pac_name/download" -O $pac_name; # source-forge
 #    wget "http://sourceforge.net/downloads/crawlzilla/stable/package/$pac_name"; # source-forge
   if [ $? -eq 0 ];then
 	mv $pac_name $Install_Dir/package;
@@ -184,8 +184,14 @@ function unzip_nV2_pack(){
     fi
   fi
   debug_info "unpack tomcat and nutch to /opt/crawlzilla"
-  tar -zxvf $Install_Dir/package/$pac_name -C /opt/ >> $LOG_SH_TARGET
-
+  debug_info "tar -zxvf $Install_Dir/package/$pac_name -C /opt/ >> $LOG_SH_TARGET"
+  tar -zxvf $Install_Dir/package/$pac_name -C /opt/ >> /dev/null
+  if [ $? -eq 0 ];then
+     show_info "unpack success!"
+  else
+     show_info "unpack error!";
+     exit 8;
+  fi
   # work_path = this bin dir , conf_path = bin/../conf
   local Conf_Path=$Work_Path/../conf
   # change nutch-conf to /opt/crawlzilla/nutch/conf
@@ -246,17 +252,17 @@ function unzip_nV2_pack(){
 }
 
 function yum_install_sun_java_i586(){
-wget -nc 'https://sourceforge.net/projects/crawlzilla/files/other/jdk-6u21-linux-i586-rpm.bin/download'
-echo y | bash jdk-6u21-linux-i586-rpm.bin
-rpm -Uvh jdk-6u21-linux-i586.rpm
+wget -nc 'https://sourceforge.net/projects/crawlzilla/files/other/jdk-6u21-linux-i586-rpm.bin/download' -O $Install_Dir/jdk-6u21-linux-i586-rpm.bin
+echo y | bash $Install_Dir/jdk-6u21-linux-i586-rpm.bin
+rpm -Uvh $Install_Dir/jdk-6u21-linux-i586.rpm
 /usr/sbin/alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_21/bin/java 1
 /usr/sbin/alternatives --set java /usr/java/jdk1.6.0_21/bin/java
 }
 
 function yum_install_sun_java_x86_64(){
-wget -nc 'https://sourceforge.net/projects/crawlzilla/files/other/jdk-6u21-linux-x64-rpm.bin/download'
-echo y | bash jdk-6u21-linux-x64-rpm.bin               
-rpm -Uvh jdk-6u21-linux-amd64.r                      
+wget -nc 'https://sourceforge.net/projects/crawlzilla/files/other/jdk-6u21-linux-x64-rpm.bin/download' -O $Install_Dir/jdk-6u21-linux-x64-rpm.bin
+echo y | bash $Install_Dir/bash jdk-6u21-linux-x64-rpm.bin               
+rpm -Uvh $Install_Dir/jdk-6u21-linux-amd64.rpm
 /usr/sbin/alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_21/bin/java 1
 /usr/sbin/alternatives --set java /usr/java/jdk1.6.0_21/bin/java                                                                                                               
 }
@@ -605,8 +611,12 @@ function set_hosts () {
   debug_info "$MI_set_hosts_echo_1"
   cp /etc/hosts /home/crawler/crawlzilla/system/hosts.bak
   Line_NO=`cat /etc/hosts | grep -n $(hostname) | sed 's/:.*//g'`
-  content=$(cat /etc/hosts | awk 'NR=='$Line_NO'{printf "# " ; print}' )
-  sed -i ""$Line_NO"c $content" /etc/hosts
+  if [ "$Line_NO" == "" ];then
+    debug_info "hostname do not exist in /etc/hosts ";
+  else
+    content=$(cat /etc/hosts | awk 'NR=='$Line_NO'{printf "# " ; print}' )
+    sed -i ""$Line_NO"c $content" /etc/hosts
+  fi
   sed -i '1i '$MasterIP_Address' '$(hostname)'' /etc/hosts
 }
 
@@ -685,7 +695,7 @@ function make_client_install () {
   client_PassMasterIPAddr_for_Remove
   client_PassMasterIPAddr_for_deploy
   cd /opt/crawlzilla/
-  su crawler -c "tar -cvzf CrawlzillaForClientOf_$MasterIP_Address.tar.gz  nutch" >> $LOG_SH_TARGET
+  su crawler -c "tar -cvzf CrawlzillaForClientOf_$MasterIP_Address.tar.gz  nutch" >> /dev/null
   
   # 複製檔案至$User_HOME/source及system目錄下
   mv CrawlzillaForClientOf_$MasterIP_Address.tar.gz /home/crawler/crawlzilla/source
