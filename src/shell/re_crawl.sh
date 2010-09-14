@@ -16,13 +16,14 @@
 
 indexPoolName=$1
 
-if [ $indexPoolName == " " ]; then
-echo "No parameter"
+if [ -d /home/crawler/crawlzilla/archieve/$indexPoolName ]; then
+  depth=$(cat /home/crawler/crawlzilla/archieve/$indexPoolName/.crawl_depth)
+  cp /home/crawler/crawlzilla/archieve/$indexPoolName/urls/urls.txt /home/crawler/crawlzilla/urls
+  rm -rf /home/crawler/crawlzilla/.tmp/$indexPoolName
+  rm -rf /opt/crawlzilla/tomcat/webapps/$indexPoolName
+  /opt/crawlzilla/nutch/bin/hadoop fs -rmr /user/crawler/$indexPoolName
+  ./go.sh $depth $indexPoolName
 else
-depth=$(cat /home/crawler/crawlzilla/archieve/$indexPoolName/.crawl_depth)
-cp /home/crawler/crawlzilla/archieve/$indexPoolName/urls/urls.txt /home/crawler/crawlzilla/urls
-rm -f /home/crawler/crawlzilla/.tmp/$indexPoolName
-rm -fr /opt/crawlzilla/tomcat/webapps/$indexPoolName
-/opt/crawlzilla/nutch/bin/hadoop fs -rmr /user/crawler/$indexPoolName
-./go.sh $depth $indexPoolName
+  echo "No Parameter of File not Find!"
 fi
+
