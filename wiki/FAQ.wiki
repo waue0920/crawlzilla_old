@@ -9,7 +9,7 @@ A: 再爬取一次即可
 A: 這個專案是開發在Linux 上
 
 =  安裝到一半出現錯誤，如何重新安裝？= 
-A: 請在終端機內，使用 crawlzilla_remove 這個指令移除。
+A: 請在終端機內，使用 crawlzilla_remove 這個指令移除。<br>
 ps 如果系統找不到這個指令，則請按照情況
  * master主機：請到解壓縮後的安裝包內的 bin/master_remove
  * slave(client)主機：請到解壓縮後的安裝包內的 bin/client_remove
