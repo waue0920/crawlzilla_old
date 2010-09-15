@@ -10,9 +10,9 @@ A: 這個專案是開發在Linux 上
 
 =  安裝到一半出現錯誤，如何重新安裝？= 
 A: 請在終端機內，使用 crawlzilla_remove 這個指令移除。
-    如果系統找不到這個指令，則請按照情況
-       master主機：請到解壓縮後的安裝包內的 bin/master_remove
-       slave(client)主機：請到解壓縮後的安裝包內的 bin/client_remove
+ps 如果系統找不到這個指令，則請按照情況
+ * master主機：請到解壓縮後的安裝包內的 bin/master_remove
+ * slave(client)主機：請到解壓縮後的安裝包內的 bin/client_remove
 
 =  安裝過crawlzilla的機器因為換位置而變了IP，該怎麼設置？= 
 A: 在新的環境內移除掉crawlzilla後重新安裝即可
@@ -22,8 +22,10 @@ A: 叢集的效率較好
 
 =  我將 Crawlzilla 安裝在叢集環境下，但server loading 很重，client 倒還好，怎麼調整？= 
 A: 停掉 server 的運算功能，方法如下
-     到 server 主機 -> 執行 crawlzilla -> 設定 datanode & tasktracker -> part -> 挑選server 那台 -> shutdown
-
+{{{
+到 server 主機 -> 執行 crawlzilla -> 設定 datanode & tasktracker 
+-> part -> 挑選server 那台 -> shutdown
+}}}
 =  我原本在使用crawlzilla 的環境是單機環境，但使用了一陣子後想變成叢集模式，是否要重新安裝？= 
 A: 不用重新安裝，只需要讓新加入的機器安裝crawlzilla 的client 版本即可
 
