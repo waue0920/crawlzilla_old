@@ -63,7 +63,7 @@
 	     100URLs with 10 depth -> very very long)<br />
 	     <br />
 	</div>
-	     <span class="redfont">The Crawl speed is depend on your system performance, URLs number, and depth.</span>
+	     <span class="redfont">The crawling time depends on your system performance, URLs number, and depth.</span>
 	</fieldset>
 	<br />
 	<br />
