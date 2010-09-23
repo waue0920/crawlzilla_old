@@ -491,10 +491,11 @@ function fast_startup_all(){
     $Crawlzilla_Install_PATH/nutch/bin/start-dfs.sh
   fi
   
-  sleep 5
   if [ -z "$pid_job" ]; then 
     $Crawlzilla_Install_PATH/nutch/bin/start-mapred.sh
   fi
+
+  sleep 5
 
   # startup datanode and tasktracker
   for ip in $IP_list

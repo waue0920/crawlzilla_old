@@ -63,10 +63,9 @@ public class ReCrawl extends HttpServlet {
 		}
 		process.destroy();
 */		
-		
-		response.sendRedirect("sysinfo.jsp");
-		
 		Process process1 = Runtime.getRuntime().exec("/home/crawler/crawlzilla/system/re_crawl.sh "+name);
+		
+		
 		try {
 			process1.waitFor();
 		} catch (InterruptedException e) {
@@ -74,6 +73,8 @@ public class ReCrawl extends HttpServlet {
 			e.printStackTrace();
 		}
 		process1.destroy();
+		
+		response.sendRedirect("sysinfo.jsp");
 
 		
 	}
