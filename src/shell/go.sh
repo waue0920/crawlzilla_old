@@ -37,6 +37,8 @@ function checkMethod(){
   else
     echo "error: $1 broken" > "$tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp"
     show_info "error: $1 broken"
+    sleep 5
+    kill -9 $count_pid
     exit 8
   fi
 }
