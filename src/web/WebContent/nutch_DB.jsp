@@ -16,7 +16,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://jakarta.apache.org/taglibs/i18n-1.0" prefix="i18n" %>
 <%@page import="java.util.*" %>
-
+<%@page import="java.io.FileReader"%>
+<%@page import="java.io.BufferedReader"%>
 
 <%
 	String loginFormURL = "adminLogin.jsp";
@@ -84,6 +85,7 @@
   <tr>
   	<th><i18n:message key="nutchDB_Dbname"/></th>
   	<th><i18n:message key="nutchDB_CreateTime"/></th>
+  	<th><i18n:message key="nutchDB_CrawlingTime"/></th>
   	<th><i18n:message key="nutchDB_DelDb"/></th>
   	<th><i18n:message key="nutchDB_Preview"/><br><i18n:message key="nutchDB_Statistics"/></th>
   	<th><i18n:message key="nutchDB_ReCrawl"/></th>
@@ -110,6 +112,17 @@ for (int i=0 ; i<num ;i++){
 	out.print(dateFormat.format(lastModified));
 
 	out.print("</td>");
+	
+	out.print("<td>");
+	
+	FileReader fr = new FileReader(files[i] + "/" + files[i].getName()+"PassTime");
+	BufferedReader br = new BufferedReader(fr);
+	out.print(br.readLine());
+	br.close();
+	fr.close();
+	
+	out.print("</td>");
+	
 	
 	out.print("<td>");
 	out.print("<input type=\"button\" name=\"Delete\" value=\"Delete\" onclick=\"deleteFun(" + i + ")\" />");

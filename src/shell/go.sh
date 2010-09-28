@@ -112,6 +112,7 @@ checkMethod "sed"
 
 # 完成搜尋狀態
 cp $tmp_dir/$crawlname_from_jsp/.crawl_depth $archieve_dir/$crawlname_from_jsp/
+cp $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'PassTime' $archieve_dir/$crawlname_from_jsp/
 echo "finish" > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp
 
 count_pid=$(cat $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'count_pid')
