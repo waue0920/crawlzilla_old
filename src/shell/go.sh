@@ -28,7 +28,7 @@ if [ "$1" == "" ]; then
  exit
 fi
 
-source "/opt/crawizilla/nutch/conf/hadoop-env.sh";
+source "/opt/crawlzilla/nutch/conf/hadoop-env.sh";
 source "/home/crawler/crawlzilla/system/log.sh" crawl_go;
 
 function checkMethod(){
@@ -37,14 +37,13 @@ function checkMethod(){
   else
     echo "error: $1 broken" > "$tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp"
     show_info "error: $1 broken"
-    sleep 5
     kill -9 $count_pid
     exit 8
   fi
 }
 
 checkMethod "import lib path"
-
+read
 # 策略改變 不用檢查
 #if [ -e /home/crawler/crawlzilla/search ];then
     # 不是第一次搜尋，刪除hdfs上的資料夾
@@ -70,22 +69,27 @@ if [ ! -e "$tmp_dir/$crawlname_from_jsp" ];then
    checkMethod "mkdir crawlStatusDir"
 fi
 
+# 呼叫counter.sh紀錄時間
+/home/crawler/crawlzilla/system/counter.sh $crawlname_from_jsp &
+sleep 5
+count_pid=$(cat $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'_count_pid')
+
 # 紀錄爬取深度
 echo $1 > $tmp_dir/$crawlname_from_jsp/.crawl_depth
 
 # 開始紀錄程序狀態
 echo "begin" > "$tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp"
 echo "0" > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'PassTime'
-
+read
 # 檢查並刪除HDFS上的重複目錄
-CheckFlag=$(/opt/crawlzilla/nutch/bin/hadoop fs -ls /user/crawler/ | awk '{print $1}' | grep $crawlname_from_jsp)
+CheckFlag=$(/opt/crawlzilla/nutch/bin/hadoop fs -ls /user/crawler/$crawlname_from_jsp | grep Found | awk '{print $1}')
 
-if [ -n $CheckFlag ]; then
+echo $CheckFlag
+read
+
+if [ $CheckFlag = 'Found' ]; then
   /opt/crawlzilla/nutch/bin/hadoop dfs -rmr /user/crawler/$crawlname_from_jsp
 fi
-
-# 呼叫counter.sh紀錄時間
-/home/crawler/crawlzilla/system/counter.sh $crawlname_from_jsp &
 
 /opt/crawlzilla/nutch/bin/hadoop dfs -mkdir $crawlname_from_jsp
 checkMethod "hadoop dfs -mkdir $crawlname_from_jsp"
@@ -94,13 +98,13 @@ checkMethod "hadoop dfs -mkdir $crawlname_from_jsp"
 /opt/crawlzilla/nutch/bin/hadoop dfs -put /home/crawler/crawlzilla/urls $crawlname_from_jsp/urls
 checkMethod "hadoop dfs -put urls"
 
-
+read
 # 開始nutch 搜尋
 echo "crawling" > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp
 
 /opt/crawlzilla/nutch/bin/nutch crawl $crawlname_from_jsp/urls -dir $crawlname_from_jsp -depth $crawl_dep -topN 5000 -threads 1000
 checkMethod "nutch crawl"
-
+read
 /opt/crawlzilla/nutch/bin/hadoop dfs -get $crawlname_from_jsp $archieve_dir/$crawlname_from_jsp
 checkMethod "download search"
 
@@ -115,7 +119,6 @@ cp $tmp_dir/$crawlname_from_jsp/.crawl_depth $archieve_dir/$crawlname_from_jsp/
 cp $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'PassTime' $archieve_dir/$crawlname_from_jsp/
 echo "finish" > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp
 
-count_pid=$(cat $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'count_pid')
 kill -9 $count_pid
 
 # 花費時間
