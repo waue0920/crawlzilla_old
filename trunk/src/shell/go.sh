@@ -43,7 +43,6 @@ function checkMethod(){
 }
 
 checkMethod "import lib path"
-read
 # 策略改變 不用檢查
 #if [ -e /home/crawler/crawlzilla/search ];then
     # 不是第一次搜尋，刪除hdfs上的資料夾
@@ -80,12 +79,11 @@ echo $1 > $tmp_dir/$crawlname_from_jsp/.crawl_depth
 # 開始紀錄程序狀態
 echo "begin" > "$tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp"
 echo "0" > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'PassTime'
-read
+
 # 檢查並刪除HDFS上的重複目錄
 CheckFlag=$(/opt/crawlzilla/nutch/bin/hadoop fs -ls /user/crawler/$crawlname_from_jsp | grep Found | awk '{print $1}')
 
 echo $CheckFlag
-read
 
 if [ $CheckFlag = 'Found' ]; then
   /opt/crawlzilla/nutch/bin/hadoop dfs -rmr /user/crawler/$crawlname_from_jsp
@@ -98,13 +96,11 @@ checkMethod "hadoop dfs -mkdir $crawlname_from_jsp"
 /opt/crawlzilla/nutch/bin/hadoop dfs -put /home/crawler/crawlzilla/urls $crawlname_from_jsp/urls
 checkMethod "hadoop dfs -put urls"
 
-read
 # 開始nutch 搜尋
 echo "crawling" > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp
 
 /opt/crawlzilla/nutch/bin/nutch crawl $crawlname_from_jsp/urls -dir $crawlname_from_jsp -depth $crawl_dep -topN 5000 -threads 1000
 checkMethod "nutch crawl"
-read
 /opt/crawlzilla/nutch/bin/hadoop dfs -get $crawlname_from_jsp $archieve_dir/$crawlname_from_jsp
 checkMethod "download search"
 
