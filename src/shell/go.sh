@@ -33,7 +33,7 @@ source "/home/crawler/crawlzilla/system/log.sh" crawl_go;
 
 function checkMethod(){
   if [ $? -eq 0 ];then
-    echo "$1 is ok";
+    show_info "$1 is ok";
   else
     echo "error: $1 broken" > "$tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp"
     show_info "error: $1 broken"
