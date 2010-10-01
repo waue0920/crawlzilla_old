@@ -495,8 +495,8 @@ function fast_startup_all(){
     $Crawlzilla_Install_PATH/nutch/bin/start-mapred.sh
   fi
  
-  echo "please wait 10 sec..."
-  sleep 10
+#  echo "please wait 10 sec..."
+#  sleep 10
 
   # startup datanode and tasktracker
   for ip in $IP_list
