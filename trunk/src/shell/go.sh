@@ -80,23 +80,20 @@ echo "0" > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'PassTime'
 sleep 5
 count_pid=$(cat $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'_count_pid')
 
-# 檢查並刪除HDFS上的重複目錄
-CheckFlag=$(/opt/crawlzilla/nutch/bin/hadoop fs -ls /user/crawler/$crawlname_from_jsp | grep Found | awk '{print $1}')
-
-echo $CheckFlag
-
-if [ $CheckFlag = 'Found' ]; then
+# check the replicate directory on HDFS ; $? : 0 = shoud be delete
+/opt/crawlzilla/nutch/bin/hadoop fs -test -e /user/crawler/$crawlname_from_jsp
+if [ $? -eq 0 ]; then
   /opt/crawlzilla/nutch/bin/hadoop dfs -rmr /user/crawler/$crawlname_from_jsp
+  show_info "/user/crawler/$crawlname_from_jsp is deleted."
 fi
 
 /opt/crawlzilla/nutch/bin/hadoop dfs -mkdir $crawlname_from_jsp
 checkMethod "hadoop dfs -mkdir $crawlname_from_jsp"
 
-
 /opt/crawlzilla/nutch/bin/hadoop dfs -put /home/crawler/crawlzilla/urls $crawlname_from_jsp/urls
 checkMethod "hadoop dfs -put urls"
 
-# 開始nutch 搜尋
+# nutch crawl begining
 echo "crawling" > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp
 
 /opt/crawlzilla/nutch/bin/nutch crawl $crawlname_from_jsp/urls -dir $crawlname_from_jsp -depth $crawl_dep -topN 5000 -threads 1000
