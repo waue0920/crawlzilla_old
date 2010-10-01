@@ -42,6 +42,8 @@ function checkMethod(){
   fi
 }
 
+cd /home/crawler/crawlzilla/
+
 checkMethod "import lib path"
 # 策略改變 不用檢查
 #if [ -e /home/crawler/crawlzilla/search ];then
@@ -120,19 +122,3 @@ kill -9 $count_pid
 #echo $PassTime > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'PassTime'
 
 
-# 策略改變，不分別下載
-# /opt/crawlzilla/nutch/bin/hadoop dfs -get search $archieve_dir/$crawlname_from_jsp
-# checkMethod "download search"
-# /opt/crawlzilla/nutch/bin/hadoop dfs -get urls $archieve_dir/$crawlname_from_jsp/
-# checkMethod "download urls"
-
-# 策略改變 已經不用檢查是否第一次
-# 第一次要建立search link並且重新啟動tomcat
-#if [ $FirstTime -eq 1 ];then
-    # first time link and restart
-    #ln -sf $archieve_dir/$crawlname_from_jsp /home/crawler/crawlzilla/search
-    # tomcat 重新啟動的指令
-    #/opt/crawlzilla/tomcat/bin/shutdown.sh
-    #/opt/crawlzilla/tomcat/bin/startup.sh
-    #checkMethod "tomcat restart"
-#fi
