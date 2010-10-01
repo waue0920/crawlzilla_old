@@ -68,17 +68,17 @@ if [ ! -e "$tmp_dir/$crawlname_from_jsp" ];then
    checkMethod "mkdir crawlStatusDir"
 fi
 
-# 呼叫counter.sh紀錄時間
-/home/crawler/crawlzilla/system/counter.sh $crawlname_from_jsp &
-sleep 5
-count_pid=$(cat $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'_count_pid')
-
 # 紀錄爬取深度
 echo $1 > $tmp_dir/$crawlname_from_jsp/.crawl_depth
 
 # 開始紀錄程序狀態
 echo "begin" > "$tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp"
 echo "0" > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'PassTime'
+
+# 呼叫counter.sh紀錄時間
+/home/crawler/crawlzilla/system/counter.sh $crawlname_from_jsp &
+sleep 5
+count_pid=$(cat $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'_count_pid')
 
 # 檢查並刪除HDFS上的重複目錄
 CheckFlag=$(/opt/crawlzilla/nutch/bin/hadoop fs -ls /user/crawler/$crawlname_from_jsp | grep Found | awk '{print $1}')

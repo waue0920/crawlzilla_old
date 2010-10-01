@@ -85,6 +85,7 @@
   <tr>
   	<th><i18n:message key="nutchDB_Dbname"/></th>
   	<th><i18n:message key="nutchDB_CreateTime"/></th>
+  	<th><i18n:message key="nutchDB_CrawlingDepth"/></th>
   	<th><i18n:message key="nutchDB_CrawlingTime"/></th>
   	<th><i18n:message key="nutchDB_DelDb"/></th>
   	<th><i18n:message key="nutchDB_Preview"/><br><i18n:message key="nutchDB_Statistics"/></th>
@@ -100,6 +101,7 @@ for (int i=0 ; i<num ;i++){
 		
 	<tr>
 	<td>
+
 	<a href="../<%=files[i].getName()%>">
 	<%=files[i].getName()%></a>
 	<input type="hidden" name="fileName" value="<%=files[i].getName()%>" >
@@ -114,12 +116,23 @@ for (int i=0 ; i<num ;i++){
 	out.print("</td>");
 	
 	out.print("<td>");
-	
-	FileReader fr = new FileReader(files[i] + "/" + files[i].getName()+"PassTime");
+	//Crawling Depth
+	FileReader fr = new FileReader(files[i] + "/" + ".crawl_depth");
 	BufferedReader br = new BufferedReader(fr);
 	out.print(br.readLine());
 	br.close();
 	fr.close();
+	
+	out.print("</td>");
+	
+	
+	out.print("<td>");
+	//Crawling Time
+	FileReader fr2 = new FileReader(files[i] + "/" + files[i].getName()+"PassTime");
+	BufferedReader br2 = new BufferedReader(fr2);
+	out.print(br2.readLine());
+	br2.close();
+	fr2.close();
 	
 	out.print("</td>");
 	
