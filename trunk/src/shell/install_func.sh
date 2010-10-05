@@ -138,6 +138,7 @@ function install_packages(){
 }
 
 function mkdir_Home_Var(){
+    chmod 711 /home/crawler # Fedora will set home as 700, other user can't execute crawlzilla or crawlzilla_remove
     su crawler -c "mkdir /home/crawler/crawlzilla"
     su crawler -c "mkdir /home/crawler/crawlzilla/urls"
     su crawler -c "touch /home/crawler/crawlzilla/urls/urls.txt"

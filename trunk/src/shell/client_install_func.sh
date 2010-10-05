@@ -365,6 +365,7 @@ function scp_packages(){
   chown -R crawler:crawler /var/log/crawlzilla
   chown -R crawler:crawler /var/lib/crawlzilla
   chown -R crawler:crawler /home/crawler/crawlzilla
+  chmod 711 /home/crawler   # fedora = 700
   chmod 755 /opt/crawlzilla
   debug_info "$scp_packages_d3"
   if [ -e "$Work_Path/CrawlzillaForClientOf_$Master_IP_Address.tar.gz" ];then
