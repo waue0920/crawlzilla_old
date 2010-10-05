@@ -387,9 +387,9 @@ function install_nutch_package(){
 
    # change sun-jre home path to each linux os
   if [ "$Linux_Distribution" == "SUSE" ] ;then
-    if [ -d /usr/lib/jvm/jre-1.6.0-sun/ ] ;then
-        debug_info "Change JAVA_HOME=/usr/lib/jvm/jre-1.6.0-sun/"
-        sed -i 's/java-6-sun/jre-1.6.0-sun/' /opt/crawlzilla/nutch/conf/hadoop-env.sh
+    if [ -d /usr/lib/jvm/java-1.6.0-sun-1.6.0 ] ;then
+        debug_info "Change JAVA_HOME=/usr/lib/jvm/java-1.6.0-sun-1.6.0"
+        sed -i 's/java-6-sun/java-1.6.0-sun-1.6.0/' /opt/crawlzilla/nutch/conf/hadoop-env.sh
     fi
   elif [ "$Linux_Distribution" == "CentOS" ] ;then
     if [  -d /usr/java/jdk1.6.0_21/ ] ;then
