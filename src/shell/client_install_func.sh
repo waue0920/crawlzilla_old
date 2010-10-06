@@ -18,20 +18,7 @@
 #   Functions for client_install.sh
 # Author: 
 #   Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
-# History:
-#   2010/05/20  Rock    First release(0.1)
 
-#function debug_info () {
-##  if [ $? -eq 0 ]; then
-#    echo -e "\033[1;35;40m info - $1 \033[0m"
-##  fi
-#}
-
-#function show_info () {
-##  if [ $? -eq 0 ]; then
-#    echo -e "\033[1;32;40m $1 \033[0m"
-##  fi
-#}
 
 function load_default_lang(){
 
@@ -44,36 +31,28 @@ lang=$(locale | grep 'LANG=' | cut -d "=" -f2)
 echo $lang | grep 'zh' >> /dev/null && source $Work_Path/lang/lang_zh_TW
 }
 
-# choose Language
-#function choose_lang(){
-
-#lang=$(locale | grep 'LANG=' | cut -d "=" -f2)
-
-# Default: source english
-#. $Work_Path/lang/lang_en_US_client_install
-# if locale is zh then source chinese
-#echo $lang | grep 'zh' >> /dev/null && source $Work_Path/lang/lang_zh_TW_client_install
-
-# Ask language
-#echo -e "\n$choose_lang_1"
-#read -p "$choose_lang_2 " langChoice
-
-#if [ $langChoice == "2" ]; then
-#    source $Work_Path/lang/lang_zh_TW_client_install
-#else
-#    source $Work_Path/lang/lang_en_US_client_install
-#fi
-#}
+function check_hostname_localhost ( )
+{
+HName=$(hostname)
+if [ "$HName" == "localhost" ] || [ "$HName" == "local" ] ;then
+    show_info "Error! hostname CANNOT be \"localhost\" or \"local\"";
+    show_info "You can type the following instruction to change hostname : " ;
+    show_info "    hostname MyLinuxName ";
+    show_info "And Re-Login , then install crawlzilla! Thank you";
+    exit 8;
+else
+    debug_info "hostname = $HName is fine!";
+fi
+unset HName;
+}
 
 # 檢查執行這個程式的是否為root權限
 function check_root(){
-# 正式版後可拿掉此 echo
   debug_info "check_root"
   if [ $USER != "root" ]; then
     show_info "$check_root_1"
     exit
   fi
-# 正式版後可拿掉此 echo
   show_info "$check_root_2"
 }
 
