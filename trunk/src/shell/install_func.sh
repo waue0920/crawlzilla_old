@@ -149,10 +149,13 @@ function install_packages ( )
     fi
 
   elif [ "$Linux_Distribution" == "SUSE" ] ;then
-    zypper install -n expect openssh dialog java-1_6_0-sun-devel java-1_6_0-sun
+    zypper install -n expect openssh dialog java-1_6_0-sun
     #opensuse default sun java is /usr/lib/jvm/java-1.6.0-sun-1.6.0/bin/java
-    /usr/sbin/alternatives --install /usr/bin/java java /usr/lib/jvm/java-1.6.0-sun-1.6.0/bin/java 1
-    /usr/sbin/alternatives --set java /usr/lib/jvm/java-1.6.0-sun-1.6.0/bin/java
+    debug_info "/usr/sbin/update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-1.6.0-sun-1.6.0/bin/java 1"
+    /usr/sbin/update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-1.6.0-sun-1.6.0/bin/java 1
+
+    debug_info "/usr/sbin/update-alternatives --set java /usr/lib/jvm/java-1.6.0-sun-1.6.0/bin/java"
+    /usr/sbin/update-alternatives --set java /usr/lib/jvm/java-1.6.0-sun-1.6.0/bin/java
 
   else
     show_info "$MI_install_pack_if_2"
