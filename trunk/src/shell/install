@@ -15,14 +15,13 @@
 # limitations under the License.
 
 
-# 切換為root執行安裝
+# change as root to run install
 [ "`id -u`" != "0" ] && exec sudo su -c "$0" "$@"
 
-# 變數宣告
-
-Work_Path=`dirname "$0"`
+# paramaters declare
 Linux_Distribution=""
 
+Work_Path=`dirname "$0"`
 if [ -f $Work_Path/install_func.sh ];then
   Work_Path=`cd "$Work_Path"; pwd`
 elif [ -f $Work_Path/bin/install_func.sh ];then
@@ -48,26 +47,21 @@ main () {
   if [ $confirm -eq 1 ]; then
     creat_crawler_account $Crawler_Passwd
     make_ssh_key
-    # 解壓縮
     unzip_nV2_pack
-    # 建立系統所需資料夾
     mkdir_Home_Var
     # change /etc/hosts to crawler 
     change_hosts_owner
-    #  
     install_Nutch
-    #
     link_Chown   
- 
-    # 將網頁管理預設密碼寫入隱藏檔, 供網頁預設登入密碼使用
+    # make web default password
     su crawler -c "echo "crawler" > /home/crawler/crawlzilla/system/.passwd"
     chmod 600 /home/crawler/crawlzilla/system/.passwd
     make_client_install
-    # 啟動系統
+    # restart system
     format_HDFS
     start_up_Crawlzilla
     start_up_tomcat    
-    # 安裝流程結束，並進入網頁管理頁面設定爬網網址...等  
+    # instalation finished
     show_info "$MI_main_echo_3"
 #   show_info "Install Successfully!!"
     show_info "$MI_main_echo_4$MasterIP_Address:8080"
@@ -78,6 +72,17 @@ main () {
   else
     exit 0
   fi
+}
+
+function check_info ( ) {
+  check_crawlzilla_installed
+  check_hostname_localhost
+  check_root
+  check_systemInfo
+  install_packages
+  check_sunJava
+  check_ssh
+  check_dialog
 }
 
 load_default_lang

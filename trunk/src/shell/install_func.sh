@@ -40,7 +40,23 @@ lang=$(locale | grep 'LANG=' | cut -d "=" -f2)
 echo $lang | grep 'zh' >> /dev/null && source $Work_Path/lang/lang_zh_TW
 }
 
-function check_root(){
+
+function check_hostname_localhost ( )
+{
+HName=$(hostname)
+if [ "$HName" == "localhost" ] || [ "$HName" == "local" ] ;then
+    show_info "Error! hostname CANNOT be \"localhost\" or \"local\"";
+    show_info "You can type the following instruction to change hostname : " ;
+    show_info "    hostname MyLinuxName ";
+    show_info "And Re-Login , then install crawlzilla! Thank you";
+    exit 8;
+else
+    debug_info "hostname = $HName is fine!";
+fi
+unset HName;
+}
+
+function check_root ( ){
 
 #  bb=`sudo cat /etc/shadow |grep "root"`
 #  bb=`echo $bb |awk 'BEGIN {FS=":"} {print $2}'`
@@ -59,7 +75,8 @@ function check_root(){
   show_info "$MI_check_root_2"
 }
 
-function check_systemInfo(){
+function check_systemInfo ( )
+{
   debug_info "$MI_check_sys_1"
   show_info "$MI_check_sys_2"
   Linux_Distribution=$(lsb_release -a 2> /dev/null | grep "Distributor ID:" | awk '{print $3}')
@@ -72,7 +89,8 @@ function check_systemInfo(){
   show_info "$Linux_Distribution , $Linux_Version"
 }
 
-function install_packages(){
+function install_packages ( ) 
+{
   # deb 系列系統
   debug_info "$MI_install_pack_1"
   debug_info "$MI_install_pack_2"
@@ -137,7 +155,8 @@ function install_packages(){
   fi
 }
 
-function mkdir_Home_Var(){
+function mkdir_Home_Var ( )
+{
     chmod 711 /home/crawler # Fedora will set home as 700, other user can't execute crawlzilla or crawlzilla_remove
     su crawler -c "mkdir /home/crawler/crawlzilla"
     su crawler -c "mkdir /home/crawler/crawlzilla/urls"
@@ -157,7 +176,8 @@ function mkdir_Home_Var(){
 
 }
 
-function link_Chown(){
+function link_Chown ( )
+{
 ln -sf /var/log/crawlzilla/tomcat-logs /opt/crawlzilla/tomcat/logs
 ln -sf /var/log/crawlzilla/hadoop-logs /opt/crawlzilla/nutch/logs
 ln -sf /home/crawler/crawlzilla/system/crawlzilla /usr/bin/crawlzilla
@@ -166,7 +186,9 @@ chown -R crawler:crawler /opt/crawlzilla
 chown -R crawler:crawler /var/log/crawlzilla
 chown -R crawler:crawler /var/lib/crawlzilla
 }
-function unzip_nV2_pack(){
+
+function unzip_nV2_pack ( ) 
+{
   local pac_name=crawlzilla-0.2pack-current.tar.gz
   if [ ! -d "$Install_Dir/package" ];then
     mkdir $Install_Dir/package
@@ -252,7 +274,8 @@ function unzip_nV2_pack(){
 
 }
 
-function yum_install_sun_java_i586(){
+function yum_install_sun_java_i586 ( )
+{
 wget -nc 'https://sourceforge.net/projects/crawlzilla/files/other/jdk-6u21-linux-i586-rpm.bin/download' -O $Install_Dir/jdk-6u21-linux-i586-rpm.bin
 echo y | bash $Install_Dir/jdk-6u21-linux-i586-rpm.bin
 rpm -Uvh $Install_Dir/jdk-6u21-linux-i586.rpm
@@ -260,7 +283,8 @@ rpm -Uvh $Install_Dir/jdk-6u21-linux-i586.rpm
 /usr/sbin/alternatives --set java /usr/java/jdk1.6.0_21/bin/java
 }
 
-function yum_install_sun_java_x86_64(){
+function yum_install_sun_java_x86_64 ( )
+{
 wget -nc 'https://sourceforge.net/projects/crawlzilla/files/other/jdk-6u21-linux-x64-rpm.bin/download' -O $Install_Dir/jdk-6u21-linux-x64-rpm.bin
 echo y | bash $Install_Dir/bash jdk-6u21-linux-x64-rpm.bin               
 rpm -Uvh $Install_Dir/jdk-6u21-linux-amd64.rpm
@@ -269,7 +293,8 @@ rpm -Uvh $Install_Dir/jdk-6u21-linux-amd64.rpm
 }
 
 
-function check_crawlzilla_installed(){
+function check_crawlzilla_installed ( )
+{
   debug_info "$MI_check_crawlzilla_1"
   if [ -d "/opt/crawlzilla" ]; then
     show_info "$MI_check_crawlzilla_2"
@@ -279,7 +304,8 @@ function check_crawlzilla_installed(){
   fi
 }
 
-function check_sunJava(){
+function check_sunJava ( )
+{
   show_info "$MI_check_sunJava_1"
   show_info "$MI_check_sunJava_2"
 
@@ -341,7 +367,8 @@ function check_sunJava(){
 }
 
 # 檢查是否有安裝openssh, openssh-server
-function check_ssh(){
+function check_ssh ( )
+{
   debug_info "$MI_check_ssh_1"
   if [ -e /usr/bin/ssh ]; then
     show_info "$MI_check_ssh_2"
@@ -360,7 +387,8 @@ function check_ssh(){
 
 
 # 檢查是否有安裝dialog
-function check_dialog(){
+function check_dialog ( )
+{
   debug_info "$MI_check_dialog_1"
   if [ -e /usr/bin/dialog ]; then
     show_info "$MI_check_dialog_2"
@@ -370,24 +398,15 @@ function check_dialog(){
   fi
 }
 
-check_info () {
-  check_crawlzilla_installed
-  check_root
-  check_systemInfo
-  install_packages
-  # check_crawlzilla_installed
-  check_sunJava
-  check_ssh
-  check_dialog
-}
-
-function set_install_information () { 
+function set_install_information ( ) 
+{ 
   set_crawler_passwd
   select_eth
   MasterIP_Address=$net_address
 }
 
-function set_crawler_passwd () {
+function set_crawler_passwd ( )
+{
   show_info "$MI_set_crawler_passwd_echo_1"
   read -sp "password:" Crawler_Passwd
 # read -sp "Please enter crawler's password :  " Crawler_Passwd
@@ -402,7 +421,8 @@ function set_crawler_passwd () {
 }
 
 # 新增crawler 帳號時用 Crawler_Passwd 當密碼
-function creat_crawler_account(){
+function creat_crawler_account ( )
+{
   debug_info "$create_crawler_d1"
 
   while [ "$Crawler_Passwd" != "$Crawler_Passwd2" ]
@@ -455,7 +475,8 @@ function creat_crawler_account(){
 #  su crawler -c 'ssh-add /home/crawler/.ssh/id_rsa'
 }
 
-function select_eth () {
+function select_eth ( ) 
+{
   net_interfaces=$(/sbin/ifconfig | grep ^eth | cut -d " " -f1)
   net_nu=$(echo $net_interfaces | wc -w)
 
@@ -497,7 +518,8 @@ function select_eth () {
 }
 
 
-function show_master_info () {
+function show_master_info ( )
+{
   show_info "$MI_show_master_info_echo_1 $MasterIP_Address"
   show_info "$MI_show_master_info_echo_2 $net_MacAddr"
 
@@ -516,7 +538,8 @@ function make_ssh_key () {
 }
 
 
-function set_haoop-site () {
+function set_haoop-site ( )
+{
   debug_info "$MI_set_haoop_site_echo_1"
 # debug_info "set hadoop-site.xml(begin...)"
   cd $Nutch_HOME/conf/
@@ -541,7 +564,8 @@ EOF
 }
 
 # 修改nutch-site.xml中-http.agent.url, http.agent.email
-function set_nutch-site () {
+function set_nutch-site ( )
+{
   debug_info "$MI_set_nutch_site_echo_1"
 # debug_info "set nutch-site.xml(begin...)"
   Line_NO=`cat $Nutch_HOME'/conf/nutch-site.xml' | grep -n 'http.agent.url' | sed 's/:.*//g'`
@@ -568,13 +592,15 @@ function set_nutch-site () {
 # debug_info "set nutch-site.xml(done!)"
 }
 
-function format_HDFS () {
+function format_HDFS ( )
+{
   show_info "$MI_format_HDFS_echo_1"
   su crawler -c "$Nutch_HOME/bin/hadoop namenode -format"
   debug_info "$MI_format_HDFS_echo_2"
 }
 
-function start_up_Crawlzilla (){
+function start_up_Crawlzilla ( )
+{
   show_info "$MI_start_up_Crawlzilla_echo_1"
   # start namenode
   su crawler -c "$Nutch_HOME/bin/hadoop-daemon.sh --config $Nutch_HOME/conf start namenode"
@@ -594,7 +620,8 @@ function start_up_Crawlzilla (){
     show_info "you can see /var/log/crawlzilla/shell-logs/ for more infomation!"
   fi
 }
-function change_hosts_owner (){
+function change_hosts_owner ( )
+{
   if [ -f /etc/hosts ];then
     cp -f /etc/hosts /home/crawler/crawlzilla/system/
     if [ $? -eq 0 ];then
@@ -608,7 +635,8 @@ function change_hosts_owner (){
   fi
 }
 
-function set_hosts () {
+function set_hosts ( )
+{
   debug_info "$MI_set_hosts_echo_1"
   cp /etc/hosts /home/crawler/crawlzilla/system/hosts.bak
   Line_NO=`cat /etc/hosts | grep -n $(hostname) | sed 's/:.*//g'`
@@ -621,7 +649,8 @@ function set_hosts () {
   sed -i '1i '$MasterIP_Address' '$(hostname)'' /etc/hosts
 }
 
-function install_Nutch () {
+function install_Nutch ( )
+{
 # copy crawlzilla.war to /opt/crawlzilla/tomcat/webapps
   cp $Install_Dir/web/crawlzilla.war /opt/crawlzilla/tomcat/webapps/crawlzilla.war
   debug_info "$MI_install_Nutch_echo_1 $MasterIP_Address "
@@ -635,7 +664,8 @@ function install_Nutch () {
 }
 
 
-function client_PassMasterIPAddr () {
+function client_PassMasterIPAddr ( ) 
+{
   cd $Work_Path
   Line_NO=`cat client_install | grep -n '# Master IP here' | sed 's/:.*//g'`
   debug_info "$MI_client_PassMasterIPAddr_echo_1"
@@ -649,7 +679,8 @@ function client_PassMasterIPAddr () {
 }
 
 
-function client_PassMaster_Hostname () {
+function client_PassMaster_Hostname ( )
+{
   cd $Work_Path
   Line_NO=`cat client_install | grep -n '# Master Hostname here' | sed 's/:.*//g'`
   debug_info "$MI_client_PassMaster_Hostname_echo_1"
@@ -662,7 +693,8 @@ function client_PassMaster_Hostname () {
 # debug_info "edit client_install done..."
 }
 
-function client_PassMasterIPAddr_for_Remove () {
+function client_PassMasterIPAddr_for_Remove ( ) 
+{
   cd $Work_Path
   Line_NO=`cat client_remove | grep -n "# Master IP here" | sed 's/:.*//g'`
   sed -i ''$((Line_NO+1))'d' client_remove
@@ -670,14 +702,16 @@ function client_PassMasterIPAddr_for_Remove () {
 }
 
 
-function client_PassMasterIPAddr_for_deploy () {
+function client_PassMasterIPAddr_for_deploy ( ) 
+{
   cd $Work_Path
   Line_NO=`cat client_deploy.sh | grep -n "# Master IP here" | sed 's/:.*//g'`
   sed -i ''$((Line_NO+1))'d' client_deploy.sh
   sed -i ''$Line_NO'a Master_IP_Address='$MasterIP_Address'' client_deploy.sh
 }
 
-function make_client_install () {
+function make_client_install ( ) 
+{
   # 建立資料夾(用來存放client的安奘檔)
 
    if [ ! -d "$User_HOME/source" ]; then
@@ -717,7 +751,8 @@ function make_client_install () {
 #  cp $Work_Path/client_install $Work_Path/lang* /home/crawler/crawlzilla/source
 }
 
-function start_up_tomcat () {
+function start_up_tomcat ( ) 
+{
   show_info "$MI_start_up_tomcat_echo_1"
 # debug_info "start up tomcat..."
 
@@ -737,7 +772,8 @@ function start_up_tomcat () {
 
 ###最後再整理###
 # client簡易步驟
-function client_install_commands () {
+function client_install_commands ( ) 
+{
   show_info "$MI_client_install_commands_echo_1"
   show_info "$MI_client_install_commands_echo_20$MasterIP_Address$MI_client_install_commands_echo_25"
   show_info "$MI_client_install_commands_echo_2"
@@ -746,7 +782,8 @@ function client_install_commands () {
   show_info "$MI_client_install_commands_echo_5"
 }
 
-function generateReadme (){
+function generateReadme ( )
+{
   cat > $Install_Dir/Client_Install_DIR/README.txt << EOF
 $MI_client_install_commands_echo_1
 1. $MI_client_install_commands_echo_20$MasterIP_Address$MI_client_install_commands_echo_25
@@ -758,6 +795,7 @@ EOF
 
 }
 
-function change_ownship(){
+function change_ownship( )
+{
 chown -R $1.$1 $2
 } 
