@@ -121,7 +121,7 @@ function install_packages ( )
         # 如果是新裝系統update會很花時間
         # yum update
         # 新裝系統，預設ssh為關閉
-        /etc/init.d/sshd restart
+        #/etc/init.d/sshd restart
         yum install -y expect dialog wget
 
       # install sun java
@@ -390,6 +390,23 @@ function check_ssh ( )
     show_info "$MI_check_ssh_5"
     exit
   fi
+  # check service is running or not
+  if [ -e /etc/init.d/sshd ]; then
+    STATUS=$(/etc/init.d/sshd status | grep running )
+    if [ "$STATUS" == "" ]; then
+	$(/etc/init.d/sshd start)
+	show_info "Start your sshd"
+    fi
+  elif [ -e /etc/init.d/ssh ]; then
+    STATUS=$(/etc/init.d/ssh status | grep running )
+    if [ "$STATUS" == "" ]; then
+	$(/etc/init.d/ssh start)
+	show_info "Start your sshd"
+    fi
+  else 
+    show_info "Please check your ssh is running manually!"
+  fi
+  unset STATUS;
 }
 
 
