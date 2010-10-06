@@ -403,6 +403,12 @@ function install_nutch_package(){
     if [  -d /usr/java/jdk1.6.0_21/ ] ;then
     debug_info "Change JAVA_HOME=/usr/java/jdk1.6.0_21/"
     sed -i 's/\/usr\/lib\/jvm\/java-6-sun/\/usr\/java\/jdk1.6.0_21\//' /opt/crawlzilla/nutch/conf/hadoop-env.sh
+    ln -sf /usr/java/jdk1.6.0_21/bin/jps /usr/bin/jps
+    
+    # setup firewall
+    echo "-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 50010 -j ACCEPT" >> /etc/sysconfig/iptables
+    service iptables restart 
+
     fi
   elif [ "$Linux_Distribution" == "Fedora" ] ;then
     if [  -d /usr/java/jdk1.6.0_21/ ] ;then
