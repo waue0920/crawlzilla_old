@@ -106,21 +106,23 @@ function install_packages(){
           yum_install_sun_java_x86_64
           ln -sf /usr/java/jdk1.6.0_21/bin/jps /usr/bin/jps
       else
-          yum_install_sun_java_i586                                                                                                fi
-    show_info "$MI_install_pack_if_2"       
-  # rpm 系列系統(CentOS)                    
+          yum_install_sun_java_i586
+      fi
+    show_info "$MI_install_pack_if_2"
+  # rpm 系列系統(CentOS)
   elif [ "$Linux_Distribution" == "CentOS" ]; then
-        if [ $Linux_bit != "x86_64" ]; then 
-            Linux_bit="i386"                
-        fi                                  
-        echo -e "\n$MI_install_pack_if_1\n" 
-        yum update                          
-        yum -y install expect openssh dialog
+    if [ $Linux_bit != "x86_64" ]; then
+         Linux_bit="i386"
+    fi 
 
-    if [ $Linux_bit == "x86_64" ]; then        
+    echo -e "\n$MI_install_pack_if_1\n"
+    yum update 
+    yum -y install expect openssh dialog
+
+    if [ $Linux_bit == "x86_64" ]; then
         yum_install_sun_java_x86_64
     else
-        yum_install_sun_java_i586                                                                                                                                 
+        yum_install_sun_java_i586
     fi 
 
   elif [ "$Linux_Distribution" == "SUSE" ] ;then
