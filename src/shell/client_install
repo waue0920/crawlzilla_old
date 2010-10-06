@@ -20,9 +20,7 @@
 
 
 # change root to run
-echo "$0" "$@"
 [ "`id -u`" != "0" ] && exec sudo su -c "$0" "$@"
-#read
 
 # Master IP here
 Master_IP_Address=your.master.ip.here
@@ -49,6 +47,9 @@ source "$Work_Path/log.sh" client_install;
 
 # load default language
 load_default_lang
+
+# check Crawlzilla is already installed
+check_crawlzilla_installed
 
 # check hostname can't be localhost
 check_hostname_localhost
@@ -77,8 +78,7 @@ check_systemInfo
 # install default package (such as: ssh, expect, dialog )
 install_packages
 
-# check Crawlzilla is already installed
-check_crawlzilla_installed
+
 
 # check sun java 6
 check_sunJava

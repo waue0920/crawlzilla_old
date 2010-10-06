@@ -156,11 +156,12 @@ rpm -Uvh jdk-6u21-linux-amd64.rpm
 
 # 檢查之前是否有安裝Crawlzilla
 # 目前先檢查是否有/opt/crawlzilla 這個資料夾即可
-function check_crawlzilla_installed(){
+function check_crawlzilla_installed ( )
+{
   debug_info "$check_crawlzilla_1"
-  if [ -d "opt/crawlzilla" ]; then
+  if [ -d "/opt/crawlzilla" ] || [ -e "/home/crawler" ] ; then
     show_info "$check_crawlzilla_2"
-    exit
+    exit 8
   else
     show_info "$check_crawlzilla_3"
   fi
