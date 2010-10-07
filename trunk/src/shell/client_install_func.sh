@@ -391,7 +391,7 @@ function install_nutch_package(){
   debug_info "$install_nutch_package_d1"
   tar -zxvf /home/crawler/crawlzilla/source/CrawlzillaForClientOf_$Master_IP_Address.tar.gz -C /opt/crawlzilla
   cp /etc/hosts /home/crawler/crawlzilla/system/hosts.bak
-  sed -i '1a '$Master_IP_Address' '$Master_Hostname'' /etc/hosts
+  sed -i  --follow-symlinks '1a '$Master_IP_Address' '$Master_Hostname'' /etc/hosts
 
    # change sun-jre home path to each linux os
   if [ "$Linux_Distribution" == "SUSE" ] ;then

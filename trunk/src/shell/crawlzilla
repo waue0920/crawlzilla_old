@@ -167,7 +167,7 @@ done
 
 read -p "$cluster_status_read_1"
 $DIALOG --clear --backtitle "$dia_back" \
-     --title "$dia_cluster_status_title_1" --textbox $clusterStatus 20 90
+     --title "$dia_cluster_status_title_1" --textbox $clusterStatus 20 80
 
     # Back to main menu 
     main_menu
