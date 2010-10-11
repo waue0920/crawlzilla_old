@@ -813,7 +813,6 @@ function generateReadme ( )
 $MI_client_install_commands_echo_1
 1. $MI_client_install_commands_echo_20$MasterIP_Address$MI_client_install_commands_echo_25
 2. $MI_client_install_commands_echo_3
-3. $MI_client_install_commands_echo_4
 EOF
 
   cp $Install_Dir/Client_Install_DIR/README.txt /home/crawler/crawlzilla/source/

@@ -136,7 +136,6 @@ MI_client_install_commands_echo_1="Client安裝可參考以下指令："
 MI_client_install_commands_echo_20="scp crawler@"
 MI_client_install_commands_echo_25=":/home/crawler/crawlzilla/source/client_deploy.sh ."
 MI_client_install_commands_echo_3="./client_deploy.sh"
-MI_client_install_commands_echo_4="cd crawlzilla_client_install; ./client_install"
 
 ########## Lang for Master Install - End##########
 
