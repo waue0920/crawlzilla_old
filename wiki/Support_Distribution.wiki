@@ -6,6 +6,6 @@
 || 作業系統             || 安裝和測試結果 ||
 || Debian 5.0.x        || O       ||
 || Ubuntu 8.04 ~ 10.04 || O       ||
-|| CentOS 5            || O       ||
-|| Fedora 13?          || O       ||
-|| OpenSUSE 11?        || O       ||
+|| CentOS 5.3          || O       ||
+|| Fedora 12           || O       ||
+|| OpenSUSE 11         || O       ||
