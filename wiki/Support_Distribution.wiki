@@ -1,10 +1,11 @@
 #summary One-sentence summary of this page.
 
 = Crawlzilla 支援的作業系統 =
- * 測試 Crawlzilla 安裝於其他 linux 版本的結果，也歡迎其他使用者給予我們其他系統的測試結果：
+ * 下表為測試 Crawlzilla 安裝於其他 linux 版本的結果。
+ * 也歡迎其他使用者給予我們您安裝其他作業系統的測試結果。
 || 作業系統             || 安裝和測試結果 ||
 || Debian 5.0.x        || O       ||
 || Ubuntu 8.04 ~ 10.04 || O       ||
 || CentOS 5            || O       ||
-|| Fedora 13           || O       ||
-|| OpenSUSE            || O       ||
+|| Fedora 13?          || O       ||
+|| OpenSUSE 11?        || O       ||
