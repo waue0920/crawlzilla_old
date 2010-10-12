@@ -3,12 +3,13 @@
 = Crawlzilla 支援的作業系統 =
  * 下表為測試 Crawlzilla 安裝於其他 linux 版本的結果。
  * 也歡迎其他使用者給予我們您安裝其他作業系統的測試結果。
-|| 作業系統             || Master <br> single node  ||  Slave <br> multiple node || 
-|| Debian 5.0.x        || O       || O 
-|| Ubuntu 8.04 ~ 10.04 || O       || O 
-|| CentOS 5.3          || O       || O 
-|| Fedora 12           || O       || O 
-|| OpenSUSE 11         || O       || O 
+
+|| 作業系統             || Master <br> single node  ||  Slave <br> multiple node || Auto solve <br> package dependency ||
+|| Debian 5.0.x        || O   || O  ||  O  ||
+|| Ubuntu 8.04 ~ 10.04 || O   || O  ||  O  ||
+|| CentOS 5.3          || O   || O  ||  O  ||
+|| Fedora 12           || O   || O  ||  O  ||
+|| OpenSUSE 11         || O   || O  ||  O  ||
 
 
 || Solaris             || ?       ||
