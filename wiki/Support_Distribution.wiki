@@ -2,7 +2,7 @@
 
 = Crawlzilla 支援的作業系統 =
  * 下表為測試 Crawlzilla 安裝於其他 linux 版本的結果。
- * 也歡迎其他使用者給予我們您安裝其他作業系統的測試結果。
+
 
 || 作業系統             || Master <br> single node  ||  Slave <br> multiple node || Auto solve <br> package dependency ||
 || Debian 5.0.x        || O   || O  ||  O  ||
@@ -10,7 +10,11 @@
 || CentOS 5.3          || O   || O  ||  O  ||
 || Fedora 12           || O   || O  ||  O  ||
 || OpenSUSE 11         || O   || O  ||  O  ||
+|| Solaris             || -   || -  ||  X  ||
+|| FreeBSD             || -   || -  ||  X  ||
 
+ * Debian、 Ubuntu 使用 apt-get 系統 ；CentOS、 Fedora 使用 Yum 系統 ；OpenSUSE 使用 zypper 系統。 Crawlzilla 會先判定使用者的作業系統是以上何者，並用相對應的套件安裝系統將基本所需的套件安裝起來。
 
-|| Solaris             || ?       ||
-|| FreeBSD             || ?       ||
+ * 其他 Linux 套件若要安裝 Crawlzilla ，需先手動將 *expect, ssh, dialog, sun-java6-jdk* 安裝完成後，在進行crawlzilla_install 的安裝程序。
+
+ * 也歡迎其他使用者給予我們您安裝其他作業系統的測試結果。
