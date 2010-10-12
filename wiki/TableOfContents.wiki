@@ -42,17 +42,19 @@
 [http://code.google.com/p/crawlzilla/wiki/FAQ 常見問題 FAQ]
   [http://code.google.com/p/crawlzilla/wiki/Support_Distribution 支援的Linux 發佈套件]
 
+
 <ul class="treeleafcontainer">
 	<li class="treeopen">簡介</li>
-	
 	<ul class="treeleafcontainer">
-		<li class="treeleaf"><a class="currentpagelink" href="http://code.google.com/p/proj/wiki/intro">A 簡介 </a></li>
+		<li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/Characteristic Crawlzilla 的特色與非他不可的理由]</li>
 	</ul>
-	<li> B </li>
+	<li> [http://code.google.com/p/crawlzilla/wiki/SystemInstall#%E3%80%90_Crawlzilla_%E8%AA%AA%E6%98%8E_%E3%80%91 安裝] </li>
 	<ul>
-		<li class="treeleaf">[http://code.google.com/p/proj/wiki/b1 B1]</li>
-		<li class="treeleaf">[http://code.google.com/p/proj/wiki/b2 B2]</li>
-		<li class="treeleaf">[http://code.google.com/p/proj/wiki/b3 B3]</li>
+		<li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/SystemInstall#%E3%80%90_%E5%AE%89%E8%A3%9D%E6%AD%A5%E9%A9%9F_%E3%80%91 單機安裝步驟 ]</li>
+		<li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/SystemInstall#%E3%80%90%E5%96%AE%E6%A9%9F%E5%8F%8A%E5%8F%A2%E9%9B%86%E4%B8%89%E5%88%86%E9%90%98%E5%BF%AB%E9%80%9F%E5%AE%89%E8%A3%9D%E6%95%99%E5%AD%B8%E5%BD%B1%E7%89%87%E7%89%88%E3%80%91 單機快速安裝影片]</li>
+		<li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/ClusterInstall?ts=1282728397&updated=ClusterInstall#%E3%80%90_Crawlzilla_%E5%8F%A2%E9%9B%86%E5%AE%89%E8%A3%9D%E3%80%91 叢集安裝步驟]</li>
+		<li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/ClusterInstall#%E3%80%90%E5%8F%A2%E9%9B%86%E5%BF%AB%E9%80%9F%E5%AE%89%E8%A3%9D%E6%95%99%E5%AD%B8%E5%BD%B1%E7%89%87%E3%80%91 叢集快速安裝影片]</li>
+		<li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/Support_Distribution 支援的作業系統]</li>
 	</ul>
 	<li> C </li>
 	<ul>
