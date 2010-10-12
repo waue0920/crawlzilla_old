@@ -1,0 +1,51 @@
+= Crawlzilla 輕鬆建立搜尋引擎的自由軟體 =
+[http://crawlzilla.googlecode.com/files/logo2.png]
+
+== 【Crawlzilla 簡介】 ==
+*Crawlzilla* 是一個*開源碼的搜尋引擎建制和管理工具*，能協助使用者快速建置專屬的搜尋引擎。<br />
+若您想對 Crawlzilla 有更親密一點的接觸，歡迎用您的滑鼠大力點選以下連結(大哉問、特色和操作畫面)。
+
+ * [http://code.google.com/p/crawlzilla/wiki/Why Crawlzilla 大哉問? (已經有通用的搜尋引擎了，為什麼我們還要自己建？)]
+ * [http://code.google.com/p/crawlzilla/wiki/features Crawlzilla 特色]
+ * [http://code.google.com/p/crawlzilla/wiki/screenshot Crawlzilla 操作畫面]
+
+----
+== 【下載】 ==
+|| 安裝檔 || http://sourceforge.net/downloads/crawlzilla/stable/Crawlzilla-0.2/  ||
+|| 原始碼（svn） || http://code.google.com/p/crawlzilla/source/checkout ||
+
+----
+== 【文件】 ==
+ * 安裝 
+   * *[http://code.google.com/p/crawlzilla/wiki/SystemInstall 單機系統安裝說明]* / *[http://code.google.com/p/crawlzilla/wiki/ClusterInstall  叢集系統安裝說明]* / *[http://code.google.com/p/crawlzilla/wiki/Support_Distribution Crawlzilla 支援的作業系統]*
+<wiki:video url="http://www.youtube.com/watch?v=kHbQSEiMZOI"/> <wiki:video url="http://www.youtube.com/watch?v=bRWQ3BXEj4A"/>
+ * [http://code.google.com/p/crawlzilla/wiki/remove 移除說明] 
+ * 操作
+   * *[http://code.google.com/p/crawlzilla/wiki/ShellAdmin 服務管理模式]*
+   * *[http://code.google.com/p/crawlzilla/wiki/WebManagement 系統操作模式]*
+ * Changelog
+----
+== 【crawlzilla 簡報檔】 ==
+|| [http://www.slat.org/icos2010/biz-n-tech.html ICOS 2010 (2010/09/17 ~ 19)] || [https://trac.nchc.org.tw/cloud/raw-attachment/wiki/crawlzilla/Crawlzilla%40ICOS2010%282010-09-17%7E19%29.pptx 簡報檔], [https://trac.nchc.org.tw/cloud/raw-attachment/wiki/crawlzilla/Crawlzilla%40ICOS2010%282010-09-17%7E19%29.pdf PDF檔]  ||
+|| [http://coscup.org/2010/zh-tw/program 於 COSCUP 2010 (2010/08/14 ~ 15) 初次分享 crawlzilla] || [http://trac.nchc.org.tw/cloud/raw-attachment/wiki/shunfa/2010/0818/Crawlzilla_Slides%282010-08-27%29.pptx 簡報檔]||
+
+----
+== 【相關網站】 ==
+
+ * *[https://sourceforge.net/p/crawlzilla/home/ crawlzilla english site (英文網站)]
+ * *[http://crawlzilla.info crawlzilla.info 中文網站]
+ * *[http://groups.google.com/group/crawlzilla-user crawlzilla 使用者討論區]
+ * *[http://sourceforge.net/p/crawlzilla/home/ Visit Crawlzilla English website...]*
+
+----
+== 【常見問題 Q&A】 ==
+
+ * *[http://code.google.com/p/crawlzilla/wiki/FAQ 常見問題]
+
+----
+== 【開發者聯絡方式】 ==
+=== <font> [http://www.nchc.org.tw http://www.nchc.org.tw/web_images/tw/header/logo.jpg] 自由軟體實驗室研發</font> ===
+|| * 姓名 * || * Email  ||
+|| 陳威宇 || waue@nchc.org.tw / waue0920@gmail.com  ||
+|| 郭文傑 || rock@nchc.org.tw / goldjay1231@gmail.com ||
+|| 楊順發 || shunfa@nchc.org.tw / shunfa@gmail.com ||
