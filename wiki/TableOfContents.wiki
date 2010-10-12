@@ -1,5 +1,5 @@
 <ul class="treeleafcontainer">
-<li class="treeopen">[http://code.google.com/p/crawlzilla/ 簡介]</li>
+<li class="treeopen">[http://code.google.com/p/crawlzilla/wiki/Introduction 簡介]</li>
 <ul class="treeleafcontainer">
 <li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/Characteristic Crawlzilla 的特色與非他不可的理由]</li>
 </ul>
