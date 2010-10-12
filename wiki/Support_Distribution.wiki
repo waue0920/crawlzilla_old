@@ -9,3 +9,5 @@
 || CentOS 5.3          || O       ||
 || Fedora 12           || O       ||
 || OpenSUSE 11         || O       ||
+|| Solaris             || ?       ||
+|| FreeBSD             || ?       ||
