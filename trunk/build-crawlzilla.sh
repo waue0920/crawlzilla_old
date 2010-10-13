@@ -33,6 +33,7 @@ cd $GoogleCodeCrawlzilla; svn update;
 checkMethod 1.1
 ant -f /opt/svn_project/crawlzilla/src/web/build.xml clean
 ant -f /opt/svn_project/crawlzilla/src/web/build.xml
+echo $DATE_VER > /opt/svn_project/crawlzilla/src/shell/version
 checkMethod 1.2
 
 # 2 開始目錄以及生成暫存目錄

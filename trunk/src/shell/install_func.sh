@@ -762,7 +762,7 @@ function make_client_install ( )
   cp $Work_Path/client_install $Work_Path/client_install_func.sh $Work_Path/client_remove $Work_Path/client_deploy.sh $Work_Path/log.sh /home/crawler/crawlzilla/source
   cp -r $Work_Path/lang  /home/crawler/crawlzilla/source
   cp -r $Work_Path/lang /home/crawler/crawlzilla/system
-  cp $Work_Path/crawlzilla $Work_Path/add_hosts $Work_Path/duplicate_del $Work_Path/tomcat_restart.sh  $Work_Path/master_remove $Work_Path/go.sh $Work_Path/log.sh $Work_Path/rm_DB.sh $Work_Path/counter.sh $Work_Path/re_crawl.sh  /home/crawler/crawlzilla/system 
+  cp $Work_Path/crawlzilla $Work_Path/add_hosts $Work_Path/duplicate_del $Work_Path/tomcat_restart.sh  $Work_Path/master_remove $Work_Path/go.sh $Work_Path/log.sh $Work_Path/rm_DB.sh $Work_Path/counter.sh $Work_Path/re_crawl.sh $Work_Path/version  /home/crawler/crawlzilla/system 
   
   # 複製 crawlzilla/source 到使用者的安裝資料夾
 
