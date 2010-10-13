@@ -42,8 +42,7 @@ HOSTNAME={hostname}
 
 ==【安裝時需要的套件】==
 
- * 系統會自動檢查以下套件是否有安裝，並試著自動安裝 （ubuntu, debian），若其他系統無法自動安裝上面套件，請自行手動安裝
-    * *<font color="red">openssh, openssh-server, Sun 6 Java</font>*
+ * 系統會自動檢查*<font color="red">openssh, openssh-server, Sun 6 Java</font>*套件是否有安裝，並試著自動安裝 （ubuntu, debian），若其他系統無法自動安裝，使用者需自行手動安裝
     * 由於 Sun 6 Java 是版權軟體，因此某些linux版本預設無法安裝
       * Ubuntu 10.04 安裝可參考以下指令
 {{{
