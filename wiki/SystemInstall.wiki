@@ -44,7 +44,9 @@ sudo apt-get update
 sudo apt-get install sun-java6-jdk sun-java6-plugin
 sudo update-java-alternatives -s java-6-sun
 }}}
- 
+
+----
+
 = 【安裝步驟】=
 
  * 安裝 Crawlzilla 在一台電腦上運作，功能與穩定性不會比安裝在多台電腦上少，兩者差別僅於分析大型網站的效率而已。因此，安裝Crawlzilla 在單機上是使用者或體驗者建議的選項。安裝的過程非常簡單，只需彈指的四步間即可完成（已安裝sun-java-6 的前提下）。
