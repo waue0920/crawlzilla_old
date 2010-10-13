@@ -17,7 +17,8 @@
 # Program:
 #   Add crawl_nodes to /etc/hosts (for crawlzilla management interface).
 #   $1=/home/crawler/crawlizlla/system/crawl_nodes
-#   $2=/etc/hosts
+##   $2=/etc/hosts # changed
+#   $2=/home/crawler/crawlizlla/system/hosts
 # Author: 
 #   Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
 # Version:
@@ -64,6 +65,6 @@ echo "# Crawlzilla add" >${Crawlzilla_HOME}/system/hosts.tmp
 cat $1 | grep -v '#' >>${Crawlzilla_HOME}/system/hosts.tmp
 echo "# Crawlzilla End" >>${Crawlzilla_HOME}/system/hosts.tmp
 cat $2 >> ${Crawlzilla_HOME}/system/hosts.tmp
-cp ${Crawlzilla_HOME}/system/hosts.tmp /etc/hosts
+cp ${Crawlzilla_HOME}/system/hosts.tmp $2
 rm ${Crawlzilla_HOME}/system/hosts.tmp
 
