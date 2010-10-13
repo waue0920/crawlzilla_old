@@ -16,15 +16,15 @@
  * *<font color="red">硬體規格</font>*建議：記憶體 1.5G以上
  * *<font color="red">作業系統</font>*建議：[http://code.google.com/p/crawlzilla/wiki/Support_Distribution 請參考測試成功的作業系統]
  * *<font color="red">系統環境</font>*設定：
-   * *修改主機名稱* (建議不要用 localhost，底下的 {hostname} 請修改成您要的主機名稱) 
-     * 若系統為 debian 或 ubuntu
+   * *修改主機名稱* (建議不要用 localhost 作為主機名稱) 
+     * 若系統為 debian 或 ubuntu (底下的 {hostname} 請修改成您要的主機名稱)
 {{{
 $ su -
 # cat {hostname} > /etc/hostname
 # /etc/init.d/hostanme restart
 // 建議登出再登入，讓修改的主機名稱生效
 }}}
-     * 若系統為 Fedora 或 CentOS
+     * 若系統為 Fedora 或 CentOS (底下的 {hostname} 請修改成您要的主機名稱)
 {{{
 $ su -
 # vim /etc/sysconfig/network
