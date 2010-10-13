@@ -15,6 +15,7 @@
 $ su -
 # cat {hostname} > /etc/hostname
 # /etc/init.d/hostanme restart
+// debian 則為 /etc/init.d/hostanme.sh restart
 // 建議登出再登入，讓修改的主機名稱生效
 }}}
      * 若系統為 Fedora 或 CentOS (底下的 {hostname} 請修改成您要的主機名稱)
