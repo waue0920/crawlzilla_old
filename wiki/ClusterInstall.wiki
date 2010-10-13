@@ -70,6 +70,8 @@ tar zxvf Crawlzilla-0.2-100813-Shell.tar.gz
  * 待出現"恭喜您完成Crawlzilla安裝,按Enter鍵離開..."即表示單機環境已安裝完成！安裝完成後開啟網頁將會顯示畫面如下：
 [http://crawlzilla.googlecode.com/svn/tags/pics/wiki/SysIns/6.png]
 
+----
+
 ==【Step B  安裝 Slave 節點】==
 
 
