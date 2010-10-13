@@ -294,7 +294,7 @@ rpm -Uvh $Install_Dir/jdk-6u21-linux-i586.rpm
 function yum_install_sun_java_x86_64 ( )
 {
 wget -nc 'https://sourceforge.net/projects/crawlzilla/files/other/jdk-6u21-linux-x64-rpm.bin/download' -O $Install_Dir/jdk-6u21-linux-x64-rpm.bin
-echo y | bash $Install_Dir/bash jdk-6u21-linux-x64-rpm.bin               
+echo y | bash $Install_Dir/jdk-6u21-linux-x64-rpm.bin               
 rpm -Uvh $Install_Dir/jdk-6u21-linux-amd64.rpm
 /usr/sbin/alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_21/bin/java 1
 /usr/sbin/alternatives --set java /usr/java/jdk1.6.0_21/bin/java                                                                                                               
