@@ -18,4 +18,6 @@
 
   * 支援多執行緒同時執行，讓你可同時派遣多筆工作。
 
+  * 支援多國語系 (目前支援中、英)
+
   * 更多特色，[http://code.google.com/p/crawlzilla/wiki/Characteristic 請看這裡]。
