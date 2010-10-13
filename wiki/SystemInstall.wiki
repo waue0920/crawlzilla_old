@@ -11,7 +11,6 @@
  || Ubuntu  || 8.04 ~ 10.04 || 
  || Debian  || 5.0 以上 || 
  * 系統環境設定：
-   * 確定 /etc/hosts 有彼此的資訊
    * 修改主機名稱 (建議不要用 localhost，底下的 {hostname} 請修改程您要的主機名稱) 
      * 若系統為 debian 或 ubuntu
 {{{
@@ -27,7 +26,12 @@ HOSTNAME={hostname}
 
 # hostanme {hostname}
 }}}
-
+   * 確定 /etc/hosts 的主機名稱也是正確的
+{{{
+# cat /etc/hosts
+127.0.0.1 localhost
+140.100.X.X {hostname}
+}}}
 ==【安裝環境】==
 
  * 系統會自動檢查以下套件是否有安裝，並試著自動安裝 （ubuntu, debian），若其他系統無法自動安裝上面套件，請自行手動安裝
