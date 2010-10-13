@@ -26,7 +26,7 @@ HOSTNAME={hostname}
 # hostanme {hostname}
 // 建議登出再登入，讓修改的主機名稱生效
 }}}
-   * 確定 */etc/hosts* 的主機名稱和IP也是正確的
+   * *確認 /etc/hosts* 的 *主機名稱* 和 *IP位址* 也是正確的對應
 {{{
 # cat /etc/hosts
 127.0.0.1 localhost
