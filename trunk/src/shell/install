@@ -31,6 +31,8 @@ else
   exit 1;
 fi
 
+SYS_VER=`cat $Work_Path/version`
+
 # Log to /var/log/crawlzilla/shell-logs
 source "$Work_Path/log.sh" master_install;
 # Source functions
@@ -49,9 +51,8 @@ main () {
     make_ssh_key
     unzip_nV2_pack
     mkdir_Home_Var
-    check_set_hosts
-    # change_hosts_owner # combine to check_set_hosts
-    # set_hosts          # combine to check_set_hosts
+    # change /etc/hosts to crawler 
+    change_hosts_owner
     install_Nutch
     link_Chown   
     # make web default password
