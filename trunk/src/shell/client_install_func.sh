@@ -252,13 +252,13 @@ function check_ssh(){
   if [ -e /etc/init.d/sshd ]; then
     STATUS=$(/etc/init.d/sshd status | grep running )
     if [ "$STATUS" == "" ]; then
-        $(/etc/init.d/sshd start)
+        /etc/init.d/sshd start
     show_info "Start your sshd"
     fi
   elif [ -e /etc/init.d/ssh ]; then
     STATUS=$(/etc/init.d/ssh status | grep running )
     if [ "$STATUS" == "" ]; then
-        $(/etc/init.d/ssh start)
+        /etc/init.d/ssh start
     show_info "Start your sshd"
     fi
   else
@@ -390,8 +390,9 @@ function scp_packages(){
 function install_nutch_package(){
   debug_info "$install_nutch_package_d1"
   tar -zxvf /home/crawler/crawlzilla/source/CrawlzillaForClientOf_$Master_IP_Address.tar.gz -C /opt/crawlzilla
-  cp /etc/hosts /home/crawler/crawlzilla/system/hosts.bak
-  sed -i  --follow-symlinks '1a '$Master_IP_Address' '$Master_Hostname'' /etc/hosts
+
+  #  cp /etc/hosts /home/crawler/crawlzilla/system/hosts.bak
+  #  sed -i  --follow-symlinks '1a '$Master_IP_Address' '$Master_Hostname'' /etc/hosts
 
    # change sun-jre home path to each linux os
   if [ "$Linux_Distribution" == "SUSE" ] ;then
@@ -419,6 +420,34 @@ function install_nutch_package(){
   fi
 }
 
+# check /etc/hosts , cp to home dir ,  chown , then set ip-hostname mapping
+function check_set_hosts ( )
+{
+  if [ -f /etc/hosts ];then
+
+    debug_info "$MI_set_hosts_echo_1"
+    cp /etc/hosts /home/crawler/crawlzilla/system/hosts.bak
+    cp -f /etc/hosts /home/crawler/crawlzilla/system/
+    # chown the /home/crawler/crawlzilla/system/hosts to crawler
+    chown crawler:crawler /home/crawler/crawlzilla/system/hosts
+    # set ip-hostname to /home/crawler/crawlzilla/system/hosts
+    sed -i '1a '$Master_IP_Address' '$Master_Hostname'' /home/crawler/crawlzilla/system/hosts
+    if [ $? -eq 0 ]; then
+        # set link
+        ln -sf /home/crawler/crawlzilla/system/hosts /etc/hosts
+        show_info " Check and Set /etc/hosts finished."
+    else
+        show_info " There is some error in your /etc/hosts file. Please check!"
+    fi
+  else
+    show_info "No /etc/hosts exists.. please check!!"
+    show_info "Crawlzilla would not work if \"/etc/hosts\" does not exist. "
+    show_info "Installation failed"
+    exit 8
+  fi
+}
+
+# combine to check_set_hosts
 function change_hosts_owner (){
   if [ -f /etc/hosts ];then
     cp -f /etc/hosts /home/crawler/crawlzilla/system/

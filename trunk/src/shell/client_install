@@ -99,7 +99,8 @@ scp_master_crawler_sshkey $Master_IP_Address
 scp_packages $Master_IP_Address
 
 # change /etc/hosts owner from root to crawler
-change_hosts_owner
+check_set_hosts
+# change_hosts_owner # combine to check_set_hosts
 
 # install and startup 
 install_nutch_package
