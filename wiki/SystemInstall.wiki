@@ -15,6 +15,7 @@
 $ su -
 # cat {hostname} > /etc/hostname
 # /etc/init.d/hostanme restart
+// 建議登出再登入，讓修改的主機名稱生效
 }}}
      * 若系統為 Fedora 或 CentOS
 {{{
@@ -23,6 +24,7 @@ $ su -
 HOSTNAME={hostname}
 
 # hostanme {hostname}
+// 建議登出再登入，讓修改的主機名稱生效
 }}}
    * 確定 /etc/hosts 的主機名稱和IP也是正確的
 {{{
