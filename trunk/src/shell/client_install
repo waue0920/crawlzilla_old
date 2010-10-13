@@ -41,7 +41,7 @@ else
   echo "Import the installation libraries of client Error!!!"
   exit 1;
 fi
-
+SYS_VER=`cat $Work_Path/version`
 source "$Work_Path/client_install_func.sh";
 source "$Work_Path/log.sh" client_install;
 
