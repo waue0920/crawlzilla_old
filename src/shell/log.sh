@@ -18,7 +18,10 @@
 SHELLNAME=$1
 DATE=`date +%y%m%d`
 TIME=`date +%Y/%m/%d-%H:%M:%S`
-SYS_VER=`cat /home/crawler/crawlzilla/system/version`
+Work_Path=`dirname "$0"`
+if [ -f "/home/crawler/crawlzilla/system/version" ]; then
+    SYS_VER=`cat /home/crawler/crawlzilla/system/version`
+fi
 export LOG_SH_TARGET=/var/log/crawlzilla/shell-logs/$SHELLNAME-$DATE.log
 
 ##########  echo function  ##########
