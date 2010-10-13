@@ -74,8 +74,8 @@ function shutdown_service () {
   for i in $slaves_list ;
   do
       show_info "$i $MR_shutdown_service_echo_2" # "關閉本機服務..."
-      su crawler -c 'ssh -o StrictHostKeyChecking=no $i /opt/crawlzilla/nutch/bin/hadoop-daemon.sh stop tasktracker'
-      su crawler -c 'ssh -o StrictHostKeyChecking=no $i /opt/crawlzilla/nutch/bin/hadoop-daemon.sh stop datanode'
+      su crawler -c 'ssh -o StrictHostKeyChecking=no crawler@$i "/opt/crawlzilla/nutch/bin/hadoop-daemon.sh stop tasktracker"'
+      su crawler -c 'ssh -o StrictHostKeyChecking=no crawler@$i "/opt/crawlzilla/nutch/bin/hadoop-daemon.sh stop datanode"'
   done  
 
   show_info "$i $MR_shutdown_service_echo_2" # "關閉本機服務..."
