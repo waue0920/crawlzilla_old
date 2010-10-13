@@ -24,7 +24,7 @@ HOSTNAME={hostname}
 
 # hostanme {hostname}
 }}}
-   * 確定 /etc/hosts 的主機名稱也是正確的
+   * 確定 /etc/hosts 的主機名稱和IP也是正確的
 {{{
 # cat /etc/hosts
 127.0.0.1 localhost
