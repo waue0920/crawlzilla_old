@@ -383,7 +383,7 @@ function scp_packages(){
     su crawler -c "scp -r -o StrictHostKeyChecking=no crawler@$1:/home/crawler/crawlzilla/source/CrawlzillaForClientOf_$Master_IP_Address.tar.gz /home/crawler/crawlzilla/source"
   fi
   cp -r $Work_Path/lang /home/crawler/crawlzilla/system
-  cp $Work_Path/log.sh $Work_Path/client_remove /home/crawler/crawlzilla/system
+  cp $Work_Path/log.sh $Work_Path/version $Work_Path/client_remove /home/crawler/crawlzilla/system
 }
 
 
