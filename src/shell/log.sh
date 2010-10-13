@@ -18,7 +18,6 @@
 SHELLNAME=$1
 DATE=`date +%y%m%d`
 TIME=`date +%Y/%m/%d-%H:%M:%S`
-Work_Path=`dirname "$0"`
 if [ -f "/home/crawler/crawlzilla/system/version" ]; then
     SYS_VER=`cat /home/crawler/crawlzilla/system/version`
 fi
