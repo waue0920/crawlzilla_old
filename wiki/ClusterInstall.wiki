@@ -40,6 +40,18 @@ HOSTNAME={hostname}
 140.100.X.X {hostname}
 }}}
 
+==【安裝時需要的套件】==
+
+ * 系統會自動檢查以下套件是否有安裝，並試著自動安裝 （ubuntu, debian），若其他系統無法自動安裝上面套件，請自行手動安裝
+    * openssh, openssh-server, Sun 6 Java
+    * 由於 Sun 6 Java 是版權軟體，因此某些linux版本預設無法安裝，在Ubuntu 10.04 安裝可參考以下指令
+{{{
+sudo add-apt-repository "deb http://archive.canonical.com/ lucid partner"
+sudo apt-get update
+sudo apt-get install sun-java6-jdk sun-java6-plugin
+sudo update-java-alternatives -s java-6-sun
+}}}
+
 ----
 
 == 【A 安裝Master Server 】==
