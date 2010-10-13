@@ -13,10 +13,10 @@
 
 == 【安裝前的小提醒】==
 
- * 硬體規格建議：記憶體 1.5G以上
- * 作業系統建議：[http://code.google.com/p/crawlzilla/wiki/Support_Distribution 請參考測試成功的作業系統]
- * 系統環境設定：
-   * 修改主機名稱 (建議不要用 localhost，底下的 {hostname} 請修改程您要的主機名稱) 
+ * *<font color="red">硬體規格</font>*建議：記憶體 1.5G以上
+ * *<font color="red">作業系統</font>*建議：[http://code.google.com/p/crawlzilla/wiki/Support_Distribution 請參考測試成功的作業系統]
+ * *<font color="red">系統環境</font>*設定：
+   * *修改主機名稱* (建議不要用 localhost，底下的 {hostname} 請修改成您要的主機名稱) 
      * 若系統為 debian 或 ubuntu
 {{{
 $ su -
@@ -33,7 +33,7 @@ HOSTNAME={hostname}
 # hostanme {hostname}
 // 建議登出再登入，讓修改的主機名稱生效
 }}}
-   * 確定 /etc/hosts 的主機名稱和IP也是正確的
+   * 確定 */etc/hosts* 的主機名稱和IP也是正確的
 {{{
 # cat /etc/hosts
 127.0.0.1 localhost
@@ -42,7 +42,7 @@ HOSTNAME={hostname}
 
 ==【安裝時需要的套件】==
 
- * 系統會自動檢查*<font color="red">openssh, openssh-server, Sun 6 Java</font>*套件是否有安裝，並試著自動安裝 （ubuntu, debian），若其他系統無法自動安裝，使用者需自行手動安裝
+ * 系統會自動檢查*<font color="red"> openssh, openssh-server, Sun 6 Java </font>*套件是否有安裝，並試著自動安裝 （ubuntu, debian），若其他系統無法自動安裝，使用者需自行手動安裝
     * 由於 Sun 6 Java 是版權軟體，因此某些linux版本預設無法安裝
       * Ubuntu 10.04 安裝可參考以下指令
 {{{
