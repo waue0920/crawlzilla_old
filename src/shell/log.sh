@@ -18,6 +18,7 @@
 SHELLNAME=$1
 DATE=`date +%y%m%d`
 TIME=`date +%Y/%m/%d-%H:%M:%S`
+SYS_VER=`cat /home/crawler/crawlzilla/system/version`
 export LOG_SH_TARGET=/var/log/crawlzilla/shell-logs/$SHELLNAME-$DATE.log
 
 ##########  echo function  ##########
@@ -49,4 +50,5 @@ fi
 echo "" >> $LOG_SH_TARGET;
 echo "*****************************************************" 	>> $LOG_SH_TARGET;
 echo "* $TIME => $SHELLNAME begin   *" 				>> $LOG_SH_TARGET;
+echo "* System Version: $SYS_VER    *"                          >> $LOG_SH_TARGET;
 echo "*****************************************************" 	>> $LOG_SH_TARGET;
