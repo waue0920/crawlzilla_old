@@ -40,6 +40,8 @@ HOSTNAME={hostname}
 140.100.X.X {hostname}
 }}}
 
+----
+
 == 【A 安裝Master Server 】==
 
 此一安裝過程將假設欲安裝crawlzilla單機版於PC1中
