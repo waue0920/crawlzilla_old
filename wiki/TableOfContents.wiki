@@ -29,7 +29,4 @@
 </ul>
 <li> [http://code.google.com/p/crawlzilla/wiki/remove 移除Crawlzilla] </li>
 <li> [http://code.google.com/p/crawlzilla/wiki/FAQ 常見問題 FAQ] </li>
-<ul>
-<li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/Support_Distribution 支援的Linux 發佈套件] </li>
-</ul>
 </ul>
