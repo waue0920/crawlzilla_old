@@ -1,0 +1,13 @@
+=【Crawlzilla 網頁執行介面】=
+
+管理介面預設網址為：http://localhost:8080 或 http://ServerIP:8080 
+
+ * 登入後首頁如下：
+
+[http://crawlzilla.googlecode.com/svn/tags/pics/wiki/WebMan/1.png]
+
+=【0.設定網頁管理者密碼】=
+
+ * 首次進入網頁介面時，必須先重設管理者密碼（預設密碼為：crawler），設定密碼點選送出並重新登入後就可執行系統。
+
+[http://crawlzilla.googlecode.com/svn/tags/pics/wiki/WebMan/2.png]
