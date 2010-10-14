@@ -6,7 +6,8 @@ For the latest information about CrawlZilla, please visit our website at:
     http://sf.net/p/crawlzilla
 
  * Chinese:
-    http://code.google.com/p/crawlzilla/
+    http://crawlzilla.info/
+    ( http://code.google.com/p/crawlzilla/ )
 
 Installation HowTo:
     1. Download CrawlZilla newest package then extract it.
