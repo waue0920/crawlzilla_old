@@ -1,8 +1,3 @@
-=【叢集快速安裝教學影片】=
-<wiki:video url="http://www.youtube.com/watch?v=bRWQ3BXEj4A"/>
-
-----
-
 =【Crawlzilla 叢集安裝說明】=
 
 用一台普通pc (core 2 CPU , 2G Mem ) 安裝了 Crawlzilla 的主機，去爬取總資料量約200MB的任務，需要6 個小時。因此，如果你的搜尋需求更大，即時性更急迫些，你可以考慮用叢集運作的方式來平行分散工作到多台電腦去運算。
