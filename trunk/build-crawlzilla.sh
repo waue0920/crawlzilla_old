@@ -8,8 +8,8 @@
 
 DELETE_LOCK=1 # 1= 刪除 $TmpDir 資料夾
 DATE_VER=`date +%y%m%d` # 年月日
-CURRENT_VER=0.2.2 # 專案目前的版本
-
+CURRENT_VER=0.2 # 專案目前的版本
+MINOR_VER=2
 
 function checkMethod(){
   if [ $? -eq 0 ];then
@@ -33,7 +33,7 @@ cd $GoogleCodeCrawlzilla; svn update;
 checkMethod 1.1
 ant -f /opt/svn_project/crawlzilla/src/web/build.xml clean
 ant -f /opt/svn_project/crawlzilla/src/web/build.xml
-echo "$CURRENT_VER--$DATE_VER" > /opt/svn_project/crawlzilla/src/shell/version
+echo "$CURRENT_VER.$MINOR_VER-$DATE_VER" > /opt/svn_project/crawlzilla/src/shell/version
 checkMethod 1.2
 
 # 2 開始目錄以及生成暫存目錄
