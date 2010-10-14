@@ -11,14 +11,14 @@
 <li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/ClusterInstall_video 叢集快速安裝影片]</li>
 <li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/Support_Distribution 支援的作業系統]</li>
 </ul>
-<li> [http://code.google.com/p/crawlzilla/wiki/WebManagement 操作說明] </li>
+<li> [http://code.google.com/p/crawlzilla/wiki/WebManagement 網頁操作說明] </li>
 <ul>
-<li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/WebManagement?ts=1282724706&updated=WebManagement0 設定網頁管理者密碼 ] </li>
-<li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/WebManagement?ts=1282724706&updated=WebManagement1 建立第一個搜尋引擎 ] </li>
+<li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/WebManagement0 設定網頁管理者密碼 ] </li>
+<li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/WebManagement1 建立第一個搜尋引擎 ] </li>
 <li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/WebManagement2 索引庫管理] </li>
 <li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/WebManagement3 在網頁中嵌入搜尋引擎] </li>
 </ul>
-<li> [http://code.google.com/p/crawlzilla/wiki/ShellAdmin#%E3%80%90_%E7%B3%BB%E7%B5%B1%E7%AE%A1%E7%90%86%E4%BB%8B%E9%9D%A2%E6%93%8D%E4%BD%9C%E8%AA%AA%E6%98%8E_%E3%80%91 系統管理介面操作說明 ] </li>
+<li> [http://code.google.com/p/crawlzilla/wiki/ShellAdmin#%E3%80%90_%E7%B3%BB%E7%B5%B1%E7%AE%A1%E7%90%86%E4%BB%8B%E9%9D%A2%E6%93%8D%E4%BD%9C%E8%AA%AA%E6%98%8E_%E3%80%91 系統管理操作說明 ] </li>
 <ul>
 <li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/ShellAdmin#%E3%80%90_1._%E6%AA%A2%E6%9F%A5Cluster%E7%8B%80%E6%85%8B_%E3%80%91 檢查Cluster狀態 ]</li>
 <li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/ShellAdmin#%E3%80%90_2._%E5%95%9F%E5%8B%95Datanode_&_Tasktracker_%E3%80%91 啟動Datanode & Tasktracker ] </li>
