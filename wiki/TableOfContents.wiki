@@ -3,9 +3,9 @@
 <ul class="treeleafcontainer">
 <li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/Characteristic Crawlzilla 的特色與非他不可的理由]</li>
 </ul>
-<li> [http://code.google.com/p/crawlzilla/wiki/SystemInstall#%E3%80%90_Crawlzilla_%E8%AA%AA%E6%98%8E_%E3%80%91 安裝] </li>
+<li> [http://code.google.com/p/crawlzilla/wiki/SystemInstall_hint 安裝準備工作] </li>
 <ul>
-<li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/SystemInstall#%E3%80%90_%E5%AE%89%E8%A3%9D%E6%AD%A5%E9%A9%9F_%E3%80%91 單機安裝步驟 ]</li>
+<li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/SystemInstall 單機安裝步驟 ]</li>
 <li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/Install_video 單機快速安裝影片]</li>
 <li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/ClusterInstall?ts=1282728397&updated=ClusterInstall 叢集安裝步驟]</li>
 <li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/ClusterInstall_video 叢集快速安裝影片]</li>
