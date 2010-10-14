@@ -7,7 +7,7 @@
 <ul>
 <li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/SystemInstall 單機安裝步驟 ]</li>
 <li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/Install_video 單機快速安裝影片]</li>
-<li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/ClusterInstall?ts=1282728397&updated=ClusterInstall 叢集安裝步驟]</li>
+<li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/ClusterInstall 叢集安裝步驟]</li>
 <li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/ClusterInstall_video 叢集快速安裝影片]</li>
 <li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/Support_Distribution 支援的作業系統]</li>
 </ul>
