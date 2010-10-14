@@ -1,7 +1,8 @@
 <ul class="treeleafcontainer">
 <li class="treeopen">[http://code.google.com/p/crawlzilla/wiki/Introduction 簡介]</li>
 <ul class="treeleafcontainer">
-<li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/Characteristic Crawlzilla 的特色與非他不可的理由]</li>
+<li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/Characteristic 特色與非他不可的理由]</li>
+<li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/screenshot 畫面截圖]</li>
 </ul>
 <li> [http://code.google.com/p/crawlzilla/wiki/SystemInstall_hint 安裝準備工作] </li>
 <ul>
