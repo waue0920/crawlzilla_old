@@ -19,6 +19,8 @@
 <li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/WebManagement1 建立第一個搜尋引擎 ] </li>
 <li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/WebManagement2 索引庫管理] </li>
 <li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/WebManagement3 在網頁中嵌入搜尋引擎] </li>
+<li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/WebManagement4 系統狀態] </li>
+<li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/WebManagement5 管理者設定] </li>
 </ul>
 <li> [http://code.google.com/p/crawlzilla/wiki/ShellAdmin 系統管理操作說明 ] </li>
 <ul>
