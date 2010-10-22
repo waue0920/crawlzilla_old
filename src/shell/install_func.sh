@@ -99,12 +99,12 @@ function install_packages ( )
             echo -e "\n$install_pack_if_1\n"
             add-apt-repository "deb http://archive.canonical.com/ lucid partner"
             apt-get update
-            aptitude install -y expect ssh dialog sun-java6-jdk sun-java6-plugin
+            apt-get install -y expect ssh dialog sun-java6-jdk sun-java6-plugin
             update-java-alternatives -s java-6-sun
         else
             echo -e "\n$install_pack_if_1\n"
             apt-get update
-            aptitude install -y expect ssh dialog
+            apt-get install -y expect ssh dialog
         fi
 
   # deb 系列系統(Debian)
