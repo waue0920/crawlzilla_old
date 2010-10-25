@@ -11,7 +11,7 @@
 == 【Step 2. 解壓縮並執行安裝程式】==
  * 參考指令如下：
 {{{
-tar zxvf Crawlzilla-0.2-100813-Shell.tar.gz
+tar zxvf Crawlzilla-0.2*.tar.gz
 ./Crawlzilla_Install/install
 }}}
 
