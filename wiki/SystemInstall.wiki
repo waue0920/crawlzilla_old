@@ -15,6 +15,8 @@ tar zxvf Crawlzilla-0.2*.tar.gz
 ./Crawlzilla_Install/install
 }}}
 
+ ps :  此指令會切換成sudoer ，因此有可能會要您的 sudoer 密碼
+
 == 【Step 3. 設定密碼及確認網路資訊】==
 
  * 此一步驟將會在系統中新建一組user帳號-crawler，系統服務及叢集間的溝通將會已此一帳號密碼作為執行身份。
