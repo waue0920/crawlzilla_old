@@ -26,10 +26,8 @@ if [ -d /opt/svn_project/crawlzilla ]; then
 else
     GoogleCodeCrawlzilla=`dirname "$0"`
     GoogleCodeCrawlzilla=`cd "$GoogleCodeCrawlzilla"; pwd`
-    SvnProject=$GoogleCodeCrawlzilla/../
+    SvnProject=`$GoogleCodeCrawlzilla/../`
 fi
-
-exit
 
 TmpDir=Crawlzilla_Install
 ShellTar=Crawlzilla-$CURRENT_VER-$DATE_VER-Shell.tar.gz
