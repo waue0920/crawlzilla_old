@@ -6,7 +6,7 @@
 
 == 【Step 1. 取得安裝檔】==
 
- * [http://sourceforge.net/downloads/crawlzilla/stable/  取得crawlzilla最新安裝檔 ]
+ * [http://sourceforge.net/projects/crawlzilla/files_beta/stable/Crawlzilla-0.2/  取得crawlzilla最新安裝檔 ]
 
 == 【Step 2. 解壓縮並執行安裝程式】==
  * 參考指令如下：
