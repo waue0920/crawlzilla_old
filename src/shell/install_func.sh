@@ -14,8 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# shell檔及壓縮檔在同一目錄中
-####### 環境變數section###########
+####### parameter section###########
 User_HOME=/home/crawler/crawlzilla
 Crawlzilla_HOME=/opt/crawlzilla
 Nutch_HOME=$Crawlzilla_HOME/nutch
@@ -28,16 +27,20 @@ MasterIP_Address=`/sbin/ifconfig eth0 | grep 'inet addr' |  sed 's/^.*addr://g' 
 net_MacAddr=`/sbin/ifconfig eth0 | grep 'HW' | sed 's/^.*HWaddr //g'`
 
 ######function section#######
+function load_default_lang ( )
+{
 
-function load_default_lang(){
-
-lang=$(locale | grep 'LANG=' | cut -d "=" -f2)
-
-# Default: source english
-. $Work_Path/lang/lang_en_US
+lang=$(locale | grep 'LANGUAGE=' | cut -d "=" -f2 | cut -d ":" -f1 )
+echo $lang
+if [ "$lang" == "zh_TW" ] || [ "$lang" == "TW" ] || [ "$lang" == "tw" ];then
+    . $Work_Path/lang/lang_zh_TW
+else
+    . $Work_Path/lang/lang_en_US
+fi
+## Default: source english
+# . $Work_Path/lang/lang_en_US
 # if locale is zh then source chinese
-
-echo $lang | grep 'zh' >> /dev/null && source $Work_Path/lang/lang_zh_TW
+# echo $lang | grep 'zh' >> /dev/null && source $Work_Path/lang/lang_zh_TW
 }
 
 
@@ -107,20 +110,18 @@ function install_packages ( )
             apt-get install -y expect ssh dialog
         fi
 
-  # deb 系列系統(Debian)
+  # deb system (Debian)
   elif [ "$Linux_Distribution" == "Debian" ]; then
     echo -e "\n$install_pack_if_1\n"
         apt-get update
         aptitude install -y expect ssh dialog
 
-  # rpm 系列系統
+  # rpm system
   elif [ "$Linux_Distribution" == "Fedora" ] ;then
         if [ "$Linux_bit" != "x86_64" ]; then
             Linux_bit="i386"
         fi
-        # 如果是新裝系統update會很花時間
         # yum update
-        # 新裝系統，預設ssh為關閉
         #/etc/init.d/sshd restart
         yum install -y expect dialog wget
 
@@ -374,7 +375,7 @@ function check_sunJava ( )
   unset JAVA_version
 }
 
-# 檢查是否有安裝openssh, openssh-server
+# check openssh, openssh-server
 function check_ssh ( )
 {
   debug_info "$MI_check_ssh_1"
@@ -411,7 +412,7 @@ function check_ssh ( )
 }
 
 
-# 檢查是否有安裝dialog
+# check dialog
 function check_dialog ( )
 {
   debug_info "$MI_check_dialog_1"
@@ -445,7 +446,7 @@ function set_crawler_passwd ( )
   fi
 }
 
-# 新增crawler 帳號時用 Crawler_Passwd 當密碼
+# add crawler account Crawler_Passwd
 function creat_crawler_account ( )
 {
   debug_info "$create_crawler_d1"
@@ -505,12 +506,12 @@ function select_eth ( )
   net_interfaces=$(/sbin/ifconfig | grep ^eth | cut -d " " -f1)
   net_nu=$(echo $net_interfaces | wc -w)
 
-  # 若只有一個 eth　時
+  # when only one eth interface
   if [ "$net_nu" == "1" ]; then
     net_address=$(/sbin/ifconfig $net_interfaces | grep "inet addr:" | sed 's/^.*inet addr://g' | cut -d " " -f1)
     net_MacAddr=$(/sbin/ifconfig $net_interfaces | grep 'HW' | sed 's/^.*HWaddr //g')
 
-  # 若有多個 eth 時
+  # encounter to multiple eth interface
   else
     declare -i i=1
     show_info "$MI_select_eth_echo_1"
@@ -785,8 +786,7 @@ function make_client_install ( )
    fi
 
 
-  # 將Master_IP_Address給client
-  # 打包安裝目錄(不含tomcat)
+  # package the Master_IP_Address for client
  
   show_info "$MI_make_client_install_echo_1"
 # debug_info "function make_client_install..."
@@ -798,23 +798,21 @@ function make_client_install ( )
   cd /opt/crawlzilla/
   su crawler -c "tar -cvzf CrawlzillaForClientOf_$MasterIP_Address.tar.gz  nutch" >> /dev/null
   
-  # 複製檔案至$User_HOME/source及system目錄下
+  # copy files to $User_HOME/source and system directory 
   mv CrawlzillaForClientOf_$MasterIP_Address.tar.gz /home/crawler/crawlzilla/source
   cp $Work_Path/client_install $Work_Path/version $Work_Path/client_install_func.sh $Work_Path/client_remove $Work_Path/client_deploy.sh $Work_Path/log.sh /home/crawler/crawlzilla/source
   cp -r $Work_Path/lang  /home/crawler/crawlzilla/source
   cp -r $Work_Path/lang /home/crawler/crawlzilla/system
   cp $Work_Path/crawlzilla $Work_Path/add_hosts $Work_Path/duplicate_del $Work_Path/tomcat_restart.sh  $Work_Path/master_remove $Work_Path/go.sh $Work_Path/log.sh $Work_Path/rm_DB.sh $Work_Path/counter.sh $Work_Path/re_crawl.sh $Work_Path/version  /home/crawler/crawlzilla/system 
   
-  # 複製 crawlzilla/source 到使用者的安裝資料夾
+  # copy crawlzilla/source to user
 
    if [ ! -d "$Install_Dir/Client_Install_DIR" ]; then
      mkdir $Install_Dir/Client_Install_DIR
    fi
    cp -rf /home/crawler/crawlzilla/source/* $Install_Dir/Client_Install_DIR/
+   chmod -R 777 $Install_Dir/Client_Install_DIR
    
-#  cp $Work_Path/client_install $Work_Path/client_install /home/crawler/crawlzilla/source
-#  cp $Work_Path/client_install $Work_Path/client_remove /home/crawler/crawlzilla/source
-#  cp $Work_Path/client_install $Work_Path/lang* /home/crawler/crawlzilla/source
 }
 
 function start_up_tomcat ( ) 
@@ -836,8 +834,7 @@ function start_up_tomcat ( )
 # debug_info "tomcat has been started..."
 }
 
-###最後再整理###
-# client簡易步驟
+# client easy step
 function client_install_commands ( ) 
 {
   show_info "$MI_client_install_commands_echo_1"
