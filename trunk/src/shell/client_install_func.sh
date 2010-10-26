@@ -19,17 +19,22 @@
 # Author: 
 #   Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
 
+function load_default_lang ( )
+{
 
-function load_default_lang(){
-
-lang=$(locale | grep 'LANG=' | cut -d "=" -f2)
-
-# Default: source english
-. $Work_Path/lang/lang_en_US
+lang=$(locale | grep 'LANGUAGE=' | cut -d "=" -f2 | cut -d ":" -f1 )
+echo $lang
+if [ "$lang" == "zh_TW" ] || [ "$lang" == "TW" ] || [ "$lang" == "tw" ];then
+    . $Work_Path/lang/lang_zh_TW
+else
+    . $Work_Path/lang/lang_en_US
+fi
+## Default: source english
+# . $Work_Path/lang/lang_en_US
 # if locale is zh then source chinese
-
-echo $lang | grep 'zh' >> /dev/null && source $Work_Path/lang/lang_zh_TW
+# echo $lang | grep 'zh' >> /dev/null && source $Work_Path/lang/lang_zh_TW
 }
+
 
 function check_hostname_localhost ( )
 {
