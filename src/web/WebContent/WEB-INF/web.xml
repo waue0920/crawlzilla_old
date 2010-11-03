@@ -34,17 +34,29 @@
     <servlet-name>NutchDBSetup</servlet-name>
     <url-pattern>/NutchDBSetup.do</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <description></description>
     <display-name>NutchDBDelete</display-name>
     <servlet-name>NutchDBDelete</servlet-name>
     <servlet-class>org.nchc.crawlzilla.NutchDBDelete</servlet-class>
   </servlet>
-    <servlet-mapping>
+  <servlet-mapping>
     <servlet-name>NutchDBDelete</servlet-name>
     <url-pattern>/NutchDBDelete.do</url-pattern>
   </servlet-mapping>
-  
+
+  <servlet>
+    <description></description>
+    <display-name>NutchDBFix</display-name>
+    <servlet-name>NutchDBFix</servlet-name>
+    <servlet-class>org.nchc.crawlzilla.NutchDBFix</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>NutchDBFix</servlet-name>
+    <url-pattern>/NutchDBFix.do</url-pattern>
+  </servlet-mapping>
+
   <servlet>
     <description></description>
     <display-name>ReCrawl</display-name>

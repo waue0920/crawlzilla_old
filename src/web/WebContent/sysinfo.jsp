@@ -94,53 +94,58 @@
 		<th><i18n:message key="sysinfo_PassTime" /></th>
 		<th><i18n:message key="sysinfo_Delete" /></th>
 	</tr>
-	<%
-		for (int j = 0; j < statusNum; j++) {
-				out.print("<form method=\"get\" name=\"dbstatusForm\" >");
-				out.print("<tr>");
-				out.print("<td>");
-				out
-						.print("<a href=\"../" + statusName[j].getName()
-								+ "\">");
-				out
-						.print("<input type=\"hidden\" name=\"fileName\" value=\""
-								+ statusName[j].getName() + " \" >");
-				out.print(statusName[j].getName() + "</a>");
-				out.print("</td>");
+<%
+for (int j = 0; j < statusNum; j++) {
+	out.print("<form method=\"get\" name=\"dbstatusForm\" >");
+	out.print("<tr>");
+	// name ( with link url + hidden value)
+	out.print("<td>");
+	out.print("<a href=\"../" + statusName[j].getName() + "\">");
+	out.print("<input type=\"hidden\" name=\"fileName\" value=\""
+					+ statusName[j].getName() + " \" >");
+	out.print(statusName[j].getName() + "</a>");
+	out.print("</td>");
+	
+	// ps status
+	out.print("<td>");
+	FileReader fr = new FileReader(statusName[j] + "/" + statusName[j].getName());
+	BufferedReader br = new BufferedReader(fr);
+	String ps_status = br.readLine();
+	out.print(ps_status);
+	br.close();
+	fr.close();
+	out.print("</td>");
 
-				out.print("<td>");
-				
-				FileReader fr = new FileReader(statusName[j] + "/" + statusName[j].getName());
-				BufferedReader br = new BufferedReader(fr);
-				out.print(br.readLine());
-				br.close();
-				fr.close();
-				
-				out.print("</td>");
+	// running time
+	out.print("<td>");
+	FileReader fr2 = new FileReader(statusName[j] + "/" + statusName[j].getName()+"PassTime");
+	BufferedReader br2 = new BufferedReader(fr2);
+	String ps_runtime = br2.readLine();
+	out.print(ps_runtime);
+	br2.close();
+	fr2.close();
+	out.print("</td>");
+	
+	out.print("<td>");
+	// fix button if hour > 3 and status  = crawling
+	String[] ps_tmp = ps_runtime.split("h:");
+	int ps_hour = Integer.parseInt(ps_tmp[0]);
+	if ( ps_hour > 3 ){
+		if ( ps_status.equals("crawling")){
+			out.print("<input type=\"submit\" name=\"Fix\" value=\"Fix\" onclick=\"fixDB("
+					+ j + ")\" />");
+	}	}
 
-				out.print("<td>");
-				
-				FileReader fr2 = new FileReader(statusName[j] + "/" + statusName[j].getName()+"PassTime");
-				BufferedReader br2 = new BufferedReader(fr2);
-				out.print(br2.readLine());
-				br2.close();
-				fr2.close();
-				
-				out.print("</td>");
+	// delete status
+	out.print("<input type=\"submit\" name=\"Delete\" value=\"Delete\" onclick=\"deleteDBStatus("
+					+ j + ")\" />");
+	out.print("</td>");
 
-				
-				
-				out.print("<td>");
-				out
-						.print("<input type=\"submit\" name=\"Delete\" value=\"Delete\" onclick=\"deleteDBStatus("
-								+ j + ")\" />");
-				out.print("</td>");
+	out.print("</tr>"); 	
+	out.print("</form>");
 
-				out.print("</form>");
-
-				out.print("</tr>"); 
-			}
-	%>
+}
+%>
 </table>
 <body onload="window.scrollTo(0,0);">
 
