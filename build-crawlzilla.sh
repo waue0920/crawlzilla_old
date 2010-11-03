@@ -1,7 +1,5 @@
 #!/bin/bash
 # 此shell 可以用來把svn上的程式碼封裝成安裝壓縮包
-# 但目前此shell 不會自己打包 Nutchez 0.2pack 
-
 # 請先設定 DELETE_LOCK 是否要刪除
 # 以及安裝的時間版本 DATE_VER 
 
@@ -9,7 +7,7 @@
 DELETE_LOCK=1 # 1= 刪除 $TmpDir 資料夾
 DATE_VER=`date +%y%m%d` # 年月日
 CURRENT_VER=0.2 # 專案目前的版本
-MINOR_VER=2
+MINOR_VER=3
 
 function checkMethod(){
   if [ $? -eq 0 ];then
@@ -31,6 +29,7 @@ fi
 
 TmpDir=Crawlzilla_Install
 ShellTar=Crawlzilla-$CURRENT_VER-$DATE_VER-Shell.tar.gz
+StableTar=Crawlzilla-$CURRENT_VER-$MINOR.tar.gz
 FullTar=Crawlzilla-$CURRENT_VER-$DATE_VER-Full.tar.gz
 
 # 1 同步資料與編譯web資料
@@ -110,6 +109,11 @@ if [ -f $SvnProject/dist/$ShellTar ];then
   rm $SvnProject/dist/$ShellTar;
   checkMethod 7.0
 fi
+if [ -f $SvnProject/dist/$StableTar ];then
+  rm $SvnProject/dist/$StableTar;
+  checkMethod 7.0
+fi
+cp $ShellTar $SvnProject/dist/$StableTar
 mv $ShellTar $SvnProject/dist
 checkMethod 7.1
 # 7.2 刪除 DELETE_LOCK=1
