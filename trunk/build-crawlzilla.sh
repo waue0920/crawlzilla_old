@@ -29,7 +29,7 @@ fi
  
 TmpDir=Crawlzilla_Install
 ShellTar=Crawlzilla-$CURRENT_VER-$DATE_VER-Shell.tar.gz
-StableTar=Crawlzilla-$CURRENT_VER-$MINOR_VER.tar.gz
+StableTar=Crawlzilla-$CURRENT_VER.$MINOR_VER.tar.gz
 FullTar=Crawlzilla-$CURRENT_VER-$DATE_VER-Full.tar.gz
 
 # 1 同步資料與編譯web資料

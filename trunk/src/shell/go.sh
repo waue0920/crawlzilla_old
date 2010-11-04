@@ -44,6 +44,9 @@ function checkMethod(){
 
 cd /home/crawler/crawlzilla/
 
+echo $$ > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'_go_pid'
+
+read
 checkMethod "import lib path"
 # 策略改變 不用檢查
 #if [ -e /home/crawler/crawlzilla/search ];then
