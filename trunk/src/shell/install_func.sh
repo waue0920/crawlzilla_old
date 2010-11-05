@@ -528,7 +528,7 @@ function select_eth ( )
     if [ -z $net_choice ]; then
       net_choice=1
     fi
-
+    shoe_info "$MI_select_eth_echo_6"
     show_info "$MI_select_eth_echo_3 $net_choice"
 #   show_info "Your choice is $net_choice"
     net_interface=$(echo $net_interfaces | cut -d " " -f $net_choice)

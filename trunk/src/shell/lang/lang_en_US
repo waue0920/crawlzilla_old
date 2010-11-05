@@ -69,8 +69,9 @@ MI_set_crawler_passwd_echo_1="Set password for crawler："
 MI_set_crawler_passwd_echo_2="keyin the password again："
 
 #
-MI_select_eth_echo_1="System has detectable network cards as follows:"
-MI_select_eth_echo_2="Please choose a netword card for Crawlzilla. Use (1/2/3)："
+MI_select_eth_echo_1="System detect network cards as follows:"
+MI_select_eth_echo_2="Please choose a netword card for Crawlzilla web server. Use (1/2/3)："
+MI_select_eth_echo_6="Crawlzilla will use the IP address of this netwrok card for web server."
 MI_select_eth_echo_3="Your choose is：$net_choice"
 MI_select_eth_echo_4="Master IP address is：$net_address"
 MI_select_eth_echo_5="Master MAC address is：$net_MacAddr"
