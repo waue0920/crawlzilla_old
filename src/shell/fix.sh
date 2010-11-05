@@ -28,7 +28,7 @@ STATUS_FILE=$META_PATH/$JNAME/$JNAME # status path
 
 
 DATE=$(date)
-echo "$JNAME BEGINE at $DATE" >> $LOGFILE
+echo "Fix $JNAME BEGIN at $DATE" >> $LOGFILE
 
 echo "0 kill ps" >> $LOGFILE
 kill -9 $JPID
@@ -42,6 +42,14 @@ echo "1 invertlinks" >> $LOGFILE
 if [ ! $? -eq 0 ];then echo "ERROR!!! see $LOGFILE ";exit 8; fi
 
 echo "2 index" >> $LOGFILE
+# SEGS 裡面的資料夾必須檢查是否含有以下目錄，否則不能用
+#content
+#crawl_fetch
+#crawl_generate
+#crawl_parse
+#parse_data
+#parse_text
+#
 SEGS=$(/opt/crawlzilla/nutch/bin/hadoop dfs -ls /user/crawler/$JNAME/segments | grep  segments | awk '{print $8 }')
 /opt/crawlzilla/nutch/bin/nutch index /user/crawler/$JNAME/index /user/crawler/$JNAME/crawldb /user/crawler/$JNAME/linkdb $SEGS
 if [ ! $? -eq 0 ];then echo "ERROR!!! see $LOGFILE ";exit 8; fi
@@ -85,5 +93,5 @@ if [ ! $? -eq 0 ];then echo "ERROR!!! see $LOGFILE ";exit 8; fi
 echo "fixed" > $STATUS_FILE;
 
 DATE=$(date)
-echo "$JNAME completed and finished at"$DATE >> $LOGFILE
+echo "Fix $JNAME completed and finished at"$DATE >> $LOGFILE
 
