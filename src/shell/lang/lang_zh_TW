@@ -71,7 +71,7 @@ MI_set_crawler_passwd_echo_2="請再輸入一次確認密碼："
 #
 MI_select_eth_echo_1="系統偵測到目前擁有網卡如下："
 MI_select_eth_echo_2="請選擇欲給crawlzilla使用的網卡(1/2/3)："
-MI_select_eth_echo_6="Crawlzilla 將使用此網卡的 IP 作為網頁伺服器用"
+MI_select_eth_echo_6="此網卡的 IP 位址將為 crawlzilla 主要使用的IP"
 MI_select_eth_echo_3="您選擇的網卡為：$net_choice"
 MI_select_eth_echo_4="Master網路IP位址為："
 MI_select_eth_echo_5="Master的MAC為："
