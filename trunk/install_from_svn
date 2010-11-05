@@ -1,0 +1,85 @@
+#!/bin/bash                                                                                              
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# Program:
+#   Install Crawlzilla from SVN.
+# Author: 
+#   Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
+
+# [Environment Path]
+DELETE_LOCK=1 # 1= 刪除 $TmpDir 資料夾
+DATE_VER=`date +%y%m%d` # 年月日
+CURRENT_VER=0.2 # 專案目前的版本
+MINOR_VER="testing"
+Work_Path=$(dirname $0)
+TmpDir=Crawlzilla_Install
+ShellTar=Crawlzilla-$CURRENT_VER-$DATE_VER-Shell.tar.gz
+StableTar=Crawlzilla-$CURRENT_VER.$MINOR_VER.tar.gz
+FullTar=Crawlzilla-$CURRENT_VER-$DATE_VER-Full.tar.gz
+
+# [Function Declation]
+function check(){
+  if [ $? -eq 1 ];then
+    echo "$1 is broken";
+    exit 8
+  fi
+}
+
+
+# [Main]
+
+# = 1. update svn and compile web data =
+svn update
+ant -f src/web/build.xml clean
+check "1.1"
+ant -f src/web/build.xml
+check "1.2"
+echo "$CURRENT_VER.$MINOR_VER-$DATE_VER" > /opt/svn_project/crawlzilla/src/shell/version
+
+# = 2. create tmp dir =
+if [ -d $TmpDir ];then
+  rm -rf $TmpDir;
+  check "2.1"
+  mkdir $TmpDir
+  check "2.2"
+fi 
+
+# = 3. package web code (crawlzilla.war) =
+mkdir $TmpDir/web/                                                                                       
+check "3.1"
+cp dist/crawlzilla.war $TmpDir/web/
+check "3.2"
+mv dist/crawlzilla.war dist/crawlzilla-$DATE_VER.war
+check "3.3"
+
+# = 4. copy file and link
+cp -rf src/shell $TmpDir/bin
+check "4.1"
+cp -rf docs $TmpDir/
+check "4.2"
+cp -rf conf $TmpDir/
+check "4.3"
+cp LICENSE.txt $TmpDir/
+check "4.4"
+ln -sf $TmpDir/bin/install $TmpDir/install
+check "4.5"
+
+# = 5. change as root to install =
+if [ "`id -u`" != "0" ]; then
+    echo 'please change as "root" to execute!'
+    exit 0
+fi
+$TmpDir/install
+
