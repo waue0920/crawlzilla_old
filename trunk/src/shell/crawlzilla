@@ -18,8 +18,6 @@
 #   Crawlzilla management interface
 # Author: 
 #   Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
-# Version:
-#    1.0
 
 [ $USER != "crawler" ] && echo "plaese enter crawler's password"  && exec su crawler -c "$0" "$@"
 
@@ -34,14 +32,9 @@ Tomcat_HOME="/opt/crawlzilla/tomcat"
 Crawlzilla_HOME="/home/crawler/crawlzilla"
 Work_Path=$Crawlzilla_HOME/system
 Manu_Tmp_Path="/home/crawler/crawlzilla/.menu_tmp/"
+Hadoop_Daemon="/opt/crawlzilla/nutch/bin/hadoop-daemon.sh"
+PID_Dir="/var/log/crawlzilla/hadoop-pids"
 
-#Work_Path="./"
-#Work_Path_J=0
-##  Work Path setup ##
-#echo $0 | grep '/' || Work_Path_J=1
-#if [ "$Work_Path_J" == "0"  ]; then
-#	Work_Path=$(echo $0 | sed 's/crawlzilla//')
-#fi
 
 ## [Env Declaration] #
 . $Work_Path/lang/lang_en_US
@@ -53,6 +46,88 @@ fi
 
 
 # [Functions Declaration] #
+
+function CheckPID ( )
+{
+  ssh -o StrictHostKeyChecking=no $1 "ps $2 |grep $2 > /dev/null 2>&1"
+  return $?
+}
+
+function HadoopStart ( )
+{
+if [ ! "$USER" == "crawler" ];then echo "Error! You are $USER, please change to crawler then execute." ; exit 1; fi
+
+local NODE=$1
+local JOB=$2
+local Daemon_Start="$Hadoop_Daemon start $JOB"
+declare -i LOCK=0
+while [ $LOCK -lt 3 ]
+do
+local PID=$(ssh -o StrictHostKeyChecking=no $NODE "cat $PID_Dir/hadoop-crawler-$JOB.pid")
+  if CheckPID $NODE $PID; then
+    echo " $JOB ($PID) is working "
+    declare -i LOCK=9
+  else
+    declare -i LOCK=LOCK+1
+    echo "$JOB not work, starting now ... $LOCK .";
+    echo "ssh -o StrictHostKeyChecking=no $NODE $Daemon_Start 2>/dev/null"
+    ssh -o StrictHostKeyChecking=no $NODE $Daemon_Start 2>/dev/null
+    sleep 3
+  fi
+done
+
+if [ $LOCK -eq 3 ];then
+  local hostname=$(hostname)
+  echo "$JOB failed, please check /var/log/crawlzilla/hadoop-logs/hadoop-crawler-$JOB-$hostname.log"; exit 1;
+elif [ $LOCK -eq 9 ];then
+  echo "Start $JOB finished"
+else
+  echo "Crawlzilla System Error Bug, Please report."; exit 1;
+fi
+}
+
+function HadoopStop ( )
+{
+if [ ! "$USER" == "crawler" ];then echo "Error! You are $USER, please change to crawler then execute." ; exit 1; fi
+local NODE=$1
+local JOB=$2
+local Daemon_Stop="$Hadoop_Daemon stop $JOB"
+declare -i LOCK=0
+
+while [ $LOCK -lt 3 ]
+do
+  PID=$(ssh -o StrictHostKeyChecking=no $NODE "cat $PID_Dir/hadoop-crawler-$JOB.pid")
+  if CheckPID $NODE $PID; then
+    # job is work, stop it
+    declare -i LOCK=LOCK+1
+    echo "$JOB ($PID) is working , stoping now ... $LOCK ";
+    echo "ssh -o StrictHostKeyChecking=no $NODE $Daemon_Stop 2>/dev/null"
+    ssh -o StrictHostKeyChecking=no $NODE $Daemon_Stop 2>/dev/null
+    sleep 3
+  else
+    # job is not work , ok, down work
+    echo " $JOB is not working"
+    declare -i LOCK=9
+  fi
+done
+
+if [ $LOCK -eq 3 ];then
+  local hostname=$(hostname)
+  ssh -o StrictHostKeyChecking=no $NODE "kill -9 $PID 2>/dev/null"
+  if [ "$?" == "0" ]; then
+    echo "$JOB ($PID) is killed "
+  else 
+    echo "Stop $JOB failed"; exit 1;
+  fi 
+  echo "please check /var/log/crawlzilla/hadoop-logs/hadoop-crawler-$JOB-$hostname.log"
+elif [ $LOCK -eq 9 ];then
+  echo "Stop $JOB OK"
+else
+  echo "Crawlzilla System Error Bug, Please report.";exit 1;
+fi
+}
+
+
 ## [Pre-check for language] ##
 function prepare_lang(){
 lang=$(locale | grep 'LANG=' | cut -d "=" -f2)
@@ -235,22 +310,23 @@ $DIALOG --clear --backtitle "$dia_back" --title "$dia_server_title_2" \
     "main" "$dia_backto_main" 2>$serverSetup
 
 if [ "$(cat $serverSetup)" == "start" ]; then
-    $Crawlzilla_Install_PATH/nutch/bin/start-dfs.sh
-    $Crawlzilla_Install_PATH/nutch/bin/start-mapred.sh
+    HadoopStart $(hostname) namenode
+    HadoopStart $(hostname) jobtracker
     # Back to main menu                                                                                    
     main_menu
     menu_choose
 elif [ "$(cat $serverSetup)" == "shutdown" ]; then
-    $Crawlzilla_Install_PATH/nutch/bin/stop-dfs.sh
-    $Crawlzilla_Install_PATH/nutch/bin/stop-mapred.sh
+    HadoopStop $(hostname) jobtracker
+    HadoopStop $(hostname) namenode
     # Back to main menu                                                                                    
     main_menu
     menu_choose
 elif [ "$(cat $serverSetup)" == "restart" ]; then
-    $Crawlzilla_Install_PATH/nutch/bin/stop-dfs.sh
-    $Crawlzilla_Install_PATH/nutch/bin/stop-mapred.sh
-    $Crawlzilla_Install_PATH/nutch/bin/start-dfs.sh
-    $Crawlzilla_Install_PATH/nutch/bin/start-mapred.sh
+    HadoopStop $(hostname) jobtracker
+    HadoopStop $(hostname) namenode
+    sleep 3
+    HadoopStart $(hostname) namenode
+    HadoopStart $(hostname) jobtracker
     # Back to main menu                                                                                    
     main_menu
     menu_choose
@@ -313,9 +389,8 @@ if [ "$(cat $clusterSetup)" == "start" ]; then
     echo -e "\n$cluster_setup_echo_1"
     for node in $(cat $runNodes) 
     do
-        ssh -o StrictHostKeyChecking=no $node "$Crawlzilla_Install_PATH/nutch/bin/hadoop-daemon.sh start datanode \
-        ; $Crawlzilla_Install_PATH/nutch/bin/hadoop-daemon.sh start tasktracker" 2>/dev/null
-        [ $? == "0" ] || echo "$cluster_setup_echo_error $node !!!"
+    HadoopStart $node datanode
+    HadoopStart $node tasktracker
     done
     main_menu
     menu_choose
@@ -323,9 +398,8 @@ elif [ "$(cat $clusterSetup)" == "shutdown" ]; then
     echo -e "\n$cluster_setup_echo_3"
     for node in $(cat $runNodes)
     do
-        ssh -o StrictHostKeyChecking=no $node "$Crawlzilla_Install_PATH/nutch/bin/hadoop-daemon.sh stop datanode \
-        ; $Crawlzilla_Install_PATH/nutch/bin/hadoop-daemon.sh stop tasktracker" 2>/dev/null
-        [ $? == "0" ] || echo "$cluster_setup_echo_error $node !!!"
+    HadoopStop $node datanode
+    HadoopStop $node tasktracker
     done
     main_menu
     menu_choose
@@ -333,11 +407,10 @@ elif [ "$(cat $clusterSetup)" == "restart"  ]; then
     echo -e "\n$cluster_setup_echo_5"
     for node in $(cat $runNodes)
     do  
-        ssh -o StrictHostKeyChecking=no $node "$Crawlzilla_Install_PATH/nutch/bin/hadoop-daemon.sh stop datanode \
-        ; $Crawlzilla_Install_PATH/nutch/bin/hadoop-daemon.sh stop tasktracker \
-        ; $Crawlzilla_Install_PATH/nutch/bin/hadoop-daemon.sh start datanode \
-        ; $Crawlzilla_Install_PATH/nutch/bin/hadoop-daemon.sh start tasktracker" 2>/dev/null
-        [ $? == "0" ] || echo "$cluster_setup_echo_error $node !!!"
+    HadoopStop $node datanode
+    HadoopStop $node tasktracker
+    HadoopStart $node datanode
+    HadoopStart $node tasktracker
     done
     main_menu
     menu_choose
@@ -491,36 +564,29 @@ function fast_startup_all(){
   fi
 
   # startup namenode and jobtracker
-  pid_name=$(jps | grep NameNode)
-  pid_job=$(jps | grep JobTracker)
-
-  if [ -z "$pid_name" ]; then
-    $Crawlzilla_Install_PATH/nutch/bin/start-dfs.sh
-  fi
-  
-  if [ -z "$pid_job" ]; then 
-    $Crawlzilla_Install_PATH/nutch/bin/start-mapred.sh
-  fi
- 
-#  echo "please wait 10 sec..."
-#  sleep 10
+  HadoopStart $(hostname) namenode
+  HadoopStart $(hostname) jobtracker
 
   # startup datanode and tasktracker
   for ip in $IP_list
     do
       # Check Network status
-      ip_status="online"
-      ping -c1 -w1 $ip 2>&1 > /dev/null || ip_status="offline"
+#      ip_status="online"
+#      ping -c1 -w1 $ip 2>&1 > /dev/null || ip_status="offline"
       # Check Hadoop/Nutch service through ssh
-      Task_Data_status="shutdown"
-      if [ $ip_status == "online" ]; then
-        Task_Data=$(ssh -o StrictHostKeyChecking=no $ip "jps |grep TaskTracker ; jps | grep  DataNode")
-      fi
+#      Task_Data_status="shutdown"
 
-      if [ -z"$Task_Data" ] ;then
-        ssh -o StrictHostKeyChecking=no $node "$Crawlzilla_Install_PATH/nutch/bin/hadoop-daemon.sh start datanode \
-        ; $Crawlzilla_Install_PATH/nutch/bin/hadoop-daemon.sh start tasktracker" 2>/dev/null
-      fi
+    HadoopStart $ip datanode
+    HadoopStart $ip tasktracker
+
+#      if [ $ip_status == "online" ]; then
+#        Task_Data=$(ssh -o StrictHostKeyChecking=no $ip "jps |grep TaskTracker ; jps | grep  DataNode")
+#      fi
+#
+#      if [ -z"$Task_Data" ] ;then
+#        ssh -o StrictHostKeyChecking=no $node "/opt/crawlzilla/nutch/bin/hadoop-daemon.sh start datanode \
+#        ; /opt/crawlzilla/nutch/bin/hadoop-daemon.sh start tasktracker" 2>/dev/null
+#      fi
     done
 }
 
@@ -533,34 +599,40 @@ function fast_shutdown_all(){
     kill -9 $tom_pids
   fi
 
+
+
   # shutdown namenode and jobtracker
-  pid_name=$(jps | grep NameNode)
-  pid_job=$(jps | grep JobTracker)
+  HadoopStop $(hostname) datanode
+  HadoopStop $(hostname) tasktracker
 
-  if [ -n "$pid_name" ]; then
-    $Crawlzilla_Install_PATH/nutch/bin/stop-dfs.sh
-  fi
-
-  if [ -n "$pid_job" ]; then
-    $Crawlzilla_Install_PATH/nutch/bin/stop-mapred.sh
-  fi
+#  pid_name=$(jps | grep NameNode)
+#  pid_job=$(jps | grep JobTracker)
+#  if [ -n "$pid_name" ]; then
+#    /opt/crawlzilla/nutch/bin/stop-dfs.sh
+#  fi
+#  if [ -n "$pid_job" ]; then
+#    /opt/crawlzilla/nutch/bin/stop-mapred.sh
+#  fi
   IP_list=$(cat $Crawlzilla_HOME/system/crawl_nodes | grep -v '^$' | grep -v '#'  | awk '{print $1}')
   # shutdown datanode and tasktracker
   for ip in $IP_list
     do
-      # Check Network status
-      ip_status="online"
-      ping -c1 -w1 $ip 2>&1 > /dev/null || ip_status="offline"
-      # Check Hadoop/Nutch service through ssh
-      Task_Data_status="shutdown"
-      if [ $ip_status == "online" ]; then
-        Task_Data=$(ssh -o StrictHostKeyChecking=no $ip "jps |grep TaskTracker ; jps | grep  DataNode")
-      fi
-    
-      if [ -n "$Task_Data" ] ;then
-        ssh -o StrictHostKeyChecking=no $node "$Crawlzilla_Install_PATH/nutch/bin/hadoop-daemon.sh stop datanode \
-        ; $Crawlzilla_Install_PATH/nutch/bin/hadoop-daemon.sh stop tasktracker" 2>/dev/null
-      fi
+
+    HadoopStop $ip datanode
+    HadoopStop $ip tasktracker
+
+#      # Check Network status
+#      ip_status="online"
+#      ping -c1 -w1 $ip 2>&1 > /dev/null || ip_status="offline"
+#      # Check Hadoop/Nutch service through ssh
+#      Task_Data_status="shutdown"
+#      if [ $ip_status == "online" ]; then
+#        Task_Data=$(ssh -o StrictHostKeyChecking=no $ip "jps |grep TaskTracker ; jps | grep  DataNode")
+#      fi    
+#      if [ -n "$Task_Data" ] ;then
+#        ssh -o StrictHostKeyChecking=no $node "/opt/crawlzilla/nutch/bin/hadoop-daemon.sh stop datanode \
+#        ; /opt/crawlzilla/nutch/bin/hadoop-daemon.sh stop tasktracker" 2>/dev/null
+#      fi
     done
 
 }
