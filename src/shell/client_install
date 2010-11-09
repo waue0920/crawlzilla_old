@@ -100,7 +100,6 @@ scp_packages $Master_IP_Address
 
 # change /etc/hosts owner from root to crawler
 check_set_hosts
-# change_hosts_owner # combine to check_set_hosts
 
 # install and startup 
 install_nutch_package

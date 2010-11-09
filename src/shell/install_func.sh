@@ -685,37 +685,6 @@ function check_set_hosts ( )
   fi
 }
 
-# combine to check_set_hosts
-function change_hosts_owner ( )
-{
-  if [ -f /etc/hosts ];then
-    cp -f /etc/hosts /home/crawler/crawlzilla/system/
-    if [ $? -eq 0 ];then
-	ln -sf /home/crawler/crawlzilla/system/hosts /etc/hosts
-	chown crawler:crawler /home/crawler/crawlzilla/system/hosts
-    else
-	show_info "/etc/hosts has not been modified."
-    fi
-  else
-    show_info "no /etc/hosts exists.. please check!!"
-  fi
-}
-
-# not used, combined to check_set_hosts
-function set_hosts ( )
-{
-  debug_info "$MI_set_hosts_echo_1"
-  cp /etc/hosts /home/crawler/crawlzilla/system/hosts.bak
-  Line_NO=`cat /etc/hosts | grep -n $(hostname) | sed 's/:.*//g'`
-  if [ "$Line_NO" == "" ];then
-    debug_info "hostname do not exist in /etc/hosts ";
-  else
-    content=$(cat /etc/hosts | awk 'NR=='$Line_NO'{printf "# " ; print}' )
-    sed -i ""$Line_NO"c $content" /etc/hosts
-  fi
-  sed -i '1i '$MasterIP_Address' '$(hostname)'' /etc/hosts
-}
-
 function install_Nutch ( )
 {
 # copy crawlzilla.war to /opt/crawlzilla/tomcat/webapps
