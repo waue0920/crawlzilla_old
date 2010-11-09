@@ -452,16 +452,6 @@ function check_set_hosts ( )
   fi
 }
 
-# combine to check_set_hosts
-function change_hosts_owner (){
-  if [ -f /etc/hosts ];then
-    cp -f /etc/hosts /home/crawler/crawlzilla/system/
-    ln -sf /home/crawler/crawlzilla/system/hosts /etc/hosts
-    chown crawler:crawler /home/crawler/crawlzilla/system/hosts
-  else
-    show_info "no /etc/hosts exists.. please check!!"
-  fi
-}
 
 function recall_hostname_ip(){
   debug_info "$recall_hostname_ip_d1"

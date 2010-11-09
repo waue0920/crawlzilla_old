@@ -13,6 +13,7 @@ export NUTCH_CONF_DIR=/opt/crawlzilla/nutch/conf
 export HADOOP_CONF_DIR=/opt/crawlzilla/nutch/conf
 export NUTCH_LOG_DIR=/var/log/crawlzilla/hadoop-logs
 export HADOOP_LOG_DIR=/var/log/crawlzilla/hadoop-logs
+export HADOOP_PID_DIR=/var/log/crawlzilla/hadoop-pids
 
 # Extra Java CLASSPATH elements.  Optional.
 # export HADOOP_CLASSPATH=

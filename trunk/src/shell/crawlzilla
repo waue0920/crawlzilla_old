@@ -33,6 +33,7 @@ Crawlzilla_Install_PATH="/opt/crawlzilla"
 Tomcat_HOME="/opt/crawlzilla/tomcat"
 Crawlzilla_HOME="/home/crawler/crawlzilla"
 Work_Path=$Crawlzilla_HOME/system
+Manu_Tmp_Path="/home/crawler/crawlzilla/.menu_tmp/"
 
 #Work_Path="./"
 #Work_Path_J=0
@@ -42,8 +43,14 @@ Work_Path=$Crawlzilla_HOME/system
 #	Work_Path=$(echo $0 | sed 's/crawlzilla//')
 #fi
 
-# [Env Declaration] #
+## [Env Declaration] #
 . $Work_Path/lang/lang_en_US
+
+## menu choise menu_tmp dir check
+if [ ! -d $Manu_Tmp_Path ];then 
+   mkdir $Manu_Tmp_Path;
+fi
+
 
 # [Functions Declaration] #
 ## [Pre-check for language] ##
@@ -123,7 +130,7 @@ done
 
 ## [Main Menu] ##
 function main_menu(){
-main_choice="/tmp/main_choice"
+main_choice="$Manu_Tmp_Path/main_choice"
 
 $DIALOG --clear --backtitle "$dia_back" \
     --title "$dia_main_title_1" \
@@ -142,7 +149,7 @@ $DIALOG --clear --backtitle "$dia_back" \
 ## [Cluster Status (datanode & tasktracker)] ##
 function cluster_status(){
 IP_list=$(cat $Crawlzilla_HOME/system/crawl_nodes | grep -v '^$' | grep -v '#'  | awk '{print $1}')
-clusterStatus="/tmp/clusterStatus"
+clusterStatus="$Manu_Tmp_Path/clusterStatus"
 rm $clusterStatus 2> /dev/null
 #printf '%16s\t %11s\t %10s\t %25s\n' "[IP] [Hostanme] [Network] [Datanode & Tasktracker]" >>$clusterStatus
 echo -e "$cluster_status_echo_1" >>$clusterStatus
@@ -176,7 +183,7 @@ $DIALOG --clear --backtitle "$dia_back" \
 
 ## [Fast Manage (namenode, jobtracker, datanode, tasktracker and tomcat)]
 function fast_manage(){
-  fastStatus=/tmp/fastStatus
+  fastStatus=$Manu_Tmp_Path/fastStatus
   $DIALOG --clear --backtitle "$dia_back" --title "$dia_server_title_2" \
       --menu "$dia_choose" 15 65 3 \
       "startup" "$dia_fast_manage_1" \
@@ -202,7 +209,7 @@ function fast_manage(){
 
 ## [Server Setup (namenode & jobtracker)] ##
 function server_setup(){
-serverSetup=/tmp/serverSetup
+serverSetup=$Manu_Tmp_Path/serverSetup
 pid_name=$(jps | grep NameNode)
 pid_job=$(jps | grep JobTracker)
 
@@ -263,9 +270,9 @@ function cluster_setup(){
 #IP_list=$(cat $Crawlzilla_HOME/system/crawl_nodes | grep -v '^$' | grep -v '#' | awk '{print $1}')
 #HOST_list=$(cat $Crawlzilla_HOME/system/crawl_nodes | grep -v '^$' | grep -v '#' | awk '{print $2}')
 LIST_status="off"
-allpart="/tmp/allpart"
-runNodes="/tmp/runNodes"
-clusterSetup="/tmp/clusterSetup"
+allpart="$Manu_Tmp_Path/allpart"
+runNodes="$Manu_Tmp_Path/runNodes"
+clusterSetup="$Manu_Tmp_Path/clusterSetup"
 
 $DIALOG --clear --backtitle "$dia_back" \
     --title "$dia_cluster_setup_title_1" \
@@ -356,7 +363,7 @@ else
     $DIALOG --clear --backtitle "$dia_back" --title "$dia_tomcat_switch_title_1" \
         --msgbox "$dia_tomcat_switch_msg_2" 7 50
 fi
-tomcatSwitch="/tmp/tomcatSwitch"
+tomcatSwitch="$Manu_Tmp_Path/tomcatSwitch"
 $DIALOG --clear --backtitle "$dia_back" --title "$dia_tomcat_switch_title_2" \
     --menu "$dia_choose" 15 55 4 \
         "start" "$dia_tomcat_switch_menu_1_1" \
@@ -418,7 +425,7 @@ if [ ! -e $Tomcat_HOME/conf/server.xml ]; then
         --msgbox "$dia_tomcat_port_msg_1 $Tomcat_HOME/conf/server.xml !!!" 10 50
     exit
 fi
-tomcatPort="/tmp/tomcatPort"
+tomcatPort="$Manu_Tmp_Path/tomcatPort"
 $DIALOG --clear --backtitle "$dia_back" --title "$dia_tomcat_port_title_2" \
     --inputbox "$dia_tomcat_port_input_1" 10 55 2>$tomcatPort
 
@@ -447,7 +454,7 @@ fi
 
 ## [Language Change] ##
 function lang_switch(){
-langSwitch="/tmp/langSwitch"
+langSwitch="$Manu_Tmp_Path/langSwitch"
 $DIALOG --clear --backtitle "$dia_back" --title "$dia_lang_title_1" \
     --menu "$dia_choose" 15 55 3 \
     "en_US" "$dia_lang_menu_1_1" \

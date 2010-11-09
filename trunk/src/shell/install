@@ -51,8 +51,9 @@ main () {
     make_ssh_key
     unzip_nV2_pack
     mkdir_Home_Var
-    # change /etc/hosts to crawler 
-    change_hosts_owner
+    # change /etc/hosts owner from root to crawler
+    check_set_hosts
+
     install_Nutch
     link_Chown   
     # make web default password
