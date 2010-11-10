@@ -6,8 +6,8 @@
 
 DELETE_LOCK=1 # 1= 刪除 $TmpDir 資料夾
 DATE_VER=`date +%y%m%d` # 年月日
-CURRENT_VER=0.2 # 專案目前的版本
-MINOR_VER=3
+CURRENT_VER=0.3 # 專案目前的版本
+MINOR_VER=0
 
 function checkMethod(){
   if [ $? -eq 0 ];then
