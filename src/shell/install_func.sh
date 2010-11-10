@@ -190,6 +190,9 @@ ln -sf /var/log/crawlzilla/tomcat-logs /opt/crawlzilla/tomcat/logs
 ln -sf /var/log/crawlzilla/hadoop-logs /opt/crawlzilla/nutch/logs
 ln -sf /home/crawler/crawlzilla/system/crawlzilla /usr/bin/crawlzilla
 ln -sf /home/crawler/crawlzilla/system/master_remove /usr/bin/crawlzilla_remove
+ln -sf /var/log/crawlzilla /home/crawler/crawlzilla/logs
+ln -sf /opt/crawlzilla/nutch /home/crawler/crawlzilla/nutch
+ln -sf /var/lib/crawlzilla /opt/crawlzilla/nutch/hadoop_runspace
 chown -R crawler:crawler /opt/crawlzilla
 chown -R crawler:crawler /var/log/crawlzilla
 chown -R crawler:crawler /var/lib/crawlzilla
