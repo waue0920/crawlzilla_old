@@ -377,6 +377,14 @@ function scp_packages(){
   chown -R crawler:crawler /var/log/crawlzilla
   chown -R crawler:crawler /var/lib/crawlzilla
   chown -R crawler:crawler /home/crawler/crawlzilla
+
+  ln -sf /var/log/crawlzilla/hadoop-logs /opt/crawlzilla/nutch/logs
+  ln -sf /var/log/crawlzilla /home/crawler/crawlzilla/logs
+  ln -sf /opt/crawlzilla/nutch /home/crawler/crawlzilla/nutch
+  ln -sf /var/lib/crawlzilla /opt/crawlzilla/nutch/hadoop_runspace
+  # make clientremove link for easy use
+  ln -sf /home/crawler/crawlzilla/system/client_remove /usr/bin/crawlzilla_remove
+
   chmod 711 /home/crawler   # fedora = 700
   chmod 755 /opt/crawlzilla
   debug_info "$scp_packages_d3"
