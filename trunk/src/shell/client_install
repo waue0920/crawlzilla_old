@@ -104,9 +104,6 @@ check_set_hosts
 # install and startup 
 install_nutch_package
 
-# make clientremove link for easy use
-ln -sf /home/crawler/crawlzilla/system/client_remove /usr/bin/crawlzilla_remove
-
 # return Hostname and client ip to Master Server
 recall_hostname_ip $Master_IP_Address
 show_info "$CI_finish_echo_1"

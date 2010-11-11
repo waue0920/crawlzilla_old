@@ -19,7 +19,7 @@
 # Author: 
 #   Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
 
-[ $USER != "crawler" ] && echo "plaese enter crawler's password"  && exec su crawler -c "$0" "$@"
+[ $USER != "crawler" ] && echo "please enter crawler's password"  && exec su crawler -c "$0" "$@"
 
 # [Variables Declaration] #
 DIALOG="dialog"
