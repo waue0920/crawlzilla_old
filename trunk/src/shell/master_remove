@@ -51,7 +51,7 @@ function show_info ( )
 # check root
 function check_root ( )
 {
-  [ "`id -u`" != "0" ] && echo "plaese enter password of $USER:"  && exec sudo su -c "$0" "$@"
+  [ "`id -u`" != "0" ] && echo "please enter password of $USER:"  && exec sudo su -c "$0" "$@"
   if [ $USER != "root" ]; then
     show_info "$MR_check_root_1" # "請切換成 root 身份執行移除程式!!!"
     exit
