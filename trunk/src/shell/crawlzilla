@@ -204,7 +204,7 @@ elif [ ${Crawlzilla_HOME}/system/crawl_nodes -nt ${Crawlzilla_HOME}/system/crawl
     fi
 fi
 
-# scp hosts to client hosts 
+# scp hosts to slave hosts 
 for node in `cat ${Crawlzilla_HOME}/system/crawl_nodes|awk '{print $1}'`;
 do
   scp -o StrictHostKeyChecking=no /etc/hosts crawler@$node:${Crawlzilla_HOME}/system/hosts
@@ -238,7 +238,7 @@ $DIALOG --clear --backtitle "$dia_back" \
         "tomcat_switch" "$dia_main_menu_1_5" \
         "tomcat_port" "$dia_main_menu_1_6" \
         "lang_switch" "$dia_main_menu_1_7" \
-        "client_install" "$dia_main_menu_1_8" \
+        "slave_install" "$dia_main_menu_1_8" \
         "exit" "$dia_exit" 2>$main_choice
 }
 
@@ -580,7 +580,7 @@ fi
     menu_choose
 }
 
-function client_install (){
+function slave_install (){
   cat /home/crawler/crawlzilla/source/README.txt
   read -p "Press enter to countine..."
   main_menu
@@ -681,8 +681,8 @@ case $(cat $main_choice) in
         tomcat_port;;
     "lang_switch")
         lang_switch;;
-    "client_install")
-        client_install;;
+    "slave_install")
+        slave_install;;
 esac
 }
 

@@ -15,7 +15,7 @@
 # limitations under the License.
 
 # Program:
-#   Functions for client_install.sh
+#   Functions for slave_install.sh
 # Author: 
 #   Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
 
@@ -382,8 +382,8 @@ function scp_packages(){
   ln -sf /var/log/crawlzilla /home/crawler/crawlzilla/logs
   ln -sf /opt/crawlzilla/nutch /home/crawler/crawlzilla/nutch
   ln -sf /var/lib/crawlzilla /opt/crawlzilla/nutch/hadoop_runspace
-  # make clientremove link for easy use
-  ln -sf /home/crawler/crawlzilla/system/client_remove /usr/bin/crawlzilla_remove
+  # make client remove link for easy use
+  ln -sf /home/crawler/crawlzilla/system/slave_remove /usr/bin/crawlzilla_remove
 
   chmod 711 /home/crawler   # fedora = 700
   chmod 755 /opt/crawlzilla
@@ -396,7 +396,7 @@ function scp_packages(){
     su crawler -c "scp -r -o StrictHostKeyChecking=no crawler@$1:/home/crawler/crawlzilla/source/CrawlzillaForClientOf_$Master_IP_Address.tar.gz /home/crawler/crawlzilla/source"
   fi
   cp -r $Work_Path/lang /home/crawler/crawlzilla/system
-  cp $Work_Path/log.sh $Work_Path/version $Work_Path/client_remove /home/crawler/crawlzilla/system
+  cp $Work_Path/log.sh $Work_Path/version $Work_Path/slave_remove /home/crawler/crawlzilla/system
 }
 
 

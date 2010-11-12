@@ -31,6 +31,6 @@ else
   echo "pleash instsll \"sshd\""
   exit
 fi
-mkdir crawlzilla_client_install
-scp -r -o StrictHostKeyChecking=no crawler@$Master_IP_Address:/home/crawler/crawlzilla/source/* crawlzilla_client_install/.
-exec crawlzilla_client_install/client_install
+mkdir crawlzilla_slave_install
+scp -r -o StrictHostKeyChecking=no crawler@$Master_IP_Address:/home/crawler/crawlzilla/source/* crawlzilla_slave_install/.
+exec crawlzilla_slave_install/slave_install

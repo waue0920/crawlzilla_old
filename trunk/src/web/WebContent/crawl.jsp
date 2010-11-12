@@ -104,10 +104,6 @@
 	<option>4</option>
 	<option>5</option>
 	<option>6</option>
-	<option>7</option>
-	<option>8</option>
-	<option>9</option>
-	<option>10</option>
 </select><br />
 </fieldset>
 <input type="submit" value="<i18n:message key="button_submit" />" name="Submit" 	onmouseover= check_null();>

@@ -115,17 +115,17 @@ MI_install_Nutch_echo_1="Master's IP address is："
 MI_install_Nutch_echo_2="Master's Hostname is："
 
 #
-MI_client_PassMasterIPAddr_echo_1="Edit MasterIP in client install file at line $Line_NO"
-MI_client_PassMasterIPAddr_echo_2="Editing MasterIP..."
-MI_client_PassMasterIPAddr_echo_3="MasterIP has been set."
+MI_slave_PassMasterIPAddr_echo_1="Edit MasterIP in slave install file at line $Line_NO"
+MI_slave_PassMasterIPAddr_echo_2="Editing MasterIP..."
+MI_slave_PassMasterIPAddr_echo_3="MasterIP has been set."
 
 #
-MI_client_PassMaster_Hostname_echo_1="Edit master hostname in client install file at line $Line_NO"
-MI_client_PassMaster_Hostname_echo_2="Editing Hostname..."
-MI_client_PassMaster_Hostname_echo_3="Hostname has been set."
+MI_slave_PassMaster_Hostname_echo_1="Edit master hostname in slave install file at line $Line_NO"
+MI_slave_PassMaster_Hostname_echo_2="Editing Hostname..."
+MI_slave_PassMaster_Hostname_echo_3="Hostname has been set."
 
 #
-MI_make_client_install_echo_1="Make the client installation package "
+MI_make_slave_install_echo_1="Make the slave installation package "
 
 #
 MI_start_up_tomcat_echo_1="Start up tomcat..."
@@ -133,23 +133,23 @@ MI_start_up_tomcat_echo_2="Please wait about 10 sec..."
 MI_start_up_tomcat_echo_3="Tomcat has been started！"
 
 #
-MI_client_install_commands_echo_1="For client install, please refer commands as follows："
-MI_client_install_commands_echo_20="scp crawler@"
-MI_client_install_commands_echo_25=":/home/crawler/crawlzilla/source/client_deploy.sh ."
-MI_client_install_commands_echo_3="./client_deploy.sh"
+MI_slave_install_commands_echo_1="For slave install, please refer commands as follows："
+MI_slave_install_commands_echo_20="scp crawler@"
+MI_slave_install_commands_echo_25=":/home/crawler/crawlzilla/source/slave_deploy.sh ."
+MI_slave_install_commands_echo_3="./slave_deploy.sh"
 
 ########## Lang for Master Install - End##########
 
 ########## Lang for Client Install - Start##########
 
 # [Variables Declaration] #
-## Lang for client_install ##
+## Lang for slave_install ##
 par_echo_1="Your master IP is:"
 par_echo_2="Is this information cooect? (yes/no): "
 par_echo_3="These parameters are correct."
 par_echo_4="Please edit these parameters in this file."
 
-## [Lang for client_install_fun.sh] ##
+## [Lang for slave_install_fun.sh] ##
 ### [for choose_lang()] ###
 choose_lang_1="Please choose your language: (1)English (2)中文"
 choose_lang_2="(1/2):"

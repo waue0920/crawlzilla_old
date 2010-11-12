@@ -700,76 +700,76 @@ function install_Nutch ( )
 }
 
 
-function client_PassMasterIPAddr ( ) 
+function slave_PassMasterIPAddr ( ) 
 {
   cd $Work_Path
-  Line_NO=`cat client_install | grep -n '# Master IP here' | sed 's/:.*//g'`
-  debug_info "$MI_client_PassMasterIPAddr_echo_1"
+  Line_NO=`cat slave_install | grep -n '# Master IP here' | sed 's/:.*//g'`
+  debug_info "$MI_slave_PassMasterIPAddr_echo_1"
 # debug_info "debug...Master IP here line number = $Line_NO..."
-  sed -i ''$((Line_NO+1))'d' client_install
-  debug_info "$MI_client_PassMasterIPAddr_echo_2"
+  sed -i ''$((Line_NO+1))'d' slave_install
+  debug_info "$MI_slave_PassMasterIPAddr_echo_2"
 # debug_info "debug...edit Master IP at line $((Line_NO+1))..."
-  sed -i ''$Line_NO'a Master_IP_Address='$MasterIP_Address'' client_install
-  debug_info "$MI_client_PassMasterIPAddr_echo_3"
-# debug_info "edit client_install done..."
+  sed -i ''$Line_NO'a Master_IP_Address='$MasterIP_Address'' slave_install
+  debug_info "$MI_slave_PassMasterIPAddr_echo_3"
+# debug_info "edit slave_install done..."
 }
 
 
-function client_PassMaster_Hostname ( )
+function slave_PassMaster_Hostname ( )
 {
   cd $Work_Path
-  Line_NO=`cat client_install | grep -n '# Master Hostname here' | sed 's/:.*//g'`
-  debug_info "$MI_client_PassMaster_Hostname_echo_1"
+  Line_NO=`cat slave_install | grep -n '# Master Hostname here' | sed 's/:.*//g'`
+  debug_info "$MI_slave_PassMaster_Hostname_echo_1"
 # debug_info "debug...Master hostname here line number = $Line_NO..."
-  sed -i ''$((Line_NO+1))'d' client_install
-  debug_info "$MI_client_PassMaster_Hostname_echo_2"
+  sed -i ''$((Line_NO+1))'d' slave_install
+  debug_info "$MI_slave_PassMaster_Hostname_echo_2"
 # debug_info "debug...edit Master Hostname at line $((Line_NO+1))..."
-  sed -i ''$Line_NO'a Master_Hostname='$(hostname)'' client_install
-  debug_info "$MI_client_PassMaster_Hostname_echo_3"
-# debug_info "edit client_install done..."
+  sed -i ''$Line_NO'a Master_Hostname='$(hostname)'' slave_install
+  debug_info "$MI_slave_PassMaster_Hostname_echo_3"
+# debug_info "edit slave_install done..."
 }
 
-function client_PassMasterIPAddr_for_Remove ( ) 
+function slave_PassMasterIPAddr_for_Remove ( ) 
 {
   cd $Work_Path
-  Line_NO=`cat client_remove | grep -n "# Master IP here" | sed 's/:.*//g'`
-  sed -i ''$((Line_NO+1))'d' client_remove
-  sed -i ''$Line_NO'a Master_IP_Address='$MasterIP_Address'' client_remove
+  Line_NO=`cat slave_remove | grep -n "# Master IP here" | sed 's/:.*//g'`
+  sed -i ''$((Line_NO+1))'d' slave_remove
+  sed -i ''$Line_NO'a Master_IP_Address='$MasterIP_Address'' slave_remove
 }
 
 
-function client_PassMasterIPAddr_for_deploy ( ) 
+function slave_PassMasterIPAddr_for_deploy ( ) 
 {
   cd $Work_Path
-  Line_NO=`cat client_deploy.sh | grep -n "# Master IP here" | sed 's/:.*//g'`
-  sed -i ''$((Line_NO+1))'d' client_deploy.sh
-  sed -i ''$Line_NO'a Master_IP_Address='$MasterIP_Address'' client_deploy.sh
+  Line_NO=`cat slave_deploy.sh | grep -n "# Master IP here" | sed 's/:.*//g'`
+  sed -i ''$((Line_NO+1))'d' slave_deploy.sh
+  sed -i ''$Line_NO'a Master_IP_Address='$MasterIP_Address'' slave_deploy.sh
 }
 
-function make_client_install ( ) 
+function make_slave_install ( ) 
 {
-  # 建立資料夾(用來存放client的安奘檔)
+  # 建立資料夾(用來存放slave的安奘檔)
 
    if [ ! -d "$User_HOME/source" ]; then
      su crawler -c "mkdir $User_HOME/source"
    fi
 
 
-  # package the Master_IP_Address for client
+  # package the Master_IP_Address for slave
  
-  show_info "$MI_make_client_install_echo_1"
-# debug_info "function make_client_install..."
+  show_info "$MI_make_slave_install_echo_1"
+# debug_info "function make_slave_install..."
 
-  client_PassMasterIPAddr
-  client_PassMaster_Hostname
-  client_PassMasterIPAddr_for_Remove
-  client_PassMasterIPAddr_for_deploy
+  slave_PassMasterIPAddr
+  slave_PassMaster_Hostname
+  slave_PassMasterIPAddr_for_Remove
+  slave_PassMasterIPAddr_for_deploy
   cd /opt/crawlzilla/
   su crawler -c "tar -cvzf CrawlzillaForClientOf_$MasterIP_Address.tar.gz  nutch" >> /dev/null
   
   # copy files to $User_HOME/source and system directory 
   mv CrawlzillaForClientOf_$MasterIP_Address.tar.gz /home/crawler/crawlzilla/source
-  cp $Work_Path/client_install $Work_Path/version $Work_Path/client_install_func.sh $Work_Path/client_remove $Work_Path/client_deploy.sh $Work_Path/log.sh /home/crawler/crawlzilla/source
+  cp $Work_Path/slave_install $Work_Path/version $Work_Path/slave_install_func.sh $Work_Path/slave_remove $Work_Path/slave_deploy.sh $Work_Path/log.sh /home/crawler/crawlzilla/source
   cp -r $Work_Path/lang  /home/crawler/crawlzilla/source
   cp -r $Work_Path/lang /home/crawler/crawlzilla/system
   cp $Work_Path/crawlzilla $Work_Path/add_hosts $Work_Path/duplicate_del $Work_Path/tomcat_restart.sh  $Work_Path/master_remove $Work_Path/go.sh $Work_Path/log.sh $Work_Path/rm_DB.sh $Work_Path/counter.sh $Work_Path/re_crawl.sh $Work_Path/version $Work_Path/fix.sh /home/crawler/crawlzilla/system 
@@ -803,23 +803,23 @@ function start_up_tomcat ( )
 # debug_info "tomcat has been started..."
 }
 
-# client easy step
-function client_install_commands ( ) 
+# slave easy step
+function slave_install_commands ( ) 
 {
-  show_info "$MI_client_install_commands_echo_1"
-  show_info "$MI_client_install_commands_echo_20$MasterIP_Address$MI_client_install_commands_echo_25"
-  show_info "$MI_client_install_commands_echo_2"
-  show_info "$MI_client_install_commands_echo_3"
-  show_info "$MI_client_install_commands_echo_4"
-  show_info "$MI_client_install_commands_echo_5"
+  show_info "$MI_slave_install_commands_echo_1"
+  show_info "$MI_slave_install_commands_echo_20$MasterIP_Address$MI_slave_install_commands_echo_25"
+  show_info "$MI_slave_install_commands_echo_2"
+  show_info "$MI_slave_install_commands_echo_3"
+  show_info "$MI_slave_install_commands_echo_4"
+  show_info "$MI_slave_install_commands_echo_5"
 }
 
 function generateReadme ( )
 {
   cat > $Install_Dir/Client_Install_DIR/README.txt << EOF
-$MI_client_install_commands_echo_1
-1. $MI_client_install_commands_echo_20$MasterIP_Address$MI_client_install_commands_echo_25
-2. $MI_client_install_commands_echo_3
+$MI_slave_install_commands_echo_1
+1. $MI_slave_install_commands_echo_20$MasterIP_Address$MI_slave_install_commands_echo_25
+2. $MI_slave_install_commands_echo_3
 EOF
 
   cp $Install_Dir/Client_Install_DIR/README.txt /home/crawler/crawlzilla/source/

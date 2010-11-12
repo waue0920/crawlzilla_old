@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # Program:
-#   Check root identity and change root to exectue client_install.sh
+#   Check root identity and change root to exectue slave_install.sh
 # Author: 
 #   Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
 
@@ -33,17 +33,17 @@ Crawler_Passwd="xxxxxxxxxx";
 
 Work_Path=`dirname "$0"`
 
-if [ -f $Work_Path/client_install_func.sh ];then
+if [ -f $Work_Path/slave_install_func.sh ];then
   Work_Path=`cd "$Work_Path"; pwd`
-elif [ -f $Work_Path/bin/client_install_func.sh ];then
+elif [ -f $Work_Path/bin/slave_install_func.sh ];then
   Work_Path=`cd "$Work_Path/bin"; pwd`;
 else
-  echo "Import the installation libraries of client Error!!!"
+  echo "Import the installation libraries of slave Error!!!"
   exit 1;
 fi
 SYS_VER=`cat $Work_Path/version`
-source "$Work_Path/client_install_func.sh";
-source "$Work_Path/log.sh" client_install;
+source "$Work_Path/slave_install_func.sh";
+source "$Work_Path/log.sh" slave_install;
 
 # load default language
 load_default_lang
@@ -104,7 +104,7 @@ check_set_hosts
 # install and startup 
 install_nutch_package
 
-# return Hostname and client ip to Master Server
+# return Hostname and slave ip to Master Server
 recall_hostname_ip $Master_IP_Address
 show_info "$CI_finish_echo_1"
 change_ownship crawler /home/crawler/crawlzilla
