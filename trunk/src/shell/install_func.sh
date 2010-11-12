@@ -29,18 +29,15 @@ net_MacAddr=`/sbin/ifconfig eth0 | grep 'HW' | sed 's/^.*HWaddr //g'`
 ######function section#######
 function load_default_lang ( )
 {
-
+ # if you want force english to install, you can type
+ # sudo LANGUAGE=en ./install
 lang=$(locale | grep 'LANGUAGE=' | cut -d "=" -f2 | cut -d ":" -f1 )
-echo $lang
-if [ "$lang" == "zh_TW" ] || [ "$lang" == "TW" ] || [ "$lang" == "tw" ];then
-    . $Work_Path/lang/lang_zh_TW
+if [ "$lang" == "zh_TW" ] || [ "$lang" == "zh_TW.utf8" ] || \
+   [ "$lang" == "zh_TW:zh" ];then
+    source $Work_Path/lang/lang_zh_TW
 else
-    . $Work_Path/lang/lang_en_US
+    source $Work_Path/lang/lang_en_US
 fi
-## Default: source english
-# . $Work_Path/lang/lang_en_US
-# if locale is zh then source chinese
-# echo $lang | grep 'zh' >> /dev/null && source $Work_Path/lang/lang_zh_TW
 }
 
 
@@ -791,7 +788,7 @@ function start_up_tomcat ( )
 {
   show_info "$MI_start_up_tomcat_echo_1"
 # debug_info "start up tomcat..."
-
+  su crawler -c "$Tomcat_HOME/bin/startup.sh"
   i=5
   debug_info "$MI_start_up_tomcat_echo_2"
   until [ $i -lt 1 ]
@@ -801,7 +798,7 @@ function start_up_tomcat ( )
       i=`expr $i - 1`
     done
   echo ""
-  su crawler -c "$Tomcat_HOME/bin/startup.sh"
+  #su crawler -c "$Tomcat_HOME/bin/startup.sh"
   show_info "$MI_start_up_tomcat_echo_3"
 # debug_info "tomcat has been started..."
 }

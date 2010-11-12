@@ -14,11 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-crawl_dep=$1
-crawlname_from_jsp=$2
-archieve_dir="/home/crawler/crawlzilla/archieve"
-tmp_dir="/home/crawler/crawlzilla/.tmp"
-
 if [ "$1" == "" ]; then
  echo "1. 使用這個shell ，首先你需要有crawler這個使用者，並且hadoop 已經開始運作";
  echo "2. /home/crawler/crawlzilla/url/urls.txt 裡面有你要抓的網址";
@@ -28,38 +23,29 @@ if [ "$1" == "" ]; then
  exit
 fi
 
+#
+
+crawl_dep=$1
+crawlname_from_jsp=$2
+archieve_dir="/home/crawler/crawlzilla/archieve"
+tmp_dir="/home/crawler/crawlzilla/.tmp"
+
 source "/opt/crawlzilla/nutch/conf/hadoop-env.sh";
 source "/home/crawler/crawlzilla/system/log.sh" crawl_go;
 
 function checkMethod(){
   if [ $? -eq 0 ];then
-    show_info "$1 is ok";
+    show_info "[ok] $1";
   else
     echo "error: $1 broken" > "$tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp"
-    show_info "error: $1 broken"
+    show_info "[error] $1 broken"
     kill -9 $count_pid
     exit 8
   fi
 }
 
+# [ begin ] 
 cd /home/crawler/crawlzilla/
-
-echo $$ > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'_go_pid'
-
-read
-checkMethod "import lib path"
-# 策略改變 不用檢查
-#if [ -e /home/crawler/crawlzilla/search ];then
-    # 不是第一次搜尋，刪除hdfs上的資料夾
-#    echo "delete search (local,hdfs) and urls (hdfs) "
-#    echo "not first time"
-#    FirstTime=2;
-#else
-    # 第一次搜尋，設定參數，以後使用
-#    echo "first time set"
-#    FirstTime=1;
-#fi
-
 
 # $archieve_dir/tmp 用來放該程序的狀態
 if [ ! -e $tmp_dir ];then
@@ -72,6 +58,9 @@ if [ ! -e "$tmp_dir/$crawlname_from_jsp" ];then
    mkdir "$tmp_dir/$crawlname_from_jsp"
    checkMethod "mkdir crawlStatusDir"
 fi
+
+echo $$ > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'_go_pid'
+checkMethod "$$ > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'_go_pid'"
 
 # 紀錄爬取深度
 echo $1 > $tmp_dir/$crawlname_from_jsp/.crawl_depth
