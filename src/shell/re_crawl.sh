@@ -18,7 +18,7 @@
 
 # prompt
 if [ "$1" == "" ];then
-    echo "Usage : recrawl <JOB_NAME>";
+    echo "Usage : re_crawl <JOB_NAME>";
     echo " where JOB_NAME is one of: ";
     echo "==========="
 	ls "/home/crawler/crawlzilla/archieve/"
@@ -48,7 +48,7 @@ if [ -d /home/crawler/crawlzilla/archieve/$JNAME ]; then
   if [ ! $? -eq 0 ];then echo "Error! copy urls.txt broken" >> $LOGFILE ; fi
 
   echo "2. remove $JNAME metadata" >> $LOGFILE
-  rm -rf /home/crawler/crawlzilla/.tmp/$JNAME
+  rm -rf /home/crawler/crawlzilla/.metadata/$JNAME
   if [ ! $? -eq 0 ];then echo "Error! " >> $LOGFILE ; fi
 
   echo "3. remove /opt/crawlzilla/tomcat/webapps/$JNAME" >> $LOGFILE

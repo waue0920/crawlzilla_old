@@ -19,25 +19,26 @@ if [ "$1" == "" ]; then
  echo "2. /home/crawler/crawlzilla/url/urls.txt 裡面有你要抓的網址";
  echo "3. 執行 ./go.sh [深度] [資料夾名稱] 即可，如：";
  echo "	./go.sh 3 crawlname"
- echo "4. 等nutch所有程序完成，則你的資料在 $archieve_dir/crawlname/ "
+ echo "4. 等nutch所有程序完成，則你的資料在 $ARCHIEVE_DIR/crawlname/ "
  exit
 fi
 
-#
 
-crawl_dep=$1
-crawlname_from_jsp=$2
-archieve_dir="/home/crawler/crawlzilla/archieve"
-tmp_dir="/home/crawler/crawlzilla/.tmp"
+Depth=$1
+JNAME=$2
+META_PATH="/home/crawler/crawlzilla/.metadata"
+ARCHIEVE_DIR="/home/crawler/crawlzilla/archieve"
+HADOOP_BIN="/opt/crawlzilla/nutch/bin"
 
 source "/opt/crawlzilla/nutch/conf/hadoop-env.sh";
 source "/home/crawler/crawlzilla/system/log.sh" crawl_go;
 
-function checkMethod(){
+function check_info ( )
+{
   if [ $? -eq 0 ];then
     show_info "[ok] $1";
   else
-    echo "error: $1 broken" > "$tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp"
+    echo "error: $1 broken" > "$META_PATH/$JNAME/$JNAME"
     show_info "[error] $1 broken"
     kill -9 $count_pid
     exit 8
@@ -47,70 +48,64 @@ function checkMethod(){
 # [ begin ] 
 cd /home/crawler/crawlzilla/
 
-# $archieve_dir/tmp 用來放該程序的狀態
-if [ ! -e $tmp_dir ];then
-   mkdir $tmp_dir
-   checkMethod "mkdir .tmp"
+# $ARCHIEVE_DIR/tmp 用來放該程序的狀態
+if [ ! -e $META_PATH ];then
+   mkdir $META_PATH
+   check_info "mkdir .metadata"
 fi
 
 # 存儲crawling狀態及花費時間的資料夾
-if [ ! -e "$tmp_dir/$crawlname_from_jsp" ];then
-   mkdir "$tmp_dir/$crawlname_from_jsp"
-   checkMethod "mkdir crawlStatusDir"
+if [ ! -e "$META_PATH/$JNAME" ];then
+   mkdir "$META_PATH/$JNAME"
+   check_info "mkdir crawlStatusDir"
 fi
 
-echo $$ > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'_go_pid'
-checkMethod "$$ > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'_go_pid'"
+echo $$ > $META_PATH/$JNAME/$JNAME'_go_pid'
+check_info "$$ > $META_PATH/$JNAME/$JNAME'_go_pid'"
 
 # 紀錄爬取深度
-echo $1 > $tmp_dir/$crawlname_from_jsp/.crawl_depth
+echo $1 > $META_PATH/$JNAME/.crawl_depth
 
 # 開始紀錄程序狀態
-echo "begin" > "$tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp"
-echo "0" > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'PassTime'
+echo "begin" > "$META_PATH/$JNAME/$JNAME"
+echo "0" > $META_PATH/$JNAME/$JNAME'PassTime'
 
 # 呼叫counter.sh紀錄時間
-/home/crawler/crawlzilla/system/counter.sh $crawlname_from_jsp &
+/home/crawler/crawlzilla/system/counter.sh $JNAME &
 sleep 5
-count_pid=$(cat $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'_count_pid')
+count_pid=$(cat $META_PATH/$JNAME/$JNAME'_count_pid')
 
 # check the replicate directory on HDFS ; $? : 0 = shoud be delete
-/opt/crawlzilla/nutch/bin/hadoop fs -test -e /user/crawler/$crawlname_from_jsp
+$HADOOP_BIN/hadoop fs -test -e /user/crawler/$JNAME
 if [ $? -eq 0 ]; then
-  /opt/crawlzilla/nutch/bin/hadoop dfs -rmr /user/crawler/$crawlname_from_jsp
-  show_info "/user/crawler/$crawlname_from_jsp is deleted."
+  $HADOOP_BIN/hadoop dfs -rmr /user/crawler/$JNAME
+  show_info "/user/crawler/$JNAME is deleted."
 fi
 
-/opt/crawlzilla/nutch/bin/hadoop dfs -mkdir $crawlname_from_jsp
-checkMethod "hadoop dfs -mkdir $crawlname_from_jsp"
+$HADOOP_BIN/hadoop dfs -mkdir $JNAME
+check_info "hadoop dfs -mkdir $JNAME"
 
-/opt/crawlzilla/nutch/bin/hadoop dfs -put /home/crawler/crawlzilla/urls $crawlname_from_jsp/urls
-checkMethod "hadoop dfs -put urls"
+$HADOOP_BIN/hadoop dfs -put /home/crawler/crawlzilla/urls $JNAME/urls
+check_info "hadoop dfs -put urls"
 
 # nutch crawl begining
-echo "crawling" > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp
+echo "crawling" > $META_PATH/$JNAME/$JNAME
 
-/opt/crawlzilla/nutch/bin/nutch crawl $crawlname_from_jsp/urls -dir $crawlname_from_jsp -depth $crawl_dep -topN 5000 -threads 1000
-checkMethod "nutch crawl"
-/opt/crawlzilla/nutch/bin/hadoop dfs -get $crawlname_from_jsp $archieve_dir/$crawlname_from_jsp
-checkMethod "download search"
+$HADOOP_BIN/nutch crawl $JNAME/urls -dir $JNAME -depth $Depth -topN 5000 -threads 1000
+check_info "nutch crawl"
+$HADOOP_BIN/hadoop dfs -get $JNAME $ARCHIEVE_DIR/$JNAME
+check_info "download search"
 
-# 製作 $crawlname_from_jsp 於 tomcat
-cp -rf /opt/crawlzilla/tomcat/webapps/default /opt/crawlzilla/tomcat/webapps/$crawlname_from_jsp
-checkMethod "cp default to "
-sed -i '8s/search/'${crawlname_from_jsp}'/g' /opt/crawlzilla/tomcat/webapps/$crawlname_from_jsp/WEB-INF/classes/nutch-site.xml
-checkMethod "sed"
+# 製作 $JNAME 於 tomcat
+cp -rf /opt/crawlzilla/tomcat/webapps/default /opt/crawlzilla/tomcat/webapps/$JNAME
+check_info "cp default to "
+sed -i '8s/search/'${JNAME}'/g' /opt/crawlzilla/tomcat/webapps/$JNAME/WEB-INF/classes/nutch-site.xml
+check_info "sed"
 
 # 完成搜尋狀態
-cp $tmp_dir/$crawlname_from_jsp/.crawl_depth $archieve_dir/$crawlname_from_jsp/
-cp $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'PassTime' $archieve_dir/$crawlname_from_jsp/
-echo "finish" > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp
+cp $META_PATH/$JNAME/.crawl_depth $ARCHIEVE_DIR/$JNAME/
+cp $META_PATH/$JNAME/$JNAME'PassTime' $ARCHIEVE_DIR/$JNAME/
+echo "finish" > $META_PATH/$JNAME/$JNAME
 
 kill -9 $count_pid
-
-# 花費時間
-#TempTime=$(date +%s)
-#PassTime=$(( $TempTime - $StartTime ))
-#echo $PassTime > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'PassTime'
-
 
