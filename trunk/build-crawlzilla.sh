@@ -128,7 +128,7 @@ fi
 
 echo "Upload to source forge ?"
 read -p "[y/n] :" upload_sf
-if [ "$upload_sh" == "y" ];then
+if [ "$upload_sf" == "y" ];then
     # 8 上傳到 source forge
     # 做local user 與 sf.net 上的user 對應, fafa 與 rock
     if [ $USER == "waue" ];then
