@@ -16,7 +16,7 @@
 
 Begin=0
 crawlname_from_jsp=$1
-tmp_dir="/home/crawler/crawlzilla/.tmp"
+tmp_dir="/home/crawler/crawlzilla/.metadata"
 echo $$ > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'_count_pid'
 
 while [ 1 ]

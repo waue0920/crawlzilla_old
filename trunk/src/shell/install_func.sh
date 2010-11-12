@@ -169,7 +169,7 @@ function mkdir_Home_Var ( )
     su crawler -c "mkdir /home/crawler/crawlzilla/archieve"
     su crawler -c "mkdir /home/crawler/crawlzilla/source"
     su crawler -c "mkdir /home/crawler/crawlzilla/system"
-    su crawler -c "mkdir /home/crawler/crawlzilla/.tmp"
+    su crawler -c "mkdir /home/crawler/crawlzilla/.metadata"
    if [ ! -d "/var/log/crawlzilla" ]; then
      mkdir /var/log/crawlzilla
    fi
