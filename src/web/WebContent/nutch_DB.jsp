@@ -117,7 +117,7 @@ for (int i=0 ; i<num ;i++){
 	
 	out.print("<td>");
 	//Crawling Depth
-	FileReader fr = new FileReader(files[i] + "/" + ".crawl_depth");
+	FileReader fr = new FileReader(files[i] + "/depth");
 	BufferedReader br = new BufferedReader(fr);
 	out.print(br.readLine());
 	br.close();
@@ -128,7 +128,7 @@ for (int i=0 ; i<num ;i++){
 	
 	out.print("<td>");
 	//Crawling Time
-	FileReader fr2 = new FileReader(files[i] + "/" + files[i].getName()+"PassTime");
+	FileReader fr2 = new FileReader(files[i] + "/passtime");
 	BufferedReader br2 = new BufferedReader(fr2);
 	out.print(br2.readLine());
 	br2.close();

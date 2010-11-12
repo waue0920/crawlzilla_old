@@ -59,7 +59,7 @@ main () {
     # make web default password
     su crawler -c "echo "crawler" > /home/crawler/crawlzilla/system/.passwd"
     chmod 600 /home/crawler/crawlzilla/system/.passwd
-    make_client_install
+    make_slave_install
     # restart system
     format_HDFS
     start_up_Crawlzilla
@@ -69,7 +69,7 @@ main () {
 #   show_info "Install Successfully!!"
     show_info "$MI_main_echo_4$MasterIP_Address:8080"
 #   show_info "Visit http://$MasterIP_Address:8080"
-    client_install_commands
+    slave_install_commands
   elif [ $confirm -eq 2 ]; then
     main
   else
