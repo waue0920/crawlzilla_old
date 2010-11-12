@@ -80,9 +80,9 @@
 	class="org.nchc.crawlzilla.NutchDBNumBean" scope="session" /> <jsp:useBean
 	id="nutchDBStatus" class="org.nchc.crawlzilla.NutchDBStatusBean"
 	scope="session" /> <%
- 	nutchDBStatus.setFiles("/home/crawler/crawlzilla/.tmp/");
+ 	nutchDBStatus.setFiles("/home/crawler/crawlzilla/.metadata/");
  		File statusName[] = nutchDBStatus.getFiles();
- 		nutchDBNum.setNum("/home/crawler/crawlzilla/.tmp/");
+ 		nutchDBNum.setNum("/home/crawler/crawlzilla/.metadata/");
  		int statusNum = nutchDBNum.getNum();
  %> <i18n:message key="sysinfo_DbStatus" /><br>
 
@@ -129,12 +129,13 @@ for (int j = 0; j < statusNum; j++) {
 	out.print("<td>");
 	// fix button if hour > 3 and status  = crawling
 	String[] ps_tmp = ps_runtime.split("h:");
-	int ps_hour = Integer.parseInt(ps_tmp[0]);
-	if ( ps_hour > 3 ){
-		if ( ps_status.equals("crawling")){
-			out.print("<input type=\"submit\" name=\"Fix\" value=\"Fix\" onclick=\"fixDB("
+//	int ps_hour = Integer.parseInt(ps_tmp[0]);
+//	if ( ps_hour > 3 ){
+		if ( ! ps_status.equals("crawling")){
+			out.print("<input type=\"submit\" name=\"Fix\" value=\"Stop\" onclick=\"fixDB("
 					+ j + ")\" />");
-	}	}
+		}
+//	}
 
 	// delete status
 	out.print("<input type=\"submit\" name=\"Delete\" value=\"Delete\" onclick=\"deleteDBStatus("

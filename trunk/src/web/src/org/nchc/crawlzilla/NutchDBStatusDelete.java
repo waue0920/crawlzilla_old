@@ -55,7 +55,7 @@ public class NutchDBStatusDelete extends HttpServlet {
 //		PrintWriter out = response.getWriter();
 //		out.print("haha");
 		
-		Process process = Runtime.getRuntime().exec("rm -fr /home/crawler/crawlzilla/.tmp/"+name);
+		Process process = Runtime.getRuntime().exec("rm -fr /home/crawler/crawlzilla/.metadata/"+name);
 		try {
 			process.waitFor();
 		} catch (InterruptedException e) {
