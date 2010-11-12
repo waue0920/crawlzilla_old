@@ -15,9 +15,9 @@
 # limitations under the License.
 
 Begin=0
-crawlname_from_jsp=$1
-tmp_dir="/home/crawler/crawlzilla/.metadata"
-echo $$ > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'_count_pid'
+JNAME=$1
+META_DIR="/home/crawler/crawlzilla/.metadata"
+echo $$ > $META_DIR/$JNAME/count.pid
 
 while [ 1 ]
   do
@@ -27,5 +27,5 @@ while [ 1 ]
     Hour=$(expr $Min / 60)
     Min=$(expr $Min % 60)
     Sec=$(expr $Begin % 60)
-    echo $Hour'h:'$Min'm:'$Sec's' > $tmp_dir/$crawlname_from_jsp/$crawlname_from_jsp'PassTime'
+    echo $Hour'h:'$Min'm:'$Sec's' > $META_DIR/$JNAME/passtime
   done
