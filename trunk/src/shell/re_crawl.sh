@@ -30,7 +30,7 @@ fi
 
 JNAME=$1
 LOGFILE=/var/log/crawlzilla/shell-logs/crawl_re.log
-DEPTH=$(cat /home/crawler/crawlzilla/archieve/$JNAME/.crawl_depth)
+DEPTH=$(cat /home/crawler/crawlzilla/archieve/$JNAME/depth)
 DATE=$(date)
 
 echo "ReCrawl $JNAME BEGIN at $DATE" >> $LOGFILE

@@ -38,7 +38,7 @@ function check_info ( )
   if [ $? -eq 0 ];then
     show_info "[ok] $1";
   else
-    echo "error: $1 broken" > "$META_PATH/$JNAME/$JNAME"
+    echo "error: $1 broken" > "$META_PATH/$JNAME/status"
     show_info "[error] $1 broken"
     kill -9 $count_pid
     exit 8
@@ -60,20 +60,20 @@ if [ ! -e "$META_PATH/$JNAME" ];then
    check_info "mkdir crawlStatusDir"
 fi
 
-echo $$ > $META_PATH/$JNAME/$JNAME'_go_pid'
-check_info "$$ > $META_PATH/$JNAME/$JNAME'_go_pid'"
+echo $$ > "$META_PATH/$JNAME/go.pid"
+check_info "$$ > $META_PATH/$JNAME/go.pid"
 
 # 紀錄爬取深度
-echo $1 > $META_PATH/$JNAME/.crawl_depth
+echo $1 > "$META_PATH/$JNAME/depth"
 
 # 開始紀錄程序狀態
-echo "begin" > "$META_PATH/$JNAME/$JNAME"
-echo "0" > $META_PATH/$JNAME/$JNAME'PassTime'
+echo "begin" > "$META_PATH/$JNAME/status"
+echo "0" > "$META_PATH/$JNAME/passtime"
 
 # 呼叫counter.sh紀錄時間
 /home/crawler/crawlzilla/system/counter.sh $JNAME &
 sleep 5
-count_pid=$(cat $META_PATH/$JNAME/$JNAME'_count_pid')
+count_pid=$(cat "$META_PATH/$JNAME/count.pid")
 
 # check the replicate directory on HDFS ; $? : 0 = shoud be delete
 $HADOOP_BIN/hadoop fs -test -e /user/crawler/$JNAME
@@ -89,7 +89,7 @@ $HADOOP_BIN/hadoop dfs -put /home/crawler/crawlzilla/urls $JNAME/urls
 check_info "hadoop dfs -put urls"
 
 # nutch crawl begining
-echo "crawling" > $META_PATH/$JNAME/$JNAME
+echo "crawling" > "$META_PATH/$JNAME/status"
 
 $HADOOP_BIN/nutch crawl $JNAME/urls -dir $JNAME -depth $Depth -topN 5000 -threads 1000
 check_info "nutch crawl"
@@ -103,9 +103,14 @@ sed -i '8s/search/'${JNAME}'/g' /opt/crawlzilla/tomcat/webapps/$JNAME/WEB-INF/cl
 check_info "sed"
 
 # 完成搜尋狀態
-cp $META_PATH/$JNAME/.crawl_depth $ARCHIEVE_DIR/$JNAME/
-cp $META_PATH/$JNAME/$JNAME'PassTime' $ARCHIEVE_DIR/$JNAME/
-echo "finish" > $META_PATH/$JNAME/$JNAME
+cp $META_PATH/$JNAME/depth $ARCHIEVE_DIR/$JNAME/
+cp $META_PATH/$JNAME/passtime $ARCHIEVE_DIR/$JNAME/
+
+#if [ -d /home/crawler/crawlzilla/archieve/$JNAME/ ];then
+#  cp -rf $META_PATH/$JNAME /home/crawler/crawlzilla/archieve/$JNAME/metadata
+#fi
+
+echo "finish" > "$META_PATH/$JNAME/status"
 
 kill -9 $count_pid
 

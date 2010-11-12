@@ -20,11 +20,11 @@ JNAME=$1
 META_PATH="/home/crawler/crawlzilla/.metadata"
 HADOOP_BIN="/opt/crawlzilla/nutch/bin"
 
-JPID=$(cat "$META_PATH/$JNAME/$JNAME"_go_pid) # go job pid 
-CPID=$(cat "$META_PATH/$JNAME/$JNAME"_count_pid) # count pid 
-JDEPTH="$META_PATH/$JNAME/.crawl_depth" # depth
-JPTIME="$META_PATH/$JNAME/$JNAME"PassTime
-STATUS_FILE=$META_PATH/$JNAME/$JNAME # status path
+JPID=$(cat "$META_PATH/$JNAME/go.pid") # go job pid 
+CPID=$(cat "$META_PATH/$JNAME/count.pid") # count pid 
+JDEPTH="$META_PATH/$JNAME/depth" # depth
+JPTIME="$META_PATH/$JNAME/passtime"
+STATUS_FILE=$META_PATH/$JNAME/status # status path
 
 ### function
 function check_info ( )
@@ -32,7 +32,7 @@ function check_info ( )
   if [ $? -eq 0 ];then
     show_info "[ok] $1";
   else
-    echo "error: $1 broken" > "$META_PATH/$JNAME/$JNAME"
+    echo "error: $1 broken" > "$META_PATH/$JNAME/status"
     show_info "[error] $1 broken"
     kill -9 $CPID
     exit 8
@@ -97,21 +97,21 @@ $HADOOP_BIN/hadoop dfs -get $JNAME /home/crawler/crawlzilla/archieve/$JNAME
 check_info "download hdfs "
 
 
-show_info "4.1 $JNAME PassTime"
-if [ ! -f /home/crawler/crawlzilla/archieve/$JNAME/$JNAME"PassTime" ];then
+show_info "4.1 $JNAME Pass Time"
+if [ ! -f /home/crawler/crawlzilla/archieve/$JNAME/passtime ];then
   if [ -f $JPTIME ];then
-    cp $JPTIME /home/crawler/crawlzilla/archieve/$JNAME/$JNAME"PassTime"
+    cp $JPTIME /home/crawler/crawlzilla/archieve/$JNAME/passtime
   else
-    echo "0h:0m:0s" >> /home/crawler/crawlzilla/archieve/$JNAME/$JNAME"PassTime"
+    echo "0h:0m:0s" >> /home/crawler/crawlzilla/archieve/$JNAME/passtime
   fi
 fi
 
 show_info "4.2 append depth"
-if [ ! -f /home/crawler/crawlzilla/archieve/$JNAME/.crawl_depth ];then
+if [ ! -f /home/crawler/crawlzilla/archieve/$JNAME/depth ];then
   if [ -f $JDEPTH ];then
-    cp $JDEPTH /home/crawler/crawlzilla/archieve/$JNAME/.crawl_depth
+    cp $JDEPTH /home/crawler/crawlzilla/archieve/$JNAME/depth
   else
-    echo "0" >> /home/crawler/crawlzilla/archieve/$JNAME/.crawl_depth
+    echo "0" >> /home/crawler/crawlzilla/archieve/$JNAME/depth
   fi
 fi
 
@@ -134,4 +134,9 @@ check_info "nutch-site.xml modify"
 fi
 ## hadoop fix over ##
 
+
+# finish
+#if [ -d /home/crawler/crawlzilla/archieve/$JNAME/ ];then
+#  cp -rf $META_PATH/$JNAME /home/crawler/crawlzilla/archieve/$JNAME/metadata
+#fi
 echo "stop" > $STATUS_FILE;
