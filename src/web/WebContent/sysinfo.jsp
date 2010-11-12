@@ -80,9 +80,9 @@
 	class="org.nchc.crawlzilla.NutchDBNumBean" scope="session" /> <jsp:useBean
 	id="nutchDBStatus" class="org.nchc.crawlzilla.NutchDBStatusBean"
 	scope="session" /> <%
- 	nutchDBStatus.setFiles("/home/crawler/crawlzilla/.metadata/");
+ 	nutchDBStatus.setFiles("/home/crawler/crawlzilla/.tmp/");
  		File statusName[] = nutchDBStatus.getFiles();
- 		nutchDBNum.setNum("/home/crawler/crawlzilla/.metadata/");
+ 		nutchDBNum.setNum("/home/crawler/crawlzilla/.tmp/");
  		int statusNum = nutchDBNum.getNum();
  %> <i18n:message key="sysinfo_DbStatus" /><br>
 
@@ -108,7 +108,8 @@ for (int j = 0; j < statusNum; j++) {
 	
 	// ps status
 	out.print("<td>");
-	FileReader fr = new FileReader(statusName[j] + "/" + statusName[j].getName());
+	//FileReader fr = new FileReader(statusName[j] + "/" + statusName[j].getName()); //old
+	FileReader fr = new FileReader(statusName[j] + "/status");
 	BufferedReader br = new BufferedReader(fr);
 	String ps_status = br.readLine();
 	out.print(ps_status);
@@ -118,7 +119,7 @@ for (int j = 0; j < statusNum; j++) {
 
 	// running time
 	out.print("<td>");
-	FileReader fr2 = new FileReader(statusName[j] + "/" + statusName[j].getName()+"PassTime");
+	FileReader fr2 = new FileReader(statusName[j] + "/passtime");
 	BufferedReader br2 = new BufferedReader(fr2);
 	String ps_runtime = br2.readLine();
 	out.print(ps_runtime);
@@ -129,13 +130,13 @@ for (int j = 0; j < statusNum; j++) {
 	out.print("<td>");
 	// fix button if hour > 3 and status  = crawling
 	String[] ps_tmp = ps_runtime.split("h:");
-//	int ps_hour = Integer.parseInt(ps_tmp[0]);
-//	if ( ps_hour > 3 ){
-		if ( ! ps_status.equals("crawling")){
+	int ps_hour = Integer.parseInt(ps_tmp[0]);
+	//if ( ps_hour > 3 ){
+		if ( ps_status.equals("crawling")){
 			out.print("<input type=\"submit\" name=\"Fix\" value=\"Stop\" onclick=\"fixDB("
 					+ j + ")\" />");
 		}
-//	}
+	//}	
 
 	// delete status
 	out.print("<input type=\"submit\" name=\"Delete\" value=\"Delete\" onclick=\"deleteDBStatus("
