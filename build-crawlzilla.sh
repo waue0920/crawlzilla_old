@@ -3,11 +3,30 @@
 # 請先設定 DELETE_LOCK 是否要刪除
 # 以及安裝的時間版本 DATE_VER 
 
+SvnProject="" # 請輸入你的svn 專案目錄
 
 DELETE_LOCK=1 # 1= 刪除 $TmpDir 資料夾
 DATE_VER=`date +%y%m%d` # 年月日
 CURRENT_VER=0.3 # 專案目前的版本
 MINOR_VER=0
+
+if [  "a$SvnProject" == "a" ]; then
+    if [ -d /opt/svn_project/crawlzilla ]; then
+	SvnProject=/opt/svn_project
+	GoogleCodeCrawlzilla=$SvnProject/crawlzilla
+    else
+	GoogleCodeCrawlzilla=`dirname "$0"`
+	GoogleCodeCrawlzilla=`cd "$GoogleCodeCrawlzilla"; pwd`
+	SvnProject=`$GoogleCodeCrawlzilla/../`
+    fi
+else
+    GoogleCodeCrawlzilla=$SvnProject/crawlzilla
+fi
+
+TmpDir=Crawlzilla_Install
+ShellTar=Crawlzilla-$CURRENT_VER-$DATE_VER-Shell.tar.gz
+StableTar=Crawlzilla-$CURRENT_VER.$MINOR_VER.tar.gz
+FullTar=Crawlzilla-$CURRENT_VER-$DATE_VER-Full.tar.gz
 
 function checkMethod(){
   if [ $? -eq 0 ];then
@@ -17,28 +36,13 @@ function checkMethod(){
     exit 8
   fi
 }
-
-if [ -d /opt/svn_project/crawlzilla ]; then
-    SvnProject=/opt/svn_project
-    GoogleCodeCrawlzilla=$SvnProject/crawlzilla
-else
-    GoogleCodeCrawlzilla=`dirname "$0"`
-    GoogleCodeCrawlzilla=`cd "$GoogleCodeCrawlzilla"; pwd`
-    SvnProject=`$GoogleCodeCrawlzilla/../`
-fi
- 
-TmpDir=Crawlzilla_Install
-ShellTar=Crawlzilla-$CURRENT_VER-$DATE_VER-Shell.tar.gz
-StableTar=Crawlzilla-$CURRENT_VER.$MINOR_VER.tar.gz
-FullTar=Crawlzilla-$CURRENT_VER-$DATE_VER-Full.tar.gz
-
 # 1 同步資料與編譯web資料
 
 cd $GoogleCodeCrawlzilla; svn update;
 checkMethod 1.1
-ant -f /opt/svn_project/crawlzilla/src/web/build.xml clean
-ant -f /opt/svn_project/crawlzilla/src/web/build.xml
-echo "$CURRENT_VER.$MINOR_VER-$DATE_VER" > /opt/svn_project/crawlzilla/src/shell/version
+ant -f $GoogleCodeCrawlzilla/src/web/build.xml clean
+ant -f $GoogleCodeCrawlzilla/src/web/build.xml
+echo "$CURRENT_VER.$MINOR_VER-$DATE_VER" > $GoogleCodeCrawlzilla/src/shell/version
 checkMethod 1.2
 
 # 2 開始目錄以及生成暫存目錄
@@ -122,20 +126,22 @@ if [ $DELETE_LOCK -eq 1 ];then
   checkMethod 7.2
 fi
 
-
-# 8 上傳到 source forge
-# 做local user 與 sf.net 上的user 對應, fafa 與 rock
-if [ $USER == "waue" ];then
-    USER=waue0920;
-elif [ $USER == "rock" ];then
-    USER=goldjay1231;
+echo "Upload to source forge ?"
+read -p "[y/n] :" upload_sf
+if [ "$upload_sh" == "y" ];then
+    # 8 上傳到 source forge
+    # 做local user 與 sf.net 上的user 對應, fafa 與 rock
+    if [ $USER == "waue" ];then
+        USER=waue0920;
+    elif [ $USER == "rock" ];then
+        USER=goldjay1231;
+    fi
+    # 上傳到sf.net
+    scp $SvnProject/dist/$ShellTar $USER,crawlzilla@frs.sourceforge.net:/home/frs/project/c/cr/crawlzilla/testing/Crawlzilla-$CURRENT_VER/
+    echo "最新的版本[ $ShellTar ]也同時上傳到sf.net囉"
+    echo "http://sourceforge.net/downloads/crawlzilla/testing/Crawlzilla-$CURRENT_VER/"
 fi
 
-# 上傳到sf.net
-scp $SvnProject/dist/$ShellTar $USER,crawlzilla@frs.sourceforge.net:/home/frs/project/c/cr/crawlzilla/testing/Crawlzilla-$CURRENT_VER/
-
-
 echo "完成，一切確認後，最後的檔案放在這個目錄內："
-echo "	../dist/ "
-echo "最新的版本[ $ShellTar ]也同時上傳到sf.net囉"
-echo "http://sourceforge.net/downloads/crawlzilla/testing/Crawlzilla-$CURRENT_VER/"
+echo "	$SvnProject/dist/ "
+
