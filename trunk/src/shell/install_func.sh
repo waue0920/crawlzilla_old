@@ -808,10 +808,7 @@ function slave_install_commands ( )
 {
   show_info "$MI_slave_install_commands_echo_1"
   show_info "$MI_slave_install_commands_echo_20$MasterIP_Address$MI_slave_install_commands_echo_25"
-  show_info "$MI_slave_install_commands_echo_2"
   show_info "$MI_slave_install_commands_echo_3"
-  show_info "$MI_slave_install_commands_echo_4"
-  show_info "$MI_slave_install_commands_echo_5"
 }
 
 function generateReadme ( )
