@@ -29,7 +29,7 @@ Crawlzilla_HOME="/home/crawler/crawlzilla"
 Manu_Tmp_Path="/home/crawler/crawlzilla/.menu_tmp"
 Hadoop_Daemon="/opt/crawlzilla/nutch/bin/hadoop-daemon.sh"
 PID_Dir="/var/log/crawlzilla/hadoop-pids"
-
+User_Del_Chk="y"
 
 # [ System Load] #
 ## check user
@@ -111,9 +111,9 @@ function recover_hosts () {
   elif [ -e /home/crawler/crawlzilla/system/hosts ];then
     rm /etc/hosts
     cp /home/crawler/crawlzilla/system/hosts /etc/hosts
-    show_info "still using the /etc/hosts created by crawlzilla. "
+    show_info " $CR_edit_hosts_echo_3"
   elif [ -f /etc/hosts ];then
-    show_info " WARNNING ! Please check your /etc/hosts correct or not!"
+    show_info " $CR_edit_hosts_echo_3"
   else
     show_info " BUG ! /etc/hosts error !!!"
   fi
@@ -130,11 +130,19 @@ function user_delete () {
 # Main function
 function main () {
   show_info "$MR_main_echo_1" # a warnning hint
-  show_info "$MR_main_echo_2" # a remove hint 
   # confirm 
   LOCK=0
+  show_info "$MR_main_deluser_1 "
   while [ "$LOCK" == "0" ];
   do
+    show_info "$MR_main_deluser_2"
+    read -p "[y/n]: " User_Del_Chk
+    show_info "$MR_main_echo_2" # a remove hint 
+    if [ "$User_Del_Chk" == "y" ];then
+      show_info "$MR_main_deluser_3" # show user delete selection
+    else
+      show_info "$MR_main_deluser_4" # show user delete selection
+    fi
     read -p "$MR_main_echo_3" confirm # confirm 1.確定 2.取消"
   # make sure
     if [ $confirm -eq 1 ]; then
@@ -144,8 +152,10 @@ function main () {
       show_info "remove_folders"
       recover_hosts
       show_info "recover hosts"
-      user_delete
-      show_info "user_delete"
+      if [ "$User_Del_Chk" == "y" ]; then
+	user_delete
+	show_info "user_delete"
+      fi
       show_info "$MR_main_echo_4" # "移除程序已完成！"
       LOCK=1; 
     elif [ $confirm -eq 2 ]; then
@@ -163,11 +173,12 @@ function main () {
 
 check_root
 if [ ! -e "/home/crawler/crawlzilla" ] || [ ! -e "/opt/crawlzilla" ] ; then
-  show_info "Installation is not complete!"
-  show_info "Remove forcibly[1=agree/2=exit]"
-  read -p "[1/2]: " force_do_remove
-  if [ ! "$force_do_remove" == "1" ];then
+  show_info "$MR_remove_check_1"
+  show_info "$MR_remove_check_2"
+  read -p "[y/n]: " force_do_remove
+  if [ ! "$force_do_remove" == "y" ];then
     exit 0;
   fi
 fi
 main
+
