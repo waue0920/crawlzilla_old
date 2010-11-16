@@ -80,9 +80,9 @@
 	class="org.nchc.crawlzilla.NutchDBNumBean" scope="session" /> <jsp:useBean
 	id="nutchDBStatus" class="org.nchc.crawlzilla.NutchDBStatusBean"
 	scope="session" /> <%
- 	nutchDBStatus.setFiles("/home/crawler/crawlzilla/.tmp/");
+ 	nutchDBStatus.setFiles("/home/crawler/crawlzilla/.metadata/");
  		File statusName[] = nutchDBStatus.getFiles();
- 		nutchDBNum.setNum("/home/crawler/crawlzilla/.tmp/");
+ 		nutchDBNum.setNum("/home/crawler/crawlzilla/.metadata/");
  		int statusNum = nutchDBNum.getNum();
  %> <i18n:message key="sysinfo_DbStatus" /><br>
 
