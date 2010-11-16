@@ -17,6 +17,7 @@
 ####### parameter section###########
 User_HOME=/home/crawler/crawlzilla
 Crawlzilla_HOME=/opt/crawlzilla
+Manu_Tmp_Path="/home/crawler/crawlzilla/.menu_tmp"
 Nutch_HOME=$Crawlzilla_HOME/nutch
 Tomcat_HOME=$Crawlzilla_HOME/tomcat
 Index_DB=$User_HOME/search
@@ -46,7 +47,7 @@ function prepare_lang(){
 
  if [ ! -e $Manu_Tmp_Path/lang ] ;then
     # first time
-
+    mkdir /home/crawler/crawlzilla/.menu_tmp
     lang=$(locale | grep 'LANG=' | cut -d "=" -f2 | cut -d ":" -f1 )
     if [ "$lang" == "zh_TW" ] || [ "$lang" == "zh_TW.utf8" ] || \
     [ "$lang" == "zh_TW:zh" ];then
