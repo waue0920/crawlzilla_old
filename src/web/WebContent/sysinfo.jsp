@@ -138,7 +138,7 @@ for (int j = 0; j < statusNum; j++) {
 	
 	
 	// delete status
-	if ( ps_status.equals("finish") | ps_status.startsWith("error")){
+	if ( ps_status.equals("finish") | ps_status.equals("stop") | ps_status.startsWith("error")){
 	out.print("<input type=\"submit\" name=\"Delete\" value=\"Delete\" onclick=\"deleteDBStatus("
 					+ j + ")\" />");
 	}
