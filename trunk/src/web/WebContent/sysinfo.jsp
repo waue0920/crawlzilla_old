@@ -131,7 +131,7 @@ for (int j = 0; j < statusNum; j++) {
 	int ps_hour = Integer.parseInt(ps_tmp[0]);
 	//if ( ps_hour > 3 ){
 		if ( ps_status.equals("crawling")){
-			out.print("<input type=\"submit\" name=\"Fix\" value=\"Stop\" onclick=\"fixDB("
+			out.print("<input type=\"submit\" name=\"Fix\" value=\"Stop Job\" onclick=\"fixDB("
 					+ j + ")\" />");
 		}
 	//}	
@@ -139,7 +139,7 @@ for (int j = 0; j < statusNum; j++) {
 	
 	// delete status
 	if ( ps_status.equals("finish") | ps_status.equals("stop") | ps_status.startsWith("error")){
-	out.print("<input type=\"submit\" name=\"Delete\" value=\"Delete\" onclick=\"deleteDBStatus("
+	out.print("<input type=\"submit\" name=\"Delete\" value=\"Delete Ststus\" onclick=\"deleteDBStatus("
 					+ j + ")\" />");
 	}
 	out.print("</td>");
