@@ -41,6 +41,24 @@ fi
 }
 
 
+## [Pre-check for language] 
+function prepare_lang(){
+
+ if [ ! -e $Manu_Tmp_Path/lang ] ;then
+    # first time
+
+    lang=$(locale | grep 'LANG=' | cut -d "=" -f2 | cut -d ":" -f1 )
+    if [ "$lang" == "zh_TW" ] || [ "$lang" == "zh_TW.utf8" ] || \
+    [ "$lang" == "zh_TW:zh" ];then
+        ln -sf $Work_Path/lang/lang_zh_TW $Manu_Tmp_Path/lang
+    else
+        ln -sf $Work_Path/lang/lang_en_US $Manu_Tmp_Path/lang
+    fi
+ fi
+ source $Manu_Tmp_Path/lang
+}
+
+
 function check_hostname_localhost ( )
 {
 HName=$(hostname)
