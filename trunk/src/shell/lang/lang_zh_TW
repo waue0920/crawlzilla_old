@@ -37,6 +37,7 @@ MI_install_pack_if_2="請手動安裝 expect, ssh 和 dialog 套件"
 MI_check_crawlzilla_1="chcheck_crawlzilla_installed" 
 MI_check_crawlzilla_2="系統先前已安裝Crawlzilla" 
 MI_check_crawlzilla_3="系統尚未安裝 Crawlzilla" 
+MI_check_crawlzilla_4="請資料夾\"/home/crawler/\"備份或改變名稱，然後刪除使用者 \"crawler\",否則安裝程序不會繼續"
  
 ### [for check_sunJava()] ### 
 MI_check_sunJava_1="check_sunJava" 
@@ -269,6 +270,16 @@ MR_main_echo_4="移除程序已完成！"
 MR_main_echo_5="您已取消移除程序！"
 MR_main_echo_6="若要移除請再重新執行！"
 
+MR_main_deluser_1="你要刪除在 \"/home/crawler/\" 上的所有資料嗎"
+MR_main_deluser_2="yes 將會刪除, no 則會保留"
+MR_main_deluser_3="/home/crawler 將被刪除，所有資料都會消失"
+MR_main_deluser_4="/home/crawler 將被保留，請備份後再自行刪除"
+
+# MR
+MR_remove_check_1="偵測出之前的安裝或移除尚未完全"
+MR_remove_check_2="強致移除嗎 [ y=同意移除 / n=離開 ]"
+
+
 ########## Lang for Master Remove - End ##########
 
 ########## Lang for Client Remove - Start ##########
@@ -287,6 +298,7 @@ CR_remove_folders_echo_2="安裝時所建立的檔案及資料夾已刪除"
 # edit_hosts
 CR_edit_hosts_echo_1="還原/etc/hosts...至安裝 Crawlzilla 前的版本"
 CR_edit_hosts_echo_2="完成修改/etc/hosts"
+CR_edit_hosts_echo_3="WARNNING ! 請檢查你的 /etc/hosts 檔案正確與否！"
 
 # user_delete
 CR_user_delete_echo_1="正在刪除crawler使用者..."

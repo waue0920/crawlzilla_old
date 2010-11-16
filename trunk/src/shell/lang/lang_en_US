@@ -37,6 +37,7 @@ MI_install_pack_if_2="Please manually install expect, ssh, and dialog.Please man
 MI_check_crawlzilla_1="chcheck_crawlzilla_installed" 
 MI_check_crawlzilla_2="System already had Crawlzilla." 
 MI_check_crawlzilla_3="System does not has Crawlzilla." 
+MI_check_crawlzilla_4="Please backup or rename \"/home/crawler/\" then delete user \"crawler\", otherwise install progress will not go on."
  
 ### [for check_sunJava()] ### 
 MI_check_sunJava_1="check_sunJava" 
@@ -266,6 +267,15 @@ MR_main_echo_4="Crawlzilla had removed！"
 MR_main_echo_5="You are cancelling this remove procedure！"
 MR_main_echo_6="If you want to remove Crawlzilla of this node, please execute this program again."
 
+MR_main_deluser_1="Do you want to remove everything in /home/crawler/"
+MR_main_deluser_2="yes will remove, no will resolve this directory."
+MR_main_deluser_3="/home/crawler will be delete, all data will be lost."
+MR_main_deluser_4="/home/crawler will be reserved."
+
+# MR
+MR_remove_check_1="Installation is not complete!"
+MR_remove_check_2="Remove forcibly [ y=agree / n=exit ]"
+
 ########## Lang for Master Remove - End ##########
 
 ########## Lang for Client Remove - Start ##########
@@ -284,6 +294,7 @@ CR_remove_folders_echo_2="Floders and files has deleted."
 # edit_hosts
 CR_edit_hosts_echo_1="Restoring /etc/hosts..."
 CR_edit_hosts_echo_2="/etc/hosts restoring finished."
+CR_edit_hosts_echo_3="WARNNING ! Please check your /etc/hosts correct or not!"
 
 # user_delete
 CR_user_delete_echo_1="Deleting user: crawler..."

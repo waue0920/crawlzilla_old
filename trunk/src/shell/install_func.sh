@@ -305,8 +305,11 @@ rpm -Uvh $Install_Dir/jdk-6u21-linux-amd64.rpm
 function check_crawlzilla_installed ( )
 {
   debug_info "$MI_check_crawlzilla_1"
-  if [ -d "/opt/crawlzilla" ] || [ -e "/home/crawler" ] ; then
+  if [ -d "/opt/crawlzilla" ] ; then
     show_info "$MI_check_crawlzilla_2"
+    exit
+  elif [ -d "/home/crawler" ];then
+    show_info "$MI_check_crawlzilla_4"
     exit
   else
     show_info "$MI_check_crawlzilla_3"
