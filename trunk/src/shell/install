@@ -60,6 +60,7 @@ main () {
     su crawler -c "echo "crawler" > /home/crawler/crawlzilla/system/.passwd"
     chmod 600 /home/crawler/crawlzilla/system/.passwd
     make_slave_install
+    prepare_lang
     # restart system
     format_HDFS
     start_up_Crawlzilla

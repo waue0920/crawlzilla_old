@@ -63,8 +63,6 @@
 </div>
 <%@ include file="/include/right_side.jsp"%>
 
-
-
 <div id="content">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
@@ -137,10 +135,13 @@ for (int j = 0; j < statusNum; j++) {
 					+ j + ")\" />");
 		}
 	//}	
-
+	
+	
 	// delete status
+	if ( ps_status.equals("finish") | ps_status.startsWith("error")){
 	out.print("<input type=\"submit\" name=\"Delete\" value=\"Delete\" onclick=\"deleteDBStatus("
 					+ j + ")\" />");
+	}
 	out.print("</td>");
 
 	out.print("</tr>"); 	
