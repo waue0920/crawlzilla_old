@@ -28,10 +28,9 @@ MI_check_sys_1="check_systemInfo"
 MI_check_sys_2="作業系統為: " 
  
 ### [for install_packages()]### 
-MI_install_pack_1="install_packages" 
-MI_install_pack_2="檢查套件相依性" 
-MI_install_pack_if_1="將會安裝 expect, ssh 和 dialog　套件" 
-MI_install_pack_if_2="請手動安裝 expect, ssh 和 dialog 套件" 
+MI_install_pack_1="您的系統似乎滿足套件相依性檢查，略過自動安裝步驟" 
+MI_install_pack_2="開始自動幫您安裝:" 
+MI_install_pack_if_2="請手動安裝不足的套件" 
  
 ### [for check_crawlzilla_installed()] ### 
 MI_check_crawlzilla_1="chcheck_crawlzilla_installed" 
@@ -169,7 +168,7 @@ check_sys_2="作業系統為: "
 ### [for install_packages()]###
 install_pack_1="install_packages"
 install_pack_2="檢查套件相依性"
-install_pack_if_1="將會安裝 expect, ssh 和 dialog　套件"
+install_pack_if_1="將會安裝套件"
 install_pack_if_2="請手動安裝 expect, ssh 和 dialog 套件"
 
 ### [for check_crawlzilla_installed()] ###

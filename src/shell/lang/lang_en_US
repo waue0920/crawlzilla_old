@@ -28,10 +28,9 @@ MI_check_sys_1="check_systemInfo"
 MI_check_sys_2="Your system information is:" 
 
 ### [for install_packages()]### 
-MI_install_pack_1="install_packages" 
-MI_install_pack_2="Check dependent packages" 
-MI_install_pack_if_1="It will install some packages (expect, ssh, and dialog)." 
-MI_install_pack_if_2="Please manually install expect, ssh, and dialog.Please manually install expect, ssh, and dialog." 
+MI_install_pack_1="No depend package to install" 
+MI_install_pack_2="Try to automatically install: " 
+MI_install_pack_if_2="Please manually install:" 
  
 ### [for check_crawlzilla_installed()] ### 
 MI_check_crawlzilla_1="chcheck_crawlzilla_installed" 
@@ -166,7 +165,7 @@ check_sys_2="Your system information are: "
 ### [for install_packages()]###
 install_pack_1="install_packages"
 install_pack_2="Check dependent packages"
-install_pack_if_1="It will install some packages (expect, ssh, and dialog)."
+install_pack_if_1="will install some packages "
 install_pack_if_2="Please manually install expect, ssh, and dialog."
 
 ### [for check_crawlzilla_installed()] ###
