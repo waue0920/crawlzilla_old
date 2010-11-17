@@ -68,9 +68,9 @@
 
 <div class='featurebox_center'>
 <form method="post" action="Crawl.do">
-<fieldset onmousemove= nuHiddlen(); onmouseout= hiddlen();>
+<fieldset onmousemove= nuHiddlen(); onmouseout= nuHiddlen();>
 <legend><i18n:message key="crawl_How" /></legend>
-<ol id="how_to" class="hiddlen">
+<ol id="how_to" class="nuHiddlen">
 	<li><span class="redfont"><i18n:message
 		key="crawl_InputDbName" /></span></li>
 	<li><span class="redfont"><i18n:message
