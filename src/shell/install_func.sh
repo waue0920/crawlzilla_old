@@ -99,7 +99,7 @@ debug_info "$MI_install_pack_2"
 install_array="";
 install_java_p="0";
 
-java_info=$(java -version 2>&1 |grep "Java(TMMMMM)")
+java_info=$(java -version 2>&1 |grep "Java(TM)")
 if [ "$java_info" == "" ];then 
    install_array="sun-java6-jdk"; 
    install_java_p="1"; # 1 is into install progress, 0 is not

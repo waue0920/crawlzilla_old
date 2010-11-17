@@ -76,61 +76,112 @@ function check_systemInfo(){
   Linux_bit=$(uname -m)
 }
 
+function install_packages ( ) 
+{
 
-# 安裝需要的相依套件 (目前只支援 deb 套件的系統自動安裝，yum或其他套件系統的則需手動安裝)
-function install_packages(){
-  # deb 系列系統(Ubuntu)
-  debug_info "$install_pack_1"
-  debug_info "$install_pack_2"
+
+debug_info "$MI_install_pack_2"
+
+## prepare
+install_array="";
+install_java_p="0";
+
+java_info=$(java -version 2>&1 |grep "Java(TM)")
+if [ "$java_info" == "" ];then 
+   install_array="sun-java6-jdk"; 
+   install_java_p="1"; # 1 is into install progress, 0 is not
+fi
+if [ ! -e /usr/bin/ssh ] ; then install_array=$install_array" ssh"; fi
+if [ ! -e /usr/sbin/sshd ]; then install_array=$install_array" openssh-server"; fi
+if [ ! -e /usr/bin/dialog ]; then install_array=$install_array" dialog";fi
+if [ ! -e /usr/bin/expect ]; then install_array=$install_array" expect";fi
+
+## install
+if [ -z "$install_array" ] ;then
+    ## nothing to install
+    show_info "$MI_install_pack_1"
+    debug_info "install nothing because install_array=[$install_array]" ;
+else
+    ## $install_array is needed to install 
+    show_info "$MI_install_pack_2 $install_array"
+
+  # deb 系列系統
   if [ "$Linux_Distribution" == "Ubuntu" ]; then
-        if [ $Linux_Version == "10.04" ]; then
-            echo -e "\n$install_pack_if_1\n"
-            add-apt-repository "deb http://archive.canonical.com/ lucid partner"
-            apt-get update
-            aptitude install -y expect ssh dialog sun-java6-jdk sun-java6-plugin
+        if [ "$Linux_Version" == "10.04" ]; then
+            show_info "\n Ubuntu 10.04 $install_pack_if_1 $install_array" 
+            if [ "$install_java_p" == "1" ]; then 
+		add-apt-repository "deb http://archive.canonical.com/ lucid partner";
+		debug_info "add-apt-repository deb http://archive.canonical.com/ lucid partner";
+                apt-get update
+	    fi
+            apt-get install -y $install_array
+            update-java-alternatives -s java-6-sun
+        elif [ "$Linux_Version" == "10.10" ]; then
+            show_info "\n Ubuntu 10.10 $install_pack_if_1 $install_array"
+            if [ "$install_java_p" == "1" ]; then 
+		add-apt-repository "deb http://archive.canonical.com/ubuntu maverick partner"
+		debug_info "add-apt-repository deb http://archive.canonical.com/ubuntu maverick partner";
+		apt-get update
+	    fi
+            debug_info "install -y $install_array"
+            apt-get install -y $install_array
             update-java-alternatives -s java-6-sun
         else
-            echo -e "\n$install_pack_if_1\n"
-            apt-get update
-            aptitude install -y expect ssh dialog
+            show_info "\n Ubuntu $install_pack_if_1 $install_array"
+            # apt-get update # maybe not needed
+            debug_info "apt-get install -y $install_array"
+            apt-get install -y $install_array
         fi
-  # deb 系列系統(Debian)
-  elif [ "$Linux_Distribution" == "Debian" ]; then
-    echo -e "\n$install_pack_if_1\n"
-    apt-get update
-    aptitude install -y expect ssh dialog
 
-  # rpm 系列系統(Fedora)                    
-  elif [ "$Linux_Distribution" == "Fedora" ]; then
-        if [ $Linux_bit != "x86_64" ]; then
+  # deb system (Debian)
+  elif [ "$Linux_Distribution" == "Debian" ]; then
+        show_info "\n debian $install_pack_if_1 $install_array"
+        apt-get update
+        aptitude install $install_array
+        debug_info "aptitude install $install_array"
+
+  # rpm system
+  elif [ "$Linux_Distribution" == "Fedora" ] ;then
+        show_info "\n Fedora $install_pack_if_1 $install_array"
+        if [ "$Linux_bit" != "x86_64" ]; then
             Linux_bit="i386"
         fi
-        yum install -y expect ssh dialog wget
+        # yum update
+        #/etc/init.d/sshd restart
+        debug_info "yum install -y expect dialog wget"
+        yum install -y expect dialog wget
 
-        if [ $Linux_bit == "x86_64" ]; then
+      # install sun java
+      if [ "$Linux_bit" == "x86_64" ]; then
+	debug_info "yum_install_sun_java_x86_64"
           yum_install_sun_java_x86_64
-          ln -sf /usr/java/jdk1.6.0_21/bin/jps /usr/bin/jps
       else
+	debug_info "yum_install_sun_java_i586"
           yum_install_sun_java_i586
       fi
-    show_info "$MI_install_pack_if_2"
-  # rpm 系列系統(CentOS)
-  elif [ "$Linux_Distribution" == "CentOS" ]; then
-    if [ $Linux_bit != "x86_64" ]; then
-         Linux_bit="i386"
+  
+  elif [ "$Linux_Distribution" == "CentOS" ] ;then
+    show_info "\n CentOS $install_pack_if_1 $install_array"
+    if [ $Linux_bit != "x86_64" ]; then  
+        Linux_bit="i386"                 
     fi 
 
-    echo -e "\n$MI_install_pack_if_1\n"
-    yum update 
+    yum update
     yum -y install expect openssh dialog
+    debug_info "yum -y install expect openssh dialog"
 
-    if [ $Linux_bit == "x86_64" ]; then
+    # install sun java
+    if [ "$Linux_bit" == "x86_64" ]; then    
+        debug_info "yum_install_sun_java_x86_64"
         yum_install_sun_java_x86_64
     else
+        debug_info "yum_install_sun_java_i586"
         yum_install_sun_java_i586
-    fi 
+    fi
 
   elif [ "$Linux_Distribution" == "SUSE" ] ;then
+    show_info "\n CentOS $install_pack_if_1 $install_array"
+    debug_info "zypper install -n expect openssh dialog java-1_6_0-sun"
     zypper install -n expect openssh dialog java-1_6_0-sun
     #opensuse default sun java is /usr/lib/jvm/java-1.6.0-sun-1.6.0/bin/java
     debug_info "/usr/sbin/update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-1.6.0-sun-1.6.0/bin/java 1"
@@ -138,9 +189,12 @@ function install_packages(){
 
     debug_info "/usr/sbin/update-alternatives --set java /usr/lib/jvm/java-1.6.0-sun-1.6.0/bin/java"
     /usr/sbin/update-alternatives --set java /usr/lib/jvm/java-1.6.0-sun-1.6.0/bin/java
+
   else
-    show_info "$install_pack_if_2"
-  fi 
+    show_info "$MI_install_pack_if_2 $install_array" 
+  fi
+
+ fi
 }
 
 function yum_install_sun_java_i586(){
