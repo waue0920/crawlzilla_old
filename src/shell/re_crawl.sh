@@ -63,6 +63,11 @@ if [ -d /home/crawler/crawlzilla/archieve/$JNAME ]; then
   /home/crawler/crawlzilla/system/go.sh $DEPTH $JNAME
   DATE=$(date)
   echo "6. ReCrawl finish at $DATE" >> $LOGFILE
+  
+  cp -rf /home/crawler/crawlzilla/archieve/$JNAME/$JNAME/* /home/crawler/crawlzilla/archieve/$JNAME/
+  rm -rf /home/crawler/crawlzilla/archieve/$JNAME/$JNAME
+  echo "7. remove $JNAME old index pool" >> $LOGFILE
+
 else
   echo "ERROR! $JNAME not found!" >> $LOGFILE
 fi
