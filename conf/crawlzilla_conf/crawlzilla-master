@@ -11,3 +11,118 @@
 ### END INIT INFO
 
 
+## [Variables declaration]
+Crawlzilla_Install_Path="/opt/crawlzilla"
+Tomcat_Home="$Crawlzilla_Install_Path/tomcat"
+Nutch_Home="$Crawlzilla_Install_Path/nutch"
+Hadoop_daemon="$Nutch_Home/bin/hadoop-daemon.sh"
+tomcat_pids=$(ps x | grep -v grep | grep "tomcat" | awk '{print $1}')
+
+
+## [Functions declaration]
+start_tomcat() {
+if [ -x $Tomct_Home/bin/startup.sh ]; then
+    su crawler -c "$Tomct_Home/bin/startup.sh"
+else
+    echo "[Error: cann't execute $Tomct_Home/bin/startup.sh]"
+fi
+}
+
+start_hadoop() {
+su crawler -c "$Hadoop_daemon start namenode"
+su crawler -c "$Hadoop_daemon start jobtracker"
+su crawler -c "$Hadoop_daemon start tasktracker"
+su crawler -c "$Hadoop_daemon start datanode"
+}
+
+stop_tomcat() {
+su crawler -c "$Tomct_Home/bin/shutdown.sh"
+# check tomcat daemon, if exit use kill command to kill tomcat
+if [ -n $tomcat_pids ]; then
+    for tomcat_pid in $tomcat_pids
+    do
+        kill -9 $tomcat_pid 2>/dev/null
+    done
+fi
+}
+
+stop_hadoop() {
+su crawler -c "$Hadoop_daemon stop datanode"
+su crawler -c "$Hadoop_daemon stop tasktracker"
+su crawler -c "$Hadoop_daemon stop jobtracker"
+su crawler -c "$Hadoop_daemon stop namenode"
+}
+
+status_tomcat() {
+if [ -n $tomcat_pids ]; then
+    echo "Tomcat is running !"
+else
+    echo "Tomcat in not running !"
+fi
+}
+
+status_hadoop() {
+su crawler -c "jps" > /tmp/jps
+jps_file="/tmp/jps"
+# hadoop daemon pid
+NameNode_pid=$(cat $jps_file | grep NameMode | awk '{print $1}')                                                                                  
+DataNode_pid=$(cat $jps_file | grep DataNode | awk '{print $1}')
+JobTracker_pid=$(cat $jps_file | grep JobTracker | awk '{print $1}')
+TaskTrascker_pid=$(cat $jps_file | grep TaskTrascker | awk '{print $1}')
+
+if [ -n $NameNode_pid ]; then
+    echo "NameNode is running !"
+else
+    echo "NameNode is not running !"
+fi
+
+if [ -n $TaskTrascker_pid ]; then       
+    echo "TaskTrascker is running !"    
+else                                
+    echo "TaskTrascker is not running !"
+fi
+
+if [ -n $DataNode_pid ]; then       
+    echo "DataNode is running !"    
+else                                
+    echo "DataNode is not running !"
+fi
+
+if [ -n $JobTracker_pid ]; then       
+    echo "JobTracker is running !"    
+else                                
+    echo "JobTracker is not running !"
+fi
+}
+
+
+
+## [Main]
+case $1 in
+    start)
+        start_tomcat
+        start_hadoop
+        echo "start crawlzilla completion !"
+    ;;
+    stop)
+        echo "stop crawlzilla completion !"
+        stop_tomcat
+        stop_hadoop
+    ;;
+    restart)
+        $0 stop
+        sleep 3
+        $0 start
+        echo "restart crawlzilla completion !"
+    ;;
+    status)
+        status_tomcat
+        status_hadoop
+    ;;
+    *)
+        echo "Usage: $0 {start/stop/restart/status}"
+        exit 1
+    ;;
+esac
+
+exit 0
