@@ -107,6 +107,9 @@ install_nutch_package
 # add crawlzilla init.d script (make slave startup crawlzilla when booting)
 add_crawlzilla_to_initd
 
+# start up hadoop service
+startup_hadoop_service
+
 # return Hostname and slave ip to Master Server
 recall_hostname_ip $Master_IP_Address
 show_info "$CI_finish_echo_1"

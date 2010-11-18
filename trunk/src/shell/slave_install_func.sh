@@ -555,12 +555,25 @@ function recall_hostname_ip(){
   su crawler -c "ssh crawler@$1 echo $net_address $(hostname) $net_MacAddr \>\> ~/crawlzilla/system/crawl_nodes"
 }
 
-function change_ownship(){
+function startup_hadoop_service ( ) 
+{
+  show_info "Do you want to start hadoop service? "
+  show_info "y = start now, n = later by yourself."
+  read -p "[y/n]" start_serv
+  if [ "$start_serv" == "y" ];then
+    /opt/crawlzilla/nutch/bin/hadoop-daemon.sh start datanode
+    /opt/crawlzilla/nutch/bin/hadoop-daemon.sh start tasktracker
+  fi
+}
+
+function change_ownship ( )
+{
 chown -R $1.$1 $2
 }
 
 # add crawlzilla init.d script (make slave startup crawlzilla when booting)
-add_crawlzilla_to_initd() {
+function add_crawlzilla_to_initd ( ) 
+{
 linux_dist=$(lsb_release -i | awk '{print $3}')
 
 # for debian system
