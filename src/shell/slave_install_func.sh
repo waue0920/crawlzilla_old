@@ -455,8 +455,9 @@ function scp_packages(){
 function install_nutch_package(){
   debug_info "$install_nutch_package_d1"
   tar -zxvf /home/crawler/crawlzilla/source/CrawlzillaSlaveOf_$Master_IP_Address.tar.gz -C /opt/crawlzilla >/dev/null 2>&1
-
+  if [ ! -d /var/log/crawlzilla/hadoop-logs ]; then mkdir /var/log/crawlzilla/hadoop-logs ; chown crawler /var/log/crawlzilla/hadoop-logs ; fi
   ln -sf /var/log/crawlzilla/hadoop-logs /opt/crawlzilla/nutch/logs
+  if [ ! -d /var/log/crawlzilla/hadoop-logs ]; then mkdir /var/lib/crawlzilla ; chown crawler /var/lib/crawlzilla ; fi
   ln -sf /var/lib/crawlzilla /opt/crawlzilla/nutch/hadoop_runspace
 
    # change sun-jre home path to each linux os
