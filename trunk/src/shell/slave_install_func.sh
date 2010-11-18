@@ -432,22 +432,20 @@ function scp_packages(){
   chown -R crawler:crawler /var/lib/crawlzilla
   chown -R crawler:crawler /home/crawler/crawlzilla
 
-  ln -sf /var/log/crawlzilla/hadoop-logs /opt/crawlzilla/nutch/logs
   ln -sf /var/log/crawlzilla /home/crawler/crawlzilla/logs
   ln -sf /opt/crawlzilla/nutch /home/crawler/crawlzilla/nutch
-  ln -sf /var/lib/crawlzilla /opt/crawlzilla/nutch/hadoop_runspace
   # make client remove link for easy use
   ln -sf /home/crawler/crawlzilla/system/slave_remove /usr/bin/crawlzilla_remove
 
   chmod 711 /home/crawler   # fedora = 700
   chmod 755 /opt/crawlzilla
   debug_info "$scp_packages_d3"
-  if [ -e "$Work_Path/CrawlzillaForClientOf_$Master_IP_Address.tar.gz" ];then
-    mv $Work_Path/CrawlzillaForClientOf_$Master_IP_Address.tar.gz /home/crawler/crawlzilla/source
+  if [ -e "$Work_Path/CrawlzillaSlaveOf_$Master_IP_Address.tar.gz" ];then
+    mv $Work_Path/CrawlzillaSlaveOf_$Master_IP_Address.tar.gz /home/crawler/crawlzilla/source
   fi
  
-  if [ ! -e "/home/crawler/crawlzilla/source/CrawlzillaForClientOf_$Master_IP_Address.tar.gz" ];then
-    su crawler -c "scp -r -o StrictHostKeyChecking=no crawler@$1:/home/crawler/crawlzilla/source/CrawlzillaForClientOf_$Master_IP_Address.tar.gz /home/crawler/crawlzilla/source"
+  if [ ! -e "/home/crawler/crawlzilla/source/CrawlzillaSlaveOf_$Master_IP_Address.tar.gz" ];then
+    su crawler -c "scp -r -o StrictHostKeyChecking=no crawler@$1:/home/crawler/crawlzilla/source/CrawlzillaSlaveOf_$Master_IP_Address.tar.gz /home/crawler/crawlzilla/source"
   fi
   cp -r $Work_Path/lang /home/crawler/crawlzilla/system
   cp $Work_Path/log.sh $Work_Path/version $Work_Path/slave_remove /home/crawler/crawlzilla/system
@@ -456,10 +454,10 @@ function scp_packages(){
 
 function install_nutch_package(){
   debug_info "$install_nutch_package_d1"
-  tar -zxvf /home/crawler/crawlzilla/source/CrawlzillaForClientOf_$Master_IP_Address.tar.gz -C /opt/crawlzilla
+  tar -zxvf /home/crawler/crawlzilla/source/CrawlzillaSlaveOf_$Master_IP_Address.tar.gz -C /opt/crawlzilla >/dev/null 2>&1
 
-  #  cp /etc/hosts /home/crawler/crawlzilla/system/hosts.bak
-  #  sed -i  --follow-symlinks '1a '$Master_IP_Address' '$Master_Hostname'' /etc/hosts
+  ln -sf /var/log/crawlzilla/hadoop-logs /opt/crawlzilla/nutch/logs
+  ln -sf /var/lib/crawlzilla /opt/crawlzilla/nutch/hadoop_runspace
 
    # change sun-jre home path to each linux os
   if [ "$Linux_Distribution" == "SUSE" ] ;then
