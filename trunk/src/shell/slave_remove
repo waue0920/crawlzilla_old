@@ -85,7 +85,7 @@ function shutdown_service () {
   su crawler -c "/opt/crawlzilla/nutch/bin/hadoop-daemon.sh stop datanode"
   su crawler -c "/opt/crawlzilla/nutch/bin/hadoop-daemon.sh stop tasktracker"
   if [ -e $PID_Dir/hadoop-crawler-datanode.pid ] || \
-   [ -e $PID_Dir/hadoop-crawler-tasktracker.pid ] || ;then
+   [ -e $PID_Dir/hadoop-crawler-tasktracker.pid ] ;then
     kill -9 $(cat $PID_Dir/hadoop-crawler-datanode.pid) > /dev/null 2>&1 
     if [ ! $? -eq 0 ];then echo "datanode error !";fi
     kill -9 $(cat $PID_Dir/hadoop-crawler-tasktracker.pid) > /dev/null 2>&1
