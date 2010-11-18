@@ -885,7 +885,10 @@ chown -R $1.$1 $2
 add_crawlzilla_to_initd() {
 show_info "$add_crawlzilla_to_initd_1"
 show_info "$add_crawlzilla_to_initd_2"
+# for master
 cp -f $Conf_Path/crawlzilla_conf/crawlzilla-master /etc/init.d/crawlzilla
 chown crawler.crawler /etc/init.d/crawlzilla
 update-rc.d crawlzilla defaults
+# for slave (because slave_deploy.sh will tar nutch directory to slave)
+cp -f $Conf_Path/crawlzilla_conf/crawlzilla-slave $Nutch_HOME/conf/
 }

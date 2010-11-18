@@ -559,3 +559,10 @@ function recall_hostname_ip(){
 function change_ownship(){
 chown -R $1.$1 $2
 }
+
+# add crawlzilla init.d script (make slave startup crawlzilla when booting)
+add_crawlzilla_to_initd() {
+cp -f /opt/crawlzilla/nutch/conf/crawlzilla-slave /etc/init.d/crawlzilla
+chown crawler.crawler /etc/init.d/crawlzilla
+update-rc.d crawlzilla defaults
+}

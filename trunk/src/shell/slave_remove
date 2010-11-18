@@ -145,6 +145,12 @@ function user_delete () {
   show_info "$CR_user_delete_echo_2" # "使用者crawler已刪除"
 }
 
+# remove crawlzilla init.d script
+remove_crawlzilla_to_initd() {
+update-rc.d -f  crawlzilla remove
+rm /etc/init.d/crawlzilla
+}
+
 # Main function
 function main () {
   show_info "$CR_main_echo_1" #"警告 - 此一程式為移除此用戶端的crawl node, 若您為誤執行此一程式, 請按Ctrl+c離開此程序！"
@@ -162,6 +168,7 @@ function main () {
 	  edit_remove_list
 	  edit_hosts
 	  user_delete
+      remove_crawlzilla_to_initd
 	  show_info "$CR_main_echo_4" # "移除程序已完成！"
 	  if [ $remove_flag -eq 1 ]; then
 	      show_info "You need to edit /home/crawler/crawlzilla/system/crawl_nodes "
