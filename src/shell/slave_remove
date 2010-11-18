@@ -87,11 +87,11 @@ function shutdown_service () {
   if [ -e $PID_Dir/hadoop-crawler-datanode.pid ] || \
    [ -e $PID_Dir/hadoop-crawler-tasktracker.pid ] ;then
     kill -9 $(cat $PID_Dir/hadoop-crawler-datanode.pid) > /dev/null 2>&1 
-    if [ ! $? -eq 0 ];then echo "datanode error !";fi
+     #if [ ! $? -eq 0 ];then echo "datanode error !";fi
     kill -9 $(cat $PID_Dir/hadoop-crawler-tasktracker.pid) > /dev/null 2>&1
-    if [ ! $? -eq 0 ];then echo "tasktracker error !";fi
+     #if [ ! $? -eq 0 ];then echo "tasktracker error !";fi
   else 
-   echo "ERROR ! cannot find $PID_Dir/*pid file"
+   echo "Hadoop never startup yet"
   fi
 
   show_info "$CR_shutdown_service_echo_2" # "本機服務已關閉"
@@ -100,7 +100,6 @@ function shutdown_service () {
 # 移除檔案及資料夾
 function remove_folders () {
   show_info "$CR_remove_folders_echo_1" # "正在刪除安裝時所建立的檔案及資料夾..."
-  rm /usr/bin/crawlzilla
   rm /usr/bin/crawlzilla_remove
   rm -rf /opt/crawlzilla
   rm -rf /var/log/crawlzilla
