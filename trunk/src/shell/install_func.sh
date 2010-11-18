@@ -886,9 +886,17 @@ add_crawlzilla_to_initd() {
 show_info "$add_crawlzilla_to_initd_1"
 show_info "$add_crawlzilla_to_initd_2"
 # for master
+linux_dist=$(lsb_release -i | awk '{print $3}')
 cp -f $Conf_Path/crawlzilla_conf/crawlzilla-master /etc/init.d/crawlzilla
 chown crawler.crawler /etc/init.d/crawlzilla
-update-rc.d crawlzilla defaults
+# for debian system
+if [ "$linux_dist" = "Ubuntu" ] || [ "$linux_dist" = "Debian" ]; then
+    update-rc.d crawlzilla defaults
+# for rpm system
+elif [ "$linux_dist" = "CentOS" ] || [ "$linux_dist" = "Fedora" ] || [ "$linux_dist" = "SUSE" ]; then
+    chkconfig --add crawlzilla
+    chkconfig --level 345 crawlzilla on  
+fi
 # for slave (because slave_deploy.sh will tar nutch directory to slave)
 cp -f $Conf_Path/crawlzilla_conf/crawlzilla-slave $Nutch_HOME/conf/
 }

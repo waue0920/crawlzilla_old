@@ -147,8 +147,17 @@ function user_delete () {
 
 # remove crawlzilla init.d script
 remove_crawlzilla_to_initd() {
-update-rc.d -f  crawlzilla remove
-rm /etc/init.d/crawlzilla
+linux_dist=$(lsb_release -i | awk '{print $3}')
+# for debian system
+if [ "$linux_dist" = "Ubuntu" ] || [ "$linux_dist" = "Debian" ]; then
+    update-rc.d -f  crawlzilla remove
+    rm /etc/init.d/crawlzilla
+    # for rpm system                                                                                
+elif [ "$linux_dist" = "CentOS" ] || [ "$linux_dist" = "Fedora" ] || [ "$linux_dist" = "SUSE" ]; t
+    chkconfig crawlzilla off 
+    chkconfig --del crawlzilla
+    rm /etc/init.d/crawlzilla
+fi
 }
 
 # Main function
