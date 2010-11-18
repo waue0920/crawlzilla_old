@@ -552,7 +552,7 @@ function recall_hostname_ip(){
   fi
 
   debug_info "$recall_hostname_ip_d2"
-  su crawler -c "ssh crawler@$1 echo $net_address $(hostname) $net_MacAddr \>\> ~/crawlzilla/system/crawl_nodes"
+  su crawler -c "ssh -o StrictHostKeyChecking=no crawler@$1 echo $net_address $(hostname) $net_MacAddr \>\> ~/crawlzilla/system/crawl_nodes"
 }
 
 function startup_hadoop_service ( ) 
