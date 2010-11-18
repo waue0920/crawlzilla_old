@@ -136,7 +136,6 @@ if [ "$linux_dist" = "Ubuntu" ] || [ "$linux_dist" = "Debian" ]; then
     rm /etc/init.d/crawlzilla
     # for rpm system
 elif [ "$linux_dist" = "CentOS" ] || [ "$linux_dist" = "Fedora" ] || [ "$linux_dist" = "SUSE" ]; t
-    chkconfig crawlzilla off
     chkconfig --del crawlzilla
     rm /etc/init.d/crawlzilla
 fi
