@@ -815,10 +815,10 @@ function make_slave_install ( )
   slave_PassMasterIPAddr_for_Remove
   slave_PassMasterIPAddr_for_deploy
   cd /opt/crawlzilla/
-  su crawler -c "tar -cvzf CrawlzillaForClientOf_$MasterIP_Address.tar.gz  nutch" >> /dev/null
+  su crawler -c "tar -cvzf CrawlzillaSlaveOf_$MasterIP_Address.tar.gz  nutch" >> /dev/null
   
   # copy files to $User_HOME/source and system directory 
-  mv CrawlzillaForClientOf_$MasterIP_Address.tar.gz /home/crawler/crawlzilla/source
+  mv CrawlzillaSlaveOf_$MasterIP_Address.tar.gz /home/crawler/crawlzilla/source
   cp $Work_Path/slave_install $Work_Path/version $Work_Path/slave_install_func.sh $Work_Path/slave_remove $Work_Path/slave_deploy.sh $Work_Path/log.sh /home/crawler/crawlzilla/source
   cp -r $Work_Path/lang  /home/crawler/crawlzilla/source
   cp -r $Work_Path/lang /home/crawler/crawlzilla/system
