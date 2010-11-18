@@ -561,15 +561,16 @@ chown -R $1.$1 $2
 # add crawlzilla init.d script (make slave startup crawlzilla when booting)
 add_crawlzilla_to_initd() {
 linux_dist=$(lsb_release -i | awk '{print $3}')
-cp -f /opt/crawlzilla/nutch/conf/crawlzilla-slave /etc/init.d/crawlzilla
-chown crawler.crawler /etc/init.d/crawlzill
 
 # for debian system
 if [ "$linux_dist" = "Ubuntu" ] || [ "$linux_dist" = "Debian" ]; then
+    cp -f /opt/crawlzilla/nutch/conf/crawlzilla-slave /etc/init.d/crawlzilla
+    chown crawler.crawler /etc/init.d/crawlzill
     update-rc.d crawlzilla defaults
 # for rpm system
 elif [ "$linux_dist" = "CentOS" ] || [ "$linux_dist" = "Fedora" ] || [ "$linux_dist" = "SUSE" ]; t
+    cp -f /opt/crawlzilla/nutch/conf/crawlzilla-slave_chkconfig /etc/init.d/crawlzilla
+    chown crawler.crawler /etc/init.d/crawlzill
     chkconfig --add crawlzilla
-    chkconfig --level 345 crawlzilla on  
 fi
 }
