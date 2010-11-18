@@ -127,6 +127,12 @@ function user_delete () {
   show_info "$MR_user_delete_echo_2" # "使用者crawler已刪除"
 }
 
+# remove crawlzilla init.d script
+remove_crawlzilla_to_initd() {
+update-rc.d -f  crawlzilla remove
+rm /etc/init.d/crawlzilla
+}
+
 # Main function
 function main () {
   show_info "$MR_main_echo_1" # a warnning hint
@@ -152,6 +158,7 @@ function main () {
       show_info "remove_folders"
       recover_hosts
       show_info "recover hosts"
+      remove_crawlzilla_to_initd
       if [ "$User_Del_Chk" == "y" ]; then
 	user_delete
 	show_info "user_delete"

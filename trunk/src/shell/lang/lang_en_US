@@ -403,4 +403,8 @@ dia_lang_menu_1_2="中文"
 
 ## [Lang for finish]
 crawlzilla_install_finish="Finish!!! press any key to continue..."
+
+## [Lang for add_crawlzilla_to_initd]
+add_crawlzilla_to_initd_1="Add Crawlzilla service to /etc/init.d"
+add_crawlzilla_to_initd_2="Crawlzilla will startup when booting"
 ########## Lang for crawlzilla - End ##########

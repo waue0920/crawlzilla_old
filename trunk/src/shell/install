@@ -63,7 +63,9 @@ main () {
     # restart system
     format_HDFS
     start_up_Crawlzilla
-    start_up_tomcat    
+    start_up_tomcat
+    # Add crawlzilla service to init.d (Crawlzilla startup when booting)
+    add_crawlzilla_to_initd
     # instalation finished
     show_info "$MI_main_echo_3"
 #   show_info "Install Successfully!!"
