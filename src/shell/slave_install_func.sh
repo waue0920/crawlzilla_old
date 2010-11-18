@@ -349,7 +349,7 @@ function scp_master_crawler_sshkey(){
   debug_info "$scp_sshkey_d2"
   mkdir -p /home/crawler/.ssh/
   rm -fr /home/crawler/.ssh/*
-  unset Crawler_Passwd2
+  #unset Crawler_Passwd2
 
   debug_info "$scp_sshkey_d3"
 expect -c "spawn scp -r -o StrictHostKeyChecking=no crawler@$1:~/.ssh /home/crawler/
@@ -376,20 +376,21 @@ function creat_crawler_account(){
       groupadd crawler
   fi
   debug_info "$create_crawler_d1"
-  while [ "$Crawler_Passwd" != "$Crawler_Passwd2" ]
-  do
-      echo -e "\n"
-      read -sp "$create_crawler_1" Crawler_Passwd
-      echo 
-      read -sp "$create_crawler_2" Crawler_Passwd2
-      echo 
-        if [ "$Crawler_Passwd" == "$Crawler_Passwd2" ]; then
-          show_info "$create_crawler_3"
-        else
-          show_info "$create_crawler_4"
-        fi
-  done                                                                                                                                    
-  unset Crawler_Passwd2
+#  while [ "$Crawler_Passwd" != "$Crawler_Passwd2" ]
+#  do
+#      echo -e "\n"
+#      read -sp "$create_crawler_1" Crawler_Passwd
+#      echo 
+#      read -sp "$create_crawler_2" Crawler_Passwd2
+#      echo 
+#        if [ "$Crawler_Passwd" == "$Crawler_Passwd2" ]; then
+#          show_info "$create_crawler_3"
+#        else
+#          show_info "$create_crawler_4"
+#        fi
+#  done                                                                         #  unset Crawler_Passwd2
+
+  read -sp "$create_crawler_1" Crawler_Passwd
 
   if [ $(cat /etc/passwd | grep crawler) ]; then
     show_info "$create_crawler_s1"
@@ -561,8 +562,8 @@ function startup_hadoop_service ( )
   show_info "y = start now, n = later by yourself."
   read -p "[y/n]" start_serv
   if [ "$start_serv" == "y" ];then
-    /opt/crawlzilla/nutch/bin/hadoop-daemon.sh start datanode
-    /opt/crawlzilla/nutch/bin/hadoop-daemon.sh start tasktracker
+    su crawler -c "/opt/crawlzilla/nutch/bin/hadoop-daemon.sh start datanode"
+    su crawler -c "/opt/crawlzilla/nutch/bin/hadoop-daemon.sh start tasktracker"
   fi
 }
 
