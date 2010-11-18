@@ -880,3 +880,12 @@ function change_ownship( )
 {
 chown -R $1.$1 $2
 } 
+
+
+add_crawlzilla_to_initd() {
+show_info "$add_crawlzilla_to_initd_1"
+show_info "$add_crawlzilla_to_initd_2"
+cp -f $Conf_Path/crawlzilla_conf/crawlzilla-master /etc/init.d/crawlzilla
+chown crawler.crawler /etc/init.d/crawlzilla
+update-rc.d crawlzilla defaults
+}

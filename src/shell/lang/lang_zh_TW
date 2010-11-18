@@ -407,4 +407,8 @@ dia_lang_menu_1_2="中文"
 ## [Lang for install finish ] ##
 crawlzilla_install_finish="恭喜您完成Crawlzilla安裝,按Enter鍵離開..."
 
+## [Lang for add_crawlzilla_to_initd]    
+add_crawlzilla_to_initd_1="增加 Crawlzilla 服務到 /etc/init.d"
+add_crawlzilla_to_initd_2="Crawlzilla 預設開機會自動啟動"
+
 ########## Lang for Crawlzilla - End ##########

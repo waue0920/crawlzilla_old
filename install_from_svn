@@ -40,13 +40,15 @@ function check(){
 
 # [Main]
 
+# = 0. prompt =
+echo 'Please check your system already install "ant, sun-java5-jdk "'
 # = 1. update svn and compile web data =
 svn update
 ant -f src/web/build.xml clean
 check "1.1"
 ant -f src/web/build.xml
 check "1.2"
-echo "$CURRENT_VER.$MINOR_VER-$DATE_VER" > /opt/svn_project/crawlzilla/src/shell/version
+echo "$CURRENT_VER.$MINOR_VER-$DATE_VER" > src/shell/version
 
 # = 2. create tmp dir =
 if [ -d $TmpDir ];then
