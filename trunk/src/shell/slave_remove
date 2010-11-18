@@ -92,7 +92,6 @@ function shutdown_service () {
     if [ ! $? -eq 0 ];then echo "tasktracker error !";fi
   else 
    echo "ERROR ! cannot find $PID_Dir/*pid file"
-   exit 8
   fi
 
   show_info "$CR_shutdown_service_echo_2" # "本機服務已關閉"
