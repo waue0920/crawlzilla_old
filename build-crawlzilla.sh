@@ -143,5 +143,5 @@ if [ "$upload_sf" == "y" ];then
 fi
 
 echo "完成，一切確認後，最後的檔案放在這個目錄內："
-echo "	$SvnProject/dist/ "
+echo "	$SvnProject/dist/$StableTar "
 
