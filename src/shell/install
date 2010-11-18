@@ -56,6 +56,8 @@ main () {
 
     install_Nutch
     link_Chown   
+    # Add crawlzilla service to init.d (Crawlzilla startup when booting)
+    add_crawlzilla_to_initd
     # make web default password
     su crawler -c "echo "crawler" > /home/crawler/crawlzilla/system/.passwd"
     chmod 600 /home/crawler/crawlzilla/system/.passwd
@@ -64,8 +66,7 @@ main () {
     format_HDFS
     start_up_Crawlzilla
     start_up_tomcat
-    # Add crawlzilla service to init.d (Crawlzilla startup when booting)
-    add_crawlzilla_to_initd
+
     # instalation finished
     show_info "$MI_main_echo_3"
 #   show_info "Install Successfully!!"
