@@ -35,7 +35,14 @@ User_Del_Chk="y"
 ## check user
 #[ "`id -u`" != "0" ] && echo "please enter password of $USER:"  && exec sudo su -c "$0" "$@"
 ## language load 
-source $Manu_Tmp_Path/lang
+lang=$(locale | grep 'LANGUAGE=' | cut -d "=" -f2 | cut -d ":" -f1 )
+if [ "$lang" == "zh_TW" ] || [ "$lang" == "zh_TW.utf8" ] || \
+   [ "$lang" == "zh_TW:zh" ];then
+    source $Crawlzilla_HOME/system/lang/lang_zh_TW
+else
+    source $Crawlzilla_HOME/system/lang/lang_en_US
+fi
+
 
 #  [ Function Description ] #
 
@@ -135,9 +142,11 @@ if [ "$linux_dist" = "Ubuntu" ] || [ "$linux_dist" = "Debian" ]; then
     update-rc.d -f  crawlzilla remove
     rm /etc/init.d/crawlzilla
     # for rpm system
-elif [ "$linux_dist" = "CentOS" ] || [ "$linux_dist" = "Fedora" ] || [ "$linux_dist" = "SUSE" ]; t
+elif [ "$linux_dist" = "CentOS" ] || [ "$linux_dist" = "Fedora" ] || [ "$linux_dist" = "SUSE" ]; then
     chkconfig --del crawlzilla
     rm /etc/init.d/crawlzilla
+else 
+    show_info "Please delete /etc/init.d/ crawlzilla file manually."
 fi
 }
 

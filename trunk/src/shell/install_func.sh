@@ -898,6 +898,8 @@ elif [ "$linux_dist" = "CentOS" ] || [ "$linux_dist" = "Fedora" ] || [ "$linux_d
     cp -f $Conf_Path/crawlzilla_conf/crawlzilla-master_chkconfig /etc/init.d/crawlzilla
     chown crawler.crawler /etc/init.d/crawlzilla
     chkconfig --add crawlzilla
+else 
+    show_info "Please delete /etc/init.d/ crawlzilla file manually."
 fi
 # for slave (because slave_deploy.sh will tar nutch directory to slave)
 cp -f $Conf_Path/crawlzilla_conf/* $Nutch_HOME/conf/
