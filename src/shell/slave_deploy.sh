@@ -16,21 +16,26 @@
 
 # Master IP here
 Master_IP_Address=your.master.ip.here
+
 Work_Path=`dirname "$0"`
-cd ~
+Work_Path=`cd "$Work_Path"; pwd`
+
 if [ -e /usr/bin/ssh ]; then
   echo "checking ssh ... found"
 else
-  echo "pleash instsll \"ssh\""
+  echo "Please Install \"ssh\" as /usr/bin/ssh"
   exit
 fi
 
 if [ -e /usr/sbin/sshd ]; then
   echo "checking sshd ... found"
 else
-  echo "pleash instsll \"sshd\""
+  echo "Please Install \"sshd\" as /usr/sbin/sshd"
   exit
 fi
-mkdir crawlzilla_slave_install
-scp -r -o StrictHostKeyChecking=no crawler@$Master_IP_Address:/home/crawler/crawlzilla/source/* crawlzilla_slave_install/.
-exec crawlzilla_slave_install/slave_install
+if [ -e $Work_Path/crawlzilla_slave_install ];then
+  rm -rf $Work_Path/crawlzilla_slave_install
+fi
+mkdir $Work_Path/crawlzilla_slave_install
+scp -r -o StrictHostKeyChecking=no crawler@$Master_IP_Address:/home/crawler/crawlzilla/source/* $Work_Path/crawlzilla_slave_install/.
+exec $Work_Path/crawlzilla_slave_install/slave_install
