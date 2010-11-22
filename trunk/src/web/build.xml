@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>  
-<project name="crawlzilla" default="dist" basedir="/opt/svn_project/crawlzilla/src/web">
+<project name="crawlzilla" default="dist" basedir=".">
       
     <!--如果目錄結構如下  
         project  
@@ -18,7 +18,7 @@
     <property name="web-inf.dir" value="${webRoot.dir}/WEB-INF"/>  
 
     <property name="build.dir" value="/tmp/crawlzilla-web-build"/>
-    <property name="dist.dir" value="/opt/svn_project/dist"/>
+    <property name="dist.dir" value="dist"/>
     <property name="tomcat.lib.dir" value="/opt/tomcat/lib"/>
       
     <!-- 初始化 classpath -->  
