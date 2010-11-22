@@ -31,13 +31,14 @@ fi
 JNAME=$1
 LOGFILE=/var/log/crawlzilla/shell-logs/crawl_re.log
 DEPTH=$(cat /home/crawler/crawlzilla/archieve/$JNAME/depth)
-DATE=$(date)
+DATE=$(date +%y-%m-%d)
 
 echo "ReCrawl $JNAME BEGIN at $DATE" >> $LOGFILE
 
 echo "0 kill ps" >> $LOGFILE
 kill -9 $JPID
 
+Job_Flag=0
 
 if [ -d /home/crawler/crawlzilla/archieve/$JNAME ]; then
   echo "1. copy urls" >> $LOGFILE
@@ -59,16 +60,21 @@ if [ -d /home/crawler/crawlzilla/archieve/$JNAME ]; then
   /opt/crawlzilla/nutch/bin/hadoop fs -rmr /user/crawler/$JNAME
   if [ ! $? -eq 0 ];then echo "Error! " >> $LOGFILE ; fi
 
-  echo "5. go.sh $DEPTH $JNAME " >> $LOGFILE
-  /home/crawler/crawlzilla/system/go.sh $DEPTH $JNAME
-  DATE=$(date)
-  echo "6. ReCrawl finish at $DATE" >> $LOGFILE
-  
-  cp -rf /home/crawler/crawlzilla/archieve/$JNAME/$JNAME/* /home/crawler/crawlzilla/archieve/$JNAME/
-  rm -rf /home/crawler/crawlzilla/archieve/$JNAME/$JNAME
-  echo "7. remove $JNAME old index pool" >> $LOGFILE
+  echo "5. rename the pase index-pool files." >> $LOGFILE
+  mv /home/crawler/crawlzilla/archieve/$JNAME /home/crawler/crawlzilla/archieve/$JNAME"_recrawling("$DATE")"
 
+  echo "6. go.sh $DEPTH $JNAME " >> $LOGFILE
+  /home/crawler/crawlzilla/system/go.sh $DEPTH $JNAME
+  
+  echo "7. ReCrawl finish at $DATE" >> $LOGFILE
+  Job_Flag=1
 else
   echo "ERROR! $JNAME not found!" >> $LOGFILE
 fi
 
+# 利用Job_Flag判斷是否執行成功，若成功則將舊索引資料移除，失敗則還原舊索引資料
+if [ $Job_Flag == "1"  ]; then
+  rm -rf /home/crawler/crawlzilla/archieve/$JNAME"_recrawling("$DATE")"
+else 
+  mv /home/crawler/crawlzilla/archieve/$JNAME"_recrawling("$DATE")" /home/crawler/crawlzilla/archieve/$JNAME
+fi
