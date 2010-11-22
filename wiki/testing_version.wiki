@@ -1,0 +1,15 @@
+#summary One-sentence summary of this page.
+
+= 下載測試版的 Crawlzilla =
+
+* 可使用 svn checkout 下載最新測試版的 Crawlziila
+{{{
+$ svn checkout http://crawlzilla.googlecode.com/svn/trunk/ crawlzilla-read-only
+}}}
+
+* 打包 Crawlzilla 安裝檔
+{{{
+$ ./build-crawlzilla.sh
+}}}
+
+* 使用可以修改 Crawlzilla 程式碼之後再自行打包安裝檔來安裝於自己的系統
