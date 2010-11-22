@@ -2,14 +2,14 @@
 
 = 從 SVN 安裝 Crawlzilla =
 
-* 可使用 svn checkout 下載最新測試版的 Crawlziila
+ * 可使用 svn checkout 下載最新測試版的 Crawlziila
 {{{
 $ svn checkout http://crawlzilla.googlecode.com/svn/trunk/ crawlzilla-read-only
 }}}
 
-* 打包 Crawlzilla 安裝檔
+ * 打包 Crawlzilla 安裝檔
 {{{
 $ ./build-crawlzilla.sh
 }}}
 
-* 若想也想開發 Crawlzilla，可於修改程式碼後後再使用 build-crawlzilla.sh 來打包自己的安裝檔
+ * 若想也想開發 Crawlzilla，可於修改程式碼後再使用 build-crawlzilla.sh 來打包自己的安裝檔
