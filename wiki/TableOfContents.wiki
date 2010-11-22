@@ -4,6 +4,7 @@
 <li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/Characteristic 特色]</li>
 <li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/screenshot1 畫面截圖]</li>
 <li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/Why 動機]</li>
+<li class="treeleaf">[http://code.google.com/p/crawlzilla/wiki/030beta ChangeLog]</li>
 </ul>
 <li> [http://code.google.com/p/crawlzilla/wiki/SystemInstall_hint 安裝準備工作] </li>
 <ul>
