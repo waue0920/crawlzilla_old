@@ -74,8 +74,8 @@ ln -sf docs/README.en.txt README.txt
 ln -sf bin/install install
 
 # 5 先壓縮精簡包
-
-tar -czvf $ShellTar $GoogleCodeCrawlzilla/$TmpDir --exclude=.svn
+cd $GoogleCodeCrawlzilla
+tar -czvf $ShellTar $TmpDir --exclude=.svn
 checkMethod 5.1
 
 # 6 製作full package 檔
@@ -118,6 +118,9 @@ if [ $DELETE_LOCK -eq 1 ];then
   checkMethod 7.2
 fi
 
+echo "完成，一切確認後，最後的檔案放在這個目錄內："
+echo "  $GoogleCodeCrawlzilla/dist/$StableTar "
+
 echo "Upload to source forge ?"
 read -p "[y/n] :" upload_sf
 if [ "$upload_sf" == "y" ];then
@@ -134,6 +137,4 @@ if [ "$upload_sf" == "y" ];then
     echo "http://sourceforge.net/downloads/crawlzilla/testing/Crawlzilla-$CURRENT_VER/"
 fi
 
-echo "完成，一切確認後，最後的檔案放在這個目錄內："
-echo "	$GoogleCodeCrawlzilla/dist/$StableTar "
 # 
