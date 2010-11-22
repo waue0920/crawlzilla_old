@@ -10,7 +10,7 @@ MINOR_VER=0
 # for ant
 
 if [ -d "opt/svn_project/crawlzilla" ]; then
-    GoogleCodeCrawlzilla=$/opt/svn_project/crawlzilla
+    GoogleCodeCrawlzilla="/opt/svn_project/crawlzilla"
     read -p "1.1"
 else
     GoogleCodeCrawlzilla=`pwd "$0"`
