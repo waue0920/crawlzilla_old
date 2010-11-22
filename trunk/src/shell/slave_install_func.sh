@@ -580,12 +580,12 @@ linux_dist=$(lsb_release -i | awk '{print $3}')
 # for debian system
 if [ "$linux_dist" = "Ubuntu" ] || [ "$linux_dist" = "Debian" ]; then
     cp -f /opt/crawlzilla/nutch/conf/crawlzilla-slave /etc/init.d/crawlzilla
-    chown crawler.crawler /etc/init.d/crawlzill
+    chown crawler:crawler /etc/init.d/crawlzilla
     update-rc.d crawlzilla defaults
 # for rpm system
 elif [ "$linux_dist" = "CentOS" ] || [ "$linux_dist" = "Fedora" ] || [ "$linux_dist" = "SUSE" ]; then
     cp -f /opt/crawlzilla/nutch/conf/crawlzilla-slave_chkconfig /etc/init.d/crawlzilla
-    chown crawler.crawler /etc/init.d/crawlzill
+    chown crawler.crawler /etc/init.d/crawlzilla
     chkconfig --add crawlzilla
 else
     show_info "Please delete /etc/init.d/ crawlzilla file manually."
