@@ -51,6 +51,7 @@ mkdir $GoogleCodeCrawlzilla/dist 2> /dev/null
 mkdir $TmpDir/web/
 checkMethod 2.2
 cp $GoogleCodeCrawlzilla/src/web/dist/crawlzilla.war $TmpDir/web/
+echo $GoogleCodeCrawlzilla/src/web/dist/crawlzilla.war $TmpDir/web/
 mv $GoogleCodeCrawlzilla/src/web/dist/crawlzilla.war $GoogleCodeCrawlzilla/dist/crawlzilla-$DATE_VER.war
 checkMethod 2.3
 
