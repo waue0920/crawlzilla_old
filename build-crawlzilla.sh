@@ -11,11 +11,8 @@ MINOR_VER=0
 
 if [ -d "opt/svn_project/crawlzilla" ]; then
     GoogleCodeCrawlzilla="/opt/svn_project/crawlzilla"
-    read -p "1.1"
 else
     GoogleCodeCrawlzilla=`pwd "$0"`
-    echo GoogleCodeCrawlzilla=$GoogleCodeCrawlzilla
-    read -p "1.2"
 fi
 
 TmpDir=Crawlzilla_Install
