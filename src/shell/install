@@ -46,7 +46,7 @@ main () {
   show_master_info
   show_info "$MI_main_echo_2"
   read confirm
-  if [ $confirm -eq 1 ]; then
+  if [ "$confirm" == "1" ]; then
     creat_crawler_account $Crawler_Passwd
     make_ssh_key
     unzip_nV2_pack
@@ -73,7 +73,8 @@ main () {
     show_info "$MI_main_echo_4$MasterIP_Address:8080"
 #   show_info "Visit http://$MasterIP_Address:8080"
     slave_install_commands
-  elif [ $confirm -eq 2 ]; then
+  elif [ "$confirm" == "2" ]; then
+    show_info "Again.."
     main
   else
     exit 0

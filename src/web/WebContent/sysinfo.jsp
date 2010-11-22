@@ -129,12 +129,12 @@ for (int j = 0; j < statusNum; j++) {
 	// fix button if hour > 3 and status  = crawling
 	String[] ps_tmp = ps_runtime.split("h:");
 	int ps_hour = Integer.parseInt(ps_tmp[0]);
-	//if ( ps_hour > 3 ){
+	if ( ps_hour > 2 ){
 		if ( ps_status.equals("crawling")){
 			out.print("<input type=\"submit\" name=\"Fix\" value=\"Stop Job\" onclick=\"fixDB("
 					+ j + ")\" />");
 		}
-	//}	
+	}	
 	
 	
 	// delete status

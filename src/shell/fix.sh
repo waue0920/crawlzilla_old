@@ -47,8 +47,6 @@ show_info "Fix $JNAME BEGIN at $DATE"
 show_info "0 kill ps" 
 kill -9 $JPID >/dev/null 2>&1
 if [ ! $? -eq 0 ];then debug_info "Warning!!! kill go.sh not work"; fi
-kill -9 $CPID >/dev/null 2>&1
-if [ ! $? -eq 0 ];then debug_info "Warning!!! kill count.sh not work"; fi
 echo "fixing" > $STATUS_FILE;
 
 
@@ -60,6 +58,7 @@ SEGS=$($HADOOP_BIN/hadoop dfs -ls /user/crawler/$JNAME/segments | grep  segments
 # content , crawl_fetch , crawl_generate , crawl_parse , parse_data, parse_text
 
 SEOK=""
+SEBAD=""
 for SE in $SEGS
 do
  show_info "checking $SE"
@@ -71,9 +70,15 @@ do
  $HADOOP_BIN/hadoop dfs -test -d $SE/parse_text ;then
    show_info "$SE .... [Fine] "
    SEOK="$SEOK "$SE
+ else
+   SEBAD="$SEBAD "$SE
  fi
 done
 debug_info "SEOK =[ $SEOK ]"
+debug_info "SEBAD =[ $SEBAD ]"
+## 
+$HADOOP_BIN/hadoop dfs -rmr $SEBAD
+show_info "$HADOOP_BIN/hadoop dfs -rmr $SEBAD"
 
 ## [ Do FIX Process ] if at least one correct Segments in pool ##
 if [ ! "$SEOK" == "" ];then
@@ -135,6 +140,8 @@ fi
 ## hadoop fix over ##
 
 
+kill -9 $CPID >/dev/null 2>&1
+if [ ! $? -eq 0 ];then debug_info "Warning!!! kill count.sh not work"; fi
 # finish
 #if [ -d /home/crawler/crawlzilla/archieve/$JNAME/ ];then
 #  cp -rf $META_PATH/$JNAME /home/crawler/crawlzilla/archieve/$JNAME/metadata
