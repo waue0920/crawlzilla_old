@@ -131,11 +131,10 @@ for (int j = 0; j < statusNum; j++) {
 	int ps_hour = Integer.parseInt(ps_tmp[0]);
 	if ( ps_hour > 2 ){
 		if ( ps_status.equals("crawling")){
-			out.print("<input type=\"submit\" name=\"Fix\" value=\"Stop Job\" onclick=\"fixDB("
+			out.print("<input type=\"submit\" name=\"Fix\" value=\"Fix Job\" onclick=\"fixDB("
 					+ j + ")\" />");
 		}
 	}	
-	
 	
 	// delete status
 	if ( ps_status.equals("finish") | ps_status.equals("stop") | ps_status.startsWith("error")){

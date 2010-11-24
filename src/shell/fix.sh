@@ -146,4 +146,4 @@ if [ ! $? -eq 0 ];then debug_info "Warning!!! kill count.sh not work"; fi
 #if [ -d /home/crawler/crawlzilla/archieve/$JNAME/ ];then
 #  cp -rf $META_PATH/$JNAME /home/crawler/crawlzilla/archieve/$JNAME/metadata
 #fi
-echo "stop" > $STATUS_FILE;
+echo "Fixed" > $STATUS_FILE;
