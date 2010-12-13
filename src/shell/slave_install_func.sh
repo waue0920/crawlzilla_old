@@ -389,9 +389,11 @@ function creat_crawler_account(){
 #          show_info "$create_crawler_4"
 #        fi
 #  done                                                                         #  unset Crawler_Passwd2
-
-  read -sp "$create_crawler_1" Crawler_Passwd
-
+  
+  if [ "$autoSlaveInstallFlag" == "no" ]; then
+    read -sp "$create_crawler_1" Crawler_Passwd
+  fi 
+ 
   if [ $(cat /etc/passwd | grep crawler) ]; then
     show_info "$create_crawler_s1"
     expect -c "spawn passwd crawler

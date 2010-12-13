@@ -30,7 +30,7 @@ Master_Hostname=your_master_hostname_here
 Linux_Distribution="";
 Linux_Version="";
 Crawler_Passwd="xxxxxxxxxx";
-
+autoSlaveInstallFlag="no";
 Work_Path=`dirname "$0"`
 
 if [ -f $Work_Path/slave_install_func.sh ];then
@@ -63,8 +63,13 @@ check_root
 # ask para
 yesno="no"
 show_info "$par_echo_1 $Master_IP_Address"
-read -p "$par_echo_2" yesno
-              
+if [ "$autoSlaveInstallFlag" == "no" ]; then
+  read -p "$par_echo_2" yesno
+ 
+  else 
+    yesno=yes
+fi
+            
 if [ "$yesno" == "yes" ] || [ "$yesno" == "y" ] ; then
     show_info "$par_echo_3"
 else
@@ -114,4 +119,6 @@ startup_hadoop_service
 recall_hostname_ip $Master_IP_Address
 show_info "$CI_finish_echo_1"
 change_ownship crawler /home/crawler/crawlzilla
-read -p "press any key to continue..."
+if [ "$autoSlaveInstallFlag" == "no" ]; then
+  read -p "press any key to continue..."
+fi
