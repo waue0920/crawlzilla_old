@@ -39,6 +39,53 @@ source "$Work_Path/log.sh" master_install;
 source "$Work_Path/install_func.sh";
 ### real code #####
 
+# check command model ()
+Usage(){
+echo "Usage: slave_install [options]"
+echo "Options: "    
+echo "-i|--interactive [y/n]    y: enable interactive installation (default is \"y\")"
+echo "                          n: enable automated installation"
+echo "Examples: "   
+echo "slave_install -i n"
+
+}
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -i|--interactive)
+            shift
+            if [ -z "$(echo $1 |grep ^-.)" ]; then
+                if [ $1 == "y" ]; then
+                    interactive="y"
+                elif [ $1 == "n" ]; then
+                    interactive="n"
+                else
+                    echo "[error] -i parameter is error"
+                    Usage && exit 2
+            fi
+            shift
+            fi
+            ;;
+        -*)
+            echo "$0 $1 invalid option" >&2
+            echo "" 
+            Usage >&2
+            exit 2
+            ;;
+        *)  Usage >&2
+            exit 2
+            ;;
+    esac
+done
+
+# inital setup 
+if [ -z "$interactive" ]; then
+    interactive="n"
+fi
+
+echo "$interactive"
+read -p "debug"
+
 main () {
 
   show_info "$MI_main_echo_1"
