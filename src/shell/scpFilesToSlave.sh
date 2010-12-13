@@ -40,3 +40,10 @@ do
     send "$slave_root_password\r"
     expect eof"
 done
+
+# 
+for node in $slave_ips;
+  do
+    scp /home/crawler/crawlzilla/source/slave_deploy.sh /root
+  done
+
