@@ -12,6 +12,15 @@ fi
 slave_root_password=''
 slave_ips=''
 
+if [ -z "$slave_root_password" ]; then
+    echo "Please setup [slave_root_password] in '$0'"
+    exit 2
+fi
+
+if [ -z "$slave_ips" ]; then
+    echo "Please setup [slave_ips] in '$0'"
+    exit 2
+fi
 
 # [Main]
 # generate root ssh key
