@@ -220,6 +220,7 @@ function mkdir_Home_Var ( )
     su crawler -c "mkdir /home/crawler/crawlzilla/source"
     su crawler -c "mkdir /home/crawler/crawlzilla/system"
     su crawler -c "mkdir /home/crawler/crawlzilla/.metadata"
+    su crawler -c "mkdir /home/crawler/crawlzilla/.tmp"
    if [ ! -d "/var/log/crawlzilla" ]; then
      mkdir /var/log/crawlzilla
    fi
@@ -860,8 +861,6 @@ function slave_install_commands ( )
   show_info "$MI_slave_install_commands_echo_20$MasterIP_Address$MI_slave_install_commands_echo_25"
   show_info "$MI_slave_install_commands_echo_2"
   show_info "$MI_slave_install_commands_echo_3"
-  show_info "$MI_slave_install_commands_echo_4"
-  show_info "$MI_slave_install_commands_echo_5"
 }
 
 function generateReadme ( )
