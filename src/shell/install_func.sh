@@ -640,6 +640,13 @@ EOF
 # debug_info "set hadoop-site.xml(done!)"
 }
 
+function set_auto_slave ( )
+{
+  Line_NO=`cat $Work_Path/slave_install | grep -n 'Crawler_Passwd="xxxxxxxxxx"' | sed 's/:.*//g'`
+  sed -i ''$((Line_NO+1))'d' $Work_Path/slave_install
+  sed -i ''$Line_NO'a Crawler_Passwd='$Crawler_Passwd'' $Work_Path/slave_install
+}
+
 # 修改nutch-site.xml中-http.agent.url, http.agent.email
 function set_nutch-site ( )
 {

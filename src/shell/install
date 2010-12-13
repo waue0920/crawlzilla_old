@@ -20,7 +20,7 @@
 
 # paramaters declare
 Linux_Distribution=""
-
+autoSlaveInstallFlag="no"
 Work_Path=`dirname "$0"`
 if [ -f $Work_Path/install_func.sh ];then
   Work_Path=`cd "$Work_Path"; pwd`
@@ -39,55 +39,10 @@ source "$Work_Path/log.sh" master_install;
 source "$Work_Path/install_func.sh";
 ### real code #####
 
-# check command model ()
-Usage(){
-echo "Usage: slave_install [options]"
-echo "Options: "    
-echo "-i|--interactive [y/n]    y: enable interactive installation (default is \"y\")"
-echo "                          n: enable automated installation"
-echo "Examples: "   
-echo "slave_install -i n"
-
-}
-
-while [ $# -gt 0 ]; do
-    case "$1" in
-        -i|--interactive)
-            shift
-            if [ -z "$(echo $1 |grep ^-.)" ]; then
-                if [ $1 == "y" ]; then
-                    interactive="y"
-                elif [ $1 == "n" ]; then
-                    interactive="n"
-                else
-                    echo "[error] -i parameter is error"
-                    Usage && exit 2
-            fi
-            shift
-            fi
-            ;;
-        -*)
-            echo "$0 $1 invalid option" >&2
-            echo "" 
-            Usage >&2
-            exit 2
-            ;;
-        *)  Usage >&2
-            exit 2
-            ;;
-    esac
-done
-
-# inital setup 
-if [ -z "$interactive" ]; then
-    interactive="n"
-fi
-
-echo "$interactive"
-read -p "debug"
-
 main () {
 
+  show_info "是否產生Slave節點自動安裝檔案：yes/no"
+  read autoSlaveInstallFlag
   show_info "$MI_main_echo_1"
   set_install_information
   show_master_info
@@ -100,7 +55,6 @@ main () {
     mkdir_Home_Var
     # change /etc/hosts owner from root to crawler
     check_set_hosts
-
     install_Nutch
     link_Chown   
     # Add crawlzilla service to init.d (Crawlzilla startup when booting)
@@ -108,6 +62,11 @@ main () {
     # make web default password
     su crawler -c "echo "crawler" > /home/crawler/crawlzilla/system/.passwd"
     chmod 600 /home/crawler/crawlzilla/system/.passwd
+    
+    # 設定自動安裝參數
+    if ["$autoSlaveInstallFlag" == "yes"]; then
+      set_auto_slave
+    fi
     make_slave_install
     # restart system
     format_HDFS
@@ -120,6 +79,8 @@ main () {
     show_info "$MI_main_echo_4$MasterIP_Address:8080"
 #   show_info "Visit http://$MasterIP_Address:8080"
     slave_install_commands
+ 
+
   elif [ "$confirm" == "2" ]; then
     show_info "Again.."
     main
