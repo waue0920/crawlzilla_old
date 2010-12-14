@@ -34,7 +34,7 @@ fi
 # copy to slaves
 for ip in $slave_ips
 do
-    expect -c "spawn scp -r /root/.ssh root@${ip}:~
+    expect -c "spawn scp -o StrictHostKeyChecking=no -r /root/.ssh root@${ip}:~
     set timeout 1
     expect \"*:\"
     send "$slave_root_password\r"
