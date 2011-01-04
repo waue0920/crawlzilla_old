@@ -4,7 +4,7 @@
  * change : 5 style
  * fix : more then 10 bugs
  
-= Crawlzilla 0.3.0 Change Log=
+= Crawlzilla 0.3.0 beta Change Log=
 < { rock, waue, shunfa } _at_ nchc.org.tw > 22 Nov 2010
 
  * 增加：slave 系統開/關機 ，自動 加入/停止 其工作程序
