@@ -83,6 +83,11 @@ show_info "$HADOOP_BIN/hadoop dfs -rmr $SEBAD"
 ## [ Do FIX Process ] if at least one correct Segments in pool ##
 if [ ! "$SEOK" == "" ];then
 
+## unlock
+if $HADOOP_BIN/hadoop dfs -test -e /user/crawler/$JNAME/linkdb/.locked; then
+  $HADOOP_BIN/hadoop dfs -rmr /user/crawler/$JNAME/linkdb/.locked;
+fi
+
 ## begin FIX
    
 show_info "1 invertlinks"
