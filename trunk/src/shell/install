@@ -41,8 +41,8 @@ source "$Work_Path/install_func.sh";
 
 main () {
 
-  show_info "是否產生Slave節點自動安裝檔案：yes/no"
-  read autoSlaveInstallFlag
+#  show_info "是否產生Slave節點自動安裝檔案：yes/no"
+#  read autoSlaveInstallFlag
   show_info "$MI_main_echo_1"
   set_install_information
   show_master_info
