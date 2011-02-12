@@ -64,7 +64,7 @@ main () {
     chmod 600 /home/crawler/crawlzilla/system/.passwd
     
     # 設定自動安裝參數
-    if ["$autoSlaveInstallFlag" == "yes"]; then
+    if [ "$autoSlaveInstallFlag" == "yes" ]; then
       set_auto_slave
     fi
     make_slave_install
