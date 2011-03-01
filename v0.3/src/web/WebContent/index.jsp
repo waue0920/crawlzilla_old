@@ -76,7 +76,7 @@ if ((session.getAttribute("confirm") == "true")
 	key="index_SystemStatus_h" /></a> : <i18n:message key="index_SystemStatus" /></p>
 <p>* <a href="usersetup.jsp"><i18n:message
 	key="index_UserSetup_h" /></a> : <i18n:message key="index_UserSetup" /></p>
-<p>* <a href="changePW.html"><i18n:message key="index_SetPasswd" /></a></p>
+<p>* <a href="change_PW.jsp"><i18n:message key="index_SetPasswd" /></a></p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
