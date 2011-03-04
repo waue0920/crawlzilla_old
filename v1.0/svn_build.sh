@@ -14,43 +14,66 @@ function su_permit ( )
 function do_build ( ) 
 {
  su_permit
- echo "installation"
  if [ ! -d "/home/crawler" ];then
+   echo "build crawler"
    sudo useradd -m crawler -s /bin/bash
    sudo su crawler -c 'ssh-keygen -t rsa -f ~/.ssh/id_rsa -P ""'
    sudo su crawler -c "cp ~/.ssh/id_rsa.pub ~/.ssh/authorized_keys"
    sudo su crawler -c "ssh-add /home/crawler/.ssh/id_rsa"
+ else
+   echo "user \"crawler\" existing..."
  fi
- sudo mkdir -p /home/crawler/crawlzilla/
- sudo mkdir -p /home/crawler/crawlzilla/user/admin/IDB/
- sudo mkdir -p /home/crawler/crawlzilla/slave
- sudo mkdir -p /home/crawler/crawlzilla/tmp
- sudo ln -sf $SvnCrawlzilla/opt /opt/crawlzilla
- sudo ln -sf $SvnCrawlzilla/conf/crawlzilla_conf/* /etc/init.d/
- sudo cp $SvnCrawlzilla/conf/tomcat_conf/* /opt/crawlzilla/tomcat/conf/
- sudo cp $SvnCrawlzilla/conf/nutch_conf/* /opt/crawlzilla/nutch/conf/
- sudo chown -R crawler:crawler /home/crawler/
-
+ if [ ! -d "/home/crawler/crawlzilla" ];then
+   echo "build /home/crawler/crawlzilla"
+   sudo mkdir -p /home/crawler/crawlzilla/
+   sudo mkdir -p /home/crawler/crawlzilla/user/admin/IDB/
+   sudo mkdir -p /home/crawler/crawlzilla/slave
+   sudo mkdir -p /home/crawler/crawlzilla/tmp
+   sudo chown -R crawler:crawler /home/crawler/
+ else
+   echo "user \"crawlzilla on \\home\\crawler\\ \" existing..."
+ fi
+ if [ ! -d "/opt/crawlzilla" ];then
+   echo "build /opt/crawlzilla"
+   sudo ln -sf $SvnCrawlzilla/opt /opt/crawlzilla
+   sudo ln -sf $SvnCrawlzilla/conf/crawlzilla_conf/* /etc/init.d/
+   sudo cp $SvnCrawlzilla/conf/tomcat_conf/* /opt/crawlzilla/tomcat/conf/
+   sudo cp $SvnCrawlzilla/conf/nutch_conf/* /opt/crawlzilla/nutch/conf/
+ else
+   echo "user \"crawlzilla on \\opt\" existing..."
+ fi
 }
 
 function do_update ( ) 
 {
- echo "update info"
- cp $SvnCrawlzilla/conf/tomcat_conf/* /opt/crawlzilla/conf/
- cp $SvnCrawlzilla/conf/nutch_conf/* /opt/crawlzilla/conf/
- chown -R crawler:crawler /home/crawler/
-
+  echo "update info "
+  sudo cp $SvnCrawlzilla/conf/tomcat_conf/* /opt/crawlzilla/tomcat/conf/
+  if [ "$?" == "0" ];then echo "[update] tomcat conf --> ./ " ; fi
+  sudo cp $SvnCrawlzilla/conf/nutch_conf/* /opt/crawlzilla/nutch/conf/
+  if [ "$?" == "0" ];then echo "[update] nutch conf --> ./ " ; fi
+  sudo chown -R crawler:crawler /home/crawler/
+  if [ "$?" == "0" ];then echo "[chown] /home/crawler/ --> ./ " ; fi
 }
 
 function do_remove ( ) 
 {
   echo "remove"
-  rm -rf /home/crawler/crawlzilla
+  if [ -d "/home/crawler/crawlzilla" ];then
+    sudo rm -rf /home/crawler/crawlzilla
+    if [ "$?" == "0" ];then echo "[rm] /home/crawler/crawlzilla " ; fi
+  fi
 }
 
 function make_war ( ) 
 {
  echo "make war"
+ ant -f $SvnCrawlzilla/web-src/build.xml clean
+ ant -f $SvnCrawlzilla/web-src/build.xml
+ if [ "$?" == "0" ];then
+    echo "[ok] crawlzilla.war --> ./ "
+ fi
+ mv $SvnCrawlzilla/web-src/tmp/crawlzilla.war ./
+
 }
 case "$1" in
 build)
