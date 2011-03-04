@@ -26,18 +26,18 @@ function checkMethod(){
     exit 8
   fi
 }
-# 1 同步資料與編譯web資料
+# 1. generate version and svn update 
 echo "$CURRENT_VER.$MINOR_VER-$DATE_VER" > $SvnCrawlzilla/opt/main/version
 checkMethod 1.1
-
 svn update;
-checkMethod 2.1
+checkMethod 1.2
 
+# 2 create crawlzilla.war file
 ant -f $SvnCrawlzilla/web-src/build.xml clean
 ant -f $SvnCrawlzilla/web-src/build.xml
 checkMethod 2.2
 
-# 3 開始目錄以及生成暫存目錄
+# 3 make dir for tmp and final
 
 #cd $SvnProject
 
@@ -52,7 +52,7 @@ if [ ! -d $DistDir ];then
   checkMethod 3.1
 fi
 
-# 4 打包 crawlzilla.war
+# 4 package crawlzilla.war
 mkdir $TmpDir/web/
 checkMethod 4.2
 cp $SvnCrawlzilla/web-src/tmp/crawlzilla.war $TmpDir/web/
@@ -60,7 +60,7 @@ mv $SvnCrawlzilla/web-src/tmp/crawlzilla.war $DistDir/crawlzilla-$DATE_VER.war
 checkMethod 4.3
 
 
-# 5 複製資料夾
+# 5 copy dir
 
 cp -rf $SvnCrawlzilla/opt/main $TmpDir/
 checkMethod 5.1
@@ -69,7 +69,7 @@ checkMethod 5.2
 cp -rf $SvnCrawlzilla/conf $TmpDir/
 checkMethod 5.3
 
-# 6 複製與鍊結檔案
+# 6 copy and link
 
 cp $SvnCrawlzilla/LICENSE.txt $TmpDir/
 checkMethod 6.1
@@ -77,14 +77,14 @@ cd $TmpDir
 ln -sf docs/README.en.txt README.txt
 ln -sf bin/install install
 
-# 7 先壓縮精簡包
+# 7 tar file
 cd $SvnCrawlzilla
 tar -czvf $ShellTar $TmpDir --exclude=.svn
 checkMethod 7.1
 
-# 7.1 製作full package 檔
+# 7.1 make full package  .. skip
 
-# 8 將製作好的安裝檔放在保存的資料夾
+# 8 reload dir
 if [ -f $DistDir/$ShellTar ];then
   rm $DistDir/$ShellTar;
   checkMethod 8.0
@@ -106,7 +106,7 @@ mv $ShellTar $DistDir
 checkMethod 8.1
 
 
-# 8.2 刪除 DELETE_LOCK=1
+# 8.2  DELETE_LOCK=1
 if [ $DELETE_LOCK -eq 1 ];then
   rm -rf $TmpDir;
   checkMethod 8.2
@@ -115,7 +115,7 @@ fi
 echo "完成，一切確認後，最後的檔案放在這個目錄內："
 echo "  $DistDir/$StableTar "
 
-# 9 上傳到 source forge
+# 9 upload to  source forge
 echo "Upload to source forge ?"
 read -p "[y/n] :" upload_sf
 if [ "$upload_sf" == "y" ];then
