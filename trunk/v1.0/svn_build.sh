@@ -48,11 +48,11 @@ function do_update ( )
 {
   echo "update info "
   sudo cp $SvnCrawlzilla/conf/tomcat_conf/* /opt/crawlzilla/tomcat/conf/
-  if [ "$?" == "0" ];then echo "[update] tomcat conf --> ./ " ; fi
+  if [ "$?" == "0" ];then echo "[tomcat] --> /opt/crawlzilla/tomcat/conf " ; fi
   sudo cp $SvnCrawlzilla/conf/nutch_conf/* /opt/crawlzilla/nutch/conf/
-  if [ "$?" == "0" ];then echo "[update] nutch conf --> ./ " ; fi
-  sudo chown -R crawler:crawler /home/crawler/
-  if [ "$?" == "0" ];then echo "[chown] /home/crawler/ --> ./ " ; fi
+  if [ "$?" == "0" ];then echo "[nutch] --> /opt/crawlzilla/nutch/conf " ; fi
+  sudo chown -R crawler:crawler /home/crawler/crawlzilla/
+  if [ "$?" == "0" ];then echo "[chown] /home/crawler/crawlzilla --> ./ " ; fi
 }
 
 function do_remove ( ) 
