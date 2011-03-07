@@ -31,17 +31,35 @@ function do_build ( )
    sudo mkdir -p /home/crawler/crawlzilla/tmp
    sudo chown -R crawler:crawler /home/crawler/
  else
-   echo "user \"crawlzilla on \\home\\crawler\\ \" existing..."
+   echo "\"crawlzilla on \\home\\crawler\\ \" existing..."
  fi
  if [ ! -d "/opt/crawlzilla" ];then
    echo "build /opt/crawlzilla"
-   sudo ln -sf $SvnCrawlzilla/opt /opt/crawlzilla
+   sudo cp -rf $SvnCrawlzilla/opt /opt/crawlzilla
    sudo ln -sf $SvnCrawlzilla/conf/crawlzilla_conf/* /etc/init.d/
    sudo cp $SvnCrawlzilla/conf/tomcat_conf/* /opt/crawlzilla/tomcat/conf/
    sudo cp $SvnCrawlzilla/conf/nutch_conf/* /opt/crawlzilla/nutch/conf/
  else
-   echo "user \"crawlzilla on \\opt\" existing..."
+   echo "\"crawlzilla on \\opt\" existing..."
  fi
+ if [ ! -d "/var/log/crawlzilla/" ];then
+   echo "create /var/log/crawlzilla"
+   sudo mkdir /var/log/crawlzilla/
+   sudo chmod 777 /var/log/crawlzilla/
+ else
+   echo "\"crawlzilla on \\var\\log\\ \" existing..."
+ fi
+ if [ ! -d "/home/crawler/crawlzilla/workspace/" ];then
+   echo "create /home/crawler/crawlzilla/workspace/"
+   sudo mkdir /home/crawler/crawlzilla/workspace/
+   sudo chown crawler:crawler /home/crawler/crawlzilla/workspace/
+   sudo chmod 777 /home/crawler/crawlzilla/workspace/
+ else
+   echo "\"crawlzilla on \\var\\log\\ \" existing..."
+ fi
+ sudo su crawler -c "/opt/crawlzilla/nutch/bin/hadoop namenode -format"
+ sudo su crawler -c "/opt/crawlzilla/nutch/bin/start-all.sh"
+
 }
 
 function do_update ( ) 
@@ -57,10 +75,34 @@ function do_update ( )
 
 function do_remove ( ) 
 {
-  echo "remove"
+  echo "removeing ..." 
+  if [ -e "/opt/crawlzilla/nutch/bin/stop-all.sh" ];then
+    sudo su crawler -c "/opt/crawlzilla/nutch/bin/stop-all.sh"
+  fi
+  if [ -e "/etc/init.d/crawlzilla-master" ];then
+  sudo rm /etc/init.d/crawlzilla-master
+    if [ "$?" == "0" ];then echo "[rm] /etc/init.d/crawlzilla-master " ; fi
+  fi
+  if [ -e "/etc/init.d/crawlzilla-slave" ];then
+  sudo rm /etc/init.d/crawlzilla-slave
+    if [ "$?" == "0" ];then echo "[rm] /etc/init.d/crawlzilla-slave " ; fi
+  fi
+
   if [ -d "/home/crawler/crawlzilla" ];then
     sudo rm -rf /home/crawler/crawlzilla
     if [ "$?" == "0" ];then echo "[rm] /home/crawler/crawlzilla " ; fi
+  fi
+  if [ -d "/var/log/crawlzilla" ];then
+    sudo rm -rf /var/log/crawlzilla/ 
+    if [ "$?" == "0" ];then echo "[rm] /var/log/crawlzilla/ " ; fi
+  fi
+  if [ -d "/home/crawler/crawlzilla/workspace" ];then
+    sudo rm -rf /home/crawler/crawlzilla/workspace/
+    if [ "$?" == "0" ];then echo "[rm] /home/crawler/crawlzilla/workspace/ " ; fi
+  fi
+  if [ -d /opt/crawlzilla/ ];then
+    sudo rm -rf /opt/crawlzilla
+    if [ "$?" == "0" ];then echo "[rm] /opt/crawlzilla " ; fi
   fi
 }
 
@@ -90,9 +132,9 @@ web)
   ;;
 *)
   echo " Usage : "
-  echo " $0 build "
-  echo " $0 update "
-  echo " $0 remove "
+  echo " sudo $0 build "
+  echo " sudo $0 update "
+  echo " sudo $0 remove "
   echo " $0 web "
   exit 0;
 ;;
