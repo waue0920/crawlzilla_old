@@ -27,7 +27,7 @@ function checkMethod(){
   fi
 }
 # 1. generate version and svn update 
-echo "$CURRENT_VER.$MINOR_VER-$DATE_VER" > $SvnCrawlzilla/opt/main/version
+echo "$CURRENT_VER.$MINOR_VER-$DATE_VER" > $SvnCrawlzilla/opt/version
 checkMethod 1.1
 svn update;
 checkMethod 1.2
