@@ -1,3 +1,4 @@
+#!/bin/bash
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
 # this work for additional information regarding copyright ownership.
@@ -13,24 +14,35 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Program:
+#   remove shell script for slave uninstall
+# Author:
+#   Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
+# Version:
+#    1.0
+# History:
+#    
+
+#Tomcat_HOME="/opt/crawlzilla/tomcat"
+
 command=$1
 tom_pids=$(ps x | grep -v "grep" | grep "tomcat" | awk '{print $1}')
-Tomcat_HOME="/opt/crawlzilla/tomcat"
-source "/home/nutchuser/crawlzilla/system/log.sh" tomcat_restart_sh;
+
+source "/opt/crawlzilla/main/log.sh" tomcat_restart_sh;
 if [ $command == "start" ];then
-	$Tomcat_HOME/bin/startup.sh
-	debug_info "$Tomcat_HOME/bin/startup.sh"
+	/opt/crawlzilla/tomcat/bin/startup.sh
+	debug_info "/opt/crawlzilla/tomcat/bin/startup.sh"
 elif [ $command == "stop" ];then
-	$Tomcat_HOME/bin/shutdown.sh
-	debug_info "$Tomcat_HOME/bin/shutdown.sh"
+	/opt/crawlzilla/tomcat/bin/shutdown.sh
+	debug_info "/opt/crawlzilla/tomcat/bin/shutdown.sh"
 	kill $tom_pids
 	debug_info "kill $tom_pids"
 else
-	$Tomcat_HOME/bin/shutdown.sh
-	debug_info "$Tomcat_HOME/bin/shutdown.sh"
+	/opt/crawlzilla/tomcat/bin/shutdown.sh
+	debug_info "/opt/crawlzilla/tomcat/bin/shutdown.sh"
 	kill $tom_pids
 	debug_info "kill $tom_pids"
-	$Tomcat_HOME/bin/startup.sh	
-	debug_info "$Tomcat_HOME/bin/startup.sh"
+	/opt/crawlzilla/tomcat/bin/startup.sh	
+	debug_info "/opt/crawlzilla/tomcat/bin/startup.sh"
 fi
 

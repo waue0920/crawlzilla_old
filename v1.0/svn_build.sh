@@ -27,8 +27,14 @@ function do_build ( )
    echo "build /home/crawler/crawlzilla"
    sudo mkdir -p /home/crawler/crawlzilla/
    sudo mkdir -p /home/crawler/crawlzilla/user/admin/IDB/
-   sudo mkdir -p /home/crawler/crawlzilla/slave
-   sudo mkdir -p /home/crawler/crawlzilla/tmp
+   sudo mkdir -p /home/crawler/crawlzilla/user/admin/tmp/
+   sudo mkdir -p /home/crawler/crawlzilla/user/admin/meta/
+   sudo mkdir -p /home/crawler/crawlzilla/meta/tmp
+   # default value
+   sudo echo "localhost">> /home/crawler/crawlzilla/meta/crawl_nodes
+   sudo echo "crawler">> /home/crawler/crawlzilla/user/admin/meta/.passwd
+   sudo cp /etc/hosts /home/crawler/crawlzilla/meta/hosts
+
    sudo chown -R crawler:crawler /home/crawler/
  else
    echo "\"crawlzilla on \\home\\crawler\\ \" existing..."
@@ -36,6 +42,7 @@ function do_build ( )
  if [ ! -d "/opt/crawlzilla" ];then
    echo "build /opt/crawlzilla"
    sudo cp -rf $SvnCrawlzilla/opt /opt/crawlzilla
+   sudo mkdir /opt/crawlzilla/slave
    sudo ln -sf $SvnCrawlzilla/conf/crawlzilla_conf/* /etc/init.d/
    sudo cp $SvnCrawlzilla/conf/tomcat_conf/* /opt/crawlzilla/tomcat/conf/
    sudo cp $SvnCrawlzilla/conf/nutch_conf/* /opt/crawlzilla/nutch/conf/
@@ -45,7 +52,10 @@ function do_build ( )
  if [ ! -d "/var/log/crawlzilla/" ];then
    echo "create /var/log/crawlzilla"
    sudo mkdir /var/log/crawlzilla/
-   sudo chmod 777 /var/log/crawlzilla/
+   sudo mkdir /var/log/crawlzilla/tomcat-logs
+   sudo ln -sf /var/log/crawlzilla/tomcat-logs /opt/crawlzilla/tomcat/logs
+   sudo chown -R crawler /var/log/crawlzilla/
+   sudo chmod -R 777 /var/log/crawlzilla/
  else
    echo "\"crawlzilla on \\var\\log\\ \" existing..."
  fi
@@ -60,6 +70,7 @@ function do_build ( )
  sudo su crawler -c "/opt/crawlzilla/nutch/bin/hadoop namenode -format"
  sudo su crawler -c "/opt/crawlzilla/nutch/bin/start-all.sh"
 
+ sudo ln -sf /opt/crawlzilla/main/crawlzilla /usr/bin/crawlzilla
 }
 
 function do_update ( ) 
@@ -104,6 +115,7 @@ function do_remove ( )
     sudo rm -rf /opt/crawlzilla
     if [ "$?" == "0" ];then echo "[rm] /opt/crawlzilla " ; fi
   fi
+ sudo rm /usr/bin/crawlzilla
 }
 
 function make_war ( ) 

@@ -25,10 +25,10 @@
 #   
 
 # [ Env para ] #
-Crawlzilla_HOME="/home/crawler/crawlzilla"
-Manu_Tmp_Path="/home/crawler/crawlzilla/.menu_tmp"
-Hadoop_Daemon="/opt/crawlzilla/nutch/bin/hadoop-daemon.sh"
-PID_Dir="/var/log/crawlzilla/hadoop-pids"
+#Crawlzilla_HOME="/home/crawler/crawlzilla"
+#Manu_Tmp_Path="/home/crawler/crawlzilla/meta/menu_tmp"
+#Hadoop_Daemon="/opt/crawlzilla/nutch/bin/hadoop-daemon.sh"
+#PID_Dir="/var/log/crawlzilla/hadoop-pids"
 User_Del_Chk="y"
 
 # [ System Load] #
@@ -38,9 +38,9 @@ User_Del_Chk="y"
 lang=$(locale | grep 'LANGUAGE=' | cut -d "=" -f2 | cut -d ":" -f1 )
 if [ "$lang" == "zh_TW" ] || [ "$lang" == "zh_TW.utf8" ] || \
    [ "$lang" == "zh_TW:zh" ];then
-    source $Crawlzilla_HOME/system/lang/lang_zh_TW
+    source /opt/crawlzilla/main/lang//lang_zh_TW
 else
-    source $Crawlzilla_HOME/system/lang/lang_en_US
+    source /opt/crawlzilla/main/lang//lang_en_US
 fi
 
 
@@ -78,20 +78,20 @@ function fast_shutdown_all ( )
         kill -9 $tom_pid 2>/dev/null
     done
   # kill hadoop
-  if [ -e $PID_Dir/hadoop-crawler-datanode.pid ] || \
-   [ -e $PID_Dir/hadoop-crawler-tasktracker.pid ] || \
-   [ -e $PID_Dir/hadoop-crawler-namenodenode.pid ] || \
-   [ -e $PID_Dir/hadoop-crawler-jobtracke.pid ];then
-    kill -9 $(cat $PID_Dir/hadoop-crawler-datanode.pid) > /dev/null 2>&1 
+  if [ -e /var/log/crawlzilla/hadoop-pids/hadoop-crawler-datanode.pid ] || \
+   [ -e /var/log/crawlzilla/hadoop-pids/hadoop-crawler-tasktracker.pid ] || \
+   [ -e /var/log/crawlzilla/hadoop-pids/hadoop-crawler-namenodenode.pid ] || \
+   [ -e /var/log/crawlzilla/hadoop-pids/hadoop-crawler-jobtracke.pid ];then
+    kill -9 $(cat /var/log/crawlzilla/hadoop-pids/hadoop-crawler-datanode.pid) > /dev/null 2>&1 
     if [ ! $? -eq 0 ];then echo "datanode error !";fi
-    kill -9 $(cat $PID_Dir/hadoop-crawler-tasktracker.pid) > /dev/null 2>&1
+    kill -9 $(cat /var/log/crawlzilla/hadoop-pids/hadoop-crawler-tasktracker.pid) > /dev/null 2>&1
     if [ ! $? -eq 0 ];then echo "tasktracker error !";fi
-    kill -9 $(cat $PID_Dir/hadoop-crawler-namenode.pid) > /dev/null 2>&1
+    kill -9 $(cat /var/log/crawlzilla/hadoop-pids/hadoop-crawler-namenode.pid) > /dev/null 2>&1
     if [ ! $? -eq 0 ];then echo "namenode error !";fi
-    kill -9 $(cat $PID_Dir/hadoop-crawler-jobtracker.pid) > /dev/null 2>&1
+    kill -9 $(cat /var/log/crawlzilla/hadoop-pids/hadoop-crawler-jobtracker.pid) > /dev/null 2>&1
     if [ ! $? -eq 0 ];then echo "jobtracker error !";fi
   else 
-   echo "ERROR ! cannot find $PID_Dir/*pid file"
+   echo "ERROR ! cannot find /var/log/crawlzilla/hadoop-pids/*pid file"
    exit 8
   fi
 }
@@ -111,13 +111,13 @@ function remove_folders () {
 # recover /etc/hosts
 function recover_hosts () {
   show_info "$CR_edit_hosts_echo_1" # "修改/etc/hosts..."
-  if [ -e /home/crawler/crawlzilla/system/hosts.bak ];then
+  if [ -e /home/crawler/crawlzilla/meta/hosts.bak ];then
     rm /etc/hosts
-    cp /home/crawler/crawlzilla/system/hosts.bak /etc/hosts
+    cp /home/crawler/crawlzilla/meta/hosts.bak /etc/hosts
     show_info "$CR_edit_hosts_echo_2" # "完成修改/etc/hosts"
-  elif [ -e /home/crawler/crawlzilla/system/hosts ];then
+  elif [ -e /home/crawler/crawlzilla/meta/hosts ];then
     rm /etc/hosts
-    cp /home/crawler/crawlzilla/system/hosts /etc/hosts
+    cp /home/crawler/crawlzilla/meta/hosts /etc/hosts
     show_info " $CR_edit_hosts_echo_3"
   elif [ -f /etc/hosts ];then
     show_info " $CR_edit_hosts_echo_3"
