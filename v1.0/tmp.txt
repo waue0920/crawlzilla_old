@@ -1,0 +1,36 @@
+Crawlzilla_Install_PATH="/opt/crawlzilla"
+Tomcat_HOME="/opt/crawlzilla/tomcat"
+Crawlzilla_HOME="/home/crawler/crawlzilla"
+Work_Path=$Crawlzilla_HOME/system
+Manu_Tmp_Path="/home/crawler/crawlzilla/meta"
+Hadoop_Daemon="/opt/crawlzilla/nutch/bin/hadoop-daemon.sh"
+PID_Dir="/var/log/crawlzilla/hadoop-pids"
+Crawl_Nodes=$Crawlzilla_HOME/meta/crawl_nodes
+  # $1 is ip , $2 is job
+
+
+
+/home/crawler/crawlzilla/logs    ==> 刪除此鍊結
+/home/crawler/crawlzilla/nutch   ==> 刪除此鍊結
+/home/crawler/crawlzilla/source  ==> /home/crawler/crawlzilla/slave
+
+/home/crawler/crawlzilla/archieve/_DBName_ ==>  /home/crawler/crawlzilla/user/_DBName_
+
+/home/crawler/crawlzilla/tmp  ==> /home/crawler/crawlzilla/tmp
+
+/home/crawler/crawlzilla/urls 	==> /home/crawler/crawlzilla/meta/urls
+
+/home/crawler/crawlzilla/.metadata/_DBName_ ==> /home/crawler/crawlzilla/user/_DBName_/metadata
+/home/crawler/crawlzilla/.menu_tmp ==> /home/crawler/crawlzilla/meta/.menu_tmp
+
+/home/crawler/crawlzilla/system/(執行檔)  ==> /opt/crawlzilla/main/（執行檔）
+/home/crawler/crawlzilla/system: 
+hosts        	==> /home/crawler/crawlzilla/meta/
+hosts.old	==> /home/crawler/crawlzilla/meta/
+hosts.bak  	==> /home/crawler/crawlzilla/meta/
+version		==> /opt/crawlzilla/version
+crawl_nodes	==> /home/crawler/crawlzilla/meta/
+crawl_nodes.bak	==> /home/crawler/crawlzilla/meta/
+crawl_nodes.old	==> /home/crawler/crawlzilla/meta/
+
+
