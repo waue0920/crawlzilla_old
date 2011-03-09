@@ -43,5 +43,5 @@ while [ 1 ]
     Hour=$(expr $Min / 60)
     Min=$(expr $Min % 60)
     Sec=$(expr $Begin % 60)
-    echo $Hour'h:'$Min'm:'$Sec's' > /home/crawler/crawlzilla/.metadata/$JNAME/passtime
+    echo $Hour'h:'$Min'm:'$Sec's' > /home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta/passtime
   done

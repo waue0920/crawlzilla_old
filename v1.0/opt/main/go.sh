@@ -33,7 +33,7 @@ if [ "$1" == "" ]; then
 fi
 
 #META_PATH="/home/crawler/crawlzilla/.metadata"
-#ARCHIEVE_DIR="/home/crawler/crawlzilla/archieve"
+#ARCHIEVE_DIR="	/home/crawler/crawlzilla/user/admin/IDB/"
 #HADOOP_BIN="/opt/crawlzilla/nutch/bin"
 
 Depth=$1
@@ -48,7 +48,7 @@ function check_info ( )
   if [ $? -eq 0 ];then
     show_info "[ok] $1";
   else
-    echo "error: $1 broken" > "/home/crawler/crawlzilla/.metadata/$JNAME/status"
+    echo "error: $1 broken" > "/home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta/status"
     show_info "[error] $1 broken"
     kill -9 $count_pid
     exit 8
@@ -59,31 +59,35 @@ function check_info ( )
 cd /home/crawler/crawlzilla/
 
 # /home/crawler/crawlzilla/user/admin/IDB/tmp 用來放該程序的狀態
+#if [ ! -e /home/crawler/crawlzilla/.metadata ];then
+#   mkdir /home/crawler/crawlzilla/.metadata
+#   check_info "mkdir .metadata"
+#fi
 if [ ! -e /home/crawler/crawlzilla/.metadata ];then
-   mkdir /home/crawler/crawlzilla/.metadata
+   mkdir /home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta
    check_info "mkdir .metadata"
 fi
 
 # 存儲crawling狀態及花費時間的資料夾
-if [ ! -e "/home/crawler/crawlzilla/.metadata/$JNAME" ];then
-   mkdir "/home/crawler/crawlzilla/.metadata/$JNAME"
+if [ ! -e "/home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta" ];then
+   mkdir "/home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta"
    check_info "mkdir crawlStatusDir"
 fi
 
-echo $$ > "/home/crawler/crawlzilla/.metadata/$JNAME/go.pid"
-check_info "$$ > /home/crawler/crawlzilla/.metadata/$JNAME/go.pid"
+echo $$ > "/home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta/go.pid"
+check_info "$$ > /home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta/go.pid"
 
 # 紀錄爬取深度
-echo $1 > "/home/crawler/crawlzilla/.metadata/$JNAME/depth"
+echo $1 > "/home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta/depth"
 
 # 開始紀錄程序狀態
-echo "begin" > "/home/crawler/crawlzilla/.metadata/$JNAME/status"
-echo "0" > "/home/crawler/crawlzilla/.metadata/$JNAME/passtime"
+echo "begin" > "/home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta/status"
+echo "0" > "/home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta/passtime"
 
 # 呼叫counter.sh紀錄時間
 /opt/crawlzilla/main/counter.sh $JNAME &
 sleep 5
-count_pid=$(cat "/home/crawler/crawlzilla/.metadata/$JNAME/count.pid")
+count_pid=$(cat "/home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta/count.pid")
 
 # check the replicate directory on HDFS ; $? : 0 = shoud be delete
 /opt/crawlzilla/nutch/bin/hadoop fs -test -e /user/crawler/$JNAME
@@ -99,7 +103,7 @@ check_info "hadoop dfs -mkdir $JNAME"
 check_info "hadoop dfs -put urls"
 
 # nutch crawl begining
-echo "crawling" > "/home/crawler/crawlzilla/.metadata/$JNAME/status"
+echo "crawling" > "/home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta/status"
 
 /opt/crawlzilla/nutch/bin/nutch crawl $JNAME/urls -dir $JNAME -depth $Depth -topN 5000 -threads 1000
 check_info "nutch crawl"
@@ -113,14 +117,14 @@ sed -i '8s/search/'$JNAME'/g' /opt/crawlzilla/tomcat/webapps/$JNAME/WEB-INF/clas
 check_info "sed"
 
 # 完成搜尋狀態
-cp /home/crawler/crawlzilla/.metadata/$JNAME/depth /home/crawler/crawlzilla/user/admin/IDB/$JNAME/
-cp /home/crawler/crawlzilla/.metadata/$JNAME/passtime /home/crawler/crawlzilla/user/admin/IDB/$JNAME/
+cp /home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta/depth /home/crawler/crawlzilla/user/admin/IDB/$JNAME/
+cp /home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta/passtime /home/crawler/crawlzilla/user/admin/IDB/$JNAME/
 
 #if [ -d /home/crawler/crawlzilla/user/admin/IDB/$JNAME/ ];then
-#  cp -rf /home/crawler/crawlzilla/.metadata/$JNAME /home/crawler/crawlzilla/user/admin/IDB/$JNAME/metadata
+#  cp -rf /home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta /home/crawler/crawlzilla/user/admin/tmp/$JNAME/metadata
 #fi
 
-echo "finish" > "/home/crawler/crawlzilla/.metadata/$JNAME/status"
+echo "finish" > "/home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta/status"
 
 kill -9 $count_pid
 

@@ -18,8 +18,7 @@
 if [ $1 == " " ]; then
 echo "No parameter"
 else
-rm -rf /home/crawler/crawlzilla/.metadata/$1
-rm -rf /opt/crawlzilla/tomcat/webapps/$1
+rm -rf /opt/crawlzilla/tomcat/webapps/admin/$1
 /opt/crawlzilla/nutch/bin/hadoop fs -rmr /user/crawler/$1
 fi
 

@@ -44,6 +44,6 @@ done
 # 
 for node in $slave_ips;
   do
-    scp /home/crawler/crawlzilla/source/slave_deploy.sh /root
+    scp /opt/crawlzilla/slave/slave_deploy.sh /root
   done
 

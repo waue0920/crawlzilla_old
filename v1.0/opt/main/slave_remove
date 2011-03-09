@@ -23,7 +23,7 @@
 # History:
 #    
 
-#Crawlzilla_PATH=/home/crawler/crawlzilla/system
+#Crawlzilla_PATH=/opt/crawlzilla/main
 #Crawlzilla_HOME="/home/crawler/crawlzilla"
 #Manu_Tmp_Path="/home/crawler/crawlzilla/meta/menu_tmp"
 #Hadoop_Daemon="/opt/crawlzilla/nutch/bin/hadoop-daemon.sh"

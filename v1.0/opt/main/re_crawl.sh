@@ -49,7 +49,7 @@ if [ -d /home/crawler/crawlzilla/user/admin/IDB/$JNAME ]; then
   if [ ! $? -eq 0 ];then echo "Error! copy urls.txt broken" >> $LOGFILE ; fi
 
   echo "2. remove $JNAME metadata" >> $LOGFILE
-  rm -rf /home/crawler/crawlzilla/.metadata/$JNAME
+  rm -rf /home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta
   if [ ! $? -eq 0 ];then echo "Error! " >> $LOGFILE ; fi
 
   echo "3. remove /opt/crawlzilla/tomcat/webapps/$JNAME" >> $LOGFILE

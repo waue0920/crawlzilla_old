@@ -37,5 +37,5 @@ if [ -e $Work_Path/crawlzilla_slave_install ];then
   rm -rf $Work_Path/crawlzilla_slave_install
 fi
 mkdir $Work_Path/crawlzilla_slave_install
-scp -r -o StrictHostKeyChecking=no crawler@$Master_IP_Address:/home/crawler/crawlzilla/source/* $Work_Path/crawlzilla_slave_install/.
+scp -r -o StrictHostKeyChecking=no crawler@$Master_IP_Address:/opt/crawlzilla/slave/* $Work_Path/crawlzilla_slave_install/.
 exec $Work_Path/crawlzilla_slave_install/slave_install

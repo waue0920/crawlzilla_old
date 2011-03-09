@@ -36,7 +36,7 @@ if [ "$1" == "" ];then
 fi
 
 # define
-#META_PATH="/home/crawler/crawlzilla/.metadata"
+#META_PATH="/home/crawler/crawlzilla/user/admin/tmp/"
 #HADOOP_BIN="/opt/crawlzilla/nutch/bin"
 
 source "/opt/crawlzilla/nutch/conf/hadoop-env.sh";
@@ -44,11 +44,11 @@ source "/opt/crawlzilla/main/log.sh" job_fix;
 
 ### local
 JNAME=$1
-JPID=$(cat "/home/crawler/crawlzilla/.metadata/$JNAME/go.pid") # go job pid 
-CPID=$(cat "/home/crawler/crawlzilla/.metadata/$JNAME/count.pid") # count pid 
-JDEPTH="/home/crawler/crawlzilla/.metadata/$JNAME/depth" # depth
-JPTIME="/home/crawler/crawlzilla/.metadata/$JNAME/passtime"
-STATUS_FILE="/home/crawler/crawlzilla/.metadata/$JNAME/status" # status path
+JPID=$(cat "/home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta/go.pid") # go job pid 
+CPID=$(cat "/home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta/count.pid") # count pid 
+JDEPTH="/home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta/depth" # depth
+JPTIME="/home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta/passtime"
+STATUS_FILE="/home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta/status" # status path
 
 ### function
 function check_info ( )
@@ -56,7 +56,7 @@ function check_info ( )
   if [ $? -eq 0 ];then
     show_info "[ok] $1";
   else
-    echo "error: $1 broken" > "/home/crawler/crawlzilla/.metadata/$JNAME/status"
+    echo "error: $1 broken" > "/home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta/status"
     show_info "[error] $1 broken"
     kill -9 $CPID
     exit 8
@@ -173,6 +173,6 @@ kill -9 $CPID >/dev/null 2>&1
 if [ ! $? -eq 0 ];then debug_info "Warning!!! kill count.sh not work"; fi
 # finish
 #if [ -d /home/crawler/crawlzilla/user/admin/IDB/$JNAME/ ];then
-#  cp -rf /home/crawler/crawlzilla/.metadata/$JNAME /home/crawler/crawlzilla/user/admin/IDB/$JNAME/metadata
+#  cp -rf /home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta /home/crawler/crawlzilla/user/admin/tmp/$JNAME/metadata
 #fi
 echo "Fixed" > $STATUS_FILE;

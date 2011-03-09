@@ -427,8 +427,9 @@ function scp_packages(){
   mkdir /var/log/crawlzilla/tomcat-logs
   mkdir /var/log/crawlzilla/hadoop-logs
   mkdir /home/crawler/crawlzilla
-  mkdir /home/crawler/crawlzilla/source
-  mkdir /home/crawler/crawlzilla/system
+  mkdir /opt/crawlzilla/slave
+  mkdir /opt/crawlzilla/main
+  mkdir /home/crawler/crawlzilla/meta/
   debug_info "$scp_packages_d2"
   chown -R crawler:crawler /opt/crawlzilla
   chown -R crawler:crawler /var/log/crawlzilla
@@ -444,20 +445,19 @@ function scp_packages(){
   chmod 755 /opt/crawlzilla
   debug_info "$scp_packages_d3"
   if [ -e "$Work_Path/CrawlzillaSlaveOf_$Master_IP_Address.tar.gz" ];then
-    mv $Work_Path/CrawlzillaSlaveOf_$Master_IP_Address.tar.gz /home/crawler/crawlzilla/source
+    mv $Work_Path/CrawlzillaSlaveOf_$Master_IP_Address.tar.gz /opt/crawlzilla/slave
   fi
  
-  if [ ! -e "/home/crawler/crawlzilla/source/CrawlzillaSlaveOf_$Master_IP_Address.tar.gz" ];then
-    su crawler -c "scp -r -o StrictHostKeyChecking=no crawler@$1:/home/crawler/crawlzilla/source/CrawlzillaSlaveOf_$Master_IP_Address.tar.gz /home/crawler/crawlzilla/source"
+  if [ ! -e "/opt/crawlzilla/slave/CrawlzillaSlaveOf_$Master_IP_Address.tar.gz" ];then
+    su crawler -c "scp -r -o StrictHostKeyChecking=no crawler@$1:/opt/crawlzilla/slave/CrawlzillaSlaveOf_$Master_IP_Address.tar.gz /opt/crawlzilla/slave"
   fi
-  cp -r $Work_Path/lang /home/crawler/crawlzilla/system
-  cp $Work_Path/log.sh $Work_Path/version $Work_Path/slave_remove /home/crawler/crawlzilla/system
+  cp -rf $Work_Path/opt /opt/crawlzilla
 }
 
 
 function install_nutch_package(){
   debug_info "$install_nutch_package_d1"
-  tar -zxvf /home/crawler/crawlzilla/source/CrawlzillaSlaveOf_$Master_IP_Address.tar.gz -C /opt/crawlzilla >/dev/null 2>&1
+  tar -zxvf /opt/crawlzilla/slave/CrawlzillaSlaveOf_$Master_IP_Address.tar.gz -C /opt/crawlzilla >/dev/null 2>&1
   if [ ! -d /var/log/crawlzilla/hadoop-logs ]; then mkdir /var/log/crawlzilla/hadoop-logs ; chown crawler /var/log/crawlzilla/hadoop-logs ; fi
   ln -sf /var/log/crawlzilla/hadoop-logs /opt/crawlzilla/nutch/logs
   if [ ! -d /var/log/crawlzilla/hadoop-logs ]; then mkdir /var/lib/crawlzilla ; chown crawler /var/lib/crawlzilla ; fi
