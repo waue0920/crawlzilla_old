@@ -225,10 +225,11 @@ function mkdir_Home_Var ( )
     su crawler -c "mkdir /home/crawler/crawlzilla"
     su crawler -c "mkdir /home/crawler/crawlzilla/user/admin/meta/urls"
     su crawler -c "touch /home/crawler/crawlzilla/user/admin/meta/urls/urls.txt"
-    su crawler -c "mkdir /home/crawler/crawlzilla/archieve"
-    su crawler -c "mkdir /home/crawler/crawlzilla/source"
-    su crawler -c "mkdir /home/crawler/crawlzilla/system"
-    su crawler -c "mkdir /home/crawler/crawlzilla/.metadata"
+    su crawler -c "mkdir 	/home/crawler/crawlzilla/user/admin/IDB/"
+    su crawler -c "mkdir /opt/crawlzilla/slave"
+    su crawler -c "mkdir /home/crawler/crawlzilla/admin/"
+    su crawler -c "mkdir /opt/crawlzilla/main/"
+    # su crawler -c "mkdir /home/crawler/crawlzilla/.metadata"
     su crawler -c "mkdir /home/crawler/crawlzilla/.tmp"
    if [ ! -d "/var/log/crawlzilla" ]; then
      mkdir /var/log/crawlzilla
@@ -821,8 +822,8 @@ function make_slave_install ( )
 {
   # 建立資料夾(用來存放slave的安奘檔)
 
-   if [ ! -d "/home/crawler/crawlzilla/source" ]; then
-     su crawler -c "mkdir /home/crawler/crawlzilla/source"
+   if [ ! -d "/opt/crawlzilla/slave" ]; then
+     su crawler -c "mkdir /opt/crawlzilla/slave"
    fi
 
 
@@ -839,19 +840,17 @@ function make_slave_install ( )
   su crawler -c "tar -cvzf CrawlzillaSlaveOf_$MasterIP_Address.tar.gz  nutch" >> /dev/null
   
   # copy files to /opt/crawlzilla/slaveand system directory 
-  mv CrawlzillaSlaveOf_$MasterIP_Address.tar.gz /home/crawler/crawlzilla/source
-  cp $Work_Path/slave_install $Work_Path/version $Work_Path/slave_install_func.sh $Work_Path/slave_remove $Work_Path/slave_deploy.sh $Work_Path/log.sh /home/crawler/crawlzilla/source
-  cp -r $Work_Path/lang  /home/crawler/crawlzilla/source
-  cp -r $Work_Path/lang /home/crawler/crawlzilla/system
-#  cp $Work_Path/crawlzilla $Work_Path/add_hosts $Work_Path/duplicate_del.sh $Work_Path/tomcat_restart.sh  $Work_Path/master_remove $Work_Path/go.sh $Work_Path/log.sh $Work_Path/rm_DB.sh $Work_Path/counter.sh $Work_Path/re_crawl.sh $Work_Path/version $Work_Path/fix.sh /home/crawler/crawlzilla/system 
-  cp $Work_Path/* /opt/crawlzilla/main/bin
+  mv CrawlzillaSlaveOf_$MasterIP_Address.tar.gz /opt/crawlzilla/slave
+  cp $Work_Path/slave_install $Work_Path/version $Work_Path/slave_install_func.sh $Work_Path/slave_remove $Work_Path/slave_deploy.sh $Work_Path/log.sh /opt/crawlzilla/slave
+  cp -r $Work_Path/lang  /opt/crawlzilla/slave
+  cp $Work_Path/* /opt/crawlzilla/main/
   
   # copy crawlzilla/source to user
 
    if [ ! -d "$Install_Dir/Client_Install_DIR" ]; then
      mkdir $Install_Dir/Client_Install_DIR
    fi
-   cp -rf /home/crawler/crawlzilla/source/* $Install_Dir/Client_Install_DIR/
+   cp -rf /opt/crawlzilla/slave/* $Install_Dir/Client_Install_DIR/
    chmod -R 777 $Install_Dir/Client_Install_DIR
    
 }
@@ -892,7 +891,7 @@ $MI_slave_install_commands_echo_1
 2. $MI_slave_install_commands_echo_3
 EOF
 
-  cp $Install_Dir/Client_Install_DIR/README.txt /home/crawler/crawlzilla/source/
+  cp $Install_Dir/Client_Install_DIR/README.txt /opt/crawlzilla/slave/
 
 }
 
