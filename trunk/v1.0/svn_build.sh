@@ -2,13 +2,10 @@
 
 SvnCrawlzilla=`dirname "$0"`
 SvnCrawlzilla=`cd "$SvnCrawlzilla"; pwd`
-
+Job=$1
 function su_permit ( )
 {
- if [ ! "$USER" == "root" ];then
-    echo "please :  sudo $0"
-    exit 0
- fi
+    [ "`id -u`" != "0" ] && exec sudo su -c "$0 $Job"
 }
 
 function do_build ( ) 
@@ -23,6 +20,18 @@ function do_build ( )
  else
    echo "user \"crawler\" existing..."
  fi
+
+ if [ ! -d "$SvnCrawlzilla/opt/tomcat" ] || [ ! -d "$SvnCrawlzilla/opt/nutch" ];then 
+    echo "Fill tomcat and nutch to \"$SvnCrawlzilla/opt/\" "
+    cd $SvnCrawlzilla/opt/
+    mkdir backup; mv tomcat backup; mv nutch backup;
+    wget "http://sourceforge.net/projects/crawlzilla/files/stable/package/crawlzilla_1.0_package.tar.gz/download" -O "crawlzilla_1.0_package.tar.gz"
+    tar -zxvf ./crawlzilla_1.0_package.tar.gz
+    cd $SvnCrawlzilla
+ else
+    echo "tomcat and nutch on \"$SvnCrawlzilla/opt/\ is detected"
+ fi
+
  if [ ! -d "/home/crawler/crawlzilla" ];then
    echo "build /home/crawler/crawlzilla"
    sudo mkdir -p /home/crawler/crawlzilla/
@@ -41,9 +50,13 @@ function do_build ( )
  fi
  if [ ! -d "/opt/crawlzilla" ];then
    echo "build /opt/crawlzilla"
-   sudo cp -rf $SvnCrawlzilla/opt /opt/crawlzilla
    sudo mkdir /opt/crawlzilla/slave
-   sudo ln -sf $SvnCrawlzilla/conf/crawlzilla_conf/* /etc/init.d/
+   sudo cp -rf $SvnCrawlzilla/opt /opt/crawlzilla
+   if [ -d "/opt/crawlzilla/tomcat" || -d "/opt/crawlzilla/nutch" ];then 
+      wget "http://sourceforge.net/projects/crawlzilla/files/stable/package/crawlzilla_1.0_package.tar.gz/download" -O "crawlzilla_1.0_package.tar.gz"
+      tar -zxvf crawlzilla_1.0_package.tar.gz
+   fi
+   sudo cp $SvnCrawlzilla/conf/crawlzilla_conf/* /etc/init.d/
    sudo cp $SvnCrawlzilla/conf/tomcat_conf/* /opt/crawlzilla/tomcat/conf/
    sudo cp $SvnCrawlzilla/conf/nutch_conf/* /opt/crawlzilla/nutch/conf/
  else
@@ -76,6 +89,8 @@ function do_build ( )
 function do_update ( ) 
 {
   echo "update info "
+  sudo cp $SvnCrawlzilla/conf/crawlzilla_conf/* /etc/init.d/
+  if [ "$?" == "0" ];then echo "[tomcat] --> /opt/crawlzilla/tomcat/conf " ; fi
   sudo cp $SvnCrawlzilla/conf/tomcat_conf/* /opt/crawlzilla/tomcat/conf/
   if [ "$?" == "0" ];then echo "[tomcat] --> /opt/crawlzilla/tomcat/conf " ; fi
   sudo cp $SvnCrawlzilla/conf/nutch_conf/* /opt/crawlzilla/nutch/conf/
@@ -99,18 +114,19 @@ function do_remove ( )
     if [ "$?" == "0" ];then echo "[rm] /etc/init.d/crawlzilla-slave " ; fi
   fi
 
+#  if [ -d "/home/crawler/crawlzilla/workspace" ];then
+#    sudo rm -rf /home/crawler/crawlzilla/workspace/
+#    if [ "$?" == "0" ];then echo "[rm] /home/crawler/crawlzilla/workspace/ " ; fi
+#  fi
   if [ -d "/home/crawler/crawlzilla" ];then
     sudo rm -rf /home/crawler/crawlzilla
     if [ "$?" == "0" ];then echo "[rm] /home/crawler/crawlzilla " ; fi
   fi
   if [ -d "/var/log/crawlzilla" ];then
-    sudo rm -rf /var/log/crawlzilla/ 
+    sudo rm -rf /var/log/crawlzilla 
     if [ "$?" == "0" ];then echo "[rm] /var/log/crawlzilla/ " ; fi
   fi
-  if [ -d "/home/crawler/crawlzilla/workspace" ];then
-    sudo rm -rf /home/crawler/crawlzilla/workspace/
-    if [ "$?" == "0" ];then echo "[rm] /home/crawler/crawlzilla/workspace/ " ; fi
-  fi
+
   if [ -d /opt/crawlzilla/ ];then
     sudo rm -rf /opt/crawlzilla
     if [ "$?" == "0" ];then echo "[rm] /opt/crawlzilla " ; fi
@@ -121,15 +137,18 @@ function do_remove ( )
 function make_war ( ) 
 {
  echo "make war"
- ant -f $SvnCrawlzilla/web-src/build.xml clean
- ant -f $SvnCrawlzilla/web-src/build.xml
- if [ "$?" == "0" ];then
-    echo "[ok] crawlzilla.war --> ./ "
+ if [ -d "$SvnCrawlzilla/web-src/" ];then
+   ant -f $SvnCrawlzilla/web-src/build.xml clean
+   ant -f $SvnCrawlzilla/web-src/build.xml
+   if [ "$?" == "0" ];then
+      echo "[ok] crawlzilla.war --> ./ "
+   fi
+   mv $SvnCrawlzilla/web-src/tmp/crawlzilla.war ./
+ else 
+   echo "make sure jsp files is on $SvnCrawlzilla/web-src"
  fi
- mv $SvnCrawlzilla/web-src/tmp/crawlzilla.war ./
-
 }
-case "$1" in
+case "$Job" in
 build)
   do_build;exit 0;
   ;;
