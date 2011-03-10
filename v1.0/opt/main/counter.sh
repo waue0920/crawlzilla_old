@@ -28,12 +28,11 @@
 #   2010/06/07  Rock    (0.3)
 
 
-#META_DIR="/home/crawler/crawlzilla/.metadata"
 
 Begin=0
 JNAME=$1
 
-echo $$ > $META_DIR/$JNAME/count.pid
+echo $$ > /home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta/count.pid
 
 while [ 1 ]
   do
