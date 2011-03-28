@@ -13,4 +13,4 @@
 
 
 || *即時瀏覽爬取狀態* ||
-|| 網頁方式執行爬取任務，不必花時間適應其他操作環境<br> [http://crawlzilla.googlecode.com/svn/tags/pics/wiki/index/3.png] || 即時了解已花費多少時間執行爬取任務<br> [http://crawlzilla.googlecode.com/svn/tags/pics/wiki/index/4.png] ||
+|| 即時了解已花費多少時間執行爬取任務<br> [http://crawlzilla.googlecode.com/svn/tags/pics/wiki/index/4.png] ||
