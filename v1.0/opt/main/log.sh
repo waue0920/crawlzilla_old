@@ -34,13 +34,13 @@ export LOG_SH_TARGET=/var/log/crawlzilla/shell-logs/$SHELLNAME-$DATE.log
 
 ##########  echo function  ##########
 function debug_info () {
-    echo -e "**[DEBUG $(date +%H:%M:%S)] - $1 " >> $LOG_SH_TARGET 2>&1
+    echo -e "< $(date +%H:%M:%S) > [DEBUG] - $1 " >> $LOG_SH_TARGET 2>&1
 }
 
 
 function show_info () {
     echo -e "\033[1;32;40m $1 \033[0m"
-    echo "[INFO $(date +%H:%M:%S)] - $1" >> $LOG_SH_TARGET 2>&1
+    echo "< $(date +%H:%M:%S)> - $1" >> $LOG_SH_TARGET 2>&1
 }
 
 #########end echo function ##########
