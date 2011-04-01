@@ -21,7 +21,8 @@
 # Version:
 #    1.0
 # History:
-#   2010/06/07  Rock    First release (1.0)
+#   2011/04/01  waue    1.0
+#   2010/12/01  waue    First release (0.3)
 
 
 # prompt
@@ -36,19 +37,31 @@ if [ "$1" == "" ];then
 fi
 
 # define
-#META_PATH="/home/crawler/crawlzilla/user/admin/tmp/"
-#HADOOP_BIN="/opt/crawlzilla/nutch/bin"
+
+USERNAME=$1
+JNAME=$2
+
+# env
+OptMain="/opt/crawlzilla/main"
+OptWebapp="/opt/crawlzilla/tomcat/webapps"
+OptNutchBin="/opt/crawlzilla/nutch/bin"
+HomeUserDir="/home/crawler/crawlzilla/user"
+HdfsHome="/user/crawler"
+
+# local para
+HomeUserTmp="$HomeUserDir/$USERNAME/tmp"
+HomeUserIDB="$HomeUserDir/$USERNAME/IDB"
+HomeUserWeb="$HomeUserDir/$USERNAME/web"
+HomeUserMeta="$HomeUserDir/$USERNAME/meta"
+
 
 source "/opt/crawlzilla/nutch/conf/hadoop-env.sh";
 source "/opt/crawlzilla/main/log.sh" job_fix;
 
 ### local
-JNAME=$1
-JPID=$(cat "/home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta/go.pid") # go job pid 
-CPID=$(cat "/home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta/count.pid") # count pid 
-JDEPTH="/home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta/depth" # depth
-JPTIME="/home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta/passtime"
-STATUS_FILE="/home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta/status" # status path
+
+
+
 
 ### function
 function check_info ( )
@@ -56,27 +69,49 @@ function check_info ( )
   if [ $? -eq 0 ];then
     show_info "[ok] $1";
   else
-    echo "error: $1 broken" > "/home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta/status"
+    echo "error: $1 broken" > "/home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/meta/status"
     show_info "[error] $1 broken"
-    kill -9 $CPID
+    #kill -9 $CPID
     exit 8
   fi
 }
 
 ### program
 
+if [ ! -d /home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/meta ];then
+    show_info "no job to fix; check /home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/meta"
+    exit 8;
+fi
+if ! /opt/crawlzilla/nutch/bin/hadoop dfs -test -d /user/crawler/$USERNAME/$JNAME/segments ;then
+    show_info "job have not start; check hdfs:/user/crawler/$USERNAME/$JNAME/segments"
+    exit 8;
+fi
+
+# local para
+
+JPID=$(cat "/home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/meta/go.pid") # go job pid 
+JSTIME="/home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/meta/starttime" # start 
+STATUS_FILE="/home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/meta/status" # status path
+
 DATE=$(date)
 show_info "Fix $JNAME BEGIN at $DATE"
 
-show_info "0 kill ps" 
-kill -9 $JPID >/dev/null 2>&1
-if [ ! $? -eq 0 ];then debug_info "Warning!!! kill go.sh not work"; fi
+# check and kill pid
+ps $JPID >/dev/null 2>&1
+if [ $? -eq 0 ];then
+    show_info "0 kill ps" 
+    kill -9 $JPID >/dev/null 2>&1
+    if [ ! $? -eq 0 ];then debug_info "Warning!!! kill go.sh not work"; fi
+fi
+
+# fix begin
 echo "fixing" > $STATUS_FILE;
 
+if [ ! -d /home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/index ] ;then ## 0_bigin
 
-show_info "0 Correcting Information "
+show_info "fixing from hdfs"
 
-SEGS=$(/opt/crawlzilla/nutch/bin/hadoop dfs -ls /user/crawler/$JNAME/segments | grep  segments | awk '{print $8 }')
+SEGS=$(/opt/crawlzilla/nutch/bin/hadoop dfs -ls /user/crawler/$USERNAME/$JNAME/segments | grep  segments | awk '{print $8 }')
 
 # checking the contents in $JNAME/segments/ , or hadoop will broken
 # content , crawl_fetch , crawl_generate , crawl_parse , parse_data, parse_text
@@ -100,79 +135,121 @@ do
 done
 debug_info "SEOK =[ $SEOK ]"
 debug_info "SEBAD =[ $SEBAD ]"
-## 
+## remove these bad segments files
 /opt/crawlzilla/nutch/bin/hadoop dfs -rmr $SEBAD
 show_info "/opt/crawlzilla/nutch/bin/hadoop dfs -rmr $SEBAD"
 
 ## [ Do FIX Process ] if at least one correct Segments in pool ##
-if [ ! "$SEOK" == "" ];then
+
+if [ ! "$SEOK" == "" ];then # 1_begin
 
 ## unlock
-if /opt/crawlzilla/nutch/bin/hadoop dfs -test -e /user/crawler/$JNAME/linkdb/.locked; then
-  /opt/crawlzilla/nutch/bin/hadoop dfs -rmr /user/crawler/$JNAME/linkdb/.locked;
+if /opt/crawlzilla/nutch/bin/hadoop dfs -test -e /user/crawler/$USERNAME/$JNAME/linkdb/.locked; then
+  /opt/crawlzilla/nutch/bin/hadoop dfs -rmr /user/crawler/$USERNAME/$JNAME/linkdb/.locked;
 fi
 
 ## begin FIX
    
 show_info "1 invertlinks"
-/opt/crawlzilla/nutch/bin/nutch invertlinks /user/crawler/$JNAME/linkdb -dir /user/crawler/$JNAME/segments/
+/opt/crawlzilla/nutch/bin/nutch invertlinks /user/crawler/$USERNAME/$JNAME/linkdb -dir /user/crawler/$USERNAME/$JNAME/segments/
 check_info "invertlinks "
 
 show_info "2 index" 
-/opt/crawlzilla/nutch/bin/nutch index /user/crawler/$JNAME/index /user/crawler/$JNAME/crawldb /user/crawler/$JNAME/linkdb $SEOK
+if /opt/crawlzilla/nutch/bin/hadoop dfs -test -e /user/crawler/$USERNAME/$JNAME/index ;then /opt/crawlzilla/nutch/bin/hadoop dfs -rmr /user/crawler/$USERNAME/$JNAME/index
+fi
+
+/opt/crawlzilla/nutch/bin/nutch index /user/crawler/$USERNAME/$JNAME/index /user/crawler/$USERNAME/$JNAME/crawldb /user/crawler/$USERNAME/$JNAME/linkdb $SEOK
 check_info "index DB "
 
 show_info "3 dedup" 
-/opt/crawlzilla/nutch/bin/nutch dedup /user/crawler/$JNAME/index
+/opt/crawlzilla/nutch/bin/nutch dedup /user/crawler/$USERNAME/$JNAME/index
 check_info "dedup "
 
-show_info "4 download"
-/opt/crawlzilla/nutch/bin/hadoop dfs -get $JNAME /home/crawler/crawlzilla/user/admin/IDB/$JNAME
-check_info "download hdfs "
 
+# download Index DB from hdfs 
+$OptNutchBin/hadoop dfs -get $HdfsHome/$USERNAME/$JNAME/* $HomeUserTmp/$JNAME
+#check_tmp_info "download Index DB"
+check_info "download Index DB"
 
-show_info "4.1 $JNAME Pass Time"
-if [ ! -f /home/crawler/crawlzilla/user/admin/IDB/$JNAME/passtime ];then
-  if [ -f $JPTIME ];then
-    cp $JPTIME /home/crawler/crawlzilla/user/admin/IDB/$JNAME/passtime
-  else
-    echo "0h:0m:0s" >> /home/crawler/crawlzilla/user/admin/IDB/$JNAME/passtime
-  fi
+$OptNutchBin/hadoop dfs -get $HdfsHome/$USERNAME/${JNAME}_urls/* $HomeUserTmp/$JNAME/meta/urls.txt
+#check_tmp_info "download url"
+check_info "download url"
+
+# check IDB then mv to old-dir
+if [ -d $HomeUserIDB/$JNAME ]; then
+   mv $HomeUserIDB/$JNAME $HomeUserDir/$USERNAME/old/${JNAME}_${BeginDate} ## move the same name at IDB
+   #check_tmp_info "move old to $HomeUserDir/$USERNAME/old/${JNAME}_${BeginDate}"
+   check_info "move old to $HomeUserDir/$USERNAME/old/${JNAME}_${BeginDate}"
 fi
 
-show_info "4.2 append depth"
-if [ ! -f /home/crawler/crawlzilla/user/admin/IDB/$JNAME/depth ];then
-  if [ -f $JDEPTH ];then
-    cp $JDEPTH /home/crawler/crawlzilla/user/admin/IDB/$JNAME/depth
-  else
-    echo "0" >> /home/crawler/crawlzilla/user/admin/IDB/$JNAME/depth
-  fi
+# check $USERNAME/tmp/$JNAME/index/part-00000/
+if [ -d /home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/index/part-00000/ ];then
+    show_info "5 mv index files from part-00000"
+    mv /home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/index/part-00000/* /home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/index/
+    check_info "mv index files from part-00000 "
+    rmdir /home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/index/part-00000/
 fi
 
-show_info "5 mv index files from part-00000"
-mv /home/crawler/crawlzilla/user/admin/IDB/$JNAME/index/part-00000/* /home/crawler/crawlzilla/user/admin/IDB/$JNAME/index/
-check_info "mv index files from part-00000 "
+fi # 1_end
 
-show_info "6 rmdir part-00000/"
-rmdir /home/crawler/crawlzilla/user/admin/IDB/$JNAME/index/part-00000/
-check_info "rmdir part-00000/ "
+## end if without /home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/index
+fi # 0_end
 
-show_info "7 tomcat nutch search index "
-cp -rf /opt/crawlzilla/tomcat/webapps/default /opt/crawlzilla/tomcat/webapps/$JNAME
-check_info "tomcat nutch search index"
 
-show_info "8 nutch-site.xml"
-sed -i '8s/search/'$JNAME'/g' /opt/crawlzilla/tomcat/webapps/$JNAME/WEB-INF/classes/nutch-site.xml
-check_info "nutch-site.xml modify"
+# move the index-db from tmp to IDB
+mv $HomeUserTmp/$JNAME $HomeUserIDB/$JNAME
+#check_idb_info "mv indexDB from tmp to IDB"
+check_info "mv indexDB from tmp to IDB"
 
+# make web index if without web link
+if [ ! -d $HomeUserWeb/$JNAME ];then
+   # prepare $JNAME at tomcat
+   cp -rf $OptWebapp/default $HomeUserWeb/$JNAME
+   #check_idb_info "cp default to user/web/$JNAME"
+   check_info "cp default to user/web/$JNAME"
+   # inject the nutch-site.xml for linking web and idb
+   sed -i '4s/XS_DIRX/'$USERNAME'\/IDB\/'$JNAME'/g' $HomeUserWeb/$JNAME/WEB-INF/classes/nutch-site.xml
+   #check_idb_info "inject the nutch-site.xml for linking web and idb"
+   check_info "inject the nutch-site.xml for linking web and idb"
 fi
-## hadoop fix over ##
 
+# clean link for tomcat reload
+#if [ -e $OptWebapp/${USERNAME}_$JNAME ] || [ "$REDO" == "true" ]; then
+if [ -e $OptWebapp/${USERNAME}_$JNAME ]; then
+   rm $OptWebapp/${USERNAME}_$JNAME
+fi
+# link user/$USERNAME/web/JNAME to tomcat/webapps/$USERNAME/JNAME
+ln -sf $HomeUserWeb/$JNAME $OptWebapp/${USERNAME}_$JNAME
+#check_idb_info "link to tomcat/webapps"
+check_info "link to tomcat/webapps"
 
-kill -9 $CPID >/dev/null 2>&1
-if [ ! $? -eq 0 ];then debug_info "Warning!!! kill count.sh not work"; fi
-# finish
-#if [ -d /home/crawler/crawlzilla/user/admin/IDB/$JNAME/ ];then
-#  cp -rf /home/crawler/crawlzilla/user/admin/tmp/$JNAME/meta /home/crawler/crawlzilla/user/admin/tmp/$JNAME/metadata
-#fi
-echo "Fixed" > $STATUS_FILE;
+# clean meta-files
+rm "$HomeUserIDB/$JNAME/meta/go.pid"
+
+$OptNutchBin/hadoop dfs -test -e $HdfsHome/$USERNAME/$JNAME
+if [ $? -eq 0 ]; then
+  $OptNutchBin/hadoop dfs -rmr $HdfsHome/$USERNAME/$JNAME
+  $OptNutchBin/hadoop dfs -rmr $HdfsHome/$USERNAME/${JNAME}_urls
+  #check_idb_info "rmr $JNAME and ${JNAME}_bek on hdfs"
+  check_info "rmr $JNAME and ${JNAME}_bek on hdfs"
+fi
+
+echo "Fixed" > $HomeUserIDB/$JNAME/meta/status; 
+
+f_time=`date '+%s'`
+if [ -e $HomeUserIDB/$JNAME/meta/starttime ] ;then
+  s_time=$(cat $HomeUserIDB/$JNAME/meta/starttime)
+  pass_time=$(expr $f_time - $s_time)
+  hours=$(expr $pass_time / 3600)
+  pass_time=$(expr $pass_time % 3600)
+  minutes=$(expr $pass_time / 60)
+  seconds=$(expr $pass_time % 60)
+  pass_time="$hours:$minutes:$seconds"
+  #show_idb_info "it takes : $pass_time"
+  show_info "it takes : $pass_time"
+  echo "$pass_time" > "$HomeUserIDB/$JNAME/meta/passtime"
+fi
+
+if [ -e $HomeUserIDB/$JNAME/meta/crawl.log ] && [ -e $LOG_SH_TARGET ];then
+  cat $HomeUserIDB/$JNAME/meta/crawl.log >> $LOG_SH_TARGET 2>&1
+fi
