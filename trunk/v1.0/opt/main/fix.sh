@@ -26,13 +26,22 @@
 
 
 # prompt
-if [ "$1" == "" ];then
-    echo "Usage : fix <JOB_NAME>";
-    echo " where JOB_NAME is one of: ";
-    echo "==========="
-    NN=$(/opt/crawlzilla/nutch/bin/hadoop dfs -ls |grep crawler |awk '{print $8}' | cut -d "/" -f 4)
-    echo "$NN"
-    echo "==========="
+if [ "$2" == "" ];then
+    echo "Usage : fix <USERNAME> <JOB_NAME>";
+    if /opt/crawlzilla/nutch/bin/hadoop dfs -test -d /user/crawler/$1 ;then
+	echo " where JOB_NAME is one of: ";
+	echo "==========="
+	NN=$(/opt/crawlzilla/nutch/bin/hadoop dfs -ls /user/crawler/$1 |grep crawler |awk '{print $8}' | cut -d "/" -f 5)
+	echo "$NN"
+	echo "==========="
+    else 
+	echo " where USERNAME is one of: ";
+        echo "==========="
+        NN=$(/opt/crawlzilla/nutch/bin/hadoop dfs -ls /user/crawler |grep crawler |awk '{print $8}' | cut -d "/" -f 4)
+        echo "$NN"
+        echo "==========="
+    fi
+
     exit 9;
 fi
 
@@ -77,15 +86,29 @@ function check_info ( )
 }
 
 ### program
-
+# no job to fix
 if [ ! -d /home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/meta ];then
     show_info "no job to fix; check /home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/meta"
     exit 8;
 fi
+# job have not start
 if ! /opt/crawlzilla/nutch/bin/hadoop dfs -test -d /user/crawler/$USERNAME/$JNAME/segments ;then
     show_info "job have not start; check hdfs:/user/crawler/$USERNAME/$JNAME/segments"
     exit 8;
 fi
+# process is running
+ps $JPID >/dev/null 2>&1
+if [ $? -eq 0 ];then
+    show_info "process is running; check pid $JPID"
+    exit 8;
+fi
+## kill pid ( old method )
+#ps $JPID >/dev/null 2>&1
+#if [ $? -eq 0 ];then
+#    show_info "0 kill ps" 
+#    kill -9 $JPID >/dev/null 2>&1
+#    if [ ! $? -eq 0 ];then debug_info "Warning!!! kill go.sh not work"; fi
+#fi
 
 # local para
 
@@ -96,17 +119,12 @@ STATUS_FILE="/home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/meta/status" # s
 DATE=$(date)
 show_info "Fix $JNAME BEGIN at $DATE"
 
-# check and kill pid
-ps $JPID >/dev/null 2>&1
-if [ $? -eq 0 ];then
-    show_info "0 kill ps" 
-    kill -9 $JPID >/dev/null 2>&1
-    if [ ! $? -eq 0 ];then debug_info "Warning!!! kill go.sh not work"; fi
-fi
+
 
 # fix begin
 echo "fixing" > $STATUS_FILE;
 
+# check index had been downloaded or not
 if [ ! -d /home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/index ] ;then ## 0_bigin
 
 show_info "fixing from hdfs"
