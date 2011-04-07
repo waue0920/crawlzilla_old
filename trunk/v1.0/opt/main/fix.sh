@@ -86,6 +86,12 @@ function check_info ( )
 }
 
 ### program
+
+# local para
+JPID=$(cat "/home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/meta/go.pid") # go job pid 
+JSTIME="/home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/meta/starttime" # start 
+STATUS_FILE="/home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/meta/status" # status path
+
 # no job to fix
 if [ ! -d /home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/meta ];then
     show_info "no job to fix; check /home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/meta"
@@ -110,11 +116,9 @@ fi
 #    if [ ! $? -eq 0 ];then debug_info "Warning!!! kill go.sh not work"; fi
 #fi
 
-# local para
 
-JPID=$(cat "/home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/meta/go.pid") # go job pid 
-JSTIME="/home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/meta/starttime" # start 
-STATUS_FILE="/home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/meta/status" # status path
+
+
 
 DATE=$(date)
 show_info "Fix $JNAME BEGIN at $DATE"
