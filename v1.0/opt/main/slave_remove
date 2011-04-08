@@ -23,27 +23,36 @@
 # History:
 #    
 
-#Crawlzilla_PATH=/opt/crawlzilla/main
-#Crawlzilla_HOME="/home/crawler/crawlzilla"
-#Manu_Tmp_Path="/home/crawler/crawlzilla/meta/menu_tmp"
-#Hadoop_Daemon="/opt/crawlzilla/nutch/bin/hadoop-daemon.sh"
-#PID_Dir="/var/log/crawlzilla/hadoop-pids"
+Work_Path=`dirname "$0"`
+if [ -f $Work_Path/slave_remove ];then
+  Work_Path=`cd "$Work_Path"; pwd`
+else
+  echo "Import install-function-library error !!! ";
+  exit 1;
+fi
 
+if [ -d "/opt/crawlzilla/main/lang" ];then
+  Lang_Path="/opt/crawlzilla/main/lang"
+elif [ -d "$Work_Path/lang" ];then
+  Lang_Path="$Work_Path/lang"
+else
+  echo "No language package existed."
+fi
 
 
 
 
 # [ System Load] #
 # Master IP here
-Master_IP_Address=your.master.ip.here
+Master_IP_Address=140.110.138.193
 
 ## language load 
 lang=$(locale | grep 'LANGUAGE=' | cut -d "=" -f2 | cut -d ":" -f1 )
 if [ "$lang" == "zh_TW" ] || [ "$lang" == "zh_TW.utf8" ] || \
    [ "$lang" == "zh_TW:zh" ];then
-    source /opt/crawlzilla/main/lang//lang_zh_TW
+    source $Lang_Path/lang_zh_TW
 else
-    source /opt/crawlzilla/main/lang//lang_en_US
+    source $Lang_Path/lang_en_US
 fi
 
 #  [ Function Description ] #
@@ -103,7 +112,6 @@ function remove_folders () {
   rm /usr/bin/crawlzilla_remove
   rm -rf /opt/crawlzilla
   rm -rf /var/log/crawlzilla
-  rm -rf /var/lib/crawlzilla 
   show_info "$CR_remove_folders_echo_2" # "安裝時所建立的檔案及資料夾已刪除"
 }
 
@@ -176,7 +184,7 @@ function main () {
  	# 詢問是否繼續
 	read -p "$CR_main_echo_3" confirm # "請問是否確定移除此一節點：1.確定 2.取消"
 	# 確認移除
-	if [ $confirm -eq 1 ]; then
+	if [ "$confirm" == "y" ]; then
 	  shutdown_service
 	  remove_folders
 	  edit_remove_list
@@ -184,18 +192,18 @@ function main () {
 	  user_delete
       remove_crawlzilla_to_initd
 	  show_info "$CR_main_echo_4" # "移除程序已完成！"
-	  if [ $remove_flag -eq 1 ]; then
+	  if [ "$remove_flag" == "y" ]; then
 	      show_info "You need to edit /home/crawler/crawlzilla/meta/crawl_nodes "
 	      show_info "located at $Master_IP_Address manually because the connection is losted."
 	  fi
           LOCK=1; 
-	elif [ $confirm -eq 2 ]; then
+	elif [ "$confirm" == "n" ]; then
 	  show_info "$CR_main_echo_5" # "您已取消移除程序！"
 	  show_info "$CR_main_echo_6" # "若要移除請再重新執行！"
           LOCK=1; 
 	else
-	  show_info "Hint: 1 => yes, 2 => exit "
-	  show_info "Please enter 1 or 2"
+	  show_info "Hint: y => yes, n => exit "
+	  show_info "Please enter y or n"
 	fi
   done
 }
@@ -205,8 +213,8 @@ check_root
 if [ ! -e "/home/crawler/crawlzilla" ] || [ ! -e "/opt/crawlzilla" ] ; then
   show_info "Installation is not complete!"
   show_info "Remove forcibly[1=agree/2=exit]"
-  read -p "[1/2]: " force_do_remove
-  if [ ! "$force_do_remove" == "1" ];then
+  read -p "[y/n]: " force_do_remove
+  if [ ! "$force_do_remove" == "y" ];then
     exit 0;
   fi
 fi

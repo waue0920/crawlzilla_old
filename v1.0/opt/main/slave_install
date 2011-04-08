@@ -23,9 +23,9 @@
 [ "`id -u`" != "0" ] && exec sudo su -c "$0" "$@"
 
 # Master IP here
-Master_IP_Address=your.master.ip.here
+Master_IP_Address=140.110.138.193
 # Master Hostname here
-Master_Hostname=your_master_hostname_here
+Master_Hostname=vpro
 # local para
 Linux_Distribution="";
 Linux_Version="";
@@ -33,10 +33,8 @@ Crawler_Passwd="xxxxxxxxxx";
 autoSlaveInstallFlag="no";
 
 Work_Path=`dirname "$0"`
-if [ -f $Work_Path/slave_install_func.sh ];then
+if [ -f $Work_Path/slave_install.sh ];then
   Work_Path=`cd "$Work_Path"; pwd`
-elif [ -f $Work_Path/bin/slave_install_func.sh ];then
-  Work_Path=`cd "$Work_Path/bin"; pwd`;
 else
   echo "Import the installation libraries of slave Error!!!"
   exit 1;
@@ -589,12 +587,12 @@ linux_dist=$(lsb_release -i | awk '{print $3}')
 
 # for debian system
 if [ "$linux_dist" = "Ubuntu" ] || [ "$linux_dist" = "Debian" ]; then
-    cp -f /opt/crawlzilla/nutch/conf/crawlzilla-slave /etc/init.d/crawlzilla
+    cp -f $Work_Path/crawlzilla-slave /etc/init.d/crawlzilla
     chown crawler:crawler /etc/init.d/crawlzilla
     update-rc.d crawlzilla defaults
 # for rpm system
 elif [ "$linux_dist" = "CentOS" ] || [ "$linux_dist" = "Fedora" ] || [ "$linux_dist" = "SUSE" ]; then
-    cp -f /opt/crawlzilla/nutch/conf/crawlzilla-slave_chkconfig /etc/init.d/crawlzilla
+    cp -f $Work_Path/crawlzilla-slave_chkconfig /etc/init.d/crawlzilla
     chown crawler.crawler /etc/init.d/crawlzilla
     chkconfig --add crawlzilla
 else

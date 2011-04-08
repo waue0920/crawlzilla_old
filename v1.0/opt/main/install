@@ -38,7 +38,7 @@ else
   exit 1;
 fi
 
-Package_Name=crawlzilla-1.0pack-current.tar.gz
+Package_Name="crawlzilla-1.0pack-current.tar.gz"
 
 AutoSlaveInstallFlag="no"
 
@@ -78,11 +78,9 @@ HomeUserMeta="$HomeUserDir/$USERNAME/meta"
 
 SYS_VER=`cat $Work_Path/version`
 Conf_Path=$Work_Path/conf
-LOG_SH_TARGET=$Work_Path/crawlzilla_install-$DATE.log
+LOG_SH_TARGET=$Work_Path/crawlzilla_install-$(date +%y%m%d).log
 
 ######function section#######
-
-
 
 ##########  echo function  ##########
 function debug_info () {
@@ -103,9 +101,9 @@ function load_default_lang ( )
 lang=$(locale | grep 'LANGUAGE=' | cut -d "=" -f2 | cut -d ":" -f1 )
 if [ "$lang" == "zh_TW" ] || [ "$lang" == "zh_TW.utf8" ] || \
    [ "$lang" == "zh_TW:zh" ];then
-    source $Work_Path/lang/lang_zh_TW
+    source $Work_Path/main/lang/lang_zh_TW
 else
-    source $Work_Path/lang/lang_en_US
+    source $Work_Path/main/lang/lang_en_US
 fi
 }
 
@@ -308,13 +306,17 @@ function mkdir_Home_Var ( )
 
 }
 
-function link_Chown ( )
+function link_Dirs ( )
 {
 ln -sf /var/log/crawlzilla/tomcat-logs /opt/crawlzilla/tomcat/logs
 ln -sf /var/log/crawlzilla/hadoop-logs /opt/crawlzilla/nutch/logs
 ln -sf /opt/crawlzilla/main/crawlzilla /usr/bin/crawlzilla
 ln -sf /opt/crawlzilla/main/master_remove /usr/bin/crawlzilla_remove
 ln -sf /var/log/crawlzilla /home/crawler/crawlzilla/logs
+}
+
+function chown_Dirs ( )
+{
 chown -R crawler:crawler /home/crawler/crawlzilla
 chown -R crawler:crawler /opt/crawlzilla
 chown -R crawler:crawler /var/log/crawlzilla
@@ -354,11 +356,12 @@ function unzip_nV2_pack ( )
   if [ -d "$Conf_Path" ];then
      if [ -d "$Conf_Path/nutch_conf" ];then
 	debug_info " $Conf_Path/nutch_conf .. found !"
-	  if [ -d /opt/crawlzilla/nutch/conf ];then
-	    debug_info "del /opt/crawlzilla/nutch/conf "
-	    rm -rf /opt/crawlzilla/nutch/conf
-	  fi
-	  cp -rf $Conf_Path/nutch_conf /opt/crawlzilla/nutch/conf
+          ## $Conf_Path/nutch_conf/* is only update , not all
+	  #if [ -d /opt/crawlzilla/nutch/conf ];then
+	  #  debug_info "del /opt/crawlzilla/nutch/conf "
+	  #  rm -rf /opt/crawlzilla/nutch/conf
+	  #fi
+	  cp -rf $Conf_Path/nutch_conf/* /opt/crawlzilla/nutch/conf
 	  if [ $? -eq 0 ];then
 	    debug_info " Update the nutch:conf ok!"
 	  else
@@ -370,11 +373,11 @@ function unzip_nV2_pack ( )
 
      if [ -d "$Conf_Path/tomcat_conf" ];then
         debug_info " $Conf_Path/tomcat_conf .. found !"
-	  if [ -d /opt/crawlzilla/tomcat/conf ];then
-	    debug_info "del /opt/crawlzilla/tomcat/conf "
-	    rm -rf /opt/crawlzilla/tomcat/conf
-	  fi
-	  cp -rf $Conf_Path/tomcat_conf /opt/crawlzilla/tomcat/conf
+	  #if [ -d /opt/crawlzilla/tomcat/conf ];then
+	  #  debug_info "del /opt/crawlzilla/tomcat/conf "
+	  #  rm -rf /opt/crawlzilla/tomcat/conf
+	  #fi
+	  cp -rf $Conf_Path/tomcat_conf/* /opt/crawlzilla/tomcat/conf/
 	  if [ $? -eq 0 ];then
 	    debug_info "Update the tomcat:conf ok!"
 	  else
@@ -676,7 +679,7 @@ function make_ssh_key ( ) {
 }
 
 
-function set_haoop-site ( )
+function set_hadoop-site ( )
 {
   debug_info "$MI_set_haoop_site_echo_1"
 # debug_info "set hadoop-site.xml(begin...)"
@@ -689,7 +692,7 @@ function set_haoop-site ( )
   </property>
   <property>
     <name>hadoop.tmp.dir</name>
-    <value>/var/lib/crawlzilla/nutch-crawler</value>
+    <value>/home/crawler/crawlzilla/workspace/nutch-crawler</value>
   </property>
 </configuration>
 EOF
@@ -698,6 +701,25 @@ EOF
   <property>
     <name>mapred.job.tracker</name>
     <value>$MasterIP_Address:9001</value>
+  </property>
+   <property>
+    <name>mapred.tasktracker.map.tasks.maximum</name>
+    <value>8</value>
+    <description>The maximum number of map tasks that will be run
+    simultaneously by a task tracker.
+    </description>
+  </property>
+  <property>
+    <name>mapred.tasktracker.reduce.tasks.maximum</name>
+    <value>6</value>
+    <description>
+    </description>
+  </property>
+  <property>
+    <name>mapred.child.java.opts</name>
+    <value>-Xmx400m</value>
+    <description>
+    </description>
   </property>
 </configuration>
 EOF
@@ -784,7 +806,7 @@ function check_set_hosts ( )
     cp /etc/hosts /home/crawler/crawlzilla/meta/hosts.bak
     cp -f /etc/hosts /home/crawler/crawlzilla/meta/
     # chown the /home/crawler/crawlzilla/meta/hosts to crawler
-    chown crawler:crawler /home/crawler/crawlzilla/meta/hosts
+    #chown crawler:crawler /home/crawler/crawlzilla/meta/hosts
 
     # add ip <-> hostname to hosts file
     # Line_NO is hostname line number at hosts
@@ -813,31 +835,38 @@ function check_set_hosts ( )
   fi
 }
 
-function install_Nutch ( )
+function setup_Handmade_Code ( )
 {
-# copy crawlzilla.war to /opt/crawlzilla/tomcat/webapps
+
+  # copy /opt/crawlzilla/main
+  cp -rf $Work_Path/main  /opt/crawlzilla/main
+  # copy crawlzilla.war to /opt/crawlzilla/tomcat/webapps
   cp $Work_Path/web/crawlzilla.war /opt/crawlzilla/tomcat/webapps/crawlzilla.war
+  echo "crawler" > /home/crawler/crawlzilla/user/admin/meta/.passwd
+  chmod 600 /home/crawler/crawlzilla/user/admin/meta/.passwd
+  
   debug_info "$MI_install_Nutch_echo_1 $MasterIP_Address "
 # debug_info "MasterIP_Address=$MasterIP_Address"
   debug_info "$MI_install_Nutch_echo_2 $(hostname)"
 # debug_info "Master_Hostname=$(hostname)"
-  su crawler -c "ssh -o StrictHostKeyChecking=no localhost echo $net_address $(hostname) \>\> ~/crawlzilla/system/crawl_nodes"
+  ##  su crawler -c "ssh -o StrictHostKeyChecking=no localhost echo $net_address $(hostname) \>\> ~/crawlzilla/system/crawl_nodes" ## ?? why
+  echo "$net_address $(hostname)" >> /home/crawler/crawlzilla/meta/crawl_nodes 
+  debug_info "echo \"$net_address $(hostname) \>\> /home/crawler/crawlzilla/meta/crawl_nodes \""
   #set_hosts > up to install->main function
-  set_haoop-site
+  set_hadoop-site
   set_nutch-site
 }
 
 
 function slave_PassMasterIPAddr ( ) 
 {
-  cd $Work_Path
-  Line_NO=`cat slave_install | grep -n '# Master IP here' | sed 's/:.*//g'`
+  Line_NO=`cat $Work_Path/main/slave_install | grep -n '# Master IP here' | sed 's/:.*//g'`
   debug_info "$MI_slave_PassMasterIPAddr_echo_1"
 # debug_info "debug...Master IP here line number = $Line_NO..."
-  sed -i ''$((Line_NO+1))'d' slave_install
+  sed -i ''$((Line_NO+1))'d' $Work_Path/main/slave_install
   debug_info "$MI_slave_PassMasterIPAddr_echo_2"
 # debug_info "debug...edit Master IP at line $((Line_NO+1))..."
-  sed -i ''$Line_NO'a Master_IP_Address='$MasterIP_Address'' slave_install
+  sed -i ''$Line_NO'a Master_IP_Address='$MasterIP_Address'' $Work_Path/main/slave_install
   debug_info "$MI_slave_PassMasterIPAddr_echo_3"
 # debug_info "edit slave_install done..."
 }
@@ -845,43 +874,36 @@ function slave_PassMasterIPAddr ( )
 
 function slave_PassMaster_Hostname ( )
 {
-  cd $Work_Path
-  Line_NO=`cat slave_install | grep -n '# Master Hostname here' | sed 's/:.*//g'`
+  Line_NO=`cat $Work_Path/main/slave_install | grep -n '# Master Hostname here' | sed 's/:.*//g'`
   debug_info "$MI_slave_PassMaster_Hostname_echo_1"
 # debug_info "debug...Master hostname here line number = $Line_NO..."
-  sed -i ''$((Line_NO+1))'d' slave_install
+  sed -i ''$((Line_NO+1))'d' $Work_Path/main/slave_install
   debug_info "$MI_slave_PassMaster_Hostname_echo_2"
 # debug_info "debug...edit Master Hostname at line $((Line_NO+1))..."
-  sed -i ''$Line_NO'a Master_Hostname='$(hostname)'' slave_install
+  sed -i ''$Line_NO'a Master_Hostname='$(hostname)'' $Work_Path/main/slave_install
   debug_info "$MI_slave_PassMaster_Hostname_echo_3"
 # debug_info "edit slave_install done..."
 }
 
 function slave_PassMasterIPAddr_for_Remove ( ) 
 {
-  cd $Work_Path
-  Line_NO=`cat slave_remove | grep -n "# Master IP here" | sed 's/:.*//g'`
-  sed -i ''$((Line_NO+1))'d' slave_remove
-  sed -i ''$Line_NO'a Master_IP_Address='$MasterIP_Address'' slave_remove
+  Line_NO=`cat $Work_Path/main/slave_remove | grep -n "# Master IP here" | sed 's/:.*//g'`
+  sed -i ''$((Line_NO+1))'d' $Work_Path/main/slave_remove
+  sed -i ''$Line_NO'a Master_IP_Address='$MasterIP_Address'' $Work_Path/main/slave_remove
 }
 
 
 function slave_PassMasterIPAddr_for_deploy ( ) 
 {
-  cd $Work_Path
-  Line_NO=`cat slave_deploy.sh | grep -n "# Master IP here" | sed 's/:.*//g'`
-  sed -i ''$((Line_NO+1))'d' slave_deploy.sh
-  sed -i ''$Line_NO'a Master_IP_Address='$MasterIP_Address'' slave_deploy.sh
+  Line_NO=`cat $Work_Path/main/slave_deploy.sh | grep -n "# Master IP here" | sed 's/:.*//g'`
+  sed -i ''$((Line_NO+1))'d' $Work_Path/main/slave_deploy.sh
+  sed -i ''$Line_NO'a Master_IP_Address='$MasterIP_Address'' $Work_Path/main/slave_deploy.sh
 }
 
 function make_slave_install ( ) 
 {
   # 建立資料夾(用來存放slave的安奘檔)
-
-   if [ ! -d "/opt/crawlzilla/slave" ]; then
-     su crawler -c "mkdir /opt/crawlzilla/slave"
-   fi
-
+   if [ ! -d "/opt/crawlzilla/slave" ]; then mkdir /opt/crawlzilla/slave; fi
 
   # package the Master_IP_Address for slave
  
@@ -892,23 +914,17 @@ function make_slave_install ( )
   slave_PassMaster_Hostname
   slave_PassMasterIPAddr_for_Remove
   slave_PassMasterIPAddr_for_deploy
-  cd /opt/crawlzilla/
-  su crawler -c "tar -cvzf CrawlzillaSlaveOf_$MasterIP_Address.tar.gz  nutch" >> /dev/null
+  #cd /opt/crawlzilla/
+  #su crawler -c "tar -cvzf $Work_Path/CrawlzillaSlaveOf_$MasterIP_Address.tar.gz /opt/crawlzilla/nutch" >> /dev/null
+  tar -cvzf /opt/crawlzilla/slave/CrawlzillaSlaveOf_$MasterIP_Address.tar.gz /opt/crawlzilla/nutch > /dev/null 2>&1
   
   # copy files to /opt/crawlzilla/slaveand system directory 
-  mv CrawlzillaSlaveOf_$MasterIP_Address.tar.gz /opt/crawlzilla/slave
-  cp $Work_Path/slave_install $Work_Path/version $Work_Path/slave_install_func.sh $Work_Path/slave_remove $Work_Path/slave_deploy.sh $Work_Path/log.sh /opt/crawlzilla/slave
-  cp -r $Work_Path/lang  /opt/crawlzilla/slave
-  cp $Work_Path/* /opt/crawlzilla/main/
-  
-  # copy crawlzilla/source to user
+  #mv CrawlzillaSlaveOf_$MasterIP_Address.tar.gz /opt/crawlzilla/slave
+  #cp $Work_Path/main/slave_install $Work_Path/version $Work_Path/main/slave_install_func.sh $Work_Path/main/slave_remove $Work_Path/main/slave_deploy.sh $Work_Path/log.sh /opt/crawlzilla/slave
+  cp $Work_Path/version $Work_Path/main/slave_* $Work_Path/main/log.sh /opt/crawlzilla/slave/
+  cp -r $Work_Path/main/lang  /opt/crawlzilla/slave/
+  cp -f $Conf_Path/crawlzilla_conf/* /opt/crawlzilla/slave/
 
-   if [ ! -d "$Work_Path/Client_Install_DIR" ]; then
-     mkdir $Work_Path/Client_Install_DIR
-   fi
-   cp -rf /opt/crawlzilla/slave/* $Work_Path/Client_Install_DIR/
-   chmod -R 777 $Work_Path/Client_Install_DIR
-   
 }
 
 function start_up_tomcat ( ) 
@@ -941,13 +957,11 @@ function slave_install_commands ( )
 
 function generateReadme ( )
 {
-  cat > $Work_Path/Client_Install_DIR/README.txt << EOF
+  cat > /opt/crawlzilla/slave/README.txt << EOF
 $MI_slave_install_commands_echo_1
 1. $MI_slave_install_commands_echo_20$MasterIP_Address$MI_slave_install_commands_echo_25
 2. $MI_slave_install_commands_echo_3
 EOF
-
-  cp $Work_Path/Client_Install_DIR/README.txt /opt/crawlzilla/slave/
 
 }
 
@@ -961,7 +975,7 @@ linux_dist=$(lsb_release -i | awk '{print $3}')
 # for debian system
 if [ "$linux_dist" = "Ubuntu" ] || [ "$linux_dist" = "Debian" ]; then
     cp -f $Conf_Path/crawlzilla_conf/crawlzilla-master /etc/init.d/crawlzilla
-    chown crawler.crawler /etc/init.d/crawlzilla
+    chown crawler:crawler /etc/init.d/crawlzilla
     update-rc.d crawlzilla defaults
 # for rpm system
 elif [ "$linux_dist" = "CentOS" ] || [ "$linux_dist" = "Fedora" ] || [ "$linux_dist" = "SUSE" ]; then
@@ -971,8 +985,8 @@ elif [ "$linux_dist" = "CentOS" ] || [ "$linux_dist" = "Fedora" ] || [ "$linux_d
 else 
     show_info "Please delete /etc/init.d/ crawlzilla file manually."
 fi
-# for slave (because slave_deploy.sh will tar nutch directory to slave)
-cp -f $Conf_Path/crawlzilla_conf/* /opt/crawlzilla/nutch/conf/
+## for slave (because slave_deploy.sh will tar nutch directory to slave) # to /opt/crawlzilla/slave
+# cp -f $Conf_Path/crawlzilla_conf/* /opt/crawlzilla/nutch/conf/
 
 }
 
@@ -1008,13 +1022,14 @@ function main ( )
     mkdir_Home_Var
     # change /etc/hosts owner from root to crawler
     check_set_hosts
-    install_Nutch
-    link_Chown   
+    #install_Nutch
+    setup_Handmade_Code
+    link_Dirs
     # Add crawlzilla service to init.d (Crawlzilla startup when booting)
     add_crawlzilla_to_initd
     # make web default password
-    su crawler -c "echo "crawler" > /home/crawler/crawlzilla/user/admin/meta/.passwd"
-    chmod 600 /home/crawler/crawlzilla/user/admin/meta/.passwd
+    #su crawler -c "echo "crawler" > /home/crawler/crawlzilla/user/admin/meta/.passwd"
+    #chmod 600 /home/crawler/crawlzilla/user/admin/meta/.passwd
     
     # auto install
     if [ "$AutoSlaveInstallFlag" == "yes" ]; then
@@ -1022,8 +1037,7 @@ function main ( )
     fi
     make_slave_install
     
-    chown -R crawler /home/crawler/crawlzilla
-    
+    chown_Dirs
     # restart system
     format_HDFS
     start_up_Crawlzilla
