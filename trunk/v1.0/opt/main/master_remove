@@ -25,22 +25,32 @@
 #   
 
 # [ Env para ] #
-#Crawlzilla_HOME="/home/crawler/crawlzilla"
-#Manu_Tmp_Path="/home/crawler/crawlzilla/meta/menu_tmp"
-#Hadoop_Daemon="/opt/crawlzilla/nutch/bin/hadoop-daemon.sh"
-#PID_Dir="/var/log/crawlzilla/hadoop-pids"
+Work_Path=`dirname "$0"`
+if [ -f $Work_Path/master_remove ];then
+  Work_Path=`cd "$Work_Path"; pwd`
+else
+  echo "Import install-function-library error !!! ";
+  exit 1;
+fi
+
+if [ -d "/opt/crawlzilla/main/lang" ];then
+  Lang_Path="/opt/crawlzilla/main/lang"
+elif [ -d "$Work_Path/lang" ];then
+  Lang_Path="$Work_Path/lang"
+else
+  echo "No language package existed."
+fi
+
 User_Del_Chk="y"
 
 # [ System Load] #
 ## check user
-#[ "`id -u`" != "0" ] && echo "please enter password of $USER:"  && exec sudo su -c "$0" "$@"
-## language load 
 lang=$(locale | grep 'LANGUAGE=' | cut -d "=" -f2 | cut -d ":" -f1 )
 if [ "$lang" == "zh_TW" ] || [ "$lang" == "zh_TW.utf8" ] || \
    [ "$lang" == "zh_TW:zh" ];then
-    source /opt/crawlzilla/main/lang//lang_zh_TW
+    source $Lang_Path/lang_zh_TW
 else
-    source /opt/crawlzilla/main/lang//lang_en_US
+    source $Lang_Path/lang_en_US
 fi
 
 
@@ -91,19 +101,18 @@ function fast_shutdown_all ( )
     kill -9 $(cat /var/log/crawlzilla/hadoop-pids/hadoop-crawler-jobtracker.pid) > /dev/null 2>&1
     if [ ! $? -eq 0 ];then echo "jobtracker error !";fi
   else 
-   echo "ERROR ! cannot find /var/log/crawlzilla/hadoop-pids/*pid file"
-   exit 8
+   echo "cannot find /var/log/crawlzilla/hadoop-pids/*pid file"
   fi
 }
 
 # 移除檔案及資料夾
 function remove_folders () {
   show_info "$MR_remove_folders_echo_1" # "正在刪除安裝時所建立的檔案及資料夾..."
-  rm /usr/bin/crawlzilla
-  rm /usr/bin/crawlzilla_remove
-  rm -rf /opt/crawlzilla
-  rm -rf /var/log/crawlzilla
-  rm -rf /var/lib/crawlzilla
+  #[ -d /usr/bin/crawlzilla ]; then rm /usr/bin/crawlzilla
+  [ -e "/usr/bin/crawlzilla" ]&& rm /usr/bin/crawlzilla
+  [ -e "/usr/bin/crawlzilla_remove" ]&& rm /usr/bin/crawlzilla_remove
+  [ -e "/opt/crawlzilla" ]&& rm -rf /opt/crawlzilla
+  [ -e "/var/log/crawlzilla" ]&& rm -rf /var/log/crawlzilla
   
   show_info "$MR_remove_folders_echo_2" # "安裝時所建立的檔案及資料夾已刪除"
 }
@@ -140,11 +149,11 @@ linux_dist=$(lsb_release -i | awk '{print $3}')
 # for debian system
 if [ "$linux_dist" = "Ubuntu" ] || [ "$linux_dist" = "Debian" ]; then
     update-rc.d -f  crawlzilla remove
-    rm /etc/init.d/crawlzilla
+    [ -e /etc/init.d/crawlzilla ]&& rm /etc/init.d/crawlzilla
     # for rpm system
 elif [ "$linux_dist" = "CentOS" ] || [ "$linux_dist" = "Fedora" ] || [ "$linux_dist" = "SUSE" ]; then
     chkconfig --del crawlzilla
-    rm /etc/init.d/crawlzilla
+    [ -e /etc/init.d/crawlzilla ]&& rm /etc/init.d/crawlzilla
 else 
     show_info "Please delete /etc/init.d/ crawlzilla file manually."
 fi
@@ -166,9 +175,9 @@ function main () {
     else
       show_info "$MR_main_deluser_4" # show user delete selection
     fi
-    read -p "$MR_main_echo_3" confirm # confirm 1.確定 2.取消"
+    read -p "$MR_main_echo_3" confirm # confirm y=確定 n=取消"
   # make sure
-    if [ $confirm -eq 1 ]; then
+    if [ "$confirm" == "y" ]; then
       fast_shutdown_all
       show_info "shutdown service"
       remove_folders
@@ -182,13 +191,13 @@ function main () {
       fi
       show_info "$MR_main_echo_4" # "移除程序已完成！"
       LOCK=1; 
-    elif [ $confirm -eq 2 ]; then
+    elif [ "$confirm" -== "n" ]; then
       show_info "$MR_main_echo_5" # "您已取消移除程序！"
       show_info "$MR_main_echo_6" # "若要移除請再重新執行！"
       LOCK=1; 
     else
-      show_info "Hint: 1 => yes, 2 => exit "
-      show_info "Please enter 1 or 2"
+      show_info "Hint: y => yes, n => exit "
+      show_info "Please enter y or n"
     fi
   done
 }
