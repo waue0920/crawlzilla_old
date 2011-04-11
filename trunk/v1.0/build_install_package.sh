@@ -13,7 +13,7 @@ SvnCrawlzilla=`dirname "$0"`
 SvnCrawlzilla=`cd "$SvnCrawlzilla"; pwd`
 
 DistDir=./packages
-TmpDir=./Crawlzilla_Install
+TmpDir=Crawlzilla_Install
 ShellTar=Crawlzilla-$CURRENT_VER-$DATE_VER-Shell.tar.gz
 StableTar=Crawlzilla-$CURRENT_VER.$MINOR_VER.tar.gz
 FullTar=Crawlzilla-$CURRENT_VER-$DATE_VER-Full.tar.gz
@@ -75,7 +75,7 @@ cp $SvnCrawlzilla/LICENSE.txt $TmpDir/
 checkMethod 6.1
 cd $TmpDir
 ln -sf docs/README.en.txt README.txt
-ln -sf bin/install install
+#ln -sf bin/install install
 
 # 7 tar file
 cd $SvnCrawlzilla
