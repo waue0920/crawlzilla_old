@@ -3,7 +3,7 @@
 # 請先設定 DELETE_LOCK 是否要刪除
 # 以及安裝的時間版本 DATE_VER 
 
-DELETE_LOCK=1 # 1= 刪除 $TmpDir 資料夾
+#DELETE_LOCK=0 # 1= 刪除 $TmpDir 資料夾
 DATE_VER=`date +%y%m%d` # 年月日
 CURRENT_VER=1.0 # 專案目前的版本
 MINOR_VER=alpha
@@ -27,7 +27,7 @@ function checkMethod(){
   fi
 }
 # 1. generate version and svn update 
-echo "$CURRENT_VER.$MINOR_VER-$DATE_VER" > $SvnCrawlzilla/opt/version
+echo "$CURRENT_VER.$MINOR_VER-$DATE_VER" > $SvnCrawlzilla/Crawlzilla_Install/version
 checkMethod 1.1
 svn update;
 checkMethod 1.2
@@ -41,11 +41,11 @@ checkMethod 2.2
 
 #cd $SvnProject
 
-if [ -d $TmpDir ];then
-  rm -rf $TmpDir;
-  checkMethod 3.1
-fi
-mkdir $TmpDir
+#if [ -d $TmpDir ];then
+#  rm -rf $TmpDir;
+#  checkMethod 3.1
+#fi
+#mkdir $TmpDir
 
 if [ ! -d $DistDir ];then
   mkdir $DistDir
@@ -62,19 +62,19 @@ checkMethod 4.3
 
 # 5 copy dir
 
-cp -rf $SvnCrawlzilla/opt/main $TmpDir/
-checkMethod 5.1
-cp -rf $SvnCrawlzilla/docs $TmpDir/
-checkMethod 5.2
-cp -rf $SvnCrawlzilla/conf $TmpDir/
-checkMethod 5.3
+#cp -rf $SvnCrawlzilla/opt/main $TmpDir/
+#checkMethod 5.1
+#cp -rf $SvnCrawlzilla/docs $TmpDir/
+#checkMethod 5.2
+#cp -rf $SvnCrawlzilla/conf $TmpDir/
+#checkMethod 5.3
 
 # 6 copy and link
 
-cp $SvnCrawlzilla/LICENSE.txt $TmpDir/
-checkMethod 6.1
-cd $TmpDir
-ln -sf docs/README.en.txt README.txt
+#cp $SvnCrawlzilla/LICENSE.txt $TmpDir/
+#checkMethod 6.1
+#cd $TmpDir
+#ln -sf docs/README.en.txt README.txt
 #ln -sf bin/install install
 
 # 7 tar file
@@ -107,10 +107,10 @@ checkMethod 8.1
 
 
 # 8.2  DELETE_LOCK=1
-if [ $DELETE_LOCK -eq 1 ];then
-  rm -rf $TmpDir;
-  checkMethod 8.2
-fi
+#if [ $DELETE_LOCK -eq 1 ];then
+#  rm -rf $TmpDir;
+#  checkMethod 8.2
+#fi
 
 echo "完成，一切確認後，最後的檔案放在這個目錄內："
 echo "  $DistDir/$StableTar "
