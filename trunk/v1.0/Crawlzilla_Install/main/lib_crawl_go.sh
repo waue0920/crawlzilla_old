@@ -39,7 +39,7 @@ HdfsHome="/user/crawler"
 # local para
 HomeUserTmp="$HomeUserDir/$USERNAME/tmp"
 HomeUserIDB="$HomeUserDir/$USERNAME/IDB"
-HomeUserWeb="$HomeUserDir/$USERNAME/web"
+HomeUserWeb="$HomeUserDir/$USERNAME/webs"
 HomeUserMeta="$HomeUserDir/$USERNAME/meta"
 
 
@@ -75,7 +75,7 @@ function check_idb_info ( )
   else
     echo "error: $1 broken" > "$HomeUserIDB/$JNAME/meta/status"
     show_idb_info "[error] $1 broken"
-    show_info $(cat $HomeUserTmp/$JNAME/meta/crawl.log)
+    show_info $(cat $HomeUserIDB/$JNAME/meta/crawl.log)
     #cat $HomeUserIDB/$JNAME/meta/crawl.log >> $LOG_SH_TARGET 2>&1
     exit 8
   fi
