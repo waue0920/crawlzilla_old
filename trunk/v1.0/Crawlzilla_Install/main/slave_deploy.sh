@@ -15,7 +15,7 @@
 # limitations under the License.
 
 # Master IP here
-Master_IP_Address=your.master.ip.here
+Master_IP_Address=140.110.138.193
 
 Work_Path=`dirname "$0"`
 Work_Path=`cd "$Work_Path"; pwd`

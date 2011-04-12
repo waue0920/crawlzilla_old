@@ -3,7 +3,7 @@
 # 請先設定 DELETE_LOCK 是否要刪除
 # 以及安裝的時間版本 DATE_VER 
 
-#DELETE_LOCK=0 # 1= 刪除 $TmpDir 資料夾
+#DELETE_LOCK=0 # 1= 刪除 $InstallDir 資料夾
 DATE_VER=`date +%y%m%d` # 年月日
 CURRENT_VER=1.0 # 專案目前的版本
 MINOR_VER=alpha
@@ -13,7 +13,7 @@ SvnCrawlzilla=`dirname "$0"`
 SvnCrawlzilla=`cd "$SvnCrawlzilla"; pwd`
 
 DistDir=./packages
-TmpDir=Crawlzilla_Install
+InstallDir=Crawlzilla_Install
 ShellTar=Crawlzilla-$CURRENT_VER-$DATE_VER-Shell.tar.gz
 StableTar=Crawlzilla-$CURRENT_VER.$MINOR_VER.tar.gz
 FullTar=Crawlzilla-$CURRENT_VER-$DATE_VER-Full.tar.gz
@@ -41,11 +41,12 @@ checkMethod 2.2
 
 #cd $SvnProject
 
-#if [ -d $TmpDir ];then
-#  rm -rf $TmpDir;
+#if [ -d $InstallDir ];then
+#  rm -rf $InstallDir;
 #  checkMethod 3.1
 #fi
-#mkdir $TmpDir
+#mkdir $InstallDir
+
 
 if [ ! -d $DistDir ];then
   mkdir $DistDir
@@ -53,33 +54,38 @@ if [ ! -d $DistDir ];then
 fi
 
 # 4 package crawlzilla.war
-mkdir $TmpDir/web/
+if [ -d "$InstallDir/web/" ];then rm -rf $InstallDir/web; fi
+if [ -d "$InstallDir/package/" ];then rm -rf $InstallDir/package; fi
+rm $InstallDir/crawlzilla*.log
+
+
+mkdir $InstallDir/web/
 checkMethod 4.2
-cp $SvnCrawlzilla/web-src/tmp/crawlzilla.war $TmpDir/web/
+cp $SvnCrawlzilla/web-src/tmp/crawlzilla.war $InstallDir/web/
 mv $SvnCrawlzilla/web-src/tmp/crawlzilla.war $DistDir/crawlzilla-$DATE_VER.war
 checkMethod 4.3
 
 
 # 5 copy dir
 
-#cp -rf $SvnCrawlzilla/opt/main $TmpDir/
+#cp -rf $SvnCrawlzilla/opt/main $InstallDir/
 #checkMethod 5.1
-#cp -rf $SvnCrawlzilla/docs $TmpDir/
+#cp -rf $SvnCrawlzilla/docs $InstallDir/
 #checkMethod 5.2
-#cp -rf $SvnCrawlzilla/conf $TmpDir/
+#cp -rf $SvnCrawlzilla/conf $InstallDir/
 #checkMethod 5.3
 
 # 6 copy and link
 
-#cp $SvnCrawlzilla/LICENSE.txt $TmpDir/
+#cp $SvnCrawlzilla/LICENSE.txt $InstallDir/
 #checkMethod 6.1
-#cd $TmpDir
+#cd $InstallDir
 #ln -sf docs/README.en.txt README.txt
 #ln -sf bin/install install
 
 # 7 tar file
 cd $SvnCrawlzilla
-tar -czvf $ShellTar $TmpDir --exclude=.svn
+tar -czvf $ShellTar $InstallDir --exclude=.svn
 checkMethod 7.1
 
 # 7.1 make full package  .. skip
@@ -108,7 +114,7 @@ checkMethod 8.1
 
 # 8.2  DELETE_LOCK=1
 #if [ $DELETE_LOCK -eq 1 ];then
-#  rm -rf $TmpDir;
+#  rm -rf $InstallDir;
 #  checkMethod 8.2
 #fi
 
