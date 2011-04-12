@@ -1,4 +1,4 @@
-Readme
+Readme v 0.3
 
 For the latest information about CrawlZilla, please visit our website at:
 

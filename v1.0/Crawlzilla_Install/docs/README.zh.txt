@@ -1,4 +1,4 @@
-Readme
+Readme v0.3
 
 有關最新信息CrawlZilla，請訪問我們的網站：
 
