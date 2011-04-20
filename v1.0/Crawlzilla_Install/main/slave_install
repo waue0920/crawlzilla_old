@@ -23,9 +23,10 @@
 [ "`id -u`" != "0" ] && exec sudo su -c "$0" "$@"
 
 # Master IP here
-Master_IP_Address=140.110.138.193
+Master_IP_Address=your.master.ip.here
 # Master Hostname here
-Master_Hostname=vpro
+Master_Hostname=your_master_hostname_here
+
 # local para
 Linux_Distribution="";
 Linux_Version="";
