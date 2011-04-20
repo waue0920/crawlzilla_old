@@ -23,9 +23,9 @@
 [ "`id -u`" != "0" ] && exec sudo su -c "$0" "$@"
 
 # Master IP here
-Master_IP_Address=your.master.ip.here
+Master_IP_Address=140.110.138.188
 # Master Hostname here
-Master_Hostname=your_master_hostname_here
+Master_Hostname=linux-dbof
 
 # local para
 Linux_Distribution="";
@@ -34,7 +34,7 @@ Crawler_Passwd="xxxxxxxxxx";
 autoSlaveInstallFlag="no";
 
 Work_Path=`dirname "$0"`
-if [ -f $Work_Path/slave_install.sh ];then
+if [ -f $Work_Path/slave_install ];then
   Work_Path=`cd "$Work_Path"; pwd`
 else
   echo "Import the installation libraries of slave Error!!!"
@@ -427,24 +427,23 @@ function creat_crawler_account(){
 function scp_packages(){
   debug_info "$scp_packages_d1"
   mkdir /opt/crawlzilla
-  mkdir /var/lib/crawlzilla
+  #mkdir /var/lib/crawlzilla
   if [ ! -e "/var/log/crawlzilla/shell-logs" ]; then
       mkdir -p "/var/log/crawlzilla/shell-logs";
   fi
   mkdir /var/log/crawlzilla/tomcat-logs
   mkdir /var/log/crawlzilla/hadoop-logs
-  mkdir /home/crawler/crawlzilla
-  mkdir /opt/crawlzilla/slave
-  mkdir /opt/crawlzilla/main
-  mkdir /home/crawler/crawlzilla/meta/
-  debug_info "$scp_packages_d2"
+  mkdir -p /opt/crawlzilla/slave
+  mkdir -p /home/crawler/crawlzilla/system
+  mkdir -p /home/crawler/crawlzilla/meta/
+  cp -rf $Work_Path /opt/crawlzilla/main
+  #debug_info "$scp_packages_d2"
   chown -R crawler:crawler /opt/crawlzilla
   chown -R crawler:crawler /var/log/crawlzilla
-  chown -R crawler:crawler /var/lib/crawlzilla
   chown -R crawler:crawler /home/crawler/crawlzilla
 
-  ln -sf /var/log/crawlzilla /home/crawler/crawlzilla/logs
-  ln -sf /opt/crawlzilla/nutch /home/crawler/crawlzilla/nutch
+  #ln -sf /var/log/crawlzilla /home/crawler/crawlzilla/logs
+  #ln -sf /opt/crawlzilla/nutch /home/crawler/crawlzilla/nutch
   # make client remove link for easy use
   ln -sf /opt/crawlzilla/main/slave_remove /usr/bin/crawlzilla_remove
 
@@ -456,19 +455,20 @@ function scp_packages(){
   fi
  
   if [ ! -e "/opt/crawlzilla/slave/CrawlzillaSlaveOf_$Master_IP_Address.tar.gz" ];then
-    su crawler -c "scp -r -o StrictHostKeyChecking=no crawler@$1:/opt/crawlzilla/slave/CrawlzillaSlaveOf_$Master_IP_Address.tar.gz /opt/crawlzilla/slave"
+    su crawler -c "scp -r -o StrictHostKeyChecking=no crawler@${Master_IP_Address}:/opt/crawlzilla/slave/CrawlzillaSlaveOf_$Master_IP_Address.tar.gz /opt/crawlzilla/slave"
   fi
-  cp -rf $Work_Path/opt /opt/crawlzilla
+
 }
 
 
 function install_nutch_package(){
   debug_info "$install_nutch_package_d1"
   tar -zxvf /opt/crawlzilla/slave/CrawlzillaSlaveOf_$Master_IP_Address.tar.gz -C /opt/crawlzilla >/dev/null 2>&1
+  mv /opt/crawlzilla/opt/crawlzilla/nutch /opt/crawlzilla/ ; rm -rf /opt/crawlzilla/opt/
   if [ ! -d /var/log/crawlzilla/hadoop-logs ]; then mkdir /var/log/crawlzilla/hadoop-logs ; chown crawler /var/log/crawlzilla/hadoop-logs ; fi
   ln -sf /var/log/crawlzilla/hadoop-logs /opt/crawlzilla/nutch/logs
   if [ ! -d /var/log/crawlzilla/hadoop-logs ]; then mkdir /var/lib/crawlzilla ; chown crawler /var/lib/crawlzilla ; fi
-  ln -sf /var/lib/crawlzilla /opt/crawlzilla/nutch/hadoop_runspace
+  #ln -sf /var/lib/crawlzilla /opt/crawlzilla/nutch/hadoop_runspace
 
    # change sun-jre home path to each linux os
   if [ "$Linux_Distribution" == "SUSE" ] ;then
@@ -562,7 +562,7 @@ function recall_hostname_ip(){
   fi
 
   debug_info "$recall_hostname_ip_d2"
-  su crawler -c "ssh -o StrictHostKeyChecking=no crawler@$1 echo $net_address $(hostname) $net_MacAddr \>\> ~/crawlzilla/system/crawl_nodes"
+  su crawler -c "ssh -o StrictHostKeyChecking=no crawler@$Master_IP_Address echo $net_address $(hostname) \>\> ~/crawlzilla/meta/crawl_nodes"
 }
 
 function startup_hadoop_service ( ) 
@@ -587,15 +587,27 @@ function add_crawlzilla_to_initd ( )
 linux_dist=$(lsb_release -i | awk '{print $3}')
 
 # for debian system
-if [ "$linux_dist" = "Ubuntu" ] || [ "$linux_dist" = "Debian" ]; then
+if [ "$linux_dist" == "Ubuntu" ] || [ "$linux_dist" == "Debian" ]; then
     cp -f $Work_Path/crawlzilla-slave /etc/init.d/crawlzilla
     chown crawler:crawler /etc/init.d/crawlzilla
     update-rc.d crawlzilla defaults
+    
+    # fix java_home in /hadoop-env.sh if slave is different with master
+    Line_NO=`cat /opt/crawlzilla/nutch/conf/hadoop-env.sh | grep -n "export JAVA_HOME=" | sed 's/:.*//g'`
+    sed -i ''$((Line_NO))'d' /opt/crawlzilla/nutch/conf/hadoop-env.sh
+    sed -i ${Line_NO}'a export JAVA_HOME=/usr/lib/jvm/java-6-sun' /opt/crawlzilla/nutch/conf/hadoop-env.sh
+
 # for rpm system
-elif [ "$linux_dist" = "CentOS" ] || [ "$linux_dist" = "Fedora" ] || [ "$linux_dist" = "SUSE" ]; then
+elif [ "$linux_dist" == "CentOS" ] || [ "$linux_dist" == "Fedora" ] || [ "$linux_dist" == "SUSE" ]; then
     cp -f $Work_Path/crawlzilla-slave_chkconfig /etc/init.d/crawlzilla
     chown crawler.crawler /etc/init.d/crawlzilla
     chkconfig --add crawlzilla
+
+    # fix java_home in /hadoop-env.sh if slave is different with master
+    Line_NO=`cat /opt/crawlzilla/nutch/conf/hadoop-env.sh | grep -n "export JAVA_HOME=" | sed 's/:.*//g'`
+    sed -i ''$((Line_NO))'d' /opt/crawlzilla/nutch/conf/hadoop-env.sh
+    sed -i ${Line_NO}'a export JAVA_HOME=/usr/lib/jvm/java-1.6.0' /opt/crawlzilla/nutch/conf/hadoop-env.sh
+
 else
     show_info "Please delete /etc/init.d/ crawlzilla file manually."
 fi
