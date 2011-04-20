@@ -44,7 +44,7 @@ fi
 
 # [ System Load] #
 # Master IP here
-Master_IP_Address=140.110.138.193
+Master_IP_Address=master.ip
 
 ## language load 
 lang=$(locale | grep 'LANGUAGE=' | cut -d "=" -f2 | cut -d ":" -f1 )
