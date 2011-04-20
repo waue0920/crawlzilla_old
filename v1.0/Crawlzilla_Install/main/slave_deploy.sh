@@ -15,7 +15,7 @@
 # limitations under the License.
 
 # Master IP here
-Master_IP_Address=140.110.138.193
+Master_IP_Address=your.master.ip
 
 Work_Path=`dirname "$0"`
 Work_Path=`cd "$Work_Path"; pwd`
@@ -37,5 +37,5 @@ if [ -e $Work_Path/crawlzilla_slave_install ];then
   rm -rf $Work_Path/crawlzilla_slave_install
 fi
 mkdir $Work_Path/crawlzilla_slave_install
-scp -r -o StrictHostKeyChecking=no crawler@$Master_IP_Address:/opt/crawlzilla/slave/* $Work_Path/crawlzilla_slave_install/.
+scp -r -o StrictHostKeyChecking=no crawler@$Master_IP_Address:/opt/crawlzilla/slave/* $Work_Path/crawlzilla_slave_install/
 exec $Work_Path/crawlzilla_slave_install/slave_install
