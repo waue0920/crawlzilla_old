@@ -48,6 +48,17 @@ source "/opt/crawlzilla/main/log.sh" crawl_go;
 source "/opt/crawlzilla/nutch/conf/hadoop-env.sh";
 
 
+
+if [ "$3" == "redo" ] && [ -d $HomeUserIDB/$JNAME ]; then 
+    REDO=true;
+    Depth=$(cat $HomeUserIDB/$JNAME/meta/depth)
+    mkdir -p /home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/meta/urls/
+    cp $HomeUserIDB/$JNAME/meta/urls/urls.txt  $HomeUserTmp/$JNAME/meta/urls/urls.txt 
+    source "/opt/crawlzilla/main/log.sh" recrawl_go;
+fi
+
+$HomeUserTmp/$JNAME/meta/urls/urls.txt
+
 function check_tmp_info ( )
 {
   if [ $? -eq 0 ];then
