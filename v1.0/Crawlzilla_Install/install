@@ -286,6 +286,7 @@ function mkdir_Home_Var ( )
     # Home
     #su crawler -c "mkdir -p /home/crawler/crawlzilla/workspace"
     mkdir -p /home/crawler/crawlzilla/workspace
+    mkdir -p /home/crawler/crawlzilla/applyUser
     #su crawler -c "mkdir -p /home/crawler/crawlzilla/meta/tmp"
     mkdir -p /home/crawler/crawlzilla/meta/tmp
 	# Home with admin
