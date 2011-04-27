@@ -300,6 +300,7 @@ function mkdir_Home_Var ( )
     mkdir -p /home/crawler/crawlzilla/user/admin/tmp/
     mkdir -p /home/crawler/crawlzilla/user/admin/old/
     mkdir -p /home/crawler/crawlzilla/user/admin/webs/
+    mkdir -p /home/crawler/crawlzilla/applyUser
     # opt 
     mkdir -p /opt/crawlzilla/slave
     mkdir -p /var/log/crawlzilla/tomcat-logs
