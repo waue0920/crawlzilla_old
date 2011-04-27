@@ -844,8 +844,9 @@ function setup_Handmade_Code ( )
   cp -rf $Work_Path/main  /opt/crawlzilla/main
   # copy crawlzilla.war to /opt/crawlzilla/tomcat/webapps
   cp $Work_Path/web/crawlzilla.war /opt/crawlzilla/tomcat/webapps/crawlzilla.war
-  echo "crawler" > /home/crawler/crawlzilla/user/admin/meta/.passwd
-  chmod 600 /home/crawler/crawlzilla/user/admin/meta/.passwd
+  echo -n "crawler" | md5sum | awk '{print $1}' > /home/crawler/crawlzilla/user/admin/meta/passwd
+  echo "not set"  > /home/crawler/crawlzilla/user/admin/meta/email
+  chmod 600 /home/crawler/crawlzilla/user/admin/meta/passwd
   
   debug_info "$MI_install_Nutch_echo_1 $MasterIP_Address "
 # debug_info "MasterIP_Address=$MasterIP_Address"
