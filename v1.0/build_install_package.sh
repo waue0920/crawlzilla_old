@@ -33,8 +33,8 @@ svn update;
 checkMethod 1.2
 
 # 2 create crawlzilla.war file
-ant -f $SvnCrawlzilla/web-src/build.xml clean
-ant -f $SvnCrawlzilla/web-src/build.xml
+#ant -f $SvnCrawlzilla/web-src/build.xml clean
+#ant -f $SvnCrawlzilla/web-src/build.xml
 checkMethod 2.2
 
 # 3 make dir for tmp and final

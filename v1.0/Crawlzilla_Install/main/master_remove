@@ -25,7 +25,7 @@
 #   
 
 # [ Env para ] #
-Work_Path=`dirname "$0"`
+Work_Path="/opt/crawlzilla/main"
 if [ -f $Work_Path/master_remove ];then
   Work_Path=`cd "$Work_Path"; pwd`
 else
