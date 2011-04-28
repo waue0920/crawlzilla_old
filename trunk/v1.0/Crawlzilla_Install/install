@@ -920,14 +920,15 @@ function make_slave_install ( )
   #cd /opt/crawlzilla/
   #su crawler -c "tar -cvzf $Work_Path/CrawlzillaSlaveOf_$MasterIP_Address.tar.gz /opt/crawlzilla/nutch" >> /dev/null
   tar -cvzf /opt/crawlzilla/slave/CrawlzillaSlaveOf_$MasterIP_Address.tar.gz /opt/crawlzilla/nutch > /dev/null 2>&1
-  
+
   # copy files to /opt/crawlzilla/slaveand system directory 
   #mv CrawlzillaSlaveOf_$MasterIP_Address.tar.gz /opt/crawlzilla/slave
   #cp $Work_Path/main/slave_install $Work_Path/version $Work_Path/main/slave_install_func.sh $Work_Path/main/slave_remove $Work_Path/main/slave_deploy.sh $Work_Path/log.sh /opt/crawlzilla/slave
   cp $Work_Path/version $Work_Path/main/slave_* $Work_Path/main/log.sh /opt/crawlzilla/slave/
   cp -r $Work_Path/main/lang  /opt/crawlzilla/slave/
   cp -f $Conf_Path/crawlzilla_conf/* /opt/crawlzilla/slave/
-
+ 
+  cp  /opt/crawlzilla/slave/slave_deploy.sh /opt/crawlzilla/tomcat/webapps/slave_deploy.sh
 }
 
 function start_up_tomcat ( ) 
