@@ -95,13 +95,24 @@ function do_update ( )
   echo "update info "
   sudo rm -rf /opt/crawlzilla/main
   sudo svn export $SvnCrawlzillaIns/main /opt/crawlzilla/main
-  if [ "$?" == "0" ];then echo "[main] --> /opt/crawlzilla/main " ; fi
-  sudo cp $SvnCrawlzillaIns/conf/crawlzilla_conf/*-* /etc/init.d/
-  if [ "$?" == "0" ];then echo "[tomcat] --> /opt/crawlzilla/tomcat/conf " ; fi
-  sudo cp $SvnCrawlzillaIns/conf/tomcat_conf/* /opt/crawlzilla/tomcat/conf/
-  if [ "$?" == "0" ];then echo "[tomcat] --> /opt/crawlzilla/tomcat/conf " ; fi
-  sudo cp $SvnCrawlzillaIns/conf/nutch_conf/* /opt/crawlzilla/nutch/conf/
-  if [ "$?" == "0" ];then echo "[nutch] --> /opt/crawlzilla/nutch/conf " ; fi
+
+  # below would replace correct info to default !!
+  #if [ "$?" == "0" ];then echo "[main] --> /opt/crawlzilla/main " ; fi
+  #sudo cp $SvnCrawlzillaIns/conf/crawlzilla_conf/*-* /etc/init.d/
+  #if [ "$?" == "0" ];then echo "[init.d] --> /etc/init.d " ; fi
+  #sudo cp $SvnCrawlzillaIns/conf/tomcat_conf/* /opt/crawlzilla/tomcat/conf/
+  #if [ "$?" == "0" ];then echo "[tomcat] --> /opt/crawlzilla/tomcat/conf " ; fi
+  #sudo cp $SvnCrawlzillaIns/conf/nutch_conf/* /opt/crawlzilla/nutch/conf/
+  #if [ "$?" == "0" ];then echo "[nutch] --> /opt/crawlzilla/nutch/conf " ; fi
+
+  if [ -e $SvnCrawlzillaIns/web/crawlzilla.war ];then
+    sudo su crawler -c "/opt/crawlzilla/tomcat/bin/shutdown.sh"
+    sudo rm /opt/crawlzilla/tomcat/webapps/crawlzilla.war
+    sudo rm -rf /opt/crawlzilla/tomcat/webapps/crawlzilla
+    sudo su crawler -c "cp $SvnCrawlzillaIns/web/crawlzilla.war /opt/crawlzilla/tomcat/webapps/"
+    sudo su crawler -c "/opt/crawlzilla/tomcat/bin/startup.sh"
+  fi
+
   sudo chown -R crawler:crawler /home/crawler/crawlzilla/
   sudo chown -R crawler:crawler /opt/crawlzilla/
   if [ "$?" == "0" ];then echo "[chown] " ; fi
