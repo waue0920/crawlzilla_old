@@ -1,7 +1,11 @@
 #!/bin/bash
-
 SvnCrawlzilla=`dirname "$0"`
-SvnCrawlzilla=`cd "$SvnCrawlzilla"; pwd`
+SvnCrawlzilla=`cd $SvnCrawlzilla; pwd`
+SvnCrawlzillaIns=`cd "$SvnCrawlzilla/Crawlzilla_Install"; pwd`
+if [ ! -f $SvnCrawlzillaIns/install ];then
+  echo "$SvnCrawlzillaIns worng!"
+fi
+
 Job=$1
 function su_permit ( )
 {
@@ -89,14 +93,18 @@ function do_build ( )
 function do_update ( ) 
 {
   echo "update info "
-  sudo cp $SvnCrawlzilla/conf/crawlzilla_conf/* /etc/init.d/
+  sudo rm -rf /opt/crawlzilla/main
+  sudo svn export $SvnCrawlzillaIns/main /opt/crawlzilla/main
+  if [ "$?" == "0" ];then echo "[main] --> /opt/crawlzilla/main " ; fi
+  sudo cp $SvnCrawlzillaIns/conf/crawlzilla_conf/*-* /etc/init.d/
   if [ "$?" == "0" ];then echo "[tomcat] --> /opt/crawlzilla/tomcat/conf " ; fi
-  sudo cp $SvnCrawlzilla/conf/tomcat_conf/* /opt/crawlzilla/tomcat/conf/
+  sudo cp $SvnCrawlzillaIns/conf/tomcat_conf/* /opt/crawlzilla/tomcat/conf/
   if [ "$?" == "0" ];then echo "[tomcat] --> /opt/crawlzilla/tomcat/conf " ; fi
-  sudo cp $SvnCrawlzilla/conf/nutch_conf/* /opt/crawlzilla/nutch/conf/
+  sudo cp $SvnCrawlzillaIns/conf/nutch_conf/* /opt/crawlzilla/nutch/conf/
   if [ "$?" == "0" ];then echo "[nutch] --> /opt/crawlzilla/nutch/conf " ; fi
   sudo chown -R crawler:crawler /home/crawler/crawlzilla/
-  if [ "$?" == "0" ];then echo "[chown] /home/crawler/crawlzilla --> ./ " ; fi
+  sudo chown -R crawler:crawler /opt/crawlzilla/
+  if [ "$?" == "0" ];then echo "[chown] " ; fi
 }
 
 function do_remove ( ) 
@@ -143,7 +151,9 @@ function make_war ( )
    if [ "$?" == "0" ];then
       echo "[ok] crawlzilla.war --> ./ "
    fi
-   mv $SvnCrawlzilla/web-src/tmp/crawlzilla.war ./
+   if [ -e $SvnCrawlzilla/web-src/tmp/crawlzilla.war ];then
+      mv $SvnCrawlzilla/web-src/tmp/crawlzilla.war $SvnCrawlzillaIns/web
+   fi
  else 
    echo "make sure jsp files is on $SvnCrawlzilla/web-src"
  fi
@@ -163,9 +173,9 @@ web)
   ;;
 *)
   echo " Usage : "
-  echo " sudo $0 build "
+#  echo " sudo $0 build "
   echo " sudo $0 update "
-  echo " sudo $0 remove "
+#  echo " sudo $0 remove "
   echo " $0 web "
   exit 0;
 ;;
