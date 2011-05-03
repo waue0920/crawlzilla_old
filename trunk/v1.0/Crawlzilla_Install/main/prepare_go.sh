@@ -22,7 +22,7 @@ HdfsHome="/user/crawler"
 # local para
 HomeUserTmp="$HomeUserDir/$USERNAME/tmp"
 HomeUserIDB="$HomeUserDir/$USERNAME/IDB"
-HomeUserWeb="$HomeUserDir/$USERNAME/web"
+HomeUserWeb="$HomeUserDir/$USERNAME/webs"
 HomeUserMeta="$HomeUserDir/$USERNAME/meta"
 
 if [ ! -e $URLS ];then echo "please check urls file"; exit; fi

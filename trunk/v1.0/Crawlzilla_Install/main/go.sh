@@ -23,7 +23,7 @@ HdfsHome="/user/crawler"
 # local para
 HomeUserTmp="$HomeUserDir/$USERNAME/tmp"
 HomeUserIDB="$HomeUserDir/$USERNAME/IDB"
-HomeUserWeb="$HomeUserDir/$USERNAME/web"
+HomeUserWeb="$HomeUserDir/$USERNAME/webs"
 HomeUserMeta="$HomeUserDir/$USERNAME/meta"
 
 
