@@ -35,17 +35,11 @@ checkMethod 1.2
 # 2 create crawlzilla.war file
 ant -f $SvnCrawlzilla/web-src/build.xml clean
 ant -f $SvnCrawlzilla/web-src/build.xml
-checkMethod 2.2
+#checkMethod 2.1
 
 # 3 make dir for tmp and final
 
 #cd $SvnProject
-
-#if [ -d $InstallDir ];then
-#  rm -rf $InstallDir;
-#  checkMethod 3.1
-#fi
-#mkdir $InstallDir
 
 
 if [ ! -d $DistDir ];then
@@ -54,65 +48,49 @@ if [ ! -d $DistDir ];then
 fi
 
 # 4 package crawlzilla.war
-if [ -d "$InstallDir/web/" ];then rm -rf $InstallDir/web; fi
-if [ -d "$InstallDir/package/" ];then rm -rf $InstallDir/package; fi
+#if [ -d "$InstallDir/web/" ];then rm -rf $InstallDir/web; fi
+#if [ -d "$InstallDir/package/" ];then rm -rf $InstallDir/package; fi
 #rm $InstallDir/crawlzilla*.log
 
 
-mkdir $InstallDir/web/
-checkMethod 4.2
-cp $SvnCrawlzilla/web-src/tmp/crawlzilla.war $InstallDir/web/
-mv $SvnCrawlzilla/web-src/tmp/crawlzilla.war $DistDir/crawlzilla-$DATE_VER.war
-checkMethod 4.3
-
-
-# 5 copy dir
-
-#cp -rf $SvnCrawlzilla/opt/main $InstallDir/
-#checkMethod 5.1
-#cp -rf $SvnCrawlzilla/docs $InstallDir/
-#checkMethod 5.2
-#cp -rf $SvnCrawlzilla/conf $InstallDir/
-#checkMethod 5.3
-
-# 6 copy and link
-
-#cp $SvnCrawlzilla/LICENSE.txt $InstallDir/
-#checkMethod 6.1
-#cd $InstallDir
-#ln -sf docs/README.en.txt README.txt
-#ln -sf bin/install install
-
-# 7 tar file
-cd $SvnCrawlzilla
-tar -czvf $ShellTar $InstallDir --exclude=.svn
-checkMethod 7.1
-
-# 7.1 make full package  .. skip
-
-# 8 reload dir
-if [ -f $DistDir/$ShellTar ];then
-  rm $DistDir/$ShellTar;
-  checkMethod 8.0
+#mkdir $InstallDir/web/
+#checkMethod 4.2
+if [ -e "$SvnCrawlzilla/web-src/tmp/crawlzilla.war" ];then
+  cp $SvnCrawlzilla/web-src/tmp/crawlzilla.war $InstallDir/web/
+  mv $SvnCrawlzilla/web-src/tmp/crawlzilla.war $DistDir/crawlzilla-$DATE_VER.war
+  checkMethod 4.3
 fi
 
+# 5 tar file
+cd $SvnCrawlzilla
+tar -czvf $ShellTar $InstallDir --exclude=.svn
+checkMethod 5.1
 
+# 5.1 make full package  .. skip
+
+# 6 reload dir
+if [ -f $DistDir/$ShellTar ];then
+  rm $DistDir/$ShellTar;
+  checkMethod 6.0
+fi
+
+# 7  stable
 echo "Is it stable version ?"
 read -p "[y/n] :" stable_check
 
 if [ "$stable_check" == "y" ];then
   if [ -f $DistDir/$StableTar ];then
     rm $DistDir/$StableTar;
-    checkMethod 8.0
+    checkMethod 7.0
   fi
   cp $ShellTar $DistDir/$StableTar
-  checkMethod 8.1
+  checkMethod 7.0
 fi
 mv $ShellTar $DistDir
-checkMethod 8.1
+checkMethod 7.0
 
 
-# 8.2  DELETE_LOCK=1
+# 8  DELETE_LOCK=1
 #if [ $DELETE_LOCK -eq 1 ];then
 #  rm -rf $InstallDir;
 #  checkMethod 8.2

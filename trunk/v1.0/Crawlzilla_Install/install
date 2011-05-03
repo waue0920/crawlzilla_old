@@ -56,7 +56,7 @@ HdfsHome="/user/crawler"
 # local para
 HomeUserTmp="$HomeUserDir/$USERNAME/tmp"
 HomeUserIDB="$HomeUserDir/$USERNAME/IDB"
-HomeUserWeb="$HomeUserDir/$USERNAME/web"
+HomeUserWeb="$HomeUserDir/$USERNAME/webs"
 HomeUserMeta="$HomeUserDir/$USERNAME/meta"
 
 
@@ -844,6 +844,10 @@ function setup_Handmade_Code ( )
   cp -rf $Work_Path/main  /opt/crawlzilla/main
   # copy crawlzilla.war to /opt/crawlzilla/tomcat/webapps
   cp $Work_Path/web/crawlzilla.war /opt/crawlzilla/tomcat/webapps/crawlzilla.war
+  # redirect index to crawlzilla
+  rm -rf /opt/crawlzilla/tomcat/webappl/ROOT/*
+  cp $Work_Path/web/index.jsp /opt/crawlzilla/tomcat/webapps/ROOT/
+  
   echo -n "crawler" | md5sum | awk '{print $1}' > /home/crawler/crawlzilla/user/admin/meta/passwd
   echo "not set"  > /home/crawler/crawlzilla/user/admin/meta/email
   chmod 600 /home/crawler/crawlzilla/user/admin/meta/passwd
@@ -922,13 +926,11 @@ function make_slave_install ( )
   tar -cvzf /opt/crawlzilla/slave/CrawlzillaSlaveOf_$MasterIP_Address.tar.gz /opt/crawlzilla/nutch > /dev/null 2>&1
 
   # copy files to /opt/crawlzilla/slaveand system directory 
-  #mv CrawlzillaSlaveOf_$MasterIP_Address.tar.gz /opt/crawlzilla/slave
-  #cp $Work_Path/main/slave_install $Work_Path/version $Work_Path/main/slave_install_func.sh $Work_Path/main/slave_remove $Work_Path/main/slave_deploy.sh $Work_Path/log.sh /opt/crawlzilla/slave
   cp $Work_Path/version $Work_Path/main/slave_* $Work_Path/main/log.sh /opt/crawlzilla/slave/
   cp -r $Work_Path/main/lang  /opt/crawlzilla/slave/
   cp -f $Conf_Path/crawlzilla_conf/* /opt/crawlzilla/slave/
  
-  cp  /opt/crawlzilla/slave/slave_deploy.sh /opt/crawlzilla/tomcat/webapps/slave_deploy.sh
+  cp  /opt/crawlzilla/slave/slave_deploy.sh /opt/crawlzilla/tomcat/webapps/ROOT/slave_deploy.sh
 }
 
 function start_up_tomcat ( ) 
