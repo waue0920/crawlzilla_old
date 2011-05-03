@@ -60,7 +60,7 @@ HdfsHome="/user/crawler"
 # local para
 HomeUserTmp="$HomeUserDir/$USERNAME/tmp"
 HomeUserIDB="$HomeUserDir/$USERNAME/IDB"
-HomeUserWeb="$HomeUserDir/$USERNAME/web"
+HomeUserWeb="$HomeUserDir/$USERNAME/webs"
 HomeUserMeta="$HomeUserDir/$USERNAME/meta"
 
 
@@ -227,12 +227,12 @@ check_info "mv indexDB from tmp to IDB"
 if [ ! -d $HomeUserWeb/$JNAME ];then
    # prepare $JNAME at tomcat
    cp -rf $OptWebapp/default $HomeUserWeb/$JNAME
-   #check_idb_info "cp default to user/web/$JNAME"
-   check_info "cp default to user/web/$JNAME"
-   # inject the nutch-site.xml for linking web and idb
+   #check_idb_info "cp default to user/webs/$JNAME"
+   check_info "cp default to user/webs/$JNAME"
+   # inject the nutch-site.xml for linking webs and idb
    sed -i '4s/XS_DIRX/'$USERNAME'\/IDB\/'$JNAME'/g' $HomeUserWeb/$JNAME/WEB-INF/classes/nutch-site.xml
-   #check_idb_info "inject the nutch-site.xml for linking web and idb"
-   check_info "inject the nutch-site.xml for linking web and idb"
+   #check_idb_info "inject the nutch-site.xml for linking webs and idb"
+   check_info "inject the nutch-site.xml for linking webs and idb"
 fi
 
 # clean link for tomcat reload
@@ -240,7 +240,7 @@ fi
 if [ -e $OptWebapp/${USERNAME}_$JNAME ]; then
    rm $OptWebapp/${USERNAME}_$JNAME
 fi
-# link user/$USERNAME/web/JNAME to tomcat/webapps/$USERNAME/JNAME
+# link user/$USERNAME/webs/JNAME to tomcat/webapps/$USERNAME/JNAME
 ln -sf $HomeUserWeb/$JNAME $OptWebapp/${USERNAME}_$JNAME
 #check_idb_info "link to tomcat/webapps"
 check_info "link to tomcat/webapps"
