@@ -33,8 +33,8 @@ svn update;
 checkMethod 1.2
 
 # 2 create crawlzilla.war file
-#ant -f $SvnCrawlzilla/web-src/build.xml clean
-#ant -f $SvnCrawlzilla/web-src/build.xml
+ant -f $SvnCrawlzilla/web-src/build.xml clean
+ant -f $SvnCrawlzilla/web-src/build.xml
 checkMethod 2.2
 
 # 3 make dir for tmp and final
@@ -56,7 +56,7 @@ fi
 # 4 package crawlzilla.war
 if [ -d "$InstallDir/web/" ];then rm -rf $InstallDir/web; fi
 if [ -d "$InstallDir/package/" ];then rm -rf $InstallDir/package; fi
-rm $InstallDir/crawlzilla*.log
+#rm $InstallDir/crawlzilla*.log
 
 
 mkdir $InstallDir/web/
