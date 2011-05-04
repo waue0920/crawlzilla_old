@@ -88,7 +88,7 @@ function check_info ( )
 ### program
 
 # local para
-JPID=$(cat "/home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/meta/go.pid") # go job pid 
+JPID="/home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/meta/go.pid" # go job pid 
 JSTIME="/home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/meta/starttime" # start 
 STATUS_FILE="/home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/meta/status" # status path
 
@@ -99,28 +99,29 @@ if [ ! -d /home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/meta ];then
 fi
 # job have not start
 if ! /opt/crawlzilla/nutch/bin/hadoop dfs -test -d /user/crawler/$USERNAME/$JNAME/segments ;then
-    show_info "job have not start; check hdfs:/user/crawler/$USERNAME/$JNAME/segments"
-    exit 8;
+    show_info "job have not on hdfs; check hdfs:/user/crawler/$USERNAME/$JNAME/segments"
+#    exit 8;
 fi
-# process is running
-ps $JPID >/dev/null 2>&1
-if [ $? -eq 0 ];then
-    show_info "process is running; check pid $JPID"
-    exit 8;
+
+if [ -f $JPID ];then
+  JPID=$(cat $JPID)
+  # process is running
+  #ps $JPID >/dev/null 2>&1
+  #if [ $? -eq 0 ];then
+  #    show_info "process is running; check pid $JPID"
+  #    exit 8;
+  #fi
+
+  # kill pid ( old method )
+  ps $JPID >/dev/null 2>&1
+  if [ $? -eq 0 ];then
+    show_info "$JPID killing .." 
+    kill -9 $JPID >/dev/null 2>&1
+    if [ ! $? -eq 0 ];then debug_info "Warning!!! kill go.sh not work"; fi
+  fi
 fi
-## kill pid ( old method )
-#ps $JPID >/dev/null 2>&1
-#if [ $? -eq 0 ];then
-#    show_info "0 kill ps" 
-#    kill -9 $JPID >/dev/null 2>&1
-#    if [ ! $? -eq 0 ];then debug_info "Warning!!! kill go.sh not work"; fi
-#fi
 
-
-
-
-
-DATE=$(date)
+DATE=$(date +%Y%m%d)
 show_info "Fix $JNAME BEGIN at $DATE"
 
 
@@ -217,7 +218,9 @@ fi # 1_end
 ## end if without /home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/index
 fi # 0_end
 
-
+# check index is finish or not, otherwise don't work
+if [ -d /home/crawler/crawlzilla/user/$USERNAME/tmp/$JNAME/index ]; then # index_check
+ 
 # move the index-db from tmp to IDB
 mv $HomeUserTmp/$JNAME $HomeUserIDB/$JNAME
 #check_idb_info "mv indexDB from tmp to IDB"
@@ -246,7 +249,9 @@ ln -sf $HomeUserWeb/$JNAME $OptWebapp/${USERNAME}_$JNAME
 check_info "link to tomcat/webapps"
 
 # clean meta-files
-rm "$HomeUserIDB/$JNAME/meta/go.pid"
+if [ -e $HomeUserIDB/$JNAME/meta/go.pid ];then
+  rm "$HomeUserIDB/$JNAME/meta/go.pid"
+fi
 
 $OptNutchBin/hadoop dfs -test -e $HdfsHome/$USERNAME/$JNAME
 if [ $? -eq 0 ]; then
@@ -275,3 +280,5 @@ fi
 if [ -e $HomeUserIDB/$JNAME/meta/crawl.log ] && [ -e $LOG_SH_TARGET ];then
   cat $HomeUserIDB/$JNAME/meta/crawl.log >> $LOG_SH_TARGET 2>&1
 fi
+
+fi # index_check
