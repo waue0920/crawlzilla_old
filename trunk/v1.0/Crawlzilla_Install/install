@@ -845,7 +845,7 @@ function setup_Handmade_Code ( )
   # copy crawlzilla.war to /opt/crawlzilla/tomcat/webapps
   cp $Work_Path/web/crawlzilla.war /opt/crawlzilla/tomcat/webapps/crawlzilla.war
   # redirect index to crawlzilla
-  rm -rf /opt/crawlzilla/tomcat/webappl/ROOT/*
+  rm -rf /opt/crawlzilla/tomcat/webapps/ROOT/*
   cp $Work_Path/web/index.jsp /opt/crawlzilla/tomcat/webapps/ROOT/
   
   echo -n "crawler" | md5sum | awk '{print $1}' > /home/crawler/crawlzilla/user/admin/meta/passwd
