@@ -254,6 +254,7 @@ $DIALOG --clear --backtitle "$dia_back" \
         "tomcat_switch" "$dia_main_menu_1_5" \
         "tomcat_port" "$dia_main_menu_1_6" \
         "lang_switch" "$dia_main_menu_1_7" \
+        "auto_update" "$dia_main_menu_1_9" \
         "slave_install" "$dia_main_menu_1_8" \
         "exit" "$dia_exit" 2>$main_choice
 }
@@ -624,7 +625,11 @@ fi
     menu_choose
 }
 
-function slave_install (){
+function auto_update ( ){
+  /opt/crawlzilla/main/auto_update.sh
+}
+
+function slave_install ( ) {
   cat /opt/crawlzilla/slave/README.txt
   read -p "Press enter to countine..."
   main_menu
@@ -690,6 +695,8 @@ case $(cat $main_choice) in
         lang_switch;;
     "slave_install")
         slave_install;;
+    "auto_update")
+        auto_update;;
 esac
 }
 

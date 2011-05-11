@@ -16,7 +16,7 @@ DistDir=./packages
 InstallDir=Crawlzilla_Install
 ShellTar=Crawlzilla-$CURRENT_VER.$DATE_VER.tar.gz
 StableTar=Crawlzilla-$CURRENT_VER.$DATE_VER.tar.gz
-FullTar=Crawlzilla-$CURRENT_VER-$DATE_VER-Full.tar.gz
+FullTar=Crawlzilla-$CURRENT_VER.$DATE_VER-Full.tar.gz
 
 function checkMethod(){
   if [ $? -eq 0 ];then
