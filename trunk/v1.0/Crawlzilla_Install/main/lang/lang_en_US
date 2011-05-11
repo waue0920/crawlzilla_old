@@ -339,7 +339,7 @@ dia_main_menu_1_5="Startup/Shutdown/Restart Tomcat"
 dia_main_menu_1_6="Change Tomcat port"
 dia_main_menu_1_7="Change language"
 dia_main_menu_1_8="Client Install Steps"
-
+dia_main_menu_1_9="System Auto Update"
 
 ## [Lang for cluster_status()] ##
 cluster_status_echo_1="[IP] \t\t [Hostname] \t [Network] \t [Computing Ability]"

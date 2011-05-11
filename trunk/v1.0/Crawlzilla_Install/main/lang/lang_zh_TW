@@ -343,6 +343,7 @@ dia_main_menu_1_5="啟動/停止/重新啟動 Tomcat"
 dia_main_menu_1_6="更改 Tomcat port"
 dia_main_menu_1_7="更換語言"
 dia_main_menu_1_8="從屬主機Slave安裝步驟"
+dia_main_menu_1_9="系統自動更新"
 
 ## [Lang for cluster_status()] ##
 cluster_status_echo_1="[位址] \t\t [名稱] \t [網路] \t [運算狀態]"

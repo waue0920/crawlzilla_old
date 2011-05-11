@@ -842,6 +842,7 @@ function setup_Handmade_Code ( )
 
   # copy /opt/crawlzilla/main
   cp -rf $Work_Path/main  /opt/crawlzilla/main
+  cp $Work_Path/version  /opt/crawlzilla/
   # copy crawlzilla.war to /opt/crawlzilla/tomcat/webapps
   cp $Work_Path/web/crawlzilla.war /opt/crawlzilla/tomcat/webapps/crawlzilla.war
   # redirect index to crawlzilla
