@@ -14,7 +14,7 @@ SvnCrawlzilla=`cd "$SvnCrawlzilla"; pwd`
 
 DistDir=./packages
 InstallDir=Crawlzilla_Install
-ShellTar=Crawlzilla-$CURRENT_VER-$DATE_VER-Shell.tar.gz
+ShellTar=Crawlzilla-$CURRENT_VER.$DATE_VER.tar.gz
 StableTar=Crawlzilla-$CURRENT_VER.$DATE_VER.tar.gz
 FullTar=Crawlzilla-$CURRENT_VER-$DATE_VER-Full.tar.gz
 
