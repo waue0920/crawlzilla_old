@@ -112,6 +112,7 @@ if [ "$upload_sf" == "y" ];then
     fi
     # 上傳到sf.net
     scp $DistDir/$ShellTar $USER,crawlzilla@frs.sourceforge.net:/home/frs/project/c/cr/crawlzilla/testing/Crawlzilla-$CURRENT_VER/
+    scp $InstallDir/version $USER,crawlzilla@frs.sourceforge.net:/home/frs/project/c/cr/crawlzilla/testing/
     echo "最新的版本[ $ShellTar ]也同時上傳到sf.net囉"
     echo "http://sourceforge.net/downloads/crawlzilla/testing/Crawlzilla-$CURRENT_VER/"
 fi
