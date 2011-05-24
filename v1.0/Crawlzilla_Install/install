@@ -847,7 +847,8 @@ function setup_Handmade_Code ( )
   cp $Work_Path/web/crawlzilla.war /opt/crawlzilla/tomcat/webapps/crawlzilla.war
   # redirect index to crawlzilla
   rm -rf /opt/crawlzilla/tomcat/webapps/ROOT/*
-  cp $Work_Path/web/index.jsp /opt/crawlzilla/tomcat/webapps/ROOT/
+  cp -f $Work_Path/web/index.jsp /opt/crawlzilla/tomcat/webapps/ROOT/
+  cp -rf $Work_Path/web/tomcat_default/patch/* /opt/crawlzilla/tomcat/webapps/default/
   
   echo -n "crawler" | md5sum | awk '{print $1}' > /home/crawler/crawlzilla/user/admin/meta/passwd
   echo "not set"  > /home/crawler/crawlzilla/user/admin/meta/email
