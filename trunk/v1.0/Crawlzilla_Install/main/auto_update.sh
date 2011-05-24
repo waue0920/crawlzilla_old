@@ -47,6 +47,7 @@ cp $Work_Dir/version  /opt/crawlzilla/
 mv /opt/crawlzilla/tomcat/webapps/crawlzilla.war $Update_Dir/
 mv /opt/crawlzilla/tomcat/webapps/crawlzilla $Update_Dir/crawlzilla-web
 cp $Work_Dir/web/crawlzilla.war /opt/crawlzilla/tomcat/webapps/crawlzilla.war
+cp -rf $Work_Path/web/tomcat_default/patch/* /opt/crawlzilla/tomcat/webapps/default/
 if [ $? == "0" ];then echo " Update Crawlzill websites"; fi
 
 #chown -R crawler /opt/crawlzilla/main/
