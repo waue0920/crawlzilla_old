@@ -849,9 +849,11 @@ function setup_Handmade_Code ( )
   rm -rf /opt/crawlzilla/tomcat/webapps/ROOT/*
   cp -f $Work_Path/web/index.jsp /opt/crawlzilla/tomcat/webapps/ROOT/
   cp -rf $Work_Path/web/tomcat_default/patch/* /opt/crawlzilla/tomcat/webapps/default/
-  
+  weblang=$(locale | grep 'LANGUAGE=' | cut -d "=" -f2 | cut -d ":" -f1);
+
   echo -n "crawler" | md5sum | awk '{print $1}' > /home/crawler/crawlzilla/user/admin/meta/passwd
   echo "not set"  > /home/crawler/crawlzilla/user/admin/meta/email
+  echo $weblang > /home/crawler/crawlzilla/user/admin/meta/weblang
   chmod 600 /home/crawler/crawlzilla/user/admin/meta/passwd
   
   debug_info "$MI_install_Nutch_echo_1 $MasterIP_Address "
