@@ -1057,6 +1057,8 @@ function main ( )
     show_info "$MI_main_echo_3"
 #   show_info "Install Successfully!!"
     show_info "$MI_main_echo_4$MasterIP_Address:8080"
+    show_info "$MI_main_echo_5"
+    show_info "$MI_main_echo_6"
 #   show_info "Visit http://$MasterIP_Address:8080"
     slave_install_commands
     generateReadme
