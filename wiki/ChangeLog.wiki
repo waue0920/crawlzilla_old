@@ -1,3 +1,12 @@
+= Crawlzilla 1.0.0 Change Log=
+< { waue, shunfa } _at_ nchc.org.tw > 4 Jul 2011
+ * 更新Nutch核心版本1.2
+ * 多人共享：只需要申請一個帳號即可擁有自己的搜尋引擎
+ * 系統排程：系統任務設定完成後，可設定是否要即時執行，或預約Job的爬取時間
+ * 索引庫自動更新：設定更新頻率，讓搜尋引擎隨時擁有最新的資訊
+ * 軟體自動更新：自動偵測更新Crawlzilla管理版本
+ * 即時體驗網址：http://demo.crawlzilla.info/
+ * more info see [https://trac.nchc.org.tw/cloud/wiki/crawlzilla/v1.0_relasedNote here]
 = Crawlzilla 0.3.0 Change Log=
 < { rock, waue, shunfa } _at_ nchc.org.tw > 22 Nov 2010
 
