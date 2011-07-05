@@ -572,6 +572,12 @@ function set_crawler_passwd ( )
   fi
 }
 
+function setEmail ( )
+{
+    show_info "Please enter your email"
+    read -p "email: " crawlerEmail
+}
+
 # add crawler account Crawler_Passwd
 function creat_crawler_account ( )
 {
@@ -852,7 +858,7 @@ function setup_Handmade_Code ( )
   weblang=$(locale | grep 'LANGUAGE=' | cut -d "=" -f2 | cut -d ":" -f1);
 
   echo -n "crawler" | md5sum | awk '{print $1}' > /home/crawler/crawlzilla/user/admin/meta/passwd
-  echo "not set"  > /home/crawler/crawlzilla/user/admin/meta/email
+  echo $crawlerEmail > /home/crawler/crawlzilla/user/admin/meta/email
   echo $weblang > /home/crawler/crawlzilla/user/admin/meta/weblang
   chmod 600 /home/crawler/crawlzilla/user/admin/meta/passwd
   
@@ -1021,6 +1027,7 @@ function main ( )
   show_info "$MI_main_echo_1"
   #set_install_information
   set_crawler_passwd
+  setEmail
   select_eth  
   show_master_info
   show_info "$MI_main_echo_2"
