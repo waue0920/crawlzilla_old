@@ -5,6 +5,7 @@
  * 系統排程：系統任務設定完成後，可設定是否要即時執行，或預約Job的爬取時間
  * 索引庫自動更新：設定更新頻率，讓搜尋引擎隨時擁有最新的資訊
  * 軟體自動更新：自動偵測更新Crawlzilla管理版本
+ * email通知會員帳號狀態(安裝及註冊時請務必留下正確的email資訊) 
  * 即時體驗網址：http://demo.crawlzilla.info/
  * more info see [https://trac.nchc.org.tw/cloud/wiki/crawlzilla/v1.0_relasedNote here]
 = Crawlzilla 0.3.0 Change Log=
