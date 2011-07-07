@@ -638,7 +638,7 @@ function creat_crawler_account ( )
 
 function select_eth ( ) 
 {
-  net_interfaces=$(/sbin/ifconfig | grep ^eth | cut -d " " -f1)
+  net_interfaces=$(/sbin/ifconfig | grep Ethernet | cut -d " " -f1)
   net_nu=$(echo $net_interfaces | wc -w)
 
   # when only one eth interface
