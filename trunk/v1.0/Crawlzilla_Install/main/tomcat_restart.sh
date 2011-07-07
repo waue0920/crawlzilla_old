@@ -21,18 +21,22 @@
 # Version:
 #    1.0
 # History:
-#    
+#   2011 07 07 add JAVA_HOME and  JRE_HOME 
 
 #Tomcat_HOME="/opt/crawlzilla/tomcat"
+if [ -e "/usr/lib/jvm/java-6-sun" ];then
+    export JAVA_HOME="/usr/lib/jvm/java-6-sun"
+    export JRE_HOME=$JAVA_HOME"/jre"
+fi
 
 command=$1
 tom_pids=$(ps x | grep -v "grep" | grep "tomcat" | awk '{print $1}')
 
 source "/opt/crawlzilla/main/log.sh" tomcat_restart_sh;
-if [ $command == "start" ];then
+if [ "$command" == "start" ];then
 	/opt/crawlzilla/tomcat/bin/startup.sh
 	debug_info "/opt/crawlzilla/tomcat/bin/startup.sh"
-elif [ $command == "stop" ];then
+elif [ "$command" == "stop" ];then
 	/opt/crawlzilla/tomcat/bin/shutdown.sh
 	debug_info "/opt/crawlzilla/tomcat/bin/shutdown.sh"
 	kill $tom_pids
