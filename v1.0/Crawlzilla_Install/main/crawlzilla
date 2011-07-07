@@ -246,7 +246,7 @@ main_choice="/home/crawler/crawlzilla/meta/menu_tmp/main_choice"
 
 $DIALOG --clear --backtitle "$dia_back" \
     --title "$dia_main_title_1" \
-        --menu "$dia_choose" 18 60 9 \
+        --menu "$dia_choose" 18 60 10 \
         "cluster_status" "$dia_main_menu_1_1" \
         "fast_manage"  "$dia_main_menu_1_2" \
         "cluster_setup" "$dia_main_menu_1_3" \
