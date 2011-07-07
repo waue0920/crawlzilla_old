@@ -272,7 +272,9 @@ function install_packages ( )
   
       debug_info "/usr/sbin/update-alternatives --set java /usr/lib/jvm/java-1.6.0-sun-1.6.0/bin/java"
       /usr/sbin/update-alternatives --set java /usr/lib/jvm/java-1.6.0-sun-1.6.0/bin/java
-  
+      if [ -d /usr/lib/jvm/java-1.6.0-sun-1.6.0 ]&&[ ! -e /usr/lib/jvm/java-6-sun ];then
+	ln -sf /usr/lib/jvm/java-1.6.0-sun-1.6.0 /usr/lib/jvm/java-6-sun
+      fi
     else
       show_info "$MI_install_pack_if_2 $install_array" 
     fi
@@ -418,6 +420,9 @@ echo y | bash $Work_Path/jdk-6u21-linux-i586-rpm.bin
 rpm -Uvh $Work_Path/jdk-6u21-linux-i586.rpm
 /usr/sbin/alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_21/bin/java 1
 /usr/sbin/alternatives --set java /usr/java/jdk1.6.0_21/bin/java
+if [ -d /usr/java/jdk1.6.0_21 ]&&[ ! -e /usr/lib/jvm/java-6-sun ];then
+    ln -sf /usr/java/jdk1.6.0_21 /usr/lib/jvm/java-6-sun
+fi
 }
 
 function yum_install_sun_java_x86_64 ( )
@@ -426,7 +431,10 @@ wget -nc 'https://sourceforge.net/projects/crawlzilla/files/other/jdk-6u21-linux
 echo y | bash $Work_Path/jdk-6u21-linux-x64-rpm.bin               
 rpm -Uvh $Work_Path/jdk-6u21-linux-amd64.rpm
 /usr/sbin/alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_21/bin/java 1
-/usr/sbin/alternatives --set java /usr/java/jdk1.6.0_21/bin/java                                                                                                               
+/usr/sbin/alternatives --set java /usr/java/jdk1.6.0_21/bin/java
+if [ -d /usr/java/jdk1.6.0_21 ]&&[ ! -e /usr/lib/jvm/java-6-sun ];then
+    ln -sf /usr/java/jdk1.6.0_21 /usr/lib/jvm/java-6-sun
+fi
 }
 
 function check_crawlzilla_installed ( )
