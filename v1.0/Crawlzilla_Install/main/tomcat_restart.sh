@@ -27,6 +27,18 @@
 if [ -e "/usr/lib/jvm/java-6-sun" ];then
     export JAVA_HOME="/usr/lib/jvm/java-6-sun"
     export JRE_HOME=$JAVA_HOME"/jre"
+else
+    if [ -d /usr/lib/jvm/java-1.6.0-sun-1.6.0 ];then
+        ln -sf /usr/lib/jvm/java-1.6.0-sun-1.6.0 /usr/lib/jvm/java-6-sun
+	export JAVA_HOME="/usr/lib/jvm/java-6-sun"
+        export JRE_HOME=$JAVA_HOME"/jre"
+    elif [ -d /usr/java/jdk1.6.0_21 ];then
+	ln -sf /usr/java/jdk1.6.0_21 /usr/lib/jvm/java-6-sun
+	export JAVA_HOME="/usr/lib/jvm/java-6-sun"
+        export JRE_HOME=$JAVA_HOME"/jre"
+    else
+	debug_info "There is no JAVA_HOME and JRE_HOME "
+    fi
 fi
 
 command=$1
