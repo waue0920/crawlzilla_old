@@ -263,13 +263,12 @@ function install_packages ( )
       fi
   
     elif [ "$Linux_Distribution" == "SUSE" ] ;then
-      show_info "\n CentOS $install_pack_if_1 $install_array"
+      show_info "\n SUSE $install_pack_if_1 $install_array"
       debug_info "zypper install -n expect openssh dialog java-1_6_0-sun"
-      zypper install -n expect openssh dialog java-1_6_0-sun
+      zypper install -n expect openssh dialog java-1_6_0-sun-devel
       #opensuse default sun java is /usr/lib/jvm/java-1.6.0-sun-1.6.0/bin/java
-      debug_info "/usr/sbin/update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-1.6.0-sun-1.6.  0/bin/java 1"
+      debug_info "/usr/sbin/update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-1.6.0-sun-1.6.0/bin/java 1"
       /usr/sbin/update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-1.6.0-sun-1.6.0/bin/java 1 
-  
       debug_info "/usr/sbin/update-alternatives --set java /usr/lib/jvm/java-1.6.0-sun-1.6.0/bin/java"
       /usr/sbin/update-alternatives --set java /usr/lib/jvm/java-1.6.0-sun-1.6.0/bin/java
       if [ -d /usr/lib/jvm/java-1.6.0-sun-1.6.0 ]&&[ ! -e /usr/lib/jvm/java-6-sun ];then
@@ -394,9 +393,8 @@ function unzip_nV2_pack ( )
   
   if [ "$Linux_Distribution" == "SUSE" ] ;then
     if [ -d /usr/lib/jvm/java-1.6.0-sun-1.6.0 ] ;then
-	debug_info "Change JAVA_HOME=/usr/java/jdk1.6.0_21/"
-	sed -i 's/\/usr\/lib\/jvm\/java-6-sun/\/usr\/java\/jdk1.6.0_21\//' /opt/crawlzilla/nutch/conf/hadoop-env.sh
-        ln -sf /usr/java/jdk1.6.0_21/bin/jps /usr/bin/jps
+	debug_info "Change JAVA_HOME=/usr/lib/jvm/java-1.6.0-sun-1.6.0"
+	sed -i 's/java-6-sun/java-1.6.0-sun-1.6.0/' /opt/crawlzilla/nutch/conf/hadoop-env.sh
     fi
   elif [ "$Linux_Distribution" == "CentOS" ] ;then
     if [  -d /usr/java/jdk1.6.0_21/ ] ;then
@@ -639,7 +637,7 @@ function creat_crawler_account ( )
 
 function select_eth ( ) 
 {
-  net_interfaces=$(/sbin/ifconfig | grep Ethernet | cut -d " " -f1)
+  net_interfaces=$(/sbin/ifconfig | grep ^eth | cut -d " " -f1)
   net_nu=$(echo $net_interfaces | wc -w)
 
   # when only one eth interface
@@ -664,7 +662,7 @@ function select_eth ( )
     if [ -z $net_choice ]; then
       net_choice=1
     fi
-    show_info "$MI_select_eth_echo_6"
+    shoe_info "$MI_select_eth_echo_6"
     show_info "$MI_select_eth_echo_3 $net_choice"
 #   show_info "Your choice is $net_choice"
     net_interface=$(echo $net_interfaces | cut -d " " -f $net_choice)
