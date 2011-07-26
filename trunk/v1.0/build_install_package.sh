@@ -6,7 +6,7 @@
 #DELETE_LOCK=0 # 1= 刪除 $InstallDir 資料夾
 DATE_VER=`date +%y%m%d` # 年月日
 CURRENT_VER=1.0 # 專案目前的版本
-#MINOR_VER=$DATE_VER
+STABLE_VER=2 # increased manually if next stable version arrived
 
 # for ant
 SvnCrawlzilla=`dirname "$0"`
@@ -15,7 +15,7 @@ SvnCrawlzilla=`cd "$SvnCrawlzilla"; pwd`
 DistDir=./packages
 InstallDir=Crawlzilla_Install
 ShellTar=Crawlzilla-$CURRENT_VER.$DATE_VER.tar.gz
-StableTar=Crawlzilla-$CURRENT_VER.$DATE_VER.tar.gz
+StableTar=Crawlzilla-$CURRENT_VER.$STABLE_VER.tar.gz
 FullTar=Crawlzilla-$CURRENT_VER.$DATE_VER-Full.tar.gz
 
 function checkMethod(){
