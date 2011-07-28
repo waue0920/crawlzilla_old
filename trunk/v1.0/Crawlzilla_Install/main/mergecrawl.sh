@@ -223,10 +223,14 @@ $OptNutchBin/hadoop dfs -get $crawl_dir/* $local_crawl_dir
 _checkInfo "download Index DB"
 
 
-# "download url"
+# "merge url"
 cp ${local_crawl_1}/meta/urls.txt $local_crawl_dir/meta/
 cat ${local_crawl_2}/meta/urls.txt >> $local_crawl_dir/meta/urls.txt
 _checkInfo "merge url"
+
+# "merge depth"
+cp ${local_crawl_1}/meta/depth $local_crawl_dir/meta/
+_checkInfo "merge depth"
 
 # check index is finish or not, otherwise don't work
 if [ ! -d ${local_crawl_dir}/index ]; then 
