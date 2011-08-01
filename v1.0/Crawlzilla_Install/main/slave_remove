@@ -23,8 +23,9 @@
 # History:
 #    
 
-Work_Path=`dirname "$0"`
-if [ -f $Work_Path/slave_remove ];then
+if [ -f "/opt/crawlzilla/main/slave_remove" ];then
+  Work_Path="/opt/crawlzilla/main";
+elif [ -f $Work_Path/slave_remove ];then
   Work_Path=`cd "$Work_Path"; pwd`
 else
   echo "Import install-function-library error !!! ";
