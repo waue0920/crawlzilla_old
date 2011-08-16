@@ -5,8 +5,8 @@
 
 #DELETE_LOCK=0 # 1= 刪除 $InstallDir 資料夾
 DATE_VER=`date +%y%m%d` # 年月日
-CURRENT_VER=1.0 # 專案目前的版本
-STABLE_VER=2 # increased manually if next stable version arrived
+CURRENT_VER=1.1 # 專案目前的版本
+STABLE_VER=0 # increased manually if next stable version arrived
 
 # for ant
 SvnCrawlzilla=`dirname "$0"`
