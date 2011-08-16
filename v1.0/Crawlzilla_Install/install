@@ -38,7 +38,7 @@ else
   exit 1;
 fi
 
-Package_Name="crawlzilla-1.0pack-current.tar.gz"
+Package_Name="crawlzilla-1.1pack-current.tar.gz"
 
 AutoSlaveInstallFlag="no"
 
@@ -861,7 +861,8 @@ function setup_Handmade_Code ( )
   # redirect index to crawlzilla
   rm -rf /opt/crawlzilla/tomcat/webapps/ROOT/*
   cp -f $Work_Path/web/index.jsp /opt/crawlzilla/tomcat/webapps/ROOT/
-  cp -rf $Work_Path/web/tomcat_default/patch/* /opt/crawlzilla/tomcat/webapps/default/
+  # patch tomcat # download 1.1pack.tar.gz would fix all patch
+  #cp -rf $Work_Path/web/tomcat_default/patch/* /opt/crawlzilla/tomcat/webapps/default/
   weblang=$(locale | grep 'LANGUAGE=' | cut -d "=" -f2 | cut -d ":" -f1);
 
   echo -n "crawler" | md5sum | awk '{print $1}' > /home/crawler/crawlzilla/user/admin/meta/passwd
