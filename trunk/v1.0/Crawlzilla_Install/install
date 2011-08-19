@@ -274,6 +274,10 @@ function install_packages ( )
       if [ -d /usr/lib/jvm/java-1.6.0-sun-1.6.0 ]&&[ ! -e /usr/lib/jvm/java-6-sun ];then
 	ln -sf /usr/lib/jvm/java-1.6.0-sun-1.6.0 /usr/lib/jvm/java-6-sun
       fi
+      if [ -d /usr/lib/jvm/jre-1.6.0-sun ];then
+	ln -sf /usr/lib/jvm/jre-1.6.0-sun /etc/alternatives/jre
+	ln -sf /usr/lib/jvm/jre-1.6.0-sun /usr/lib/jvm/jre
+      fi
     else
       show_info "$MI_install_pack_if_2 $install_array" 
     fi
