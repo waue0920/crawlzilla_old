@@ -19,9 +19,7 @@
 # Author: 
 #   Waue, Shunfa, Rock {waue, shunfa, rock}@nchc.org.tw
 # Version:
-#    1.0
-# History:
-#   2010/06/07  Rock    First release (1.0)
+#    1.1
 
 
 # change as root to run install
@@ -38,7 +36,7 @@ else
   exit 1;
 fi
 
-Package_Name="crawlzilla-1.1pack-current.tar.gz"
+Package_Name="crawlzilla-1.2pack-current.tar.gz"
 
 AutoSlaveInstallFlag="no"
 
