@@ -233,7 +233,7 @@ if [ ! -d $HomeUserWeb/$JNAME ];then
    #check_idb_info "cp default to user/webs/$JNAME"
    check_info "cp default to user/webs/$JNAME"
    # inject the nutch-site.xml for linking webs and idb
-   sed -i '4s/XS_DIRX/'$USERNAME'\/IDB\/'$JNAME'/g' $HomeUserWeb/$JNAME/WEB-INF/classes/nutch-site.xml
+   sed -i 's/XS_DIRX/'$USERNAME'\/IDB\/'$JNAME'/g' $HomeUserWeb/$JNAME/WEB-INF/classes/nutch-site.xml
    #check_idb_info "inject the nutch-site.xml for linking webs and idb"
    check_info "inject the nutch-site.xml for linking webs and idb"
 fi
