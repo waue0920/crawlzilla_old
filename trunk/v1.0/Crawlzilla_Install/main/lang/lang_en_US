@@ -341,6 +341,7 @@ dia_main_menu_1_6="Change Tomcat port"
 dia_main_menu_1_7="Change language"
 dia_main_menu_1_8="Client Install Steps"
 dia_main_menu_1_9="System Auto Update"
+dia_main_menu_1_10="Password Reset"
 
 ## [Lang for cluster_status()] ##
 cluster_status_echo_1="[IP] \t\t [Hostname] \t [Network] \t [Computing Ability]"
@@ -401,6 +402,20 @@ dia_tomcat_port_input_1="Please enter tomcat port NO.(default 8080): "
 dia_lang_title_1="[Change language]"
 dia_lang_menu_1_1="English"
 dia_lang_menu_1_2="中文"
+
+## [Password Change()]
+dia_pwd_reset_1="Setup_Password"
+dia_pwd_reset_2="Password Object"
+dia_pwd_reset_3="Crawler 's password on Terminal"
+dia_pwd_reset_4="Admin 's password on Web interface"
+dia_pwd_reset_5="Setup crawler 's password on Terminal? (that password everytime you type crawlzilla on terminal)"
+dia_pwd_reset_6="Reset the admin 's password on Web? (Using Web interface to set your new password)"
+dia_pwd_reset_7="Press y for sure? [y/n]"
+dia_pwd_reset_8="Failed!!"
+dia_pwd_reset_9="Reset ok, please login web for set admin's new password ,A.S.A.P."
+dia_pwd_reset_10="Give up!"
+
+dia_ent_to_continue="Press Enter to continue.."
 
 ## [Lang for finish]
 crawlzilla_install_finish="Finish!!! press any key to continue..."
