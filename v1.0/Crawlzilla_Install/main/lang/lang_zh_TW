@@ -337,14 +337,15 @@ dia_pre_check_yesno_3="crawl_nodes 檔案已被修改過"
 ## [Lang for main_menu()] ##
 dia_main_title_1="[管理功能選項]"
 dia_main_menu_1_1="檢查運算叢集環境"
-dia_main_menu_1_2="快速啟動/關閉所有服務及Tomcat"
-dia_main_menu_1_3="設定從屬服務(slave)"
-dia_main_menu_1_4="設定管理服務(master)"
-dia_main_menu_1_5="啟動/停止/重新啟動 Tomcat"
+dia_main_menu_1_2="快速開關所有服務"
+dia_main_menu_1_3="設定從屬(slave)主機"
+dia_main_menu_1_4="設定管理(master)主機"
+dia_main_menu_1_5="設定網站伺服器(Tomcat)"
 dia_main_menu_1_6="更改 Tomcat port"
-dia_main_menu_1_7="更換語言"
-dia_main_menu_1_8="從屬主機Slave安裝步驟"
+dia_main_menu_1_7="更換此選單語言"
+dia_main_menu_1_8="顯示從屬主機安裝步驟"
 dia_main_menu_1_9="系統自動更新"
+dia_main_menu_1_10="密碼重設"
 
 ## [Lang for cluster_status()] ##
 cluster_status_echo_1="[位址] \t\t [名稱] \t [網路] \t [運算狀態]"
@@ -405,6 +406,20 @@ dia_tomcat_port_input_1="請輸入要更改的 Tomcat port 號碼 (預設值為 
 dia_lang_title_1="[轉換語言]"
 dia_lang_menu_1_1="英文"
 dia_lang_menu_1_2="中文"
+
+## [Password Change()]
+dia_pwd_reset_1="密碼設定"
+dia_pwd_reset_2="選擇您要修改密碼的目標"
+dia_pwd_reset_3="修改終端機 crawler 的密碼"
+dia_pwd_reset_4="修改網頁上 admin 的密碼"
+dia_pwd_reset_5="您要修改終端機 crawler 的密碼？ （也就是每次下指令crawlzilla 後要輸入的那個密碼）"
+dia_pwd_reset_6="您要重設網站上 admin 的密碼？（重設後用網頁介面設定新密碼）"
+dia_pwd_reset_7="確定重設請按y？[y/n]"
+dia_pwd_reset_8="重設失敗，密碼並未修改"
+dia_pwd_reset_9="重設成功，請盡速登入網站並設置admin密碼"
+dia_pwd_reset_10="此次選擇放棄，您並未重設網頁admin密碼"
+
+dia_ent_to_continue="按Enter後繼續"
 
 ## [Lang for install finish ] ##
 crawlzilla_install_finish="恭喜您完成Crawlzilla安裝,按Enter鍵離開..."

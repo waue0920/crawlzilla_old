@@ -1038,7 +1038,7 @@ function main ( )
   show_info "$MI_main_echo_1"
   #set_install_information
   set_crawler_passwd
-  setEmail
+  #setEmail
   select_eth  
   show_master_info
   show_info "$MI_main_echo_2"

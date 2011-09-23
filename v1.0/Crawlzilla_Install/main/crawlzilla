@@ -252,12 +252,14 @@ $DIALOG --clear --backtitle "$dia_back" \
         "cluster_setup" "$dia_main_menu_1_3" \
         "master_setup" "$dia_main_menu_1_4" \
         "tomcat_switch" "$dia_main_menu_1_5" \
-        "tomcat_port" "$dia_main_menu_1_6" \
-        "lang_switch" "$dia_main_menu_1_7" \
+        "password_reset" "$dia_main_menu_1_10" \
         "auto_update" "$dia_main_menu_1_9" \
         "slave_install" "$dia_main_menu_1_8" \
+        "lang_switch" "$dia_main_menu_1_7" \
         "exit" "$dia_exit" 2>$main_choice
 }
+#        "tomcat_port" "$dia_main_menu_1_6" \
+
 
 ## [Cluster Status (datanode & tasktracker)] ##
 function cluster_status(){
@@ -321,18 +323,18 @@ function fast_manage(){
   if [ "$(cat $fastStatus)" == "startup" ]; then
     fast_startup_all    
     # Back to main menu
-    read -p "Press Enter to continue.. "
+    read -p "$dia_ent_to_continue "
     main_menu
     menu_choose
   elif [ "$(cat $fastStatus)" == "shutdown"  ]; then
     fast_shutdown_all
     # Back to main menu        
-    read -p "Press Enter to continue.. "
+    read -p "$dia_ent_to_continue "
     main_menu
     menu_choose
 
   elif [ "$(cat $fastStatus)" == "main" ]; then
-    # DONOT: read -p "Press Enter to continue.. "
+    # DONOT: read -p "$dia_ent_to_continue "
     main_menu
     menu_choose
   fi
@@ -384,14 +386,14 @@ if [ "$(cat $serverSetup)" == "start" ]; then
     HadoopStart localhost namenode
     HadoopStart localhost jobtracker
     # Back to main menu
-    read -p "Press Enter to continue.. "
+    read -p "$dia_ent_to_continue "
     main_menu
     menu_choose
 elif [ "$(cat $serverSetup)" == "shutdown" ]; then
     HadoopStop localhost jobtracker
     HadoopStop localhost namenode
     # Back to main menu
-    read -p "Press Enter to continue.. "
+    read -p "$dia_ent_to_continue "
     main_menu
     menu_choose
 elif [ "$(cat $serverSetup)" == "restart" ]; then
@@ -402,11 +404,11 @@ elif [ "$(cat $serverSetup)" == "restart" ]; then
     sleep 3
     HadoopStart localhost jobtracker
     # Back to main menu
-    read -p "Press Enter to continue.. "
+    read -p "$dia_ent_to_continue "
     main_menu
     menu_choose
 elif [ "$(cat $serverSetup)" == "main" ]; then
-    # DONOT: read -p "Press Enter to continue.. "
+    # DONOT: read -p "$dia_ent_to_continue "
     main_menu
     menu_choose
 else
@@ -442,7 +444,7 @@ elif [ "$(cat $allpart)" == "Part" ]; then
     grep -v '^$' | grep -v '#'  | awk '{print $1 "\t" $2 "\t" "$LIST_status" }') 2>$runNodes
 #    read -p "$runNodes and $(cat $runNodes)"
 elif [ "$(cat $allpart)" == "Main" ]; then
-    # DONOT: read -p "Press Enter to continue.. "
+    # DONOT: read -p "$dia_ent_to_continue "
     main_menu
     menu_choose
 else
@@ -469,7 +471,7 @@ if [ "$(cat $clusterSetup)" == "start" ]; then
     HadoopStart $node datanode
     HadoopStart $node tasktracker
     done
-    read -p "Press Enter to continue.. "
+    read -p "$dia_ent_to_continue "
     main_menu
     menu_choose
 elif [ "$(cat $clusterSetup)" == "shutdown" ]; then
@@ -479,7 +481,7 @@ elif [ "$(cat $clusterSetup)" == "shutdown" ]; then
     HadoopStop $node datanode
     HadoopStop $node tasktracker
     done
-    read -p "Press Enter to continue.. "
+    read -p "$dia_ent_to_continue "
     main_menu
     menu_choose
 elif [ "$(cat $clusterSetup)" == "restart"  ]; then
@@ -492,19 +494,19 @@ elif [ "$(cat $clusterSetup)" == "restart"  ]; then
     HadoopStart $node tasktracker
     done
 
-    read -p "Press Enter to continue.. "
+    read -p "$dia_ent_to_continue "
     main_menu
     menu_choose
 
 elif [ "$(cat $clusterSetup)" == "main"  ]; then
-    # DONOT : read -p "Press Enter to continue.. "
+    # DONOT : read -p "$dia_ent_to_continue "
     main_menu
     menu_choose
 else    
     exit
 fi
    # Back to main menu
-#    read -p "Press Enter to continue.. "
+#    read -p "$dia_ent_to_continue "
 #    main_menu       
 #    menu_choose
 }
@@ -629,6 +631,49 @@ function auto_update ( ){
   /opt/crawlzilla/main/auto_update.sh
 }
 
+
+function password_reset ( ){
+  passwd_reset=/home/crawler/crawlzilla/meta/menu_tmp/passwd_reset
+  $DIALOG --clear --backtitle "$dia_back" --title "$dia_pwd_reset_1" \
+      --menu "$dia_pwd_reset_2" 15 65 3 \
+      "Terminal" "$dia_pwd_reset_3" \
+      "Web" "$dia_pwd_reset_4" \
+      "main" "$dia_backto_main" 2>$passwd_reset
+      passwd_reset=$(cat $passwd_reset)
+  if [ "$passwd_reset" == "Terminal" ]; then
+    show_info "$dia_pwd_reset_5"
+    passwd crawler 
+    # Back to main menu
+    read -p "$dia_ent_to_continue "
+    main_menu
+    menu_choose
+  elif [ "$passwd_reset" == "Web"  ]; then
+    
+    show_info "$dia_pwd_reset_6"
+    read -p "$dia_pwd_reset_7" Confirm
+    if [ "$Confirm" == "y" ];then
+	rm -f /home/crawler/crawlzilla/user/admin/meta/passwd >/dev/null 2>&1 
+	if [ ! $? -eq 0 ];then 
+	    show_info "$dia_pwd_reset_8"
+	else
+	    show_info "$dia_pwd_reset_9" 
+	fi
+    else
+	show_info "$dia_pwd_reset_10"
+    fi
+    # Back to main menu        
+    read -p "$dia_ent_to_continue "
+    main_menu
+    menu_choose
+
+  elif [ "$passwd_reset" == "main" ]; then
+    # DONOT: read -p "$dia_ent_to_continue "
+    main_menu
+    menu_choose
+  fi
+}
+
+
 function slave_install ( ) {
   cat /opt/crawlzilla/slave/README.txt
   read -p "Press enter to countine..."
@@ -697,6 +742,8 @@ case $(cat $main_choice) in
         slave_install;;
     "auto_update")
         auto_update;;
+    "password_reset")
+	password_reset;;
 esac
 }
 
