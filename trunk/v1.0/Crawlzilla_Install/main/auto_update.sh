@@ -27,7 +27,7 @@ if [ "$VER_NEW" == "$VER_CURR" ];then
   exit 0
 fi
 
-wget http://sourceforge.net/projects/crawlzilla/files/testing/Crawlzilla-1.0/Crawlzilla-$VER_NEW.tar.gz/download -O $Update_Dir/crawlzilla-update.tar.gz > /dev/null 2>&1
+wget http://sourceforge.net/projects/crawlzilla/files/testing/Crawlzilla-1.1/Crawlzilla-$VER_NEW.tar.gz/download -O $Update_Dir/crawlzilla-update.tar.gz > /dev/null 2>&1
 
 if [ ! -f $Update_Dir/crawlzilla-update.tar.gz ];then
   echo "[Error] Download Crawlzilla-$VER_NEW.tar.gz Failed!"
@@ -37,6 +37,7 @@ else
 fi
 
 tar -xzvf $Update_Dir/crawlzilla-update.tar.gz -C $Update_Dir/  > /dev/null 2>&1
+if [ "$?" != "0" ];then echo " Untar error !";exit 1; fi
 
 Work_Dir="$Update_Dir/Crawlzilla_Install"
 cp -rf $Work_Dir/main/*  /opt/crawlzilla/main/
