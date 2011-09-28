@@ -111,8 +111,10 @@ if [ "$upload_sf" == "y" ];then
         USER=goldjay1231;
     fi
     # 上傳到sf.net
+    # 不用把 version 也上傳道source forge 因為以改成 google code 
+#    scp $InstallDir/version $USER,crawlzilla@frs.sourceforge.net:/home/frs/project/c/cr/crawlzilla/testing/
+
     scp $DistDir/$ShellTar $USER,crawlzilla@frs.sourceforge.net:/home/frs/project/c/cr/crawlzilla/testing/Crawlzilla-$CURRENT_VER/
-    scp $InstallDir/version $USER,crawlzilla@frs.sourceforge.net:/home/frs/project/c/cr/crawlzilla/testing/
     echo "最新的版本[ $ShellTar ]也同時上傳到sf.net囉"
     echo "http://sourceforge.net/downloads/crawlzilla/testing/Crawlzilla-$CURRENT_VER/"
 fi
