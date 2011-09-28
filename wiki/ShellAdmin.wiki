@@ -4,6 +4,8 @@
 
  * 單機版操作方式皆同。
 
+[http://crawlzilla.googlecode.com/svn/trunk/v0.3/docs/crawlzilla_Usage_zhtw.pdf 操作手冊]
+
 == 【 系統運算架構】==
 
  * 已熟悉Hadoop架構之使用者可略過此一段落
@@ -26,4 +28,3 @@ Step2. 啟動Datanode & Tasktracker
 [http://crawlzilla.googlecode.com/svn/tags/pics/wiki/ShellAdm/1.png]
 
 此一管理介面提供數個系統管理功能，於下列子段落一一說明。
-
