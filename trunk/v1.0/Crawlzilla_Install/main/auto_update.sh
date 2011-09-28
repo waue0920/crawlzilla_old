@@ -13,7 +13,9 @@ else
   mkdir -p $Update_Dir
 fi
 
-wget http://sourceforge.net/projects/crawlzilla/files/testing/version/download -O $Update_Dir/version > /dev/null 2>&1
+#wget http://sourceforge.net/projects/crawlzilla/files/testing/version/download -O $Update_Dir/version > /dev/null 2>&1
+wget http://crawlzilla.googlecode.com/svn/trunk/v1.0/Crawlzilla_Install/version -O $Update_Dir/version > /dev/null 2>&1
+
 if [ ! -f $Update_Dir/version ];then
   echo "[Error] Check Online Version Failed!"
   exit 8
