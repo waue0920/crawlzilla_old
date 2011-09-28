@@ -21,7 +21,7 @@
 == 【下載】 ==
 || 安裝檔 || http://sourceforge.net/downloads/crawlzilla/stable/Crawlzilla-0.2/  ||
 || 原始碼（svn） || http://code.google.com/p/crawlzilla/source/checkout ||
-
+||  下載操作手冊(pdf) ||  [http://crawlzilla.googlecode.com/svn/tags/pics/wiki/index/crawlzilla_Usage_zhtw.pdf] || 
 ----
 == 【文件】 ==
  * 安裝 
