@@ -4,7 +4,7 @@
 
  * 單機版操作方式皆同。
 
-[http://crawlzilla.googlecode.com/svn/trunk/v0.3/docs/crawlzilla_Usage_zhtw.pdf 操作手冊]
+[http://crawlzilla.googlecode.com/svn/trunk/v0.3/docs/crawlzilla_Usage_zhtw.pdf 下載操作手冊(pdf) ]
 
 == 【 系統運算架構】==
 
