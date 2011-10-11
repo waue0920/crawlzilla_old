@@ -6,7 +6,7 @@
 #DELETE_LOCK=0 # 1= 刪除 $InstallDir 資料夾
 DATE_VER=`date +%y%m%d` # 年月日
 CURRENT_VER=1.1 # 專案目前的版本
-STABLE_VER=0 # increased manually if next stable version arrived
+STABLE_VER=1 # increased manually if next stable version arrived
 
 # for ant
 SvnCrawlzilla=`dirname "$0"`
@@ -35,7 +35,7 @@ checkMethod 1.2
 # 2 create crawlzilla.war file
 ant -f $SvnCrawlzilla/web-src/build.xml clean
 ant -f $SvnCrawlzilla/web-src/build.xml
-#checkMethod 2.1
+checkMethod 2.1
 
 # 3 make dir for tmp and final
 
@@ -81,13 +81,13 @@ read -p "[y/n] :" stable_check
 if [ "$stable_check" == "y" ];then
   if [ -f $DistDir/$StableTar ];then
     rm $DistDir/$StableTar;
-    checkMethod 7.0
+    checkMethod 7.a
   fi
   cp $ShellTar $DistDir/$StableTar
-  checkMethod 7.0
+  checkMethod 7.b
 fi
 mv $ShellTar $DistDir
-checkMethod 7.0
+checkMethod 7.1
 
 
 # 8  DELETE_LOCK=1
@@ -97,7 +97,7 @@ checkMethod 7.0
 #fi
 
 echo "完成，一切確認後，最後的檔案放在這個目錄內："
-echo "  $DistDir/$StableTar "
+echo "  $DistDir "
 
 # 9 upload to  source forge
 echo "Upload to source forge ?"
