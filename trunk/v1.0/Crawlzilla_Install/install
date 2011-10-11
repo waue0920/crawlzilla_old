@@ -566,20 +566,20 @@ function check_dialog ( )
 #  MasterIP_Address=$net_address
 #}
 
-function set_crawler_passwd ( )
-{
-  show_info "$MI_set_crawler_passwd_echo_1"
-  read -sp "password:" Crawler_Passwd
-# read -sp "Please enter crawler's password :  " Crawler_Passwd
-  echo -e "\n"
-  show_info "$MI_set_crawler_passwd_echo_2"
-  read -sp "password:" Crawler_Passwd2
+## don't do this
+#function set_crawler_passwd ( )
+#{
+#  show_info "$MI_set_crawler_passwd_echo_1"
+#  read -sp "password:" Crawler_Passwd
+#  echo -e "\n"
+#  show_info "$MI_set_crawler_passwd_echo_2"
+#  read -sp "password:" Crawler_Passwd2
 # read -sp "Please enter crawler's password again:  " Crawler_Passwd2
-  echo -e "\n"
-  if [ $Crawler_Passwd != $Crawler_Passwd2 ]; then
-    set_crawler_passwd
-  fi
-}
+#  echo -e "\n"
+#  if [ $Crawler_Passwd != $Crawler_Passwd2 ]; then
+#    set_crawler_passwd
+#  fi
+#}
 
 function setEmail ( )
 {
@@ -958,7 +958,7 @@ function start_up_tomcat ( )
 {
   show_info "$MI_start_up_tomcat_echo_1"
 # debug_info "start up tomcat..."
-  su crawler -c "/opt/crawlzilla/tomcat/bin/startup.sh"
+  tomcat_ok=$(su crawler -c "/opt/crawlzilla/tomcat/bin/startup.sh")
   i=5
   debug_info "$MI_start_up_tomcat_echo_2"
   until [ $i -lt 1 ]
@@ -969,7 +969,11 @@ function start_up_tomcat ( )
     done
   echo ""
   #su crawler -c "/opt/crawlzilla/tomcat/bin/startup.sh"
-  show_info "$MI_start_up_tomcat_echo_3"
+  if [ "$tomcat_ok" != "0" ];then
+    show_info "Tomcat may not start, please use \" crawlzilla \" to start"
+  else
+    show_info "$MI_start_up_tomcat_echo_3"
+  fi
 # debug_info "tomcat has been started..."
 }
 
@@ -1037,7 +1041,7 @@ function main ( )
 
   show_info "$MI_main_echo_1"
   #set_install_information
-  set_crawler_passwd
+  #set_crawler_passwd
   #setEmail
   select_eth  
   show_master_info
