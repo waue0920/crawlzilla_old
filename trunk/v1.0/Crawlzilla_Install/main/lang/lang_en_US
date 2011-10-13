@@ -13,8 +13,6 @@ MI_main_echo_1="Welcome to use Crawlzilla, this install program will create a ne
 MI_main_echo_2="Please confirm the install infomation of above ：1.Yes 2.No "
 MI_main_echo_3="Installed successfully!"
 MI_main_echo_4="You can visit the manage website ：http://"
-MI_main_echo_5="Default Login ID: admin"  
-MI_main_echo_6="Default Login Password: crawler"  
 ## Lang for master_install_func.sh ##
 ### [for choose_lang()] ### 
 MI_choose_lang_1="Please select a language: (1)English (2)中文" 
