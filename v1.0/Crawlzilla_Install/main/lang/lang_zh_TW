@@ -271,7 +271,7 @@ MR_main_echo_5="您已取消移除程序！"
 MR_main_echo_6="若要移除請再重新執行！"
 
 MR_main_deluser_1="你要刪除在 \"/home/crawler/\" 上的所有資料嗎"
-MR_main_deluser_2="yes 將會刪除, no 則會保留"
+MR_main_deluser_2="y 將會刪除, n 則會保留"
 MR_main_deluser_3="/home/crawler 將被刪除，所有資料都會消失"
 MR_main_deluser_4="/home/crawler 將被保留，請備份後再自行刪除"
 

@@ -268,7 +268,7 @@ MR_main_echo_5="You are cancelling this remove procedure！"
 MR_main_echo_6="If you want to remove Crawlzilla of this node, please execute this program again."
 
 MR_main_deluser_1="Do you want to remove everything in /home/crawler/"
-MR_main_deluser_2="yes will remove, no will resolve this directory."
+MR_main_deluser_2="\"y\" will remove, \"n\" will resolve this directory."
 MR_main_deluser_3="/home/crawler will be delete, all data will be lost."
 MR_main_deluser_4="/home/crawler will be reserved."
 
