@@ -13,8 +13,6 @@ MI_main_echo_1="歡迎使用Crawlzilla, 此安裝程序會為您新建一個craw
 MI_main_echo_2="請確認上述的安裝資訊：1.正確 2.不正確 "
 MI_main_echo_3="安裝成功！"
 MI_main_echo_4="請進入管理頁面：http://"
-MI_main_echo_5="網頁管理頁面管理帳號為: admin"
-MI_main_echo_6="網頁管理頁面管理密碼為: crawler"
 ## Lang for master_install_func.sh ##
 ### [for choose_lang()] ### 
 MI_choose_lang_1="請選擇語言: (1)English (2)中文" 
@@ -129,22 +127,22 @@ MI_slave_PassMaster_Hostname_echo_3="完成編輯Hostname."
 #
 MI_make_slave_install_echo_1="製作slave 的安裝包"
 
+MI_slave_install_commands_echo_1="安裝 slave 步驟，請在預計為slave的電腦上執行以下指令："
+MI_slave_install_commands_echo_20="scp crawler@"
+MI_slave_install_commands_echo_25=":/home/crawler/crawlzilla/source/slave_deploy.sh ."
+MI_slave_install_commands_echo_3="./slave_deploy.sh"
+
 #
 MI_start_up_tomcat_echo_1="啟動tomcat..."
 MI_start_up_tomcat_echo_2="等待約10秒..."
 MI_start_up_tomcat_echo_3="tomcat 已經啟動！"
 
-#
-MI_slave_install_commands_echo_1="Client安裝可參考以下指令："
-MI_slave_install_commands_echo_20="scp crawler@"
-MI_slave_install_commands_echo_25=":/home/crawler/crawlzilla/source/slave_deploy.sh ."
-MI_slave_install_commands_echo_3="./slave_deploy.sh"
 
 ########## Lang for Master Install - End##########
 
 ########## Lang for Client Install - Start##########
 
-CI_finish_echo_1="Crawlzilla 已完成安裝此一Client端"
+CI_finish_echo_1="Crawlzilla 已完成安裝此一Slave端"
 
 # [Variables Declaration] #
 ## Lang for slave_install ##
