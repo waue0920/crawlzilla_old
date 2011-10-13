@@ -57,23 +57,6 @@ HomeUserIDB="$HomeUserDir/$USERNAME/IDB"
 HomeUserWeb="$HomeUserDir/$USERNAME/webs"
 HomeUserMeta="$HomeUserDir/$USERNAME/meta"
 
-
-## old below
-#User_HOME=/home/crawler/crawlzilla
-#Crawlzilla_HOME=/opt/crawlzilla
-#Nutch_HOME=/opt/crawlzilla/nutch
-#Tomcat_HOME=/opt/crawlzilla/tomcat
-#Index_DB=/home/crawler/crawlzilla/search
-#Admin_email=crawler@crawlzilla
-# Work_Path=(define on install)
-#Linux_Distribution=""
-#MasterIP_Address=`/sbin/ifconfig eth0 | grep 'inet addr' |  sed 's/^.*addr://g' | sed 's/Bcast.*$//g' | sed 's/ .*// '` 
-
-#net_MacAddr=`/sbin/ifconfig eth0 | grep 'HW' | sed 's/^.*HWaddr //g'`
-
-# Log to /var/log/crawlzilla/shell-logs
-#source "$Work_Path/opt/main/log.sh" master_install;
-
 SYS_VER=`cat $Work_Path/version`
 Conf_Path=$Work_Path/conf
 LOG_SH_TARGET=$Work_Path/crawlzilla_install-$(date +%y%m%d).log
@@ -559,33 +542,19 @@ function check_dialog ( )
   fi
 }
 
-#function set_install_information ( ) 
-#{ 
-#  set_crawler_passwd
-#  select_eth
-#  MasterIP_Address=$net_address
-#}
-
-## don't do this
-#function set_crawler_passwd ( )
-#{
-#  show_info "$MI_set_crawler_passwd_echo_1"
-#  read -sp "password:" Crawler_Passwd
-#  echo -e "\n"
-#  show_info "$MI_set_crawler_passwd_echo_2"
-#  read -sp "password:" Crawler_Passwd2
-# read -sp "Please enter crawler's password again:  " Crawler_Passwd2
-#  echo -e "\n"
-#  if [ $Crawler_Passwd != $Crawler_Passwd2 ]; then
-#    set_crawler_passwd
-#  fi
-#}
-
-function setEmail ( )
+function set_crawler_passwd ( )
 {
-    show_info "Please enter your email"
-    read -p "email: " crawlerEmail
+  show_info "$MI_set_crawler_passwd_echo_1"
+  read -sp "set password/設定crawler密碼:" Crawler_Passwd
+  echo -e "\n"
+  show_info "$MI_set_crawler_passwd_echo_2"
+  read -sp "Confirm the password/再輸入一次以確認:  " Crawler_Passwd2
+  echo -e "\n"
+  if [ $Crawler_Passwd != $Crawler_Passwd2 ]; then
+    set_crawler_passwd
+  fi
 }
+
 
 # add crawler account Crawler_Passwd
 function creat_crawler_account ( )
@@ -866,17 +835,15 @@ function setup_Handmade_Code ( )
   # patch tomcat # download 1.1pack.tar.gz would fix all patch
   #cp -rf $Work_Path/web/tomcat_default/patch/* /opt/crawlzilla/tomcat/webapps/default/
   weblang=$(locale | grep 'LANGUAGE=' | cut -d "=" -f2 | cut -d ":" -f1);
-
-  echo -n "crawler" | md5sum | awk '{print $1}' > /home/crawler/crawlzilla/user/admin/meta/passwd
-  echo $crawlerEmail > /home/crawler/crawlzilla/user/admin/meta/email
+## don't do that
+#  echo -n "crawler" | md5sum | awk '{print $1}' > /home/crawler/crawlzilla/user/admin/meta/passwd
+#  echo $crawlerEmail > /home/crawler/crawlzilla/user/admin/meta/email
   echo $weblang > /home/crawler/crawlzilla/user/admin/meta/weblang
   echo "http://$MasterIP_Address:8080"  > /home/crawler/crawlzilla/meta/webAddr
   chmod 600 /home/crawler/crawlzilla/user/admin/meta/passwd
   
   debug_info "$MI_install_Nutch_echo_1 $MasterIP_Address "
-# debug_info "MasterIP_Address=$MasterIP_Address"
   debug_info "$MI_install_Nutch_echo_2 $(hostname)"
-# debug_info "Master_Hostname=$(hostname)"
   ##  su crawler -c "ssh -o StrictHostKeyChecking=no localhost echo $net_address $(hostname) \>\> ~/crawlzilla/system/crawl_nodes" ## ?? why
   echo "$net_address $(hostname)" >> /home/crawler/crawlzilla/meta/crawl_nodes 
   debug_info "echo \"$net_address $(hostname) \>\> /home/crawler/crawlzilla/meta/crawl_nodes \""
@@ -1037,12 +1004,8 @@ function check_info ( )
 
 function main ( ) 
 {
-
-
   show_info "$MI_main_echo_1"
-  #set_install_information
-  #set_crawler_passwd
-  #setEmail
+  set_crawler_passwd
   select_eth  
   show_master_info
   show_info "$MI_main_echo_2"
@@ -1059,9 +1022,6 @@ function main ( )
     link_Dirs
     # Add crawlzilla service to init.d (Crawlzilla startup when booting)
     add_crawlzilla_to_initd
-    # make web default password
-    #su crawler -c "echo "crawler" > /home/crawler/crawlzilla/user/admin/meta/.passwd"
-    #chmod 600 /home/crawler/crawlzilla/user/admin/meta/.passwd
     
     # auto install
     if [ "$AutoSlaveInstallFlag" == "yes" ]; then
