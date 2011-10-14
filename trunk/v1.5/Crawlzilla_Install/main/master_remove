@@ -25,12 +25,20 @@
 #   
 
 # [ Env para ] #
-if [ -e /opt/crawlzilla/main/lang ];then
-  Lang_Path="/opt/crawlzilla/main/lang"
+Work_Path="/opt/crawlzilla/main"
+if [ -f $Work_Path/master_remove ];then
+  Work_Path=`cd "$Work_Path"; pwd`
 else
-  bin=`dirname "$0"`
-  bin=`cd "$bin"; pwd`
-  Lang_Path="$bin/lang"
+  echo "Import install-function-library error !!! ";
+  exit 1;
+fi
+
+if [ -d "/opt/crawlzilla/main/lang" ];then
+  Lang_Path="/opt/crawlzilla/main/lang"
+elif [ -d "$Work_Path/lang" ];then
+  Lang_Path="$Work_Path/lang"
+else
+  echo "No language package existed."
 fi
 
 User_Del_Chk="y"
@@ -183,7 +191,7 @@ function main () {
       fi
       show_info "$MR_main_echo_4" # "移除程序已完成！"
       LOCK=1; 
-    elif [ "$confirm" == "n" ]; then
+    elif [ "$confirm" -== "n" ]; then
       show_info "$MR_main_echo_5" # "您已取消移除程序！"
       show_info "$MR_main_echo_6" # "若要移除請再重新執行！"
       LOCK=1; 
