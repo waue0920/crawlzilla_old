@@ -3,7 +3,7 @@
 
 
 || *作業系統*             || *Master / <br> single node*  ||  *Slave / <br> multiple node* || *Auto solve <br> package dependency* ||
-|| Debian 5.0.x        || O   || O  ||  O  ||
+|| Debian 5.0.x ~ 6.0.X || O   || O  ||  O  ||
 || Ubuntu 8.04 ~ 10.04 || O   || O  ||  O  ||
 || CentOS 5.3          || O   || O  ||  O  ||
 || Fedora 12           || O   || O  ||  O  ||
