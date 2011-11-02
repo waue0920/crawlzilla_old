@@ -36,7 +36,7 @@ else
   exit 1;
 fi
 
-Package_Name="crawlzilla-1.2pack-current.tar.gz"
+Package_Name="crawlzilla-1.2.1pack.tar.gz"
 
 AutoSlaveInstallFlag="no"
 
