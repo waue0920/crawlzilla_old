@@ -56,7 +56,8 @@ HomeUserTmp="$HomeUserDir/$USERNAME/tmp"
 HomeUserIDB="$HomeUserDir/$USERNAME/IDB"
 HomeUserWeb="$HomeUserDir/$USERNAME/webs"
 HomeUserMeta="$HomeUserDir/$USERNAME/meta"
-
+Linux_Distribution="Linux"
+Linux_Version="1"
 SYS_VER=`cat $Work_Path/version`
 Conf_Path=$Work_Path/conf
 LOG_SH_TARGET=$Work_Path/crawlzilla_install-$(date +%y%m%d).log
@@ -78,12 +79,13 @@ function show_info () {
 function load_default_lang ( )
 {
  # if you want force english to install, you can type
- # sudo LANGUAGE=en ./install
-lang=$(locale | grep 'LANGUAGE=' | cut -d "=" -f2 | cut -d ":" -f1 )
-if [ "$lang" == "zh_TW" ] || [ "$lang" == "zh_TW.utf8" ] || \
-   [ "$lang" == "zh_TW:zh" ];then
+ # sudo LANG=en ./install
+lang=$(locale | grep 'LANG=')
+if [[ "$lang" == *zh_TW* ]]; then
+    show_info "$lang"
     source $Work_Path/main/lang/lang_zh_TW
 else
+    show_info "$lang"
     source $Work_Path/main/lang/lang_en_US
 fi
 }
@@ -114,12 +116,14 @@ function check_root ( ){
   show_info "$MI_check_root_2"
 }
 
+
+
 function check_systemInfo ( )
 {
   debug_info "$MI_check_sys_1"
   show_info "$MI_check_sys_2"
-  Linux_Distribution=$(lsb_release -a 2> /dev/null | grep "Distributor ID:" | awk '{print $3}')
-  Linux_Version=$(lsb_release -a 2> /dev/null | grep "Release" | awk '{print $2}')
+  Linux_Distribution=$(lsb_release -i 2>/dev/null | awk '{print $3}')
+  Linux_Version=$(lsb_release -r 2>/dev/null | awk '{print $2}')
   if [ "$Linux_Distribution" == "" ]; then
     Linux_Distribution=$(cat /etc/*-release | uniq | awk '{print $1}')
     Linux_Version=`cat /etc/*-release | uniq | awk '{print $3}'`
@@ -547,10 +551,15 @@ function set_crawler_passwd ( )
   show_info "$MI_set_crawler_passwd_echo_1"
   read -sp "password: " Crawler_Passwd
   echo -e "\n"
+  if [ "x$Crawler_Passwd" == "x" ]; then
+    echo "You do not input anything. Please try again!"
+    set_crawler_passwd
+  fi
   show_info "$MI_set_crawler_passwd_echo_2"
-  read -sp "password: " Crawler_Passwd2
+  read -sp "confirm password: " Crawler_Passwd2
   echo -e "\n"
-  if [ $Crawler_Passwd != $Crawler_Passwd2 ]; then
+  if [ "$Crawler_Passwd" != "$Crawler_Passwd2" ]; then
+    echo "Not the same password twice! Try again."
     set_crawler_passwd
   fi
 }
@@ -965,15 +974,19 @@ function add_crawlzilla_to_initd ( )
 show_info "$add_crawlzilla_to_initd_1"
 show_info "$add_crawlzilla_to_initd_2"
 # for master
-linux_dist=$(lsb_release -i | awk '{print $3}')
+# linux_dist=$(lsb_release -i | awk '{print $3}') # should be replace
+linux_dist=$Linux_Distribution;
 
 # for debian system
 if [ "$linux_dist" = "Ubuntu" ] || [ "$linux_dist" = "Debian" ]; then
+    /etc/init.d/ssh start
     cp -f $Conf_Path/crawlzilla_conf/crawlzilla-master /etc/init.d/crawlzilla
     chown crawler:crawler /etc/init.d/crawlzilla
     update-rc.d crawlzilla defaults
 # for rpm system
 elif [ "$linux_dist" = "CentOS" ] || [ "$linux_dist" = "Fedora" ] || [ "$linux_dist" = "SUSE" ]; then
+    service sshd start
+    chkconfig sshd on
     cp -f $Conf_Path/crawlzilla_conf/crawlzilla-master_chkconfig /etc/init.d/crawlzilla
     chown crawler.crawler /etc/init.d/crawlzilla
     chkconfig --add crawlzilla
@@ -1007,7 +1020,11 @@ function main ( )
   show_master_info
   show_info "$MI_main_echo_2"
   read confirm
-  if [ "$confirm" == "1" ]; then
+
+  if [ "$confirm" == "2" ] || [ "$confirm" == "n" ]; then
+    show_info "Again.."
+    main
+  elif [ "$confirm" == "1" ] || [ "$confirm" == "y" ]; then
     creat_crawler_account $Crawler_Passwd
     make_ssh_key
     unzip_nV2_pack
@@ -1039,10 +1056,6 @@ function main ( )
     #slave_install_commands
     generateReadme
     show_info $crawlzilla_install_finish
-
-  elif [ "$confirm" == "2" ]; then
-    show_info "Again.."
-    main
   else
     exit 0
   fi
@@ -1051,4 +1064,5 @@ function main ( )
 load_default_lang
 check_info
 main
-read
+read -p "try Commander mode ! type \"crawlzilla\" >"
+crawlzilla
