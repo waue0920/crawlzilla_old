@@ -10,7 +10,7 @@
 
 ############ Lang for master_install -Start ############
 MI_main_echo_1="歡迎使用Crawlzilla, 此安裝程序會為您新建一個crawler帳號並協助您設定密碼"
-MI_main_echo_2="請確認上述的安裝資訊：1.正確 2.不正確 "
+MI_main_echo_2="請確認上述的安裝資訊：y=正確 n=不正確 o=跳出"
 MI_main_echo_3="安裝成功！"
 MI_main_echo_4="請進入管理頁面：http://"
 ## Lang for master_install_func.sh ##
