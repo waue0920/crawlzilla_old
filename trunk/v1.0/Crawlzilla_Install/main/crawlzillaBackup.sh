@@ -67,6 +67,10 @@ function restoreProcess(){
 
     rm $homePath/meta/$restoreDate.backup.flag;
     # write log
+    chown -R crawler:crawler $homePath
+    chown -R crawler:crawler $tomcatPath
+    chmod -R 755 $homePath
+    chmod -R 755 $tomcatPath
     echo "$date: restore process finished!" >> /var/log/crawlzilla/shell-logs/restore.log
 }
 
