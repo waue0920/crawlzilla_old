@@ -2,7 +2,9 @@
 # crawlzillaBack.sh backup/restore 帳號＠備份位址/local 路徑
 # 測試指令 <1>sudo ./crawlzillaBackup.sh backup shunfa@140.110.134.198 ~
 # 測試指令 <2>sudo ./crawlzillaBackup.sh backup local
-# 測試指令 <3>sudo ./crawlzillaBackup.sh restore 路徑
+# 測試指令 <3>sudo ./crawlzillaBackup.sh restore /home/crawler/backup/crawlzillaBackup-12-02-03-1436.tar.gz 
+# 2012-02-03 <電腦A> 備份還原到 <電腦B> ...ok
+# todo: 客製化備份
 
 tomcatPath="/opt/crawlzilla/tomcat/webapps"
 homePath="/home/crawler/crawlzilla"
@@ -51,17 +53,17 @@ function restoreProcess(){
     mv $tomcatPath $tomcatPath-bak
 
 
-    tar -zxvf $storeagePath
+    tar -zxvf $storeagePath  -C /
     # check flag
     if [[ ! -e $homePath/meta/$restoreDate.backup.flag ]]; then
 	echo "restore process failured!" >> /var/log/crawlzilla/shell-logs/restore.log;
 	rm -rf $homePath/applyUser $homePath/meta $homePath/user $tomcatPath 
 	
 	# 還原之前狀態
-        mv $homePath/applyUser-bak $homePath/applyUser
-	mv $homePath/meta-bak $homePath/meta
-	mv $homePath/user-bak $homePath/user
-	mv $tomcatPath-bak $tomcatPath
+#        mv $homePath/applyUser-bak $homePath/applyUser
+#	mv $homePath/meta-bak $homePath/meta
+#	mv $homePath/user-bak $homePath/user
+#	mv $tomcatPath-bak $tomcatPath
 	exit 1;
     fi
 
