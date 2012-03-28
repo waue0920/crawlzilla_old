@@ -2,11 +2,12 @@
 
 = Enterprise Search Engine written by C =
 
- * [http://htdig.sourceforge.net ht://Dig]
+ * [http://htdig.sourceforge.net ht://Dig] - 有點年紀的搜尋引擎，不過常用來搜尋 mail list 的文字檔
 
 = Personal Search Engine =
 
  * http://www.google.com/cse/ - Google 自訂搜尋
+   * *廣告* 或 *收費* ，二選一
    * [http://www.readwriteweb.com/archives/build_a_custom_search_engine_using_social_bookmarks.php Build A Custom Search Engine Using Your Social Bookmarks]
    * 上文還提到一個 「[http://www.google.com/cse/tools/marker Google 標記（Marker）]」的 bookmarklet 可以加速新增搜尋範圍
 
