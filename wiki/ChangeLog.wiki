@@ -1,3 +1,8 @@
+= Crawlzilla 2.1.0 Change Log=
+< {shunfa} _ at _ narl.nchc.org.tw > 5 Aug 2013
+ * 更新Nutch核心版本至1.6
+ * 整合Solr4.0
+
 = Crawlzilla 1.0.0 Change Log=
 < { waue, shunfa } _at_ nchc.org.tw > 4 Jul 2011
  * 更新Nutch核心版本1.2
